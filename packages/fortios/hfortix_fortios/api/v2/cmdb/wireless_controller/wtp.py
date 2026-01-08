@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.wireless_controller_wtp.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.wireless_controller_wtp.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Wtp(MetadataMixin):
+class Wtp(CRUDEndpoint, MetadataMixin):
     """Wtp Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "split_tunneling_acl": {
+            "mkey": "id",
+            "required_fields": ['dest-ip'],
+            "example": "[{'dest-ip': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Wtp(MetadataMixin):
         """Initialize Wtp endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         wtp_id: str | None = None,
@@ -72,8 +103,9 @@ class Wtp(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve wireless_controller/wtp configuration.
 
@@ -99,6 +131,7 @@ class Wtp(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Wtp(MetadataMixin):
         
         if wtp_id:
             endpoint = "/wireless-controller/wtp/" + str(wtp_id)
+            unwrap_single = True
         else:
             endpoint = "/wireless-controller/wtp"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class Wtp(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -226,17 +266,17 @@ class Wtp(MetadataMixin):
         override_wan_port_mode: Literal["enable", "disable"] | None = None,
         wan_port_mode: Literal["wan-lan", "wan-only"] | None = None,
         override_ip_fragment: Literal["enable", "disable"] | None = None,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list | None = None,
+        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = None,
         tun_mtu_uplink: int | None = None,
         tun_mtu_downlink: int | None = None,
         override_split_tunnel: Literal["enable", "disable"] | None = None,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = None,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = None,
-        split_tunneling_acl: str | list | None = None,
+        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = None,
         override_lan: Literal["enable", "disable"] | None = None,
         lan: str | None = None,
         override_allowaccess: Literal["enable", "disable"] | None = None,
-        allowaccess: Literal["https", "ssh", "snmp"] | list | None = None,
+        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = None,
         override_login_passwd_change: Literal["enable", "disable"] | None = None,
         login_passwd_change: Literal["yes", "default", "no"] | None = None,
         login_passwd: Any | None = None,
@@ -253,8 +293,9 @@ class Wtp(MetadataMixin):
         coordinate_longitude: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing wireless_controller/wtp object.
 
@@ -267,8 +308,56 @@ class Wtp(MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             admin: Configure how the FortiGate operating as a wireless controller discovers and manages this WTP, AP or FortiAP.
             name: WTP, AP or FortiAP configuration name.
+            location: Field for describing the physical location of the WTP, AP or FortiAP.
+            comment: Comment.
+            region: Region name WTP is associated with.
+            region_x: Relative horizontal region coordinate (between 0 and 1).
+            region_y: Relative vertical region coordinate (between 0 and 1).
+            firmware_provision: Firmware version to provision to this FortiAP on bootup (major.minor.build, i.e. 6.2.1234).
+            firmware_provision_latest: Enable/disable one-time automatic provisioning of the latest firmware version.
+            wtp_profile: WTP profile name to apply to this WTP, AP or FortiAP.
+            apcfg_profile: AP local configuration profile name.
+            bonjour_profile: Bonjour profile name.
+            ble_major_id: Override BLE Major ID.
+            ble_minor_id: Override BLE Minor ID.
+            override_led_state: Enable to override the profile LED state setting for this FortiAP. You must enable this option to use the led-state command to turn off the FortiAP's LEDs.
+            led_state: Enable to allow the FortiAPs LEDs to light. Disable to keep the LEDs off. You may want to keep the LEDs off so they are not distracting in low light areas etc.
+            override_wan_port_mode: Enable/disable overriding the wan-port-mode in the WTP profile.
+            wan_port_mode: Enable/disable using the FortiAP WAN port as a LAN port.
+            override_ip_fragment: Enable/disable overriding the WTP profile IP fragment prevention setting.
+            ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
+            tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
+            tun_mtu_downlink: The MTU of downlink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
+            override_split_tunnel: Enable/disable overriding the WTP profile split tunneling setting.
+            split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
+            split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
+            split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
+            override_lan: Enable to override the WTP profile LAN port setting.
+            lan: WTP LAN port mapping.
+            override_allowaccess: Enable to override the WTP profile management access configuration.
+            allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
+            override_login_passwd_change: Enable to override the WTP profile login-password (administrator password) setting.
+            login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
+            login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
+            override_default_mesh_root: Enable to override the WTP profile default mesh root SSID setting.
+            default_mesh_root: Configure default mesh root SSID when it is not included by radio's SSID configuration.
+            radio_1: Configuration options for radio 1.
+            radio_2: Configuration options for radio 2.
+            radio_3: Configuration options for radio 3.
+            radio_4: Configuration options for radio 4.
+            image_download: Enable/disable WTP image download.
+            mesh_bridge_enable: Enable/disable mesh Ethernet bridge when WTP is configured as a mesh branch/leaf AP.
+            purdue_level: Purdue Level of this WTP.
+            coordinate_latitude: WTP latitude coordinate.
+            coordinate_longitude: WTP longitude coordinate.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -295,9 +384,20 @@ class Wtp(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -364,9 +464,14 @@ class Wtp(MetadataMixin):
         endpoint = "/wireless-controller/wtp/" + str(wtp_id_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -392,17 +497,17 @@ class Wtp(MetadataMixin):
         override_wan_port_mode: Literal["enable", "disable"] | None = None,
         wan_port_mode: Literal["wan-lan", "wan-only"] | None = None,
         override_ip_fragment: Literal["enable", "disable"] | None = None,
-        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list | None = None,
+        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = None,
         tun_mtu_uplink: int | None = None,
         tun_mtu_downlink: int | None = None,
         override_split_tunnel: Literal["enable", "disable"] | None = None,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = None,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = None,
-        split_tunneling_acl: str | list | None = None,
+        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = None,
         override_lan: Literal["enable", "disable"] | None = None,
         lan: str | None = None,
         override_allowaccess: Literal["enable", "disable"] | None = None,
-        allowaccess: Literal["https", "ssh", "snmp"] | list | None = None,
+        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = None,
         override_login_passwd_change: Literal["enable", "disable"] | None = None,
         login_passwd_change: Literal["yes", "default", "no"] | None = None,
         login_passwd: Any | None = None,
@@ -419,8 +524,9 @@ class Wtp(MetadataMixin):
         coordinate_longitude: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new wireless_controller/wtp object.
 
@@ -433,8 +539,56 @@ class Wtp(MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             admin: Configure how the FortiGate operating as a wireless controller discovers and manages this WTP, AP or FortiAP.
             name: WTP, AP or FortiAP configuration name.
+            location: Field for describing the physical location of the WTP, AP or FortiAP.
+            comment: Comment.
+            region: Region name WTP is associated with.
+            region_x: Relative horizontal region coordinate (between 0 and 1).
+            region_y: Relative vertical region coordinate (between 0 and 1).
+            firmware_provision: Firmware version to provision to this FortiAP on bootup (major.minor.build, i.e. 6.2.1234).
+            firmware_provision_latest: Enable/disable one-time automatic provisioning of the latest firmware version.
+            wtp_profile: WTP profile name to apply to this WTP, AP or FortiAP.
+            apcfg_profile: AP local configuration profile name.
+            bonjour_profile: Bonjour profile name.
+            ble_major_id: Override BLE Major ID.
+            ble_minor_id: Override BLE Minor ID.
+            override_led_state: Enable to override the profile LED state setting for this FortiAP. You must enable this option to use the led-state command to turn off the FortiAP's LEDs.
+            led_state: Enable to allow the FortiAPs LEDs to light. Disable to keep the LEDs off. You may want to keep the LEDs off so they are not distracting in low light areas etc.
+            override_wan_port_mode: Enable/disable overriding the wan-port-mode in the WTP profile.
+            wan_port_mode: Enable/disable using the FortiAP WAN port as a LAN port.
+            override_ip_fragment: Enable/disable overriding the WTP profile IP fragment prevention setting.
+            ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
+            tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
+            tun_mtu_downlink: The MTU of downlink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
+            override_split_tunnel: Enable/disable overriding the WTP profile split tunneling setting.
+            split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
+            split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
+            split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
+            override_lan: Enable to override the WTP profile LAN port setting.
+            lan: WTP LAN port mapping.
+            override_allowaccess: Enable to override the WTP profile management access configuration.
+            allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
+            override_login_passwd_change: Enable to override the WTP profile login-password (administrator password) setting.
+            login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
+            login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
+            override_default_mesh_root: Enable to override the WTP profile default mesh root SSID setting.
+            default_mesh_root: Configure default mesh root SSID when it is not included by radio's SSID configuration.
+            radio_1: Configuration options for radio 1.
+            radio_2: Configuration options for radio 2.
+            radio_3: Configuration options for radio 3.
+            radio_4: Configuration options for radio 4.
+            image_download: Enable/disable WTP image download.
+            mesh_bridge_enable: Enable/disable mesh Ethernet bridge when WTP is configured as a mesh branch/leaf AP.
+            purdue_level: Purdue Level of this WTP.
+            coordinate_latitude: WTP latitude coordinate.
+            coordinate_longitude: WTP longitude coordinate.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -463,9 +617,20 @@ class Wtp(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -528,16 +693,22 @@ class Wtp(MetadataMixin):
 
         endpoint = "/wireless-controller/wtp"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         wtp_id: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete wireless_controller/wtp object.
 
@@ -547,6 +718,7 @@ class Wtp(MetadataMixin):
             wtp_id: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -572,7 +744,7 @@ class Wtp(MetadataMixin):
         endpoint = "/wireless-controller/wtp/" + str(wtp_id)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -636,7 +808,56 @@ class Wtp(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        wtp_id: str | None = None,
+        index: int | None = None,
+        uuid: str | None = None,
+        admin: Literal["discovered", "disable", "enable"] | None = None,
+        name: str | None = None,
+        location: str | None = None,
+        comment: str | None = None,
+        region: str | None = None,
+        region_x: str | None = None,
+        region_y: str | None = None,
+        firmware_provision: str | None = None,
+        firmware_provision_latest: Literal["disable", "once"] | None = None,
+        wtp_profile: str | None = None,
+        apcfg_profile: str | None = None,
+        bonjour_profile: str | None = None,
+        ble_major_id: int | None = None,
+        ble_minor_id: int | None = None,
+        override_led_state: Literal["enable", "disable"] | None = None,
+        led_state: Literal["enable", "disable"] | None = None,
+        override_wan_port_mode: Literal["enable", "disable"] | None = None,
+        wan_port_mode: Literal["wan-lan", "wan-only"] | None = None,
+        override_ip_fragment: Literal["enable", "disable"] | None = None,
+        ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | list[dict[str, Any]] | None = None,
+        tun_mtu_uplink: int | None = None,
+        tun_mtu_downlink: int | None = None,
+        override_split_tunnel: Literal["enable", "disable"] | None = None,
+        split_tunneling_acl_path: Literal["tunnel", "local"] | None = None,
+        split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = None,
+        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = None,
+        override_lan: Literal["enable", "disable"] | None = None,
+        lan: str | None = None,
+        override_allowaccess: Literal["enable", "disable"] | None = None,
+        allowaccess: Literal["https", "ssh", "snmp"] | list[str] | list[dict[str, Any]] | None = None,
+        override_login_passwd_change: Literal["enable", "disable"] | None = None,
+        login_passwd_change: Literal["yes", "default", "no"] | None = None,
+        login_passwd: Any | None = None,
+        override_default_mesh_root: Literal["enable", "disable"] | None = None,
+        default_mesh_root: Literal["enable", "disable"] | None = None,
+        radio_1: str | None = None,
+        radio_2: str | None = None,
+        radio_3: str | None = None,
+        radio_4: str | None = None,
+        image_download: Literal["enable", "disable"] | None = None,
+        mesh_bridge_enable: Literal["default", "enable", "disable"] | None = None,
+        purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = None,
+        coordinate_latitude: str | None = None,
+        coordinate_longitude: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -647,7 +868,56 @@ class Wtp(MetadataMixin):
 
         Args:
             payload_dict: Resource data including wtp-id (primary key)
+            wtp_id: Field wtp-id
+            index: Field index
+            uuid: Field uuid
+            admin: Field admin
+            name: Field name
+            location: Field location
+            comment: Field comment
+            region: Field region
+            region_x: Field region-x
+            region_y: Field region-y
+            firmware_provision: Field firmware-provision
+            firmware_provision_latest: Field firmware-provision-latest
+            wtp_profile: Field wtp-profile
+            apcfg_profile: Field apcfg-profile
+            bonjour_profile: Field bonjour-profile
+            ble_major_id: Field ble-major-id
+            ble_minor_id: Field ble-minor-id
+            override_led_state: Field override-led-state
+            led_state: Field led-state
+            override_wan_port_mode: Field override-wan-port-mode
+            wan_port_mode: Field wan-port-mode
+            override_ip_fragment: Field override-ip-fragment
+            ip_fragment_preventing: Field ip-fragment-preventing
+            tun_mtu_uplink: Field tun-mtu-uplink
+            tun_mtu_downlink: Field tun-mtu-downlink
+            override_split_tunnel: Field override-split-tunnel
+            split_tunneling_acl_path: Field split-tunneling-acl-path
+            split_tunneling_acl_local_ap_subnet: Field split-tunneling-acl-local-ap-subnet
+            split_tunneling_acl: Field split-tunneling-acl
+            override_lan: Field override-lan
+            lan: Field lan
+            override_allowaccess: Field override-allowaccess
+            allowaccess: Field allowaccess
+            override_login_passwd_change: Field override-login-passwd-change
+            login_passwd_change: Field login-passwd-change
+            login_passwd: Field login-passwd
+            override_default_mesh_root: Field override-default-mesh-root
+            default_mesh_root: Field default-mesh-root
+            radio_1: Field radio-1
+            radio_2: Field radio-2
+            radio_3: Field radio-3
+            radio_4: Field radio-4
+            image_download: Field image-download
+            mesh_bridge_enable: Field mesh-bridge-enable
+            purdue_level: Field purdue-level
+            coordinate_latitude: Field coordinate-latitude
+            coordinate_longitude: Field coordinate-longitude
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -657,7 +927,13 @@ class Wtp(MetadataMixin):
             ValueError: If wtp-id is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.wireless_controller_wtp.set(
+            ...     wtp_id=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "wtp-id": 1,
             ...     "field1": "value1",
@@ -680,20 +956,69 @@ class Wtp(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            wtp_id=wtp_id,
+            index=index,
+            uuid=uuid,
+            admin=admin,
+            name=name,
+            location=location,
+            comment=comment,
+            region=region,
+            region_x=region_x,
+            region_y=region_y,
+            firmware_provision=firmware_provision,
+            firmware_provision_latest=firmware_provision_latest,
+            wtp_profile=wtp_profile,
+            apcfg_profile=apcfg_profile,
+            bonjour_profile=bonjour_profile,
+            ble_major_id=ble_major_id,
+            ble_minor_id=ble_minor_id,
+            override_led_state=override_led_state,
+            led_state=led_state,
+            override_wan_port_mode=override_wan_port_mode,
+            wan_port_mode=wan_port_mode,
+            override_ip_fragment=override_ip_fragment,
+            ip_fragment_preventing=ip_fragment_preventing,
+            tun_mtu_uplink=tun_mtu_uplink,
+            tun_mtu_downlink=tun_mtu_downlink,
+            override_split_tunnel=override_split_tunnel,
+            split_tunneling_acl_path=split_tunneling_acl_path,
+            split_tunneling_acl_local_ap_subnet=split_tunneling_acl_local_ap_subnet,
+            split_tunneling_acl=split_tunneling_acl,
+            override_lan=override_lan,
+            lan=lan,
+            override_allowaccess=override_allowaccess,
+            allowaccess=allowaccess,
+            override_login_passwd_change=override_login_passwd_change,
+            login_passwd_change=login_passwd_change,
+            login_passwd=login_passwd,
+            override_default_mesh_root=override_default_mesh_root,
+            default_mesh_root=default_mesh_root,
+            radio_1=radio_1,
+            radio_2=radio_2,
+            radio_3=radio_3,
+            radio_4=radio_4,
+            image_download=image_download,
+            mesh_bridge_enable=mesh_bridge_enable,
+            purdue_level=purdue_level,
+            coordinate_latitude=coordinate_latitude,
+            coordinate_longitude=coordinate_longitude,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("wtp-id")
+        mkey_value = payload_data.get("wtp-id")
         if not mkey_value:
-            raise ValueError("wtp-id is required in payload_dict for set()")
+            raise ValueError("wtp-id is required for set()")
         
         # Check if resource exists
         if self.exists(wtp_id=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

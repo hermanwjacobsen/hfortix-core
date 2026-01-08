@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_vdom_property.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_vdom_property.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class VdomProperty(MetadataMixin):
+class VdomProperty(CRUDEndpoint, MetadataMixin):
     """VdomProperty Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class VdomProperty(MetadataMixin):
         """Initialize VdomProperty endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class VdomProperty(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/vdom_property configuration.
 
@@ -99,6 +118,7 @@ class VdomProperty(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class VdomProperty(MetadataMixin):
         
         if name:
             endpoint = "/system/vdom-property/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/vdom-property"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,34 +223,40 @@ class VdomProperty(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
         snmp_index: int | None = None,
-        session: str | list | None = None,
-        ipsec_phase1: str | list | None = None,
-        ipsec_phase2: str | list | None = None,
-        ipsec_phase1_interface: str | list | None = None,
-        ipsec_phase2_interface: str | list | None = None,
-        dialup_tunnel: str | list | None = None,
-        firewall_policy: str | list | None = None,
-        firewall_address: str | list | None = None,
-        firewall_addrgrp: str | list | None = None,
-        custom_service: str | list | None = None,
-        service_group: str | list | None = None,
-        onetime_schedule: str | list | None = None,
-        recurring_schedule: str | list | None = None,
-        user: str | list | None = None,
-        user_group: str | list | None = None,
-        sslvpn: str | list | None = None,
-        proxy: str | list | None = None,
-        log_disk_quota: str | list | None = None,
+        session: str | list[str] | None = None,
+        ipsec_phase1: str | list[str] | None = None,
+        ipsec_phase2: str | list[str] | None = None,
+        ipsec_phase1_interface: str | list[str] | None = None,
+        ipsec_phase2_interface: str | list[str] | None = None,
+        dialup_tunnel: str | list[str] | None = None,
+        firewall_policy: str | list[str] | None = None,
+        firewall_address: str | list[str] | None = None,
+        firewall_addrgrp: str | list[str] | None = None,
+        custom_service: str | list[str] | None = None,
+        service_group: str | list[str] | None = None,
+        onetime_schedule: str | list[str] | None = None,
+        recurring_schedule: str | list[str] | None = None,
+        user: str | list[str] | None = None,
+        user_group: str | list[str] | None = None,
+        sslvpn: str | list[str] | None = None,
+        proxy: str | list[str] | None = None,
+        log_disk_quota: str | list[str] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/vdom_property object.
 
@@ -241,8 +269,25 @@ class VdomProperty(MetadataMixin):
             snmp_index: Permanent SNMP Index of the virtual domain (1 - 2147483647).
             session: Maximum guaranteed number of sessions.
             ipsec_phase1: Maximum guaranteed number of VPN IPsec phase 1 tunnels.
+            ipsec_phase2: Maximum guaranteed number of VPN IPsec phase 2 tunnels.
+            ipsec_phase1_interface: Maximum guaranteed number of VPN IPsec phase1 interface tunnels.
+            ipsec_phase2_interface: Maximum guaranteed number of VPN IPsec phase2 interface tunnels.
+            dialup_tunnel: Maximum guaranteed number of dial-up tunnels.
+            firewall_policy: Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).
+            firewall_address: Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).
+            firewall_addrgrp: Maximum guaranteed number of firewall address groups (IPv4, IPv6).
+            custom_service: Maximum guaranteed number of firewall custom services.
+            service_group: Maximum guaranteed number of firewall service groups.
+            onetime_schedule: Maximum guaranteed number of firewall one-time schedules..
+            recurring_schedule: Maximum guaranteed number of firewall recurring schedules.
+            user: Maximum guaranteed number of local users.
+            user_group: Maximum guaranteed number of user groups.
+            sslvpn: Maximum guaranteed number of Agentless VPNs.
+            proxy: Maximum guaranteed number of concurrent proxy users.
+            log_disk_quota: Log disk quota in megabytes (MB). Range depends on how much disk space is available.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -269,9 +314,10 @@ class VdomProperty(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             snmp_index=snmp_index,
@@ -312,37 +358,43 @@ class VdomProperty(MetadataMixin):
         endpoint = "/system/vdom-property/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
         snmp_index: int | None = None,
-        session: str | list | None = None,
-        ipsec_phase1: str | list | None = None,
-        ipsec_phase2: str | list | None = None,
-        ipsec_phase1_interface: str | list | None = None,
-        ipsec_phase2_interface: str | list | None = None,
-        dialup_tunnel: str | list | None = None,
-        firewall_policy: str | list | None = None,
-        firewall_address: str | list | None = None,
-        firewall_addrgrp: str | list | None = None,
-        custom_service: str | list | None = None,
-        service_group: str | list | None = None,
-        onetime_schedule: str | list | None = None,
-        recurring_schedule: str | list | None = None,
-        user: str | list | None = None,
-        user_group: str | list | None = None,
-        sslvpn: str | list | None = None,
-        proxy: str | list | None = None,
-        log_disk_quota: str | list | None = None,
+        session: str | list[str] | None = None,
+        ipsec_phase1: str | list[str] | None = None,
+        ipsec_phase2: str | list[str] | None = None,
+        ipsec_phase1_interface: str | list[str] | None = None,
+        ipsec_phase2_interface: str | list[str] | None = None,
+        dialup_tunnel: str | list[str] | None = None,
+        firewall_policy: str | list[str] | None = None,
+        firewall_address: str | list[str] | None = None,
+        firewall_addrgrp: str | list[str] | None = None,
+        custom_service: str | list[str] | None = None,
+        service_group: str | list[str] | None = None,
+        onetime_schedule: str | list[str] | None = None,
+        recurring_schedule: str | list[str] | None = None,
+        user: str | list[str] | None = None,
+        user_group: str | list[str] | None = None,
+        sslvpn: str | list[str] | None = None,
+        proxy: str | list[str] | None = None,
+        log_disk_quota: str | list[str] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/vdom_property object.
 
@@ -355,8 +407,25 @@ class VdomProperty(MetadataMixin):
             snmp_index: Permanent SNMP Index of the virtual domain (1 - 2147483647).
             session: Maximum guaranteed number of sessions.
             ipsec_phase1: Maximum guaranteed number of VPN IPsec phase 1 tunnels.
+            ipsec_phase2: Maximum guaranteed number of VPN IPsec phase 2 tunnels.
+            ipsec_phase1_interface: Maximum guaranteed number of VPN IPsec phase1 interface tunnels.
+            ipsec_phase2_interface: Maximum guaranteed number of VPN IPsec phase2 interface tunnels.
+            dialup_tunnel: Maximum guaranteed number of dial-up tunnels.
+            firewall_policy: Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).
+            firewall_address: Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).
+            firewall_addrgrp: Maximum guaranteed number of firewall address groups (IPv4, IPv6).
+            custom_service: Maximum guaranteed number of firewall custom services.
+            service_group: Maximum guaranteed number of firewall service groups.
+            onetime_schedule: Maximum guaranteed number of firewall one-time schedules..
+            recurring_schedule: Maximum guaranteed number of firewall recurring schedules.
+            user: Maximum guaranteed number of local users.
+            user_group: Maximum guaranteed number of user groups.
+            sslvpn: Maximum guaranteed number of Agentless VPNs.
+            proxy: Maximum guaranteed number of concurrent proxy users.
+            log_disk_quota: Log disk quota in megabytes (MB). Range depends on how much disk space is available.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -385,9 +454,10 @@ class VdomProperty(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             snmp_index=snmp_index,
@@ -424,16 +494,22 @@ class VdomProperty(MetadataMixin):
 
         endpoint = "/system/vdom-property"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/vdom_property object.
 
@@ -443,6 +519,7 @@ class VdomProperty(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -468,7 +545,7 @@ class VdomProperty(MetadataMixin):
         endpoint = "/system/vdom-property/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -532,7 +609,30 @@ class VdomProperty(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        description: str | None = None,
+        snmp_index: int | None = None,
+        session: str | list[str] | list[dict[str, Any]] | None = None,
+        ipsec_phase1: str | list[str] | list[dict[str, Any]] | None = None,
+        ipsec_phase2: str | list[str] | list[dict[str, Any]] | None = None,
+        ipsec_phase1_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        ipsec_phase2_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        dialup_tunnel: str | list[str] | list[dict[str, Any]] | None = None,
+        firewall_policy: str | list[str] | list[dict[str, Any]] | None = None,
+        firewall_address: str | list[str] | list[dict[str, Any]] | None = None,
+        firewall_addrgrp: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_service: str | list[str] | list[dict[str, Any]] | None = None,
+        service_group: str | list[str] | list[dict[str, Any]] | None = None,
+        onetime_schedule: str | list[str] | list[dict[str, Any]] | None = None,
+        recurring_schedule: str | list[str] | list[dict[str, Any]] | None = None,
+        user: str | list[str] | list[dict[str, Any]] | None = None,
+        user_group: str | list[str] | list[dict[str, Any]] | None = None,
+        sslvpn: str | list[str] | list[dict[str, Any]] | None = None,
+        proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        log_disk_quota: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -543,7 +643,30 @@ class VdomProperty(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            description: Field description
+            snmp_index: Field snmp-index
+            session: Field session
+            ipsec_phase1: Field ipsec-phase1
+            ipsec_phase2: Field ipsec-phase2
+            ipsec_phase1_interface: Field ipsec-phase1-interface
+            ipsec_phase2_interface: Field ipsec-phase2-interface
+            dialup_tunnel: Field dialup-tunnel
+            firewall_policy: Field firewall-policy
+            firewall_address: Field firewall-address
+            firewall_addrgrp: Field firewall-addrgrp
+            custom_service: Field custom-service
+            service_group: Field service-group
+            onetime_schedule: Field onetime-schedule
+            recurring_schedule: Field recurring-schedule
+            user: Field user
+            user_group: Field user-group
+            sslvpn: Field sslvpn
+            proxy: Field proxy
+            log_disk_quota: Field log-disk-quota
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -553,7 +676,13 @@ class VdomProperty(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_vdom_property.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -576,20 +705,43 @@ class VdomProperty(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            description=description,
+            snmp_index=snmp_index,
+            session=session,
+            ipsec_phase1=ipsec_phase1,
+            ipsec_phase2=ipsec_phase2,
+            ipsec_phase1_interface=ipsec_phase1_interface,
+            ipsec_phase2_interface=ipsec_phase2_interface,
+            dialup_tunnel=dialup_tunnel,
+            firewall_policy=firewall_policy,
+            firewall_address=firewall_address,
+            firewall_addrgrp=firewall_addrgrp,
+            custom_service=custom_service,
+            service_group=service_group,
+            onetime_schedule=onetime_schedule,
+            recurring_schedule=recurring_schedule,
+            user=user,
+            user_group=user_group,
+            sslvpn=sslvpn,
+            proxy=proxy,
+            log_disk_quota=log_disk_quota,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.webfilter_search_engine.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.webfilter_search_engine.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class SearchEngine(MetadataMixin):
+class SearchEngine(CRUDEndpoint, MetadataMixin):
     """SearchEngine Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class SearchEngine(MetadataMixin):
         """Initialize SearchEngine endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class SearchEngine(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve webfilter/search_engine configuration.
 
@@ -99,6 +118,7 @@ class SearchEngine(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class SearchEngine(MetadataMixin):
         
         if name:
             endpoint = "/webfilter/search-engine/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/webfilter/search-engine"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class SearchEngine(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -213,8 +240,9 @@ class SearchEngine(MetadataMixin):
         safesearch_str: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing webfilter/search_engine object.
 
@@ -227,8 +255,11 @@ class SearchEngine(MetadataMixin):
             url: URL (regular expression).
             query: Code used to prefix a query (must end with an equals character).
             safesearch: Safe search method. You can disable safe search, add the safe search string to URLs, or insert a safe search header.
+            charset: Search engine charset.
+            safesearch_str: Safe search parameter used in the URL in URL mode. In translate mode, it provides either the regex to translate the URL or the special case to translate the URL.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -255,9 +286,10 @@ class SearchEngine(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             hostname=hostname,
             url=url,
@@ -284,9 +316,14 @@ class SearchEngine(MetadataMixin):
         endpoint = "/webfilter/search-engine/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -299,8 +336,9 @@ class SearchEngine(MetadataMixin):
         safesearch_str: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new webfilter/search_engine object.
 
@@ -313,8 +351,11 @@ class SearchEngine(MetadataMixin):
             url: URL (regular expression).
             query: Code used to prefix a query (must end with an equals character).
             safesearch: Safe search method. You can disable safe search, add the safe search string to URLs, or insert a safe search header.
+            charset: Search engine charset.
+            safesearch_str: Safe search parameter used in the URL in URL mode. In translate mode, it provides either the regex to translate the URL or the special case to translate the URL.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -343,9 +384,10 @@ class SearchEngine(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             hostname=hostname,
             url=url,
@@ -368,16 +410,22 @@ class SearchEngine(MetadataMixin):
 
         endpoint = "/webfilter/search-engine"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete webfilter/search_engine object.
 
@@ -387,6 +435,7 @@ class SearchEngine(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -412,7 +461,7 @@ class SearchEngine(MetadataMixin):
         endpoint = "/webfilter/search-engine/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -476,7 +525,16 @@ class SearchEngine(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        hostname: str | None = None,
+        url: str | None = None,
+        query: str | None = None,
+        safesearch: Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"] | None = None,
+        charset: Literal["utf-8", "gb2312"] | None = None,
+        safesearch_str: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -487,7 +545,16 @@ class SearchEngine(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            hostname: Field hostname
+            url: Field url
+            query: Field query
+            safesearch: Field safesearch
+            charset: Field charset
+            safesearch_str: Field safesearch-str
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -497,7 +564,13 @@ class SearchEngine(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.webfilter_search_engine.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -520,20 +593,29 @@ class SearchEngine(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            hostname=hostname,
+            url=url,
+            query=query,
+            safesearch=safesearch,
+            charset=charset,
+            safesearch_str=safesearch_str,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

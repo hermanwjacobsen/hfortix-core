@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_ha.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_ha.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,58 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ha(MetadataMixin):
+class Ha(CRUDEndpoint, MetadataMixin):
     """Ha Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ha"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "auto_virtual_mac_interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "backup_hbdev": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ha_mgmt_interfaces": {
+            "mkey": "id",
+            "required_fields": ['interface'],
+            "example": "[{'interface': 'value'}]",
+        },
+        "unicast_peers": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "vcluster": {
+            "mkey": "vcluster-id",
+            "required_fields": ['vcluster-id'],
+            "example": "[{'vcluster-id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +109,11 @@ class Ha(MetadataMixin):
         """Initialize Ha endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +123,9 @@ class Ha(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/ha configuration.
 
@@ -98,6 +150,7 @@ class Ha(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +203,14 @@ class Ha(MetadataMixin):
         
         if name:
             endpoint = f"/system/ha/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/ha"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +251,11 @@ class Ha(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -205,13 +265,13 @@ class Ha(MetadataMixin):
         sync_packet_balance: Literal["enable", "disable"] | None = None,
         password: Any | None = None,
         key: Any | None = None,
-        hbdev: str | list | None = None,
-        auto_virtual_mac_interface: str | list | None = None,
-        backup_hbdev: str | list | None = None,
+        hbdev: str | list[str] | None = None,
+        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = None,
         unicast_hb: Literal["enable", "disable"] | None = None,
         unicast_hb_peerip: str | None = None,
         unicast_hb_netmask: str | None = None,
-        session_sync_dev: str | list | None = None,
+        session_sync_dev: str | list[str] | None = None,
         route_ttl: int | None = None,
         route_wait: int | None = None,
         route_hold: int | None = None,
@@ -238,7 +298,7 @@ class Ha(MetadataMixin):
         uninterruptible_primary_wait: int | None = None,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = None,
         ha_mgmt_status: Literal["enable", "disable"] | None = None,
-        ha_mgmt_interfaces: str | list | None = None,
+        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = None,
         ha_eth_type: str | None = None,
         hc_eth_type: str | None = None,
         l2ep_eth_type: str | None = None,
@@ -246,7 +306,7 @@ class Ha(MetadataMixin):
         standalone_config_sync: Literal["enable", "disable"] | None = None,
         unicast_status: Literal["enable", "disable"] | None = None,
         unicast_gateway: str | None = None,
-        unicast_peers: str | list | None = None,
+        unicast_peers: str | list[str] | list[dict[str, Any]] | None = None,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = None,
         weight: str | None = None,
         cpu_threshold: str | None = None,
@@ -260,13 +320,13 @@ class Ha(MetadataMixin):
         override: Literal["enable", "disable"] | None = None,
         priority: int | None = None,
         override_wait_time: int | None = None,
-        monitor: str | list | None = None,
-        pingserver_monitor_interface: str | list | None = None,
+        monitor: str | list[str] | None = None,
+        pingserver_monitor_interface: str | list[str] | None = None,
         pingserver_failover_threshold: int | None = None,
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = None,
         pingserver_flip_timeout: int | None = None,
         vcluster_status: Literal["enable", "disable"] | None = None,
-        vcluster: str | list | None = None,
+        vcluster: str | list[str] | list[dict[str, Any]] | None = None,
         ha_direct: Literal["enable", "disable"] | None = None,
         ssd_failover: Literal["enable", "disable"] | None = None,
         memory_compatible_mode: Literal["enable", "disable"] | None = None,
@@ -277,13 +337,14 @@ class Ha(MetadataMixin):
         memory_failover_flip_timeout: int | None = None,
         failover_hold_time: int | None = None,
         check_secondary_dev_health: Literal["enable", "disable"] | None = None,
-        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list | None = None,
+        ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = None,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = None,
         status: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/ha object.
 
@@ -296,8 +357,110 @@ class Ha(MetadataMixin):
             mode: HA mode. Must be the same for all members. FGSP requires standalone.
             sync_packet_balance: Enable/disable HA packet distribution to multiple CPUs.
             password: Cluster password. Must be the same for all members.
+            key: Key.
+            hbdev: Heartbeat interfaces. Must be the same for all members.
+            auto_virtual_mac_interface: The physical interface that will be assigned an auto-generated virtual MAC address.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
+            backup_hbdev: Backup heartbeat interfaces. Must be the same for all members.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            unicast_hb: Enable/disable unicast heartbeat.
+            unicast_hb_peerip: Unicast heartbeat peer IP.
+            unicast_hb_netmask: Unicast heartbeat netmask.
+            session_sync_dev: Offload session-sync process to kernel and sync sessions using connected interface(s) directly.
+            route_ttl: TTL for primary unit routes (5 - 3600 sec). Increase to maintain active routes during failover.
+            route_wait: Time to wait before sending new routes to the cluster (0 - 3600 sec).
+            route_hold: Time to wait between routing table updates to the cluster (0 - 3600 sec).
+            multicast_ttl: HA multicast TTL on primary (5 - 3600 sec).
+            evpn_ttl: HA EVPN FDB TTL on primary box (5 - 3600 sec).
+            load_balance_all: Enable to load balance TCP sessions. Disable to load balance proxy sessions only.
+            sync_config: Enable/disable configuration synchronization.
+            encryption: Enable/disable heartbeat message encryption.
+            authentication: Enable/disable heartbeat message authentication.
+            hb_interval: Time between sending heartbeat packets (1 - 20). Increase to reduce false positives.
+            hb_interval_in_milliseconds: Units of heartbeat interval time between sending heartbeat packets. Default is 100ms.
+            hb_lost_threshold: Number of lost heartbeats to signal a failure (1 - 60). Increase to reduce false positives.
+            hello_holddown: Time to wait before changing from hello to work state (5 - 300 sec).
+            gratuitous_arps: Enable/disable gratuitous ARPs. Disable if link-failed-signal enabled.
+            arps: Number of gratuitous ARPs (1 - 60). Lower to reduce traffic. Higher to reduce failover time.
+            arps_interval: Time between gratuitous ARPs  (1 - 20 sec). Lower to reduce failover time. Higher to reduce traffic.
+            session_pickup: Enable/disable session pickup. Enabling it can reduce session down time when fail over happens.
+            session_pickup_connectionless: Enable/disable UDP and ICMP session sync.
+            session_pickup_expectation: Enable/disable session helper expectation session sync for FGSP.
+            session_pickup_nat: Enable/disable NAT session sync for FGSP.
+            session_pickup_delay: Enable to sync sessions longer than 30 sec. Only longer lived sessions need to be synced.
+            link_failed_signal: Enable to shut down all interfaces for 1 sec after a failover. Use if gratuitous ARPs do not update network.
+            upgrade_mode: The mode to upgrade a cluster.
+            uninterruptible_primary_wait: Number of minutes the primary HA unit waits before the secondary HA unit is considered upgraded and the system is started before starting its own upgrade (15 - 300, default = 30).
+            standalone_mgmt_vdom: Enable/disable standalone management VDOM.
+            ha_mgmt_status: Enable to reserve interfaces to manage individual cluster units.
+            ha_mgmt_interfaces: Reserve interfaces to manage individual cluster units.
+                Default format: [{'interface': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'interface': 'value'}] (recommended)
+            ha_eth_type: HA heartbeat packet Ethertype (4-digit hex).
+            hc_eth_type: Transparent mode HA heartbeat packet Ethertype (4-digit hex).
+            l2ep_eth_type: Telnet session HA heartbeat packet Ethertype (4-digit hex).
+            ha_uptime_diff_margin: Normally you would only reduce this value for failover testing.
+            standalone_config_sync: Enable/disable FGSP configuration synchronization.
+            unicast_status: Enable/disable unicast connection.
+            unicast_gateway: Default route gateway for unicast interface.
+            unicast_peers: Number of unicast peers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            schedule: Type of A-A load balancing. Use none if you have external load balancers.
+            weight: Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.
+            cpu_threshold: Dynamic weighted load balancing CPU usage weight and high and low thresholds.
+            memory_threshold: Dynamic weighted load balancing memory usage weight and high and low thresholds.
+            http_proxy_threshold: Dynamic weighted load balancing weight and high and low number of HTTP proxy sessions.
+            ftp_proxy_threshold: Dynamic weighted load balancing weight and high and low number of FTP proxy sessions.
+            imap_proxy_threshold: Dynamic weighted load balancing weight and high and low number of IMAP proxy sessions.
+            nntp_proxy_threshold: Dynamic weighted load balancing weight and high and low number of NNTP proxy sessions.
+            pop3_proxy_threshold: Dynamic weighted load balancing weight and high and low number of POP3 proxy sessions.
+            smtp_proxy_threshold: Dynamic weighted load balancing weight and high and low number of SMTP proxy sessions.
+            override: Enable and increase the priority of the unit that should always be primary (master).
+            priority: Increase the priority to select the primary unit (0 - 255).
+            override_wait_time: Delay negotiating if override is enabled (0 - 3600 sec). Reduces how often the cluster negotiates.
+            monitor: Interfaces to check for port monitoring (or link failure).
+            pingserver_monitor_interface: Interfaces to check for remote IP monitoring.
+            pingserver_failover_threshold: Remote IP monitoring failover threshold (0 - 50).
+            pingserver_secondary_force_reset: Enable to force the cluster to negotiate after a remote IP monitoring failover.
+            pingserver_flip_timeout: Time to wait in minutes before renegotiating after a remote IP monitoring failover.
+            vcluster_status: Enable/disable virtual cluster for virtual clustering.
+            vcluster: Virtual cluster table.
+                Default format: [{'vcluster-id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'vcluster-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vcluster-id': 'val1'}, ...]
+                  - List of dicts: [{'vcluster-id': 1}] (recommended)
+            ha_direct: Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.
+            ssd_failover: Enable/disable automatic HA failover on SSD disk failure.
+            memory_compatible_mode: Enable/disable memory compatible mode.
+            memory_based_failover: Enable/disable memory based failover.
+            memory_failover_threshold: Memory usage threshold to trigger memory based failover (0 means using conserve mode threshold in system.global).
+            memory_failover_monitor_period: Duration of high memory usage before memory based failover is triggered in seconds (1 - 300, default = 60).
+            memory_failover_sample_rate: Rate at which memory usage is sampled in order to measure memory usage in seconds (1 - 60, default = 1).
+            memory_failover_flip_timeout: Time to wait between subsequent memory based failovers in minutes (6 - 2147483647, default = 6).
+            failover_hold_time: Time to wait before failover (0 - 300 sec, default = 0), to avoid flip.
+            check_secondary_dev_health: Enable/disable secondary dev health check for session load-balance in HA A-A mode.
+            ipsec_phase2_proposal: IPsec phase2 proposal.
+            bounce_intf_upon_failover: Enable/disable notification of kernel to bring down and up all monitored interfaces. The setting is used during failovers if gratuitous ARPs do not update the network.
+            status: list ha status information
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -324,9 +487,52 @@ class Ha(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if auto_virtual_mac_interface is not None:
+            auto_virtual_mac_interface = normalize_table_field(
+                auto_virtual_mac_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="auto_virtual_mac_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        if backup_hbdev is not None:
+            backup_hbdev = normalize_table_field(
+                backup_hbdev,
+                mkey="name",
+                required_fields=['name'],
+                field_name="backup_hbdev",
+                example="[{'name': 'value'}]",
+            )
+        if ha_mgmt_interfaces is not None:
+            ha_mgmt_interfaces = normalize_table_field(
+                ha_mgmt_interfaces,
+                mkey="id",
+                required_fields=['interface'],
+                field_name="ha_mgmt_interfaces",
+                example="[{'interface': 'value'}]",
+            )
+        if unicast_peers is not None:
+            unicast_peers = normalize_table_field(
+                unicast_peers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="unicast_peers",
+                example="[{'id': 1}]",
+            )
+        if vcluster is not None:
+            vcluster = normalize_table_field(
+                vcluster,
+                mkey="vcluster-id",
+                required_fields=['vcluster-id'],
+                field_name="vcluster",
+                example="[{'vcluster-id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             group_id=group_id,
             group_name=group_name,
             mode=mode,
@@ -421,13 +627,11 @@ class Ha(MetadataMixin):
                 endpoint="cmdb/system/ha",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/ha/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/ha"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

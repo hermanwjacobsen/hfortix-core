@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.web_proxy_forward_server.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.web_proxy_forward_server.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ForwardServer(MetadataMixin):
+class ForwardServer(CRUDEndpoint, MetadataMixin):
     """ForwardServer Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class ForwardServer(MetadataMixin):
         """Initialize ForwardServer endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class ForwardServer(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve web_proxy/forward_server configuration.
 
@@ -99,6 +118,7 @@ class ForwardServer(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class ForwardServer(MetadataMixin):
         
         if name:
             endpoint = "/web-proxy/forward-server/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/web-proxy/forward-server"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class ForwardServer(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -222,8 +249,9 @@ class ForwardServer(MetadataMixin):
         password: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing web_proxy/forward_server object.
 
@@ -236,8 +264,20 @@ class ForwardServer(MetadataMixin):
             ip: Forward proxy server IP address.
             ipv6: Forward proxy server IPv6 address.
             fqdn: Forward server Fully Qualified Domain Name (FQDN).
+            port: Port number that the forwarding server expects to receive HTTP sessions on (1 - 65535, default = 3128).
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
+            comment: Comment.
+            masquerade: Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)
+            healthcheck: Enable/disable forward server health checking. Attempts to connect through the remote forwarding server to a destination to verify that the forwarding server is operating normally.
+            monitor: URL for forward server health check monitoring (default = www.google.com).
+            server_down_option: Action to take when the forward server is found to be down: block sessions until the server is back up or pass sessions to their destination.
+            username: HTTP authentication user name.
+            password: HTTP authentication password.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -264,9 +304,10 @@ class ForwardServer(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             addr_type=addr_type,
             ip=ip,
@@ -302,9 +343,14 @@ class ForwardServer(MetadataMixin):
         endpoint = "/web-proxy/forward-server/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -326,8 +372,9 @@ class ForwardServer(MetadataMixin):
         password: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new web_proxy/forward_server object.
 
@@ -340,8 +387,20 @@ class ForwardServer(MetadataMixin):
             ip: Forward proxy server IP address.
             ipv6: Forward proxy server IPv6 address.
             fqdn: Forward server Fully Qualified Domain Name (FQDN).
+            port: Port number that the forwarding server expects to receive HTTP sessions on (1 - 65535, default = 3128).
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
+            comment: Comment.
+            masquerade: Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)
+            healthcheck: Enable/disable forward server health checking. Attempts to connect through the remote forwarding server to a destination to verify that the forwarding server is operating normally.
+            monitor: URL for forward server health check monitoring (default = www.google.com).
+            server_down_option: Action to take when the forward server is found to be down: block sessions until the server is back up or pass sessions to their destination.
+            username: HTTP authentication user name.
+            password: HTTP authentication password.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -370,9 +429,10 @@ class ForwardServer(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             addr_type=addr_type,
             ip=ip,
@@ -404,16 +464,22 @@ class ForwardServer(MetadataMixin):
 
         endpoint = "/web-proxy/forward-server"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete web_proxy/forward_server object.
 
@@ -423,6 +489,7 @@ class ForwardServer(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -448,7 +515,7 @@ class ForwardServer(MetadataMixin):
         endpoint = "/web-proxy/forward-server/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -512,7 +579,25 @@ class ForwardServer(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        addr_type: Literal["ip", "ipv6", "fqdn"] | None = None,
+        ip: str | None = None,
+        ipv6: str | None = None,
+        fqdn: str | None = None,
+        port: int | None = None,
+        interface_select_method: Literal["sdwan", "specify"] | None = None,
+        interface: str | None = None,
+        vrf_select: int | None = None,
+        comment: str | None = None,
+        masquerade: Literal["enable", "disable"] | None = None,
+        healthcheck: Literal["disable", "enable"] | None = None,
+        monitor: str | None = None,
+        server_down_option: Literal["block", "pass"] | None = None,
+        username: str | None = None,
+        password: Any | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -523,7 +608,25 @@ class ForwardServer(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            addr_type: Field addr-type
+            ip: Field ip
+            ipv6: Field ipv6
+            fqdn: Field fqdn
+            port: Field port
+            interface_select_method: Field interface-select-method
+            interface: Field interface
+            vrf_select: Field vrf-select
+            comment: Field comment
+            masquerade: Field masquerade
+            healthcheck: Field healthcheck
+            monitor: Field monitor
+            server_down_option: Field server-down-option
+            username: Field username
+            password: Field password
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -533,7 +636,13 @@ class ForwardServer(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.web_proxy_forward_server.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -556,20 +665,38 @@ class ForwardServer(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            addr_type=addr_type,
+            ip=ip,
+            ipv6=ipv6,
+            fqdn=fqdn,
+            port=port,
+            interface_select_method=interface_select_method,
+            interface=interface,
+            vrf_select=vrf_select,
+            comment=comment,
+            masquerade=masquerade,
+            healthcheck=healthcheck,
+            monitor=monitor,
+            server_down_option=server_down_option,
+            username=username,
+            password=password,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

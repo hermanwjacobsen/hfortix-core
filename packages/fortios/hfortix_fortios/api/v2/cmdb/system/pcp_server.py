@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_pcp_server.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_pcp_server.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class PcpServer(MetadataMixin):
+class PcpServer(CRUDEndpoint, MetadataMixin):
     """PcpServer Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "pcp_server"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "pools": {
+            "mkey": "name",
+            "required_fields": ['name', 'client-subnet', 'ext-intf', 'extip', 'extport', 'intl-intf'],
+            "example": "[{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class PcpServer(MetadataMixin):
         """Initialize PcpServer endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class PcpServer(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/pcp_server configuration.
 
@@ -98,6 +130,7 @@ class PcpServer(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class PcpServer(MetadataMixin):
         
         if name:
             endpoint = f"/system/pcp-server/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/pcp-server"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,15 +231,21 @@ class PcpServer(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         status: Literal["enable", "disable"] | None = None,
-        pools: str | list | None = None,
+        pools: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/pcp_server object.
 
@@ -214,8 +255,12 @@ class PcpServer(MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             status: Enable/disable PCP server.
             pools: Configure PCP pools.
+                Default format: [{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]
+                Required format: List of dicts with keys: name, client-subnet, ext-intf, extip, extport, intl-intf
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -242,9 +287,20 @@ class PcpServer(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if pools is not None:
+            pools = normalize_table_field(
+                pools,
+                mkey="name",
+                required_fields=['name', 'client-subnet', 'ext-intf', 'extip', 'extport', 'intl-intf'],
+                field_name="pools",
+                example="[{'name': 'value', 'client-subnet': 'value', 'ext-intf': 'value', 'extip': '192.168.1.10', 'extport': 443, 'intl-intf': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             pools=pools,
             data=payload_dict,
@@ -260,13 +316,11 @@ class PcpServer(MetadataMixin):
                 endpoint="cmdb/system/pcp_server",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/pcp-server/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/pcp-server"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

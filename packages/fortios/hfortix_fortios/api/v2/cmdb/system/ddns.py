@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_ddns.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_ddns.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ddns(MetadataMixin):
+class Ddns(CRUDEndpoint, MetadataMixin):
     """Ddns Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ddns"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ddns_server_addr": {
+            "mkey": "addr",
+            "required_fields": ['addr'],
+            "example": "[{'addr': 'value'}]",
+        },
+        "monitor_interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Ddns(MetadataMixin):
         """Initialize Ddns endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         ddnsid: int | None = None,
@@ -72,8 +108,9 @@ class Ddns(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/ddns configuration.
 
@@ -99,6 +136,7 @@ class Ddns(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class Ddns(MetadataMixin):
         
         if ddnsid:
             endpoint = "/system/ddns/" + str(ddnsid)
+            unwrap_single = True
         else:
             endpoint = "/system/ddns"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class Ddns(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -208,7 +253,7 @@ class Ddns(MetadataMixin):
         ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = None,
         addr_type: Literal["ipv4", "ipv6"] | None = None,
         server_type: Literal["ipv4", "ipv6"] | None = None,
-        ddns_server_addr: str | list | None = None,
+        ddns_server_addr: str | list[str] | list[dict[str, Any]] | None = None,
         ddns_zone: str | None = None,
         ddns_ttl: int | None = None,
         ddns_auth: Literal["disable", "tsig"] | None = None,
@@ -223,11 +268,12 @@ class Ddns(MetadataMixin):
         clear_text: Literal["disable", "enable"] | None = None,
         ssl_certificate: str | None = None,
         bound_ip: str | None = None,
-        monitor_interface: str | list | None = None,
+        monitor_interface: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/ddns object.
 
@@ -240,8 +286,34 @@ class Ddns(MetadataMixin):
             addr_type: Address type of interface address in DDNS update.
             server_type: Address type of the DDNS server.
             ddns_server_addr: Generic DDNS server IP/FQDN list.
+                Default format: [{'addr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr': 'val1'}, ...]
+                  - List of dicts: [{'addr': 'value'}] (recommended)
+            ddns_zone: Zone of your domain name (for example, DDNS.com).
+            ddns_ttl: Time-to-live for DDNS packets.
+            ddns_auth: Enable/disable TSIG authentication for your DDNS server.
+            ddns_keyname: DDNS update key name.
+            ddns_key: DDNS update key (base 64 encoding).
+            ddns_domain: Your fully qualified domain name. For example, yourname.ddns.com.
+            ddns_username: DDNS user name.
+            ddns_sn: DDNS Serial Number.
+            ddns_password: DDNS password.
+            use_public_ip: Enable/disable use of public IP address.
+            update_interval: DDNS update interval (60 - 2592000 sec, 0 means default).
+            clear_text: Enable/disable use of clear text connections.
+            ssl_certificate: Name of local certificate for SSL connections.
+            bound_ip: Bound IP address.
+            monitor_interface: Monitored interface.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -268,9 +340,28 @@ class Ddns(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ddns_server_addr is not None:
+            ddns_server_addr = normalize_table_field(
+                ddns_server_addr,
+                mkey="addr",
+                required_fields=['addr'],
+                field_name="ddns_server_addr",
+                example="[{'addr': 'value'}]",
+            )
+        if monitor_interface is not None:
+            monitor_interface = normalize_table_field(
+                monitor_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="monitor_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ddnsid=ddnsid,
             ddns_server=ddns_server,
             addr_type=addr_type,
@@ -310,9 +401,14 @@ class Ddns(MetadataMixin):
         endpoint = "/system/ddns/" + str(ddnsid_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -320,7 +416,7 @@ class Ddns(MetadataMixin):
         ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = None,
         addr_type: Literal["ipv4", "ipv6"] | None = None,
         server_type: Literal["ipv4", "ipv6"] | None = None,
-        ddns_server_addr: str | list | None = None,
+        ddns_server_addr: str | list[str] | list[dict[str, Any]] | None = None,
         ddns_zone: str | None = None,
         ddns_ttl: int | None = None,
         ddns_auth: Literal["disable", "tsig"] | None = None,
@@ -335,11 +431,12 @@ class Ddns(MetadataMixin):
         clear_text: Literal["disable", "enable"] | None = None,
         ssl_certificate: str | None = None,
         bound_ip: str | None = None,
-        monitor_interface: str | list | None = None,
+        monitor_interface: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/ddns object.
 
@@ -352,8 +449,34 @@ class Ddns(MetadataMixin):
             addr_type: Address type of interface address in DDNS update.
             server_type: Address type of the DDNS server.
             ddns_server_addr: Generic DDNS server IP/FQDN list.
+                Default format: [{'addr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr': 'val1'}, ...]
+                  - List of dicts: [{'addr': 'value'}] (recommended)
+            ddns_zone: Zone of your domain name (for example, DDNS.com).
+            ddns_ttl: Time-to-live for DDNS packets.
+            ddns_auth: Enable/disable TSIG authentication for your DDNS server.
+            ddns_keyname: DDNS update key name.
+            ddns_key: DDNS update key (base 64 encoding).
+            ddns_domain: Your fully qualified domain name. For example, yourname.ddns.com.
+            ddns_username: DDNS user name.
+            ddns_sn: DDNS Serial Number.
+            ddns_password: DDNS password.
+            use_public_ip: Enable/disable use of public IP address.
+            update_interval: DDNS update interval (60 - 2592000 sec, 0 means default).
+            clear_text: Enable/disable use of clear text connections.
+            ssl_certificate: Name of local certificate for SSL connections.
+            bound_ip: Bound IP address.
+            monitor_interface: Monitored interface.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -382,9 +505,28 @@ class Ddns(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ddns_server_addr is not None:
+            ddns_server_addr = normalize_table_field(
+                ddns_server_addr,
+                mkey="addr",
+                required_fields=['addr'],
+                field_name="ddns_server_addr",
+                example="[{'addr': 'value'}]",
+            )
+        if monitor_interface is not None:
+            monitor_interface = normalize_table_field(
+                monitor_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="monitor_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ddnsid=ddnsid,
             ddns_server=ddns_server,
             addr_type=addr_type,
@@ -420,16 +562,22 @@ class Ddns(MetadataMixin):
 
         endpoint = "/system/ddns"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         ddnsid: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/ddns object.
 
@@ -439,6 +587,7 @@ class Ddns(MetadataMixin):
             ddnsid: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -464,7 +613,7 @@ class Ddns(MetadataMixin):
         endpoint = "/system/ddns/" + str(ddnsid)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -528,7 +677,29 @@ class Ddns(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        ddnsid: int | None = None,
+        ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = None,
+        addr_type: Literal["ipv4", "ipv6"] | None = None,
+        server_type: Literal["ipv4", "ipv6"] | None = None,
+        ddns_server_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        ddns_zone: str | None = None,
+        ddns_ttl: int | None = None,
+        ddns_auth: Literal["disable", "tsig"] | None = None,
+        ddns_keyname: str | None = None,
+        ddns_key: Any | None = None,
+        ddns_domain: str | None = None,
+        ddns_username: str | None = None,
+        ddns_sn: str | None = None,
+        ddns_password: Any | None = None,
+        use_public_ip: Literal["disable", "enable"] | None = None,
+        update_interval: int | None = None,
+        clear_text: Literal["disable", "enable"] | None = None,
+        ssl_certificate: str | None = None,
+        bound_ip: str | None = None,
+        monitor_interface: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -539,7 +710,29 @@ class Ddns(MetadataMixin):
 
         Args:
             payload_dict: Resource data including ddnsid (primary key)
+            ddnsid: Field ddnsid
+            ddns_server: Field ddns-server
+            addr_type: Field addr-type
+            server_type: Field server-type
+            ddns_server_addr: Field ddns-server-addr
+            ddns_zone: Field ddns-zone
+            ddns_ttl: Field ddns-ttl
+            ddns_auth: Field ddns-auth
+            ddns_keyname: Field ddns-keyname
+            ddns_key: Field ddns-key
+            ddns_domain: Field ddns-domain
+            ddns_username: Field ddns-username
+            ddns_sn: Field ddns-sn
+            ddns_password: Field ddns-password
+            use_public_ip: Field use-public-ip
+            update_interval: Field update-interval
+            clear_text: Field clear-text
+            ssl_certificate: Field ssl-certificate
+            bound_ip: Field bound-ip
+            monitor_interface: Field monitor-interface
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -549,7 +742,13 @@ class Ddns(MetadataMixin):
             ValueError: If ddnsid is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_ddns.set(
+            ...     ddnsid=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "ddnsid": 1,
             ...     "field1": "value1",
@@ -572,20 +771,42 @@ class Ddns(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            ddnsid=ddnsid,
+            ddns_server=ddns_server,
+            addr_type=addr_type,
+            server_type=server_type,
+            ddns_server_addr=ddns_server_addr,
+            ddns_zone=ddns_zone,
+            ddns_ttl=ddns_ttl,
+            ddns_auth=ddns_auth,
+            ddns_keyname=ddns_keyname,
+            ddns_key=ddns_key,
+            ddns_domain=ddns_domain,
+            ddns_username=ddns_username,
+            ddns_sn=ddns_sn,
+            ddns_password=ddns_password,
+            use_public_ip=use_public_ip,
+            update_interval=update_interval,
+            clear_text=clear_text,
+            ssl_certificate=ssl_certificate,
+            bound_ip=bound_ip,
+            monitor_interface=monitor_interface,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("ddnsid")
+        mkey_value = payload_data.get("ddnsid")
         if not mkey_value:
-            raise ValueError("ddnsid is required in payload_dict for set()")
+            raise ValueError("ddnsid is required for set()")
         
         # Check if resource exists
         if self.exists(ddnsid=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

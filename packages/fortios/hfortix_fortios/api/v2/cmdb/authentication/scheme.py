@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.authentication_scheme.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.authentication_scheme.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Scheme(MetadataMixin):
+class Scheme(CRUDEndpoint, MetadataMixin):
     """Scheme Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "scheme"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "user_database": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Scheme(MetadataMixin):
         """Initialize Scheme endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Scheme(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve authentication/scheme configuration.
 
@@ -99,6 +131,7 @@ class Scheme(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Scheme(MetadataMixin):
         
         if name:
             endpoint = "/authentication/scheme/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/authentication/scheme"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,11 +236,16 @@ class Scheme(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list | None = None,
+        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list[str] | None = None,
         negotiate_ntlm: Literal["enable", "disable"] | None = None,
         kerberos_keytab: str | None = None,
         domain_controller: str | None = None,
@@ -216,16 +256,17 @@ class Scheme(MetadataMixin):
         fsso_guest: Literal["enable", "disable"] | None = None,
         user_cert: Literal["enable", "disable"] | None = None,
         cert_http_header: Literal["enable", "disable"] | None = None,
-        user_database: str | list | None = None,
+        user_database: str | list[str] | list[dict[str, Any]] | None = None,
         ssh_ca: str | None = None,
         external_idp: str | None = None,
         group_attr_type: Literal["display-name", "external-id"] | None = None,
-        digest_algo: Literal["md5", "sha-256"] | list | None = None,
+        digest_algo: Literal["md5", "sha-256"] | list[str] | None = None,
         digest_rfc2069: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing authentication/scheme object.
 
@@ -238,8 +279,27 @@ class Scheme(MetadataMixin):
             negotiate_ntlm: Enable/disable negotiate authentication for NTLM (default = disable).
             kerberos_keytab: Kerberos keytab setting.
             domain_controller: Domain controller setting.
+            saml_server: SAML configuration.
+            saml_timeout: SAML authentication timeout in seconds.
+            fsso_agent_for_ntlm: FSSO agent to use for NTLM authentication.
+            require_tfa: Enable/disable two-factor authentication (default = disable).
+            fsso_guest: Enable/disable user fsso-guest authentication (default = disable).
+            user_cert: Enable/disable authentication with user certificate (default = disable).
+            cert_http_header: Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).
+            user_database: Authentication server to contain user information; "local-user-db" (default) or "123" (for LDAP).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ssh_ca: SSH CA name.
+            external_idp: External identity provider configuration.
+            group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
+            digest_algo: Digest Authentication Algorithms.
+            digest_rfc2069: Enable/disable support for the deprecated RFC2069 Digest Client (no cnonce field, default = disable).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -266,9 +326,20 @@ class Scheme(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_database is not None:
+            user_database = normalize_table_field(
+                user_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_database",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             method=method,
             negotiate_ntlm=negotiate_ntlm,
@@ -306,14 +377,19 @@ class Scheme(MetadataMixin):
         endpoint = "/authentication/scheme/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list | None = None,
+        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list[str] | None = None,
         negotiate_ntlm: Literal["enable", "disable"] | None = None,
         kerberos_keytab: str | None = None,
         domain_controller: str | None = None,
@@ -324,16 +400,17 @@ class Scheme(MetadataMixin):
         fsso_guest: Literal["enable", "disable"] | None = None,
         user_cert: Literal["enable", "disable"] | None = None,
         cert_http_header: Literal["enable", "disable"] | None = None,
-        user_database: str | list | None = None,
+        user_database: str | list[str] | list[dict[str, Any]] | None = None,
         ssh_ca: str | None = None,
         external_idp: str | None = None,
         group_attr_type: Literal["display-name", "external-id"] | None = None,
-        digest_algo: Literal["md5", "sha-256"] | list | None = None,
+        digest_algo: Literal["md5", "sha-256"] | list[str] | None = None,
         digest_rfc2069: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new authentication/scheme object.
 
@@ -346,8 +423,27 @@ class Scheme(MetadataMixin):
             negotiate_ntlm: Enable/disable negotiate authentication for NTLM (default = disable).
             kerberos_keytab: Kerberos keytab setting.
             domain_controller: Domain controller setting.
+            saml_server: SAML configuration.
+            saml_timeout: SAML authentication timeout in seconds.
+            fsso_agent_for_ntlm: FSSO agent to use for NTLM authentication.
+            require_tfa: Enable/disable two-factor authentication (default = disable).
+            fsso_guest: Enable/disable user fsso-guest authentication (default = disable).
+            user_cert: Enable/disable authentication with user certificate (default = disable).
+            cert_http_header: Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).
+            user_database: Authentication server to contain user information; "local-user-db" (default) or "123" (for LDAP).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ssh_ca: SSH CA name.
+            external_idp: External identity provider configuration.
+            group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
+            digest_algo: Digest Authentication Algorithms.
+            digest_rfc2069: Enable/disable support for the deprecated RFC2069 Digest Client (no cnonce field, default = disable).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -376,9 +472,20 @@ class Scheme(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_database is not None:
+            user_database = normalize_table_field(
+                user_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_database",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             method=method,
             negotiate_ntlm=negotiate_ntlm,
@@ -412,16 +519,22 @@ class Scheme(MetadataMixin):
 
         endpoint = "/authentication/scheme"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete authentication/scheme object.
 
@@ -431,6 +544,7 @@ class Scheme(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -456,7 +570,7 @@ class Scheme(MetadataMixin):
         endpoint = "/authentication/scheme/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -520,7 +634,27 @@ class Scheme(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | list[str] | list[dict[str, Any]] | None = None,
+        negotiate_ntlm: Literal["enable", "disable"] | None = None,
+        kerberos_keytab: str | None = None,
+        domain_controller: str | None = None,
+        saml_server: str | None = None,
+        saml_timeout: int | None = None,
+        fsso_agent_for_ntlm: str | None = None,
+        require_tfa: Literal["enable", "disable"] | None = None,
+        fsso_guest: Literal["enable", "disable"] | None = None,
+        user_cert: Literal["enable", "disable"] | None = None,
+        cert_http_header: Literal["enable", "disable"] | None = None,
+        user_database: str | list[str] | list[dict[str, Any]] | None = None,
+        ssh_ca: str | None = None,
+        external_idp: str | None = None,
+        group_attr_type: Literal["display-name", "external-id"] | None = None,
+        digest_algo: Literal["md5", "sha-256"] | list[str] | list[dict[str, Any]] | None = None,
+        digest_rfc2069: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -531,7 +665,27 @@ class Scheme(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            method: Field method
+            negotiate_ntlm: Field negotiate-ntlm
+            kerberos_keytab: Field kerberos-keytab
+            domain_controller: Field domain-controller
+            saml_server: Field saml-server
+            saml_timeout: Field saml-timeout
+            fsso_agent_for_ntlm: Field fsso-agent-for-ntlm
+            require_tfa: Field require-tfa
+            fsso_guest: Field fsso-guest
+            user_cert: Field user-cert
+            cert_http_header: Field cert-http-header
+            user_database: Field user-database
+            ssh_ca: Field ssh-ca
+            external_idp: Field external-idp
+            group_attr_type: Field group-attr-type
+            digest_algo: Field digest-algo
+            digest_rfc2069: Field digest-rfc2069
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -541,7 +695,13 @@ class Scheme(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.authentication_scheme.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -564,20 +724,40 @@ class Scheme(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            method=method,
+            negotiate_ntlm=negotiate_ntlm,
+            kerberos_keytab=kerberos_keytab,
+            domain_controller=domain_controller,
+            saml_server=saml_server,
+            saml_timeout=saml_timeout,
+            fsso_agent_for_ntlm=fsso_agent_for_ntlm,
+            require_tfa=require_tfa,
+            fsso_guest=fsso_guest,
+            user_cert=user_cert,
+            cert_http_header=cert_http_header,
+            user_database=user_database,
+            ssh_ca=ssh_ca,
+            external_idp=external_idp,
+            group_attr_type=group_attr_type,
+            digest_algo=digest_algo,
+            digest_rfc2069=digest_rfc2069,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

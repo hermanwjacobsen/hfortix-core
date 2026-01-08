@@ -39,7 +39,7 @@ from hfortix_core import (
 # Re-export from fortios
 from hfortix_fortios import FortiOS
 
-__version__ = "0.4.3"
+__version__ = "0.5.16"
 __author__ = "Herman W. Jacobsen"
 
 __all__ = [

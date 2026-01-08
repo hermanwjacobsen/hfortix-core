@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_mobile_tunnel.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_mobile_tunnel.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class MobileTunnel(MetadataMixin):
+class MobileTunnel(CRUDEndpoint, MetadataMixin):
     """MobileTunnel Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "mobile_tunnel"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "network": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class MobileTunnel(MetadataMixin):
         """Initialize MobileTunnel endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class MobileTunnel(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/mobile_tunnel configuration.
 
@@ -99,6 +131,7 @@ class MobileTunnel(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class MobileTunnel(MetadataMixin):
         
         if name:
             endpoint = "/system/mobile-tunnel/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/mobile-tunnel"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class MobileTunnel(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -218,11 +258,12 @@ class MobileTunnel(MetadataMixin):
         n_mhae_key: Any | None = None,
         hash_algorithm: Literal["hmac-md5"] | None = None,
         tunnel_mode: Literal["gre"] | None = None,
-        network: str | list | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/mobile_tunnel object.
 
@@ -235,8 +276,24 @@ class MobileTunnel(MetadataMixin):
             roaming_interface: Select the associated interface name from available options.
             home_agent: IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx).
             home_address: Home IP address (Format: xxx.xxx.xxx.xxx).
+            renew_interval: Time before lifetime expiration to send NMMO HA re-registration (5 - 60, default = 60).
+            lifetime: NMMO HA registration request lifetime (180 - 65535 sec, default = 65535).
+            reg_interval: NMMO HA registration interval (5 - 300, default = 5).
+            reg_retry: Maximum number of NMMO HA registration retries (1 to 30, default = 3).
+            n_mhae_spi: NEMO authentication SPI (default: 256).
+            n_mhae_key_type: NEMO authentication key type (ASCII or base64).
+            n_mhae_key: NEMO authentication key.
+            hash_algorithm: Hash Algorithm (Keyed MD5).
+            tunnel_mode: NEMO tunnel mode (GRE tunnel).
+            network: NEMO network configuration.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -263,9 +320,20 @@ class MobileTunnel(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['id'],
+                field_name="network",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             roaming_interface=roaming_interface,
@@ -300,9 +368,14 @@ class MobileTunnel(MetadataMixin):
         endpoint = "/system/mobile-tunnel/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -320,11 +393,12 @@ class MobileTunnel(MetadataMixin):
         n_mhae_key: Any | None = None,
         hash_algorithm: Literal["hmac-md5"] | None = None,
         tunnel_mode: Literal["gre"] | None = None,
-        network: str | list | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/mobile_tunnel object.
 
@@ -337,8 +411,24 @@ class MobileTunnel(MetadataMixin):
             roaming_interface: Select the associated interface name from available options.
             home_agent: IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx).
             home_address: Home IP address (Format: xxx.xxx.xxx.xxx).
+            renew_interval: Time before lifetime expiration to send NMMO HA re-registration (5 - 60, default = 60).
+            lifetime: NMMO HA registration request lifetime (180 - 65535 sec, default = 65535).
+            reg_interval: NMMO HA registration interval (5 - 300, default = 5).
+            reg_retry: Maximum number of NMMO HA registration retries (1 to 30, default = 3).
+            n_mhae_spi: NEMO authentication SPI (default: 256).
+            n_mhae_key_type: NEMO authentication key type (ASCII or base64).
+            n_mhae_key: NEMO authentication key.
+            hash_algorithm: Hash Algorithm (Keyed MD5).
+            tunnel_mode: NEMO tunnel mode (GRE tunnel).
+            network: NEMO network configuration.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -367,9 +457,20 @@ class MobileTunnel(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['id'],
+                field_name="network",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             roaming_interface=roaming_interface,
@@ -400,16 +501,22 @@ class MobileTunnel(MetadataMixin):
 
         endpoint = "/system/mobile-tunnel"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/mobile_tunnel object.
 
@@ -419,6 +526,7 @@ class MobileTunnel(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -444,7 +552,7 @@ class MobileTunnel(MetadataMixin):
         endpoint = "/system/mobile-tunnel/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -508,7 +616,24 @@ class MobileTunnel(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        roaming_interface: str | None = None,
+        home_agent: str | None = None,
+        home_address: str | None = None,
+        renew_interval: int | None = None,
+        lifetime: int | None = None,
+        reg_interval: int | None = None,
+        reg_retry: int | None = None,
+        n_mhae_spi: int | None = None,
+        n_mhae_key_type: Literal["ascii", "base64"] | None = None,
+        n_mhae_key: Any | None = None,
+        hash_algorithm: Literal["hmac-md5"] | None = None,
+        tunnel_mode: Literal["gre"] | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -519,7 +644,24 @@ class MobileTunnel(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            status: Field status
+            roaming_interface: Field roaming-interface
+            home_agent: Field home-agent
+            home_address: Field home-address
+            renew_interval: Field renew-interval
+            lifetime: Field lifetime
+            reg_interval: Field reg-interval
+            reg_retry: Field reg-retry
+            n_mhae_spi: Field n-mhae-spi
+            n_mhae_key_type: Field n-mhae-key-type
+            n_mhae_key: Field n-mhae-key
+            hash_algorithm: Field hash-algorithm
+            tunnel_mode: Field tunnel-mode
+            network: Field network
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -529,7 +671,13 @@ class MobileTunnel(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_mobile_tunnel.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -552,20 +700,37 @@ class MobileTunnel(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            status=status,
+            roaming_interface=roaming_interface,
+            home_agent=home_agent,
+            home_address=home_address,
+            renew_interval=renew_interval,
+            lifetime=lifetime,
+            reg_interval=reg_interval,
+            reg_retry=reg_retry,
+            n_mhae_spi=n_mhae_spi,
+            n_mhae_key_type=n_mhae_key_type,
+            n_mhae_key=n_mhae_key,
+            hash_algorithm=hash_algorithm,
+            tunnel_mode=tunnel_mode,
+            network=network,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

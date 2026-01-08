@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_fortiguard.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_fortiguard.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Fortiguard(MetadataMixin):
+class Fortiguard(CRUDEndpoint, MetadataMixin):
     """Fortiguard Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Fortiguard(MetadataMixin):
         """Initialize Fortiguard endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Fortiguard(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/fortiguard configuration.
 
@@ -98,6 +117,7 @@ class Fortiguard(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +170,14 @@ class Fortiguard(MetadataMixin):
         
         if name:
             endpoint = f"/system/fortiguard/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/fortiguard"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +218,11 @@ class Fortiguard(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -215,7 +242,7 @@ class Fortiguard(MetadataMixin):
         update_build_proxy: Literal["enable", "disable"] | None = None,
         persistent_connection: Literal["enable", "disable"] | None = None,
         auto_firmware_upgrade: Literal["enable", "disable"] | None = None,
-        auto_firmware_upgrade_day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | list | None = None,
+        auto_firmware_upgrade_day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | list[str] | None = None,
         auto_firmware_upgrade_delay: int | None = None,
         auto_firmware_upgrade_start_hour: int | None = None,
         auto_firmware_upgrade_end_hour: int | None = None,
@@ -241,11 +268,11 @@ class Fortiguard(MetadataMixin):
         webfilter_license: int | None = None,
         webfilter_expiration: int | None = None,
         webfilter_timeout: int | None = None,
-        sdns_server_ip: str | list | None = None,
+        sdns_server_ip: str | list[str] | None = None,
         sdns_server_port: int | None = None,
         anycast_sdns_server_ip: str | None = None,
         anycast_sdns_server_port: int | None = None,
-        sdns_options: Literal["include-question-section"] | list | None = None,
+        sdns_options: Literal["include-question-section"] | list[str] | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
         proxy_server_ip: str | None = None,
@@ -260,8 +287,9 @@ class Fortiguard(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/fortiguard object.
 
@@ -274,8 +302,64 @@ class Fortiguard(MetadataMixin):
             protocol: Protocol used to communicate with the FortiGuard servers.
             port: Port used to communicate with the FortiGuard servers.
             load_balance_servers: Number of servers to alternate between as first FortiGuard option.
+            auto_join_forticloud: Automatically connect to and login to FortiCloud.
+            update_server_location: Location from which to receive FortiGuard updates.
+            sandbox_region: FortiCloud Sandbox region.
+            sandbox_inline_scan: Enable/disable FortiCloud Sandbox inline-scan.
+            update_ffdb: Enable/disable Internet Service Database update.
+            update_uwdb: Enable/disable allowlist update.
+            update_dldb: Enable/disable DLP signature update.
+            update_extdb: Enable/disable external resource update.
+            update_build_proxy: Enable/disable proxy dictionary rebuild.
+            persistent_connection: Enable/disable use of persistent connection to receive update notification from FortiGuard.
+            vdom: FortiGuard Service virtual domain name.
+            auto_firmware_upgrade: Enable/disable automatic patch-level firmware upgrade from FortiGuard. The FortiGate unit searches for new patches only in the same major and minor version.
+            auto_firmware_upgrade_day: Allowed day(s) of the week to install an automatic patch-level firmware upgrade from FortiGuard (default is none). Disallow any day of the week to use auto-firmware-upgrade-delay instead, which waits for designated days before installing an automatic patch-level firmware upgrade.
+            auto_firmware_upgrade_delay: Delay of day(s) before installing an automatic patch-level firmware upgrade from FortiGuard (default = 3). Set it 0 to use auto-firmware-upgrade-day instead, which selects allowed day(s) of the week for installing an automatic patch-level firmware upgrade.
+            auto_firmware_upgrade_start_hour: Start time in the designated time window for automatic patch-level firmware upgrade from FortiGuard in 24 hour time (0 ~ 23, default = 2). The actual upgrade time is selected randomly within the time window.
+            auto_firmware_upgrade_end_hour: End time in the designated time window for automatic patch-level firmware upgrade from FortiGuard in 24 hour time (0 ~ 23, default = 4). When the end time is smaller than the start time, the end time is interpreted as the next day. The actual upgrade time is selected randomly within the time window.
+            FDS_license_expiring_days: Threshold for number of days before FortiGuard license expiration to generate license expiring event log (1 - 100 days, default = 15).
+            subscribe_update_notification: Enable/disable subscription to receive update notification from FortiGuard.
+            antispam_force_off: Enable/disable turning off the FortiGuard antispam service.
+            antispam_cache: Enable/disable FortiGuard antispam request caching. Uses a small amount of memory but improves performance.
+            antispam_cache_ttl: Time-to-live for antispam cache entries in seconds (300 - 86400). Lower times reduce the cache size. Higher times may improve performance since the cache will have more entries.
+            antispam_cache_mpermille: Maximum permille of FortiGate memory the antispam cache is allowed to use (1 - 150).
+            antispam_license: Interval of time between license checks for the FortiGuard antispam contract.
+            antispam_expiration: Expiration date of the FortiGuard antispam contract.
+            antispam_timeout: Antispam query time out (1 - 30 sec, default = 7).
+            outbreak_prevention_force_off: Turn off FortiGuard Virus Outbreak Prevention service.
+            outbreak_prevention_cache: Enable/disable FortiGuard Virus Outbreak Prevention cache.
+            outbreak_prevention_cache_ttl: Time-to-live for FortiGuard Virus Outbreak Prevention cache entries (300 - 86400 sec, default = 300).
+            outbreak_prevention_cache_mpermille: Maximum permille of memory FortiGuard Virus Outbreak Prevention cache can use (1 - 150 permille, default = 1).
+            outbreak_prevention_license: Interval of time between license checks for FortiGuard Virus Outbreak Prevention contract.
+            outbreak_prevention_expiration: Expiration date of FortiGuard Virus Outbreak Prevention contract.
+            outbreak_prevention_timeout: FortiGuard Virus Outbreak Prevention time out (1 - 30 sec, default = 7).
+            webfilter_force_off: Enable/disable turning off the FortiGuard web filtering service.
+            webfilter_cache: Enable/disable FortiGuard web filter caching.
+            webfilter_cache_ttl: Time-to-live for web filter cache entries in seconds (300 - 86400).
+            webfilter_license: Interval of time between license checks for the FortiGuard web filter contract.
+            webfilter_expiration: Expiration date of the FortiGuard web filter contract.
+            webfilter_timeout: Web filter query time out (1 - 30 sec, default = 15).
+            sdns_server_ip: IP address of the FortiGuard DNS rating server.
+            sdns_server_port: Port to connect to on the FortiGuard DNS rating server.
+            anycast_sdns_server_ip: IP address of the FortiGuard anycast DNS rating server.
+            anycast_sdns_server_port: Port to connect to on the FortiGuard anycast DNS rating server.
+            sdns_options: Customization options for the FortiGuard DNS service.
+            source_ip: Source IPv4 address used to communicate with FortiGuard.
+            source_ip6: Source IPv6 address used to communicate with FortiGuard.
+            proxy_server_ip: Hostname or IPv4 address of the proxy server.
+            proxy_server_port: Port used to communicate with the proxy server.
+            proxy_username: Proxy user name.
+            proxy_password: Proxy user password.
+            ddns_server_ip: IP address of the FortiDDNS server.
+            ddns_server_ip6: IPv6 address of the FortiDDNS server.
+            ddns_server_port: Port used to communicate with FortiDDNS servers.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -302,9 +386,10 @@ class Fortiguard(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             fortiguard_anycast=fortiguard_anycast,
             fortiguard_anycast_source=fortiguard_anycast_source,
             protocol=protocol,
@@ -377,13 +462,11 @@ class Fortiguard(MetadataMixin):
                 endpoint="cmdb/system/fortiguard",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/fortiguard/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/fortiguard"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

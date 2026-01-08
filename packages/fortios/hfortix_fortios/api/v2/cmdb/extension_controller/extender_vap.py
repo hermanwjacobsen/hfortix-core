@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.extension_controller_extender_vap.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.extension_controller_extender_vap.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ExtenderVap(MetadataMixin):
+class ExtenderVap(CRUDEndpoint, MetadataMixin):
     """ExtenderVap Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class ExtenderVap(MetadataMixin):
         """Initialize ExtenderVap endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class ExtenderVap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve extension_controller/extender_vap configuration.
 
@@ -99,6 +118,7 @@ class ExtenderVap(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class ExtenderVap(MetadataMixin):
         
         if name:
             endpoint = "/extension-controller/extender-vap/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/extension-controller/extender-vap"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class ExtenderVap(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -224,11 +251,12 @@ class ExtenderVap(MetadataMixin):
         ip_address: Any | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list | None = None,
+        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing extension_controller/extender_vap object.
 
@@ -241,8 +269,25 @@ class ExtenderVap(MetadataMixin):
             ssid: Wi-Fi SSID.
             max_clients: Wi-Fi max clients (0 - 512), default = 0 (no limit) 
             broadcast_ssid: Wi-Fi broadcast SSID enable / disable.
+            security: Wi-Fi security.
+            dtim: Wi-Fi DTIM (1 - 255) default = 1.
+            rts_threshold: Wi-Fi RTS Threshold (256 - 2347), default = 2347 (RTS/CTS disabled).
+            pmf: Wi-Fi pmf enable/disable, default = disable.
+            target_wake_time: Wi-Fi 802.11AX target wake time enable / disable, default = enable.
+            bss_color_partial: Wi-Fi 802.11AX bss color partial enable / disable, default = enable.
+            mu_mimo: Wi-Fi multi-user MIMO enable / disable, default = enable.
+            passphrase: Wi-Fi passphrase.
+            sae_password: Wi-Fi SAE Password.
+            auth_server_address: Wi-Fi Authentication Server Address (IPv4 format).
+            auth_server_port: Wi-Fi Authentication Server Port.
+            auth_server_secret: Wi-Fi Authentication Server Secret.
+            ip_address: Extender ip address.
+            start_ip: Start ip address.
+            end_ip: End ip address.
+            allowaccess: Control management access to the managed extender. Separate entries with a space.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -269,9 +314,10 @@ class ExtenderVap(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             ssid=ssid,
@@ -312,9 +358,14 @@ class ExtenderVap(MetadataMixin):
         endpoint = "/extension-controller/extender-vap/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -338,11 +389,12 @@ class ExtenderVap(MetadataMixin):
         ip_address: Any | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list | None = None,
+        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new extension_controller/extender_vap object.
 
@@ -355,8 +407,25 @@ class ExtenderVap(MetadataMixin):
             ssid: Wi-Fi SSID.
             max_clients: Wi-Fi max clients (0 - 512), default = 0 (no limit) 
             broadcast_ssid: Wi-Fi broadcast SSID enable / disable.
+            security: Wi-Fi security.
+            dtim: Wi-Fi DTIM (1 - 255) default = 1.
+            rts_threshold: Wi-Fi RTS Threshold (256 - 2347), default = 2347 (RTS/CTS disabled).
+            pmf: Wi-Fi pmf enable/disable, default = disable.
+            target_wake_time: Wi-Fi 802.11AX target wake time enable / disable, default = enable.
+            bss_color_partial: Wi-Fi 802.11AX bss color partial enable / disable, default = enable.
+            mu_mimo: Wi-Fi multi-user MIMO enable / disable, default = enable.
+            passphrase: Wi-Fi passphrase.
+            sae_password: Wi-Fi SAE Password.
+            auth_server_address: Wi-Fi Authentication Server Address (IPv4 format).
+            auth_server_port: Wi-Fi Authentication Server Port.
+            auth_server_secret: Wi-Fi Authentication Server Secret.
+            ip_address: Extender ip address.
+            start_ip: Start ip address.
+            end_ip: End ip address.
+            allowaccess: Control management access to the managed extender. Separate entries with a space.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -385,9 +454,10 @@ class ExtenderVap(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             ssid=ssid,
@@ -424,16 +494,22 @@ class ExtenderVap(MetadataMixin):
 
         endpoint = "/extension-controller/extender-vap"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete extension_controller/extender_vap object.
 
@@ -443,6 +519,7 @@ class ExtenderVap(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -468,7 +545,7 @@ class ExtenderVap(MetadataMixin):
         endpoint = "/extension-controller/extender-vap/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -532,7 +609,30 @@ class ExtenderVap(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        type: Literal["local-vap", "lan-ext-vap"] | None = None,
+        ssid: str | None = None,
+        max_clients: int | None = None,
+        broadcast_ssid: Literal["disable", "enable"] | None = None,
+        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = None,
+        dtim: int | None = None,
+        rts_threshold: int | None = None,
+        pmf: Literal["disabled", "optional", "required"] | None = None,
+        target_wake_time: Literal["disable", "enable"] | None = None,
+        bss_color_partial: Literal["disable", "enable"] | None = None,
+        mu_mimo: Literal["disable", "enable"] | None = None,
+        passphrase: Any | None = None,
+        sae_password: Any | None = None,
+        auth_server_address: str | None = None,
+        auth_server_port: int | None = None,
+        auth_server_secret: str | None = None,
+        ip_address: Any | None = None,
+        start_ip: str | None = None,
+        end_ip: str | None = None,
+        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -543,7 +643,30 @@ class ExtenderVap(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            type: Field type
+            ssid: Field ssid
+            max_clients: Field max-clients
+            broadcast_ssid: Field broadcast-ssid
+            security: Field security
+            dtim: Field dtim
+            rts_threshold: Field rts-threshold
+            pmf: Field pmf
+            target_wake_time: Field target-wake-time
+            bss_color_partial: Field bss-color-partial
+            mu_mimo: Field mu-mimo
+            passphrase: Field passphrase
+            sae_password: Field sae-password
+            auth_server_address: Field auth-server-address
+            auth_server_port: Field auth-server-port
+            auth_server_secret: Field auth-server-secret
+            ip_address: Field ip-address
+            start_ip: Field start-ip
+            end_ip: Field end-ip
+            allowaccess: Field allowaccess
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -553,7 +676,13 @@ class ExtenderVap(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.extension_controller_extender_vap.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -576,20 +705,43 @@ class ExtenderVap(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            type=type,
+            ssid=ssid,
+            max_clients=max_clients,
+            broadcast_ssid=broadcast_ssid,
+            security=security,
+            dtim=dtim,
+            rts_threshold=rts_threshold,
+            pmf=pmf,
+            target_wake_time=target_wake_time,
+            bss_color_partial=bss_color_partial,
+            mu_mimo=mu_mimo,
+            passphrase=passphrase,
+            sae_password=sae_password,
+            auth_server_address=auth_server_address,
+            auth_server_port=auth_server_port,
+            auth_server_secret=auth_server_secret,
+            ip_address=ip_address,
+            start_ip=start_ip,
+            end_ip=end_ip,
+            allowaccess=allowaccess,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

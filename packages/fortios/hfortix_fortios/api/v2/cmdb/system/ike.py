@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_ike.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_ike.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ike(MetadataMixin):
+class Ike(CRUDEndpoint, MetadataMixin):
     """Ike Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Ike(MetadataMixin):
         """Initialize Ike endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Ike(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/ike configuration.
 
@@ -98,6 +117,7 @@ class Ike(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +170,14 @@ class Ike(MetadataMixin):
         
         if name:
             endpoint = f"/system/ike/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/ike"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +218,11 @@ class Ike(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -225,8 +252,9 @@ class Ike(MetadataMixin):
         dh_group_32: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/ike object.
 
@@ -239,8 +267,28 @@ class Ike(MetadataMixin):
             dh_worker_count: Number of Diffie-Hellman workers to start.
             dh_mode: Use software (CPU) or hardware (CPX) to perform Diffie-Hellman calculations.
             dh_keypair_cache: Enable/disable Diffie-Hellman key pair cache.
+            dh_keypair_count: Number of key pairs to pre-generate for each Diffie-Hellman group (per-worker).
+            dh_keypair_throttle: Enable/disable Diffie-Hellman key pair cache CPU throttling.
+            dh_group_1: Diffie-Hellman group 1 (MODP-768).
+            dh_group_2: Diffie-Hellman group 2 (MODP-1024).
+            dh_group_5: Diffie-Hellman group 5 (MODP-1536).
+            dh_group_14: Diffie-Hellman group 14 (MODP-2048).
+            dh_group_15: Diffie-Hellman group 15 (MODP-3072).
+            dh_group_16: Diffie-Hellman group 16 (MODP-4096).
+            dh_group_17: Diffie-Hellman group 17 (MODP-6144).
+            dh_group_18: Diffie-Hellman group 18 (MODP-8192).
+            dh_group_19: Diffie-Hellman group 19 (EC-P256).
+            dh_group_20: Diffie-Hellman group 20 (EC-P384).
+            dh_group_21: Diffie-Hellman group 21 (EC-P521).
+            dh_group_27: Diffie-Hellman group 27 (EC-P224BP).
+            dh_group_28: Diffie-Hellman group 28 (EC-P256BP).
+            dh_group_29: Diffie-Hellman group 29 (EC-P384BP).
+            dh_group_30: Diffie-Hellman group 30 (EC-P512BP).
+            dh_group_31: Diffie-Hellman group 31 (EC-X25519).
+            dh_group_32: Diffie-Hellman group 32 (EC-X448).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -267,9 +315,10 @@ class Ike(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             embryonic_limit=embryonic_limit,
             dh_multiprocess=dh_multiprocess,
             dh_worker_count=dh_worker_count,
@@ -307,13 +356,11 @@ class Ike(MetadataMixin):
                 endpoint="cmdb/system/ike",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/ike/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/ike"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

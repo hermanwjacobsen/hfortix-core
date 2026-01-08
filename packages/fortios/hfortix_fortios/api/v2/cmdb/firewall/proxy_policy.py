@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_proxy_policy.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_proxy_policy.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,163 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ProxyPolicy(MetadataMixin):
+class ProxyPolicy(CRUDEndpoint, MetadataMixin):
     """ProxyPolicy Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "proxy_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "access_proxy": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "access_proxy6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ztna_proxy": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "poolname": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "poolname6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ztna_ems_tag": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "url_risk": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "users": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +214,11 @@ class ProxyPolicy(MetadataMixin):
         """Initialize ProxyPolicy endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         policyid: int | None = None,
@@ -72,8 +228,9 @@ class ProxyPolicy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/proxy_policy configuration.
 
@@ -99,6 +256,7 @@ class ProxyPolicy(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +313,14 @@ class ProxyPolicy(MetadataMixin):
         
         if policyid:
             endpoint = "/firewall/proxy-policy/" + str(policyid)
+            unwrap_single = True
         else:
             endpoint = "/firewall/proxy-policy"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +361,11 @@ class ProxyPolicy(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -208,34 +373,34 @@ class ProxyPolicy(MetadataMixin):
         policyid: int | None = None,
         name: str | None = None,
         proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = None,
-        access_proxy: str | list | None = None,
-        access_proxy6: str | list | None = None,
-        ztna_proxy: str | list | None = None,
-        srcintf: str | list | None = None,
-        dstintf: str | list | None = None,
-        srcaddr: str | list | None = None,
-        poolname: str | list | None = None,
-        poolname6: str | list | None = None,
-        dstaddr: str | list | None = None,
-        ztna_ems_tag: str | list | None = None,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = None,
         ztna_tags_match_logic: Literal["or", "and"] | None = None,
         device_ownership: Literal["enable", "disable"] | None = None,
-        url_risk: str | list | None = None,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service: Literal["enable", "disable"] | None = None,
         internet_service_negate: Literal["enable", "disable"] | None = None,
-        internet_service_name: str | list | None = None,
-        internet_service_group: str | list | None = None,
-        internet_service_custom: str | list | None = None,
-        internet_service_custom_group: str | list | None = None,
-        internet_service_fortiguard: str | list | None = None,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service6: Literal["enable", "disable"] | None = None,
         internet_service6_negate: Literal["enable", "disable"] | None = None,
-        internet_service6_name: str | list | None = None,
-        internet_service6_group: str | list | None = None,
-        internet_service6_custom: str | list | None = None,
-        internet_service6_custom_group: str | list | None = None,
-        internet_service6_fortiguard: str | list | None = None,
-        service: str | list | None = None,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         srcaddr_negate: Literal["enable", "disable"] | None = None,
         dstaddr_negate: Literal["enable", "disable"] | None = None,
         ztna_ems_tag_negate: Literal["enable", "disable"] | None = None,
@@ -245,10 +410,10 @@ class ProxyPolicy(MetadataMixin):
         schedule: str | None = None,
         logtraffic: Literal["all", "utm", "disable"] | None = None,
         session_ttl: int | None = None,
-        srcaddr6: str | list | None = None,
-        dstaddr6: str | list | None = None,
-        groups: str | list | None = None,
-        users: str | list | None = None,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
         http_tunnel_auth: Literal["enable", "disable"] | None = None,
         ssh_policy_redirect: Literal["enable", "disable"] | None = None,
         webproxy_forward_server: str | None = None,
@@ -289,8 +454,9 @@ class ProxyPolicy(MetadataMixin):
         detect_https_in_http_request: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/proxy_policy object.
 
@@ -303,8 +469,217 @@ class ProxyPolicy(MetadataMixin):
             name: Policy name.
             proxy: Type of explicit proxy.
             access_proxy: IPv4 access proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            access_proxy6: IPv6 access proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_proxy: ZTNA proxies.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcintf: Source interface names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstintf: Destination interface names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcaddr: Source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            poolname: Name of IP pool object.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            poolname6: Name of IPv6 pool object.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: Destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_ems_tag: ZTNA EMS Tag names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_tags_match_logic: ZTNA tag matching logic.
+            device_ownership: When enabled, the ownership enforcement will be done at policy level.
+            url_risk: URL risk level name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.
+            internet_service_negate: When enabled, Internet Services match against any internet service EXCEPT the selected Internet Service.
+            internet_service_name: Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_custom: Custom Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_custom_group: Custom Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_fortiguard: FortiGuard Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6: Enable/disable use of Internet Services IPv6 for this policy. If enabled, destination IPv6 address and service are not used.
+            internet_service6_negate: When enabled, Internet Services match against any internet service IPv6 EXCEPT the selected Internet Service IPv6.
+            internet_service6_name: Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_group: Internet Service IPv6 group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_custom: Custom Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_custom_group: Custom Internet Service IPv6 group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_fortiguard: FortiGuard Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service: Name of service objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcaddr_negate: When enabled, source addresses match against any address EXCEPT the specified source addresses.
+            dstaddr_negate: When enabled, destination addresses match against any address EXCEPT the specified destination addresses.
+            ztna_ems_tag_negate: When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS tags.
+            service_negate: When enabled, services match against any service EXCEPT the specified destination services.
+            action: Accept or deny traffic matching the policy parameters.
+            status: Enable/disable the active status of the policy.
+            schedule: Name of schedule object.
+            logtraffic: Enable/disable logging traffic through the policy.
+            session_ttl: TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).
+            srcaddr6: IPv6 source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr6: IPv6 destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            groups: Names of group objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            users: Names of user objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            http_tunnel_auth: Enable/disable HTTP tunnel authentication.
+            ssh_policy_redirect: Redirect SSH traffic to matching transparent proxy policy.
+            webproxy_forward_server: Web proxy forward server name.
+            isolator_server: Isolator server name.
+            webproxy_profile: Name of web proxy profile.
+            transparent: Enable to use the IP address of the client to connect to the server.
+            webcache: Enable/disable web caching.
+            webcache_https: Enable/disable web caching for HTTPS (Requires deep-inspection enabled in ssl-ssh-profile).
+            disclaimer: Web proxy disclaimer setting: by domain, policy, or user.
+            utm_status: Enable the use of UTM profiles/sensors/lists.
+            profile_type: Determine whether the firewall policy allows security profile groups or single profiles only.
+            profile_group: Name of profile group.
+            profile_protocol_options: Name of an existing Protocol options profile.
+            ssl_ssh_profile: Name of an existing SSL SSH profile.
+            av_profile: Name of an existing Antivirus profile.
+            webfilter_profile: Name of an existing Web filter profile.
+            dnsfilter_profile: Name of an existing DNS filter profile.
+            emailfilter_profile: Name of an existing email filter profile.
+            dlp_profile: Name of an existing DLP profile.
+            file_filter_profile: Name of an existing file-filter profile.
+            ips_sensor: Name of an existing IPS sensor.
+            application_list: Name of an existing Application list.
+            ips_voip_filter: Name of an existing VoIP (ips) profile.
+            sctp_filter_profile: Name of an existing SCTP filter profile.
+            icap_profile: Name of an existing ICAP profile.
+            videofilter_profile: Name of an existing VideoFilter profile.
+            waf_profile: Name of an existing Web application firewall profile.
+            ssh_filter_profile: Name of an existing SSH filter profile.
+            casb_profile: Name of an existing CASB profile.
+            replacemsg_override_group: Authentication replacement message override group.
+            logtraffic_start: Enable/disable policy log traffic start.
+            log_http_transaction: Enable/disable HTTP transaction log.
+            comments: Optional comments.
+            block_notification: Enable/disable block notification.
+            redirect_url: Redirect URL for further explicit web proxy processing.
+            https_sub_category: Enable/disable HTTPS sub-category policy matching.
+            decrypted_traffic_mirror: Decrypted traffic mirror.
+            detect_https_in_http_request: Enable/disable detection of HTTPS in HTTP request.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -331,9 +706,220 @@ class ProxyPolicy(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if access_proxy is not None:
+            access_proxy = normalize_table_field(
+                access_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if access_proxy6 is not None:
+            access_proxy6 = normalize_table_field(
+                access_proxy6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy6",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_proxy is not None:
+            ztna_proxy = normalize_table_field(
+                ztna_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if poolname is not None:
+            poolname = normalize_table_field(
+                poolname,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname",
+                example="[{'name': 'value'}]",
+            )
+        if poolname6 is not None:
+            poolname6 = normalize_table_field(
+                poolname6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_ems_tag is not None:
+            ztna_ems_tag = normalize_table_field(
+                ztna_ems_tag,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_ems_tag",
+                example="[{'name': 'value'}]",
+            )
+        if url_risk is not None:
+            url_risk = normalize_table_field(
+                url_risk,
+                mkey="name",
+                required_fields=['name'],
+                field_name="url_risk",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_name is not None:
+            internet_service_name = normalize_table_field(
+                internet_service_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_group is not None:
+            internet_service_group = normalize_table_field(
+                internet_service_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom_group is not None:
+            internet_service_custom_group = normalize_table_field(
+                internet_service_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_name is not None:
+            internet_service6_name = normalize_table_field(
+                internet_service6_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_group is not None:
+            internet_service6_group = normalize_table_field(
+                internet_service6_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom is not None:
+            internet_service6_custom = normalize_table_field(
+                internet_service6_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom_group is not None:
+            internet_service6_custom_group = normalize_table_field(
+                internet_service6_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_fortiguard is not None:
+            internet_service6_fortiguard = normalize_table_field(
+                internet_service6_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             uuid=uuid,
             policyid=policyid,
             name=name,
@@ -436,9 +1022,14 @@ class ProxyPolicy(MetadataMixin):
         endpoint = "/firewall/proxy-policy/" + str(policyid_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -446,34 +1037,34 @@ class ProxyPolicy(MetadataMixin):
         policyid: int | None = None,
         name: str | None = None,
         proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = None,
-        access_proxy: str | list | None = None,
-        access_proxy6: str | list | None = None,
-        ztna_proxy: str | list | None = None,
-        srcintf: str | list | None = None,
-        dstintf: str | list | None = None,
-        srcaddr: str | list | None = None,
-        poolname: str | list | None = None,
-        poolname6: str | list | None = None,
-        dstaddr: str | list | None = None,
-        ztna_ems_tag: str | list | None = None,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = None,
         ztna_tags_match_logic: Literal["or", "and"] | None = None,
         device_ownership: Literal["enable", "disable"] | None = None,
-        url_risk: str | list | None = None,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service: Literal["enable", "disable"] | None = None,
         internet_service_negate: Literal["enable", "disable"] | None = None,
-        internet_service_name: str | list | None = None,
-        internet_service_group: str | list | None = None,
-        internet_service_custom: str | list | None = None,
-        internet_service_custom_group: str | list | None = None,
-        internet_service_fortiguard: str | list | None = None,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service6: Literal["enable", "disable"] | None = None,
         internet_service6_negate: Literal["enable", "disable"] | None = None,
-        internet_service6_name: str | list | None = None,
-        internet_service6_group: str | list | None = None,
-        internet_service6_custom: str | list | None = None,
-        internet_service6_custom_group: str | list | None = None,
-        internet_service6_fortiguard: str | list | None = None,
-        service: str | list | None = None,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         srcaddr_negate: Literal["enable", "disable"] | None = None,
         dstaddr_negate: Literal["enable", "disable"] | None = None,
         ztna_ems_tag_negate: Literal["enable", "disable"] | None = None,
@@ -483,10 +1074,10 @@ class ProxyPolicy(MetadataMixin):
         schedule: str | None = None,
         logtraffic: Literal["all", "utm", "disable"] | None = None,
         session_ttl: int | None = None,
-        srcaddr6: str | list | None = None,
-        dstaddr6: str | list | None = None,
-        groups: str | list | None = None,
-        users: str | list | None = None,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
         http_tunnel_auth: Literal["enable", "disable"] | None = None,
         ssh_policy_redirect: Literal["enable", "disable"] | None = None,
         webproxy_forward_server: str | None = None,
@@ -527,8 +1118,9 @@ class ProxyPolicy(MetadataMixin):
         detect_https_in_http_request: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/proxy_policy object.
 
@@ -541,8 +1133,217 @@ class ProxyPolicy(MetadataMixin):
             name: Policy name.
             proxy: Type of explicit proxy.
             access_proxy: IPv4 access proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            access_proxy6: IPv6 access proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_proxy: ZTNA proxies.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcintf: Source interface names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstintf: Destination interface names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcaddr: Source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            poolname: Name of IP pool object.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            poolname6: Name of IPv6 pool object.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: Destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_ems_tag: ZTNA EMS Tag names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ztna_tags_match_logic: ZTNA tag matching logic.
+            device_ownership: When enabled, the ownership enforcement will be done at policy level.
+            url_risk: URL risk level name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.
+            internet_service_negate: When enabled, Internet Services match against any internet service EXCEPT the selected Internet Service.
+            internet_service_name: Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_custom: Custom Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_custom_group: Custom Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_fortiguard: FortiGuard Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6: Enable/disable use of Internet Services IPv6 for this policy. If enabled, destination IPv6 address and service are not used.
+            internet_service6_negate: When enabled, Internet Services match against any internet service IPv6 EXCEPT the selected Internet Service IPv6.
+            internet_service6_name: Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_group: Internet Service IPv6 group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_custom: Custom Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_custom_group: Custom Internet Service IPv6 group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_fortiguard: FortiGuard Internet Service IPv6 name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service: Name of service objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            srcaddr_negate: When enabled, source addresses match against any address EXCEPT the specified source addresses.
+            dstaddr_negate: When enabled, destination addresses match against any address EXCEPT the specified destination addresses.
+            ztna_ems_tag_negate: When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS tags.
+            service_negate: When enabled, services match against any service EXCEPT the specified destination services.
+            action: Accept or deny traffic matching the policy parameters.
+            status: Enable/disable the active status of the policy.
+            schedule: Name of schedule object.
+            logtraffic: Enable/disable logging traffic through the policy.
+            session_ttl: TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).
+            srcaddr6: IPv6 source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr6: IPv6 destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            groups: Names of group objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            users: Names of user objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            http_tunnel_auth: Enable/disable HTTP tunnel authentication.
+            ssh_policy_redirect: Redirect SSH traffic to matching transparent proxy policy.
+            webproxy_forward_server: Web proxy forward server name.
+            isolator_server: Isolator server name.
+            webproxy_profile: Name of web proxy profile.
+            transparent: Enable to use the IP address of the client to connect to the server.
+            webcache: Enable/disable web caching.
+            webcache_https: Enable/disable web caching for HTTPS (Requires deep-inspection enabled in ssl-ssh-profile).
+            disclaimer: Web proxy disclaimer setting: by domain, policy, or user.
+            utm_status: Enable the use of UTM profiles/sensors/lists.
+            profile_type: Determine whether the firewall policy allows security profile groups or single profiles only.
+            profile_group: Name of profile group.
+            profile_protocol_options: Name of an existing Protocol options profile.
+            ssl_ssh_profile: Name of an existing SSL SSH profile.
+            av_profile: Name of an existing Antivirus profile.
+            webfilter_profile: Name of an existing Web filter profile.
+            dnsfilter_profile: Name of an existing DNS filter profile.
+            emailfilter_profile: Name of an existing email filter profile.
+            dlp_profile: Name of an existing DLP profile.
+            file_filter_profile: Name of an existing file-filter profile.
+            ips_sensor: Name of an existing IPS sensor.
+            application_list: Name of an existing Application list.
+            ips_voip_filter: Name of an existing VoIP (ips) profile.
+            sctp_filter_profile: Name of an existing SCTP filter profile.
+            icap_profile: Name of an existing ICAP profile.
+            videofilter_profile: Name of an existing VideoFilter profile.
+            waf_profile: Name of an existing Web application firewall profile.
+            ssh_filter_profile: Name of an existing SSH filter profile.
+            casb_profile: Name of an existing CASB profile.
+            replacemsg_override_group: Authentication replacement message override group.
+            logtraffic_start: Enable/disable policy log traffic start.
+            log_http_transaction: Enable/disable HTTP transaction log.
+            comments: Optional comments.
+            block_notification: Enable/disable block notification.
+            redirect_url: Redirect URL for further explicit web proxy processing.
+            https_sub_category: Enable/disable HTTPS sub-category policy matching.
+            decrypted_traffic_mirror: Decrypted traffic mirror.
+            detect_https_in_http_request: Enable/disable detection of HTTPS in HTTP request.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -571,9 +1372,220 @@ class ProxyPolicy(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if access_proxy is not None:
+            access_proxy = normalize_table_field(
+                access_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if access_proxy6 is not None:
+            access_proxy6 = normalize_table_field(
+                access_proxy6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy6",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_proxy is not None:
+            ztna_proxy = normalize_table_field(
+                ztna_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if poolname is not None:
+            poolname = normalize_table_field(
+                poolname,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname",
+                example="[{'name': 'value'}]",
+            )
+        if poolname6 is not None:
+            poolname6 = normalize_table_field(
+                poolname6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_ems_tag is not None:
+            ztna_ems_tag = normalize_table_field(
+                ztna_ems_tag,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_ems_tag",
+                example="[{'name': 'value'}]",
+            )
+        if url_risk is not None:
+            url_risk = normalize_table_field(
+                url_risk,
+                mkey="name",
+                required_fields=['name'],
+                field_name="url_risk",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_name is not None:
+            internet_service_name = normalize_table_field(
+                internet_service_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_group is not None:
+            internet_service_group = normalize_table_field(
+                internet_service_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom_group is not None:
+            internet_service_custom_group = normalize_table_field(
+                internet_service_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_name is not None:
+            internet_service6_name = normalize_table_field(
+                internet_service6_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_group is not None:
+            internet_service6_group = normalize_table_field(
+                internet_service6_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom is not None:
+            internet_service6_custom = normalize_table_field(
+                internet_service6_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom_group is not None:
+            internet_service6_custom_group = normalize_table_field(
+                internet_service6_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_fortiguard is not None:
+            internet_service6_fortiguard = normalize_table_field(
+                internet_service6_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             uuid=uuid,
             policyid=policyid,
             name=name,
@@ -672,16 +1684,22 @@ class ProxyPolicy(MetadataMixin):
 
         endpoint = "/firewall/proxy-policy"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         policyid: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/proxy_policy object.
 
@@ -691,6 +1709,7 @@ class ProxyPolicy(MetadataMixin):
             policyid: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -716,7 +1735,7 @@ class ProxyPolicy(MetadataMixin):
         endpoint = "/firewall/proxy-policy/" + str(policyid)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -780,7 +1799,92 @@ class ProxyPolicy(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        uuid: str | None = None,
+        policyid: int | None = None,
+        name: str | None = None,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = None,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname: str | list[str] | list[dict[str, Any]] | None = None,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = None,
+        ztna_tags_match_logic: Literal["or", "and"] | None = None,
+        device_ownership: Literal["enable", "disable"] | None = None,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service: Literal["enable", "disable"] | None = None,
+        internet_service_negate: Literal["enable", "disable"] | None = None,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6: Literal["enable", "disable"] | None = None,
+        internet_service6_negate: Literal["enable", "disable"] | None = None,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr_negate: Literal["enable", "disable"] | None = None,
+        dstaddr_negate: Literal["enable", "disable"] | None = None,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = None,
+        service_negate: Literal["enable", "disable"] | None = None,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        schedule: str | None = None,
+        logtraffic: Literal["all", "utm", "disable"] | None = None,
+        session_ttl: int | None = None,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
+        http_tunnel_auth: Literal["enable", "disable"] | None = None,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = None,
+        webproxy_forward_server: str | None = None,
+        isolator_server: str | None = None,
+        webproxy_profile: str | None = None,
+        transparent: Literal["enable", "disable"] | None = None,
+        webcache: Literal["enable", "disable"] | None = None,
+        webcache_https: Literal["disable", "enable"] | None = None,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = None,
+        utm_status: Literal["enable", "disable"] | None = None,
+        profile_type: Literal["single", "group"] | None = None,
+        profile_group: str | None = None,
+        profile_protocol_options: str | None = None,
+        ssl_ssh_profile: str | None = None,
+        av_profile: str | None = None,
+        webfilter_profile: str | None = None,
+        dnsfilter_profile: str | None = None,
+        emailfilter_profile: str | None = None,
+        dlp_profile: str | None = None,
+        file_filter_profile: str | None = None,
+        ips_sensor: str | None = None,
+        application_list: str | None = None,
+        ips_voip_filter: str | None = None,
+        sctp_filter_profile: str | None = None,
+        icap_profile: str | None = None,
+        videofilter_profile: str | None = None,
+        waf_profile: str | None = None,
+        ssh_filter_profile: str | None = None,
+        casb_profile: str | None = None,
+        replacemsg_override_group: str | None = None,
+        logtraffic_start: Literal["enable", "disable"] | None = None,
+        log_http_transaction: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
+        block_notification: Literal["enable", "disable"] | None = None,
+        redirect_url: str | None = None,
+        https_sub_category: Literal["enable", "disable"] | None = None,
+        decrypted_traffic_mirror: str | None = None,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -791,7 +1895,92 @@ class ProxyPolicy(MetadataMixin):
 
         Args:
             payload_dict: Resource data including policyid (primary key)
+            uuid: Field uuid
+            policyid: Field policyid
+            name: Field name
+            proxy: Field proxy
+            access_proxy: Field access-proxy
+            access_proxy6: Field access-proxy6
+            ztna_proxy: Field ztna-proxy
+            srcintf: Field srcintf
+            dstintf: Field dstintf
+            srcaddr: Field srcaddr
+            poolname: Field poolname
+            poolname6: Field poolname6
+            dstaddr: Field dstaddr
+            ztna_ems_tag: Field ztna-ems-tag
+            ztna_tags_match_logic: Field ztna-tags-match-logic
+            device_ownership: Field device-ownership
+            url_risk: Field url-risk
+            internet_service: Field internet-service
+            internet_service_negate: Field internet-service-negate
+            internet_service_name: Field internet-service-name
+            internet_service_group: Field internet-service-group
+            internet_service_custom: Field internet-service-custom
+            internet_service_custom_group: Field internet-service-custom-group
+            internet_service_fortiguard: Field internet-service-fortiguard
+            internet_service6: Field internet-service6
+            internet_service6_negate: Field internet-service6-negate
+            internet_service6_name: Field internet-service6-name
+            internet_service6_group: Field internet-service6-group
+            internet_service6_custom: Field internet-service6-custom
+            internet_service6_custom_group: Field internet-service6-custom-group
+            internet_service6_fortiguard: Field internet-service6-fortiguard
+            service: Field service
+            srcaddr_negate: Field srcaddr-negate
+            dstaddr_negate: Field dstaddr-negate
+            ztna_ems_tag_negate: Field ztna-ems-tag-negate
+            service_negate: Field service-negate
+            action: Field action
+            status: Field status
+            schedule: Field schedule
+            logtraffic: Field logtraffic
+            session_ttl: Field session-ttl
+            srcaddr6: Field srcaddr6
+            dstaddr6: Field dstaddr6
+            groups: Field groups
+            users: Field users
+            http_tunnel_auth: Field http-tunnel-auth
+            ssh_policy_redirect: Field ssh-policy-redirect
+            webproxy_forward_server: Field webproxy-forward-server
+            isolator_server: Field isolator-server
+            webproxy_profile: Field webproxy-profile
+            transparent: Field transparent
+            webcache: Field webcache
+            webcache_https: Field webcache-https
+            disclaimer: Field disclaimer
+            utm_status: Field utm-status
+            profile_type: Field profile-type
+            profile_group: Field profile-group
+            profile_protocol_options: Field profile-protocol-options
+            ssl_ssh_profile: Field ssl-ssh-profile
+            av_profile: Field av-profile
+            webfilter_profile: Field webfilter-profile
+            dnsfilter_profile: Field dnsfilter-profile
+            emailfilter_profile: Field emailfilter-profile
+            dlp_profile: Field dlp-profile
+            file_filter_profile: Field file-filter-profile
+            ips_sensor: Field ips-sensor
+            application_list: Field application-list
+            ips_voip_filter: Field ips-voip-filter
+            sctp_filter_profile: Field sctp-filter-profile
+            icap_profile: Field icap-profile
+            videofilter_profile: Field videofilter-profile
+            waf_profile: Field waf-profile
+            ssh_filter_profile: Field ssh-filter-profile
+            casb_profile: Field casb-profile
+            replacemsg_override_group: Field replacemsg-override-group
+            logtraffic_start: Field logtraffic-start
+            log_http_transaction: Field log-http-transaction
+            comments: Field comments
+            block_notification: Field block-notification
+            redirect_url: Field redirect-url
+            https_sub_category: Field https-sub-category
+            decrypted_traffic_mirror: Field decrypted-traffic-mirror
+            detect_https_in_http_request: Field detect-https-in-http-request
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -801,7 +1990,13 @@ class ProxyPolicy(MetadataMixin):
             ValueError: If policyid is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_proxy_policy.set(
+            ...     policyid=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "policyid": 1,
             ...     "field1": "value1",
@@ -824,20 +2019,105 @@ class ProxyPolicy(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            uuid=uuid,
+            policyid=policyid,
+            name=name,
+            proxy=proxy,
+            access_proxy=access_proxy,
+            access_proxy6=access_proxy6,
+            ztna_proxy=ztna_proxy,
+            srcintf=srcintf,
+            dstintf=dstintf,
+            srcaddr=srcaddr,
+            poolname=poolname,
+            poolname6=poolname6,
+            dstaddr=dstaddr,
+            ztna_ems_tag=ztna_ems_tag,
+            ztna_tags_match_logic=ztna_tags_match_logic,
+            device_ownership=device_ownership,
+            url_risk=url_risk,
+            internet_service=internet_service,
+            internet_service_negate=internet_service_negate,
+            internet_service_name=internet_service_name,
+            internet_service_group=internet_service_group,
+            internet_service_custom=internet_service_custom,
+            internet_service_custom_group=internet_service_custom_group,
+            internet_service_fortiguard=internet_service_fortiguard,
+            internet_service6=internet_service6,
+            internet_service6_negate=internet_service6_negate,
+            internet_service6_name=internet_service6_name,
+            internet_service6_group=internet_service6_group,
+            internet_service6_custom=internet_service6_custom,
+            internet_service6_custom_group=internet_service6_custom_group,
+            internet_service6_fortiguard=internet_service6_fortiguard,
+            service=service,
+            srcaddr_negate=srcaddr_negate,
+            dstaddr_negate=dstaddr_negate,
+            ztna_ems_tag_negate=ztna_ems_tag_negate,
+            service_negate=service_negate,
+            action=action,
+            status=status,
+            schedule=schedule,
+            logtraffic=logtraffic,
+            session_ttl=session_ttl,
+            srcaddr6=srcaddr6,
+            dstaddr6=dstaddr6,
+            groups=groups,
+            users=users,
+            http_tunnel_auth=http_tunnel_auth,
+            ssh_policy_redirect=ssh_policy_redirect,
+            webproxy_forward_server=webproxy_forward_server,
+            isolator_server=isolator_server,
+            webproxy_profile=webproxy_profile,
+            transparent=transparent,
+            webcache=webcache,
+            webcache_https=webcache_https,
+            disclaimer=disclaimer,
+            utm_status=utm_status,
+            profile_type=profile_type,
+            profile_group=profile_group,
+            profile_protocol_options=profile_protocol_options,
+            ssl_ssh_profile=ssl_ssh_profile,
+            av_profile=av_profile,
+            webfilter_profile=webfilter_profile,
+            dnsfilter_profile=dnsfilter_profile,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile=dlp_profile,
+            file_filter_profile=file_filter_profile,
+            ips_sensor=ips_sensor,
+            application_list=application_list,
+            ips_voip_filter=ips_voip_filter,
+            sctp_filter_profile=sctp_filter_profile,
+            icap_profile=icap_profile,
+            videofilter_profile=videofilter_profile,
+            waf_profile=waf_profile,
+            ssh_filter_profile=ssh_filter_profile,
+            casb_profile=casb_profile,
+            replacemsg_override_group=replacemsg_override_group,
+            logtraffic_start=logtraffic_start,
+            log_http_transaction=log_http_transaction,
+            comments=comments,
+            block_notification=block_notification,
+            redirect_url=redirect_url,
+            https_sub_category=https_sub_category,
+            decrypted_traffic_mirror=decrypted_traffic_mirror,
+            detect_https_in_http_request=detect_https_in_http_request,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("policyid")
+        mkey_value = payload_data.get("policyid")
         if not mkey_value:
-            raise ValueError("policyid is required in payload_dict for set()")
+            raise ValueError("policyid is required for set()")
         
         # Check if resource exists
         if self.exists(policyid=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

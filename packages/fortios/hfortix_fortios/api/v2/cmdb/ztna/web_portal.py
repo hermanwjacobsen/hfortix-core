@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.ztna_web_portal.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.ztna_web_portal.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class WebPortal(MetadataMixin):
+class WebPortal(CRUDEndpoint, MetadataMixin):
     """WebPortal Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class WebPortal(MetadataMixin):
         """Initialize WebPortal endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class WebPortal(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve ztna/web_portal configuration.
 
@@ -99,6 +118,7 @@ class WebPortal(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class WebPortal(MetadataMixin):
         
         if name:
             endpoint = "/ztna/web-portal/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/ztna/web-portal"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class WebPortal(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -230,8 +257,9 @@ class WebPortal(MetadataMixin):
         macos_forticlient_download_url: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing ztna/web_portal object.
 
@@ -244,8 +272,28 @@ class WebPortal(MetadataMixin):
             host: Virtual or real host name.
             decrypted_traffic_mirror: Decrypted traffic mirror.
             log_blocked_traffic: Enable/disable logging of blocked traffic.
+            auth_portal: Enable/disable authentication portal.
+            auth_virtual_host: Virtual host for authentication portal.
+            vip6: Virtual IPv6 name.
+            auth_rule: Authentication Rule.
+            display_bookmark: Enable to display the web portal bookmark widget.
+            focus_bookmark: Enable to prioritize the placement of the bookmark section over the quick-connection section in the ztna web-portal.
+            display_status: Enable to display the web portal status widget.
+            display_history: Enable to display the web portal user login history widget.
+            policy_auth_sso: Enable policy sso authentication.
+            heading: Web portal heading message.
+            theme: Web portal color scheme.
+            clipboard: Enable to support RDP/VPC clipboard functionality.
+            default_window_width: Screen width (range from 0 - 65535, default = 1024).
+            default_window_height: Screen height (range from 0 - 65535, default = 768).
+            cookie_age: Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.
+            forticlient_download: Enable/disable download option for FortiClient.
+            customize_forticlient_download_url: Enable support of customized download URL for FortiClient.
+            windows_forticlient_download_url: Download URL for Windows FortiClient.
+            macos_forticlient_download_url: Download URL for Mac FortiClient.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +320,10 @@ class WebPortal(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             vip=vip,
             host=host,
@@ -318,9 +367,14 @@ class WebPortal(MetadataMixin):
         endpoint = "/ztna/web-portal/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -350,8 +404,9 @@ class WebPortal(MetadataMixin):
         macos_forticlient_download_url: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new ztna/web_portal object.
 
@@ -364,8 +419,28 @@ class WebPortal(MetadataMixin):
             host: Virtual or real host name.
             decrypted_traffic_mirror: Decrypted traffic mirror.
             log_blocked_traffic: Enable/disable logging of blocked traffic.
+            auth_portal: Enable/disable authentication portal.
+            auth_virtual_host: Virtual host for authentication portal.
+            vip6: Virtual IPv6 name.
+            auth_rule: Authentication Rule.
+            display_bookmark: Enable to display the web portal bookmark widget.
+            focus_bookmark: Enable to prioritize the placement of the bookmark section over the quick-connection section in the ztna web-portal.
+            display_status: Enable to display the web portal status widget.
+            display_history: Enable to display the web portal user login history widget.
+            policy_auth_sso: Enable policy sso authentication.
+            heading: Web portal heading message.
+            theme: Web portal color scheme.
+            clipboard: Enable to support RDP/VPC clipboard functionality.
+            default_window_width: Screen width (range from 0 - 65535, default = 1024).
+            default_window_height: Screen height (range from 0 - 65535, default = 768).
+            cookie_age: Time in minutes that client web browsers should keep a cookie. Default is 60 minutes. 0 = no time limit.
+            forticlient_download: Enable/disable download option for FortiClient.
+            customize_forticlient_download_url: Enable support of customized download URL for FortiClient.
+            windows_forticlient_download_url: Download URL for Windows FortiClient.
+            macos_forticlient_download_url: Download URL for Mac FortiClient.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -394,9 +469,10 @@ class WebPortal(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             vip=vip,
             host=host,
@@ -436,16 +512,22 @@ class WebPortal(MetadataMixin):
 
         endpoint = "/ztna/web-portal"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete ztna/web_portal object.
 
@@ -455,6 +537,7 @@ class WebPortal(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -480,7 +563,7 @@ class WebPortal(MetadataMixin):
         endpoint = "/ztna/web-portal/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -544,7 +627,33 @@ class WebPortal(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        vip: str | None = None,
+        host: str | None = None,
+        decrypted_traffic_mirror: str | None = None,
+        log_blocked_traffic: Literal["disable", "enable"] | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
+        auth_virtual_host: str | None = None,
+        vip6: str | None = None,
+        auth_rule: str | None = None,
+        display_bookmark: Literal["enable", "disable"] | None = None,
+        focus_bookmark: Literal["enable", "disable"] | None = None,
+        display_status: Literal["enable", "disable"] | None = None,
+        display_history: Literal["enable", "disable"] | None = None,
+        policy_auth_sso: Literal["enable", "disable"] | None = None,
+        heading: str | None = None,
+        theme: Literal["jade", "neutrino", "mariner", "graphite", "melongene", "jet-stream", "security-fabric", "dark-matter", "onyx", "eclipse"] | None = None,
+        clipboard: Literal["enable", "disable"] | None = None,
+        default_window_width: int | None = None,
+        default_window_height: int | None = None,
+        cookie_age: int | None = None,
+        forticlient_download: Literal["enable", "disable"] | None = None,
+        customize_forticlient_download_url: Literal["enable", "disable"] | None = None,
+        windows_forticlient_download_url: str | None = None,
+        macos_forticlient_download_url: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -555,7 +664,33 @@ class WebPortal(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            vip: Field vip
+            host: Field host
+            decrypted_traffic_mirror: Field decrypted-traffic-mirror
+            log_blocked_traffic: Field log-blocked-traffic
+            auth_portal: Field auth-portal
+            auth_virtual_host: Field auth-virtual-host
+            vip6: Field vip6
+            auth_rule: Field auth-rule
+            display_bookmark: Field display-bookmark
+            focus_bookmark: Field focus-bookmark
+            display_status: Field display-status
+            display_history: Field display-history
+            policy_auth_sso: Field policy-auth-sso
+            heading: Field heading
+            theme: Field theme
+            clipboard: Field clipboard
+            default_window_width: Field default-window-width
+            default_window_height: Field default-window-height
+            cookie_age: Field cookie-age
+            forticlient_download: Field forticlient-download
+            customize_forticlient_download_url: Field customize-forticlient-download-url
+            windows_forticlient_download_url: Field windows-forticlient-download-url
+            macos_forticlient_download_url: Field macos-forticlient-download-url
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -565,7 +700,13 @@ class WebPortal(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.ztna_web_portal.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -588,20 +729,46 @@ class WebPortal(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            vip=vip,
+            host=host,
+            decrypted_traffic_mirror=decrypted_traffic_mirror,
+            log_blocked_traffic=log_blocked_traffic,
+            auth_portal=auth_portal,
+            auth_virtual_host=auth_virtual_host,
+            vip6=vip6,
+            auth_rule=auth_rule,
+            display_bookmark=display_bookmark,
+            focus_bookmark=focus_bookmark,
+            display_status=display_status,
+            display_history=display_history,
+            policy_auth_sso=policy_auth_sso,
+            heading=heading,
+            theme=theme,
+            clipboard=clipboard,
+            default_window_width=default_window_width,
+            default_window_height=default_window_height,
+            cookie_age=cookie_age,
+            forticlient_download=forticlient_download,
+            customize_forticlient_download_url=customize_forticlient_download_url,
+            windows_forticlient_download_url=windows_forticlient_download_url,
+            macos_forticlient_download_url=macos_forticlient_download_url,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -1089,7 +1089,7 @@ def _get_suggestion_for_error(
         -95: "💡 Tip: Remove user group from PPTP configuration before deleting.",  # noqa: E501
         -14: "💡 Tip: Check VDOM access permissions and API token admin privileges.",  # noqa: E501
         -37: "💡 Tip: Ensure your API token or user has sufficient read/write permissions.",  # noqa: E501
-        -651: "💡 Tip: Invalid value provided. Check parameter format and allowed values.",  # noqa: E501
+        -651: "💡 Tip: Invalid value provided. Check parameter format and allowed values. May also indicate duplicate name or unique field conflict.",  # noqa: E501
         -1: "💡 Tip: Check string length limits and field format requirements.",
         -50: "💡 Tip: Input format is invalid. Validate format matches expected pattern (IP, MAC, etc.).",  # noqa: E501
         -8: (

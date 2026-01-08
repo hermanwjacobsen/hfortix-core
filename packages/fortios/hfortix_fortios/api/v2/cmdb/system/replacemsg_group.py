@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_replacemsg_group.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_replacemsg_group.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,113 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ReplacemsgGroup(MetadataMixin):
+class ReplacemsgGroup(CRUDEndpoint, MetadataMixin):
     """ReplacemsgGroup Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "replacemsg_group"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "mail": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "http": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "webproxy": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "ftp": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "fortiguard_wf": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "spam": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "alertmail": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "admin": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "auth": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "sslvpn": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "nac_quar": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "traffic_quota": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "utm": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "custom_message": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "icap": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+        "automation": {
+            "mkey": "msg-type",
+            "required_fields": ['msg-type'],
+            "example": "[{'msg-type': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +164,11 @@ class ReplacemsgGroup(MetadataMixin):
         """Initialize ReplacemsgGroup endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +178,9 @@ class ReplacemsgGroup(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/replacemsg_group configuration.
 
@@ -99,6 +206,7 @@ class ReplacemsgGroup(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +263,14 @@ class ReplacemsgGroup(MetadataMixin):
         
         if name:
             endpoint = "/system/replacemsg-group/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/replacemsg-group"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,32 +311,38 @@ class ReplacemsgGroup(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
         group_type: Literal["default", "utm", "auth"] | None = None,
-        mail: str | list | None = None,
-        http: str | list | None = None,
-        webproxy: str | list | None = None,
-        ftp: str | list | None = None,
-        fortiguard_wf: str | list | None = None,
-        spam: str | list | None = None,
-        alertmail: str | list | None = None,
-        admin: str | list | None = None,
-        auth: str | list | None = None,
-        sslvpn: str | list | None = None,
-        nac_quar: str | list | None = None,
-        traffic_quota: str | list | None = None,
-        utm: str | list | None = None,
-        custom_message: str | list | None = None,
-        icap: str | list | None = None,
-        automation: str | list | None = None,
+        mail: str | list[str] | list[dict[str, Any]] | None = None,
+        http: str | list[str] | list[dict[str, Any]] | None = None,
+        webproxy: str | list[str] | list[dict[str, Any]] | None = None,
+        ftp: str | list[str] | list[dict[str, Any]] | None = None,
+        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = None,
+        spam: str | list[str] | list[dict[str, Any]] | None = None,
+        alertmail: str | list[str] | list[dict[str, Any]] | None = None,
+        admin: str | list[str] | list[dict[str, Any]] | None = None,
+        auth: str | list[str] | list[dict[str, Any]] | None = None,
+        sslvpn: str | list[str] | list[dict[str, Any]] | None = None,
+        nac_quar: str | list[str] | list[dict[str, Any]] | None = None,
+        traffic_quota: str | list[str] | list[dict[str, Any]] | None = None,
+        utm: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_message: str | list[str] | list[dict[str, Any]] | None = None,
+        icap: str | list[str] | list[dict[str, Any]] | None = None,
+        automation: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/replacemsg_group object.
 
@@ -238,9 +354,104 @@ class ReplacemsgGroup(MetadataMixin):
             comment: Comment.
             group_type: Group type.
             mail: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
             http: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            webproxy: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            ftp: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            fortiguard_wf: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            spam: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            alertmail: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            admin: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            auth: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            sslvpn: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            nac_quar: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            traffic_quota: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            utm: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            custom_message: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            icap: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            automation: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -267,9 +478,140 @@ class ReplacemsgGroup(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if mail is not None:
+            mail = normalize_table_field(
+                mail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="mail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if http is not None:
+            http = normalize_table_field(
+                http,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="http",
+                example="[{'msg-type': 'value'}]",
+            )
+        if webproxy is not None:
+            webproxy = normalize_table_field(
+                webproxy,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="webproxy",
+                example="[{'msg-type': 'value'}]",
+            )
+        if ftp is not None:
+            ftp = normalize_table_field(
+                ftp,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="ftp",
+                example="[{'msg-type': 'value'}]",
+            )
+        if fortiguard_wf is not None:
+            fortiguard_wf = normalize_table_field(
+                fortiguard_wf,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="fortiguard_wf",
+                example="[{'msg-type': 'value'}]",
+            )
+        if spam is not None:
+            spam = normalize_table_field(
+                spam,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="spam",
+                example="[{'msg-type': 'value'}]",
+            )
+        if alertmail is not None:
+            alertmail = normalize_table_field(
+                alertmail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="alertmail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if admin is not None:
+            admin = normalize_table_field(
+                admin,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="admin",
+                example="[{'msg-type': 'value'}]",
+            )
+        if auth is not None:
+            auth = normalize_table_field(
+                auth,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="auth",
+                example="[{'msg-type': 'value'}]",
+            )
+        if sslvpn is not None:
+            sslvpn = normalize_table_field(
+                sslvpn,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="sslvpn",
+                example="[{'msg-type': 'value'}]",
+            )
+        if nac_quar is not None:
+            nac_quar = normalize_table_field(
+                nac_quar,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="nac_quar",
+                example="[{'msg-type': 'value'}]",
+            )
+        if traffic_quota is not None:
+            traffic_quota = normalize_table_field(
+                traffic_quota,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="traffic_quota",
+                example="[{'msg-type': 'value'}]",
+            )
+        if utm is not None:
+            utm = normalize_table_field(
+                utm,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="utm",
+                example="[{'msg-type': 'value'}]",
+            )
+        if custom_message is not None:
+            custom_message = normalize_table_field(
+                custom_message,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="custom_message",
+                example="[{'msg-type': 'value'}]",
+            )
+        if icap is not None:
+            icap = normalize_table_field(
+                icap,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="icap",
+                example="[{'msg-type': 'value'}]",
+            )
+        if automation is not None:
+            automation = normalize_table_field(
+                automation,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="automation",
+                example="[{'msg-type': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             group_type=group_type,
@@ -308,35 +650,41 @@ class ReplacemsgGroup(MetadataMixin):
         endpoint = "/system/replacemsg-group/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
         group_type: Literal["default", "utm", "auth"] | None = None,
-        mail: str | list | None = None,
-        http: str | list | None = None,
-        webproxy: str | list | None = None,
-        ftp: str | list | None = None,
-        fortiguard_wf: str | list | None = None,
-        spam: str | list | None = None,
-        alertmail: str | list | None = None,
-        admin: str | list | None = None,
-        auth: str | list | None = None,
-        sslvpn: str | list | None = None,
-        nac_quar: str | list | None = None,
-        traffic_quota: str | list | None = None,
-        utm: str | list | None = None,
-        custom_message: str | list | None = None,
-        icap: str | list | None = None,
-        automation: str | list | None = None,
+        mail: str | list[str] | list[dict[str, Any]] | None = None,
+        http: str | list[str] | list[dict[str, Any]] | None = None,
+        webproxy: str | list[str] | list[dict[str, Any]] | None = None,
+        ftp: str | list[str] | list[dict[str, Any]] | None = None,
+        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = None,
+        spam: str | list[str] | list[dict[str, Any]] | None = None,
+        alertmail: str | list[str] | list[dict[str, Any]] | None = None,
+        admin: str | list[str] | list[dict[str, Any]] | None = None,
+        auth: str | list[str] | list[dict[str, Any]] | None = None,
+        sslvpn: str | list[str] | list[dict[str, Any]] | None = None,
+        nac_quar: str | list[str] | list[dict[str, Any]] | None = None,
+        traffic_quota: str | list[str] | list[dict[str, Any]] | None = None,
+        utm: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_message: str | list[str] | list[dict[str, Any]] | None = None,
+        icap: str | list[str] | list[dict[str, Any]] | None = None,
+        automation: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/replacemsg_group object.
 
@@ -348,9 +696,104 @@ class ReplacemsgGroup(MetadataMixin):
             comment: Comment.
             group_type: Group type.
             mail: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
             http: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            webproxy: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            ftp: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            fortiguard_wf: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            spam: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            alertmail: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            admin: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            auth: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            sslvpn: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            nac_quar: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            traffic_quota: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            utm: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            custom_message: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            icap: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
+            automation: Replacement message table entries.
+                Default format: [{'msg-type': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'msg-type': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'msg-type': 'val1'}, ...]
+                  - List of dicts: [{'msg-type': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -379,9 +822,140 @@ class ReplacemsgGroup(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if mail is not None:
+            mail = normalize_table_field(
+                mail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="mail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if http is not None:
+            http = normalize_table_field(
+                http,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="http",
+                example="[{'msg-type': 'value'}]",
+            )
+        if webproxy is not None:
+            webproxy = normalize_table_field(
+                webproxy,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="webproxy",
+                example="[{'msg-type': 'value'}]",
+            )
+        if ftp is not None:
+            ftp = normalize_table_field(
+                ftp,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="ftp",
+                example="[{'msg-type': 'value'}]",
+            )
+        if fortiguard_wf is not None:
+            fortiguard_wf = normalize_table_field(
+                fortiguard_wf,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="fortiguard_wf",
+                example="[{'msg-type': 'value'}]",
+            )
+        if spam is not None:
+            spam = normalize_table_field(
+                spam,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="spam",
+                example="[{'msg-type': 'value'}]",
+            )
+        if alertmail is not None:
+            alertmail = normalize_table_field(
+                alertmail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="alertmail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if admin is not None:
+            admin = normalize_table_field(
+                admin,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="admin",
+                example="[{'msg-type': 'value'}]",
+            )
+        if auth is not None:
+            auth = normalize_table_field(
+                auth,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="auth",
+                example="[{'msg-type': 'value'}]",
+            )
+        if sslvpn is not None:
+            sslvpn = normalize_table_field(
+                sslvpn,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="sslvpn",
+                example="[{'msg-type': 'value'}]",
+            )
+        if nac_quar is not None:
+            nac_quar = normalize_table_field(
+                nac_quar,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="nac_quar",
+                example="[{'msg-type': 'value'}]",
+            )
+        if traffic_quota is not None:
+            traffic_quota = normalize_table_field(
+                traffic_quota,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="traffic_quota",
+                example="[{'msg-type': 'value'}]",
+            )
+        if utm is not None:
+            utm = normalize_table_field(
+                utm,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="utm",
+                example="[{'msg-type': 'value'}]",
+            )
+        if custom_message is not None:
+            custom_message = normalize_table_field(
+                custom_message,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="custom_message",
+                example="[{'msg-type': 'value'}]",
+            )
+        if icap is not None:
+            icap = normalize_table_field(
+                icap,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="icap",
+                example="[{'msg-type': 'value'}]",
+            )
+        if automation is not None:
+            automation = normalize_table_field(
+                automation,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="automation",
+                example="[{'msg-type': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             group_type=group_type,
@@ -416,16 +990,22 @@ class ReplacemsgGroup(MetadataMixin):
 
         endpoint = "/system/replacemsg-group"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/replacemsg_group object.
 
@@ -435,6 +1015,7 @@ class ReplacemsgGroup(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -460,7 +1041,7 @@ class ReplacemsgGroup(MetadataMixin):
         endpoint = "/system/replacemsg-group/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -524,7 +1105,28 @@ class ReplacemsgGroup(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        group_type: Literal["default", "utm", "auth"] | None = None,
+        mail: str | list[str] | list[dict[str, Any]] | None = None,
+        http: str | list[str] | list[dict[str, Any]] | None = None,
+        webproxy: str | list[str] | list[dict[str, Any]] | None = None,
+        ftp: str | list[str] | list[dict[str, Any]] | None = None,
+        fortiguard_wf: str | list[str] | list[dict[str, Any]] | None = None,
+        spam: str | list[str] | list[dict[str, Any]] | None = None,
+        alertmail: str | list[str] | list[dict[str, Any]] | None = None,
+        admin: str | list[str] | list[dict[str, Any]] | None = None,
+        auth: str | list[str] | list[dict[str, Any]] | None = None,
+        sslvpn: str | list[str] | list[dict[str, Any]] | None = None,
+        nac_quar: str | list[str] | list[dict[str, Any]] | None = None,
+        traffic_quota: str | list[str] | list[dict[str, Any]] | None = None,
+        utm: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_message: str | list[str] | list[dict[str, Any]] | None = None,
+        icap: str | list[str] | list[dict[str, Any]] | None = None,
+        automation: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -535,7 +1137,28 @@ class ReplacemsgGroup(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            group_type: Field group-type
+            mail: Field mail
+            http: Field http
+            webproxy: Field webproxy
+            ftp: Field ftp
+            fortiguard_wf: Field fortiguard-wf
+            spam: Field spam
+            alertmail: Field alertmail
+            admin: Field admin
+            auth: Field auth
+            sslvpn: Field sslvpn
+            nac_quar: Field nac-quar
+            traffic_quota: Field traffic-quota
+            utm: Field utm
+            custom_message: Field custom-message
+            icap: Field icap
+            automation: Field automation
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -545,7 +1168,13 @@ class ReplacemsgGroup(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_replacemsg_group.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -568,20 +1197,41 @@ class ReplacemsgGroup(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            group_type=group_type,
+            mail=mail,
+            http=http,
+            webproxy=webproxy,
+            ftp=ftp,
+            fortiguard_wf=fortiguard_wf,
+            spam=spam,
+            alertmail=alertmail,
+            admin=admin,
+            auth=auth,
+            sslvpn=sslvpn,
+            nac_quar=nac_quar,
+            traffic_quota=traffic_quota,
+            utm=utm,
+            custom_message=custom_message,
+            icap=icap,
+            automation=automation,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

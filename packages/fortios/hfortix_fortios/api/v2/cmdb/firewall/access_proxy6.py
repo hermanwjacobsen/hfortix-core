@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_access_proxy6.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_access_proxy6.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class AccessProxy6(MetadataMixin):
+class AccessProxy6(CRUDEndpoint, MetadataMixin):
     """AccessProxy6 Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "access_proxy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "api_gateway": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+        "api_gateway6": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class AccessProxy6(MetadataMixin):
         """Initialize AccessProxy6 endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class AccessProxy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/access_proxy6 configuration.
 
@@ -99,6 +136,7 @@ class AccessProxy6(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class AccessProxy6(MetadataMixin):
         
         if name:
             endpoint = "/firewall/access-proxy6/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/access-proxy6"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class AccessProxy6(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -215,12 +260,13 @@ class AccessProxy6(MetadataMixin):
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,
         decrypted_traffic_mirror: str | None = None,
-        api_gateway: str | list | None = None,
-        api_gateway6: str | list | None = None,
+        api_gateway: str | list[str] | list[dict[str, Any]] | None = None,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/access_proxy6 object.
 
@@ -233,8 +279,23 @@ class AccessProxy6(MetadataMixin):
             auth_portal: Enable/disable authentication portal.
             auth_virtual_host: Virtual host for authentication portal.
             log_blocked_traffic: Enable/disable logging of blocked traffic.
+            add_vhost_domain_to_dnsdb: Enable/disable adding vhost/domain to dnsdb for ztna dox tunnel.
+            svr_pool_multiplex: Enable/disable server pool multiplexing (default = disable). Share connected server in HTTP, HTTPS, and web-portal api-gateway.
+            svr_pool_ttl: Time-to-live in the server pool for idle connections to servers.
+            svr_pool_server_max_request: Maximum number of requests that servers in server pool handle before disconnecting (default = unlimited).
+            svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
+            decrypted_traffic_mirror: Decrypted traffic mirror.
+            api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
+            api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -261,9 +322,28 @@ class AccessProxy6(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             vip=vip,
             auth_portal=auth_portal,
@@ -296,9 +376,14 @@ class AccessProxy6(MetadataMixin):
         endpoint = "/firewall/access-proxy6/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -313,12 +398,13 @@ class AccessProxy6(MetadataMixin):
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,
         decrypted_traffic_mirror: str | None = None,
-        api_gateway: str | list | None = None,
-        api_gateway6: str | list | None = None,
+        api_gateway: str | list[str] | list[dict[str, Any]] | None = None,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/access_proxy6 object.
 
@@ -331,8 +417,23 @@ class AccessProxy6(MetadataMixin):
             auth_portal: Enable/disable authentication portal.
             auth_virtual_host: Virtual host for authentication portal.
             log_blocked_traffic: Enable/disable logging of blocked traffic.
+            add_vhost_domain_to_dnsdb: Enable/disable adding vhost/domain to dnsdb for ztna dox tunnel.
+            svr_pool_multiplex: Enable/disable server pool multiplexing (default = disable). Share connected server in HTTP, HTTPS, and web-portal api-gateway.
+            svr_pool_ttl: Time-to-live in the server pool for idle connections to servers.
+            svr_pool_server_max_request: Maximum number of requests that servers in server pool handle before disconnecting (default = unlimited).
+            svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
+            decrypted_traffic_mirror: Decrypted traffic mirror.
+            api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
+            api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -361,9 +462,28 @@ class AccessProxy6(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             vip=vip,
             auth_portal=auth_portal,
@@ -392,16 +512,22 @@ class AccessProxy6(MetadataMixin):
 
         endpoint = "/firewall/access-proxy6"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/access_proxy6 object.
 
@@ -411,6 +537,7 @@ class AccessProxy6(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -436,7 +563,7 @@ class AccessProxy6(MetadataMixin):
         endpoint = "/firewall/access-proxy6/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -500,7 +627,22 @@ class AccessProxy6(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        vip: str | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
+        auth_virtual_host: str | None = None,
+        log_blocked_traffic: Literal["enable", "disable"] | None = None,
+        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = None,
+        svr_pool_multiplex: Literal["enable", "disable"] | None = None,
+        svr_pool_ttl: int | None = None,
+        svr_pool_server_max_request: int | None = None,
+        svr_pool_server_max_concurrent_request: int | None = None,
+        decrypted_traffic_mirror: str | None = None,
+        api_gateway: str | list[str] | list[dict[str, Any]] | None = None,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -511,7 +653,22 @@ class AccessProxy6(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            vip: Field vip
+            auth_portal: Field auth-portal
+            auth_virtual_host: Field auth-virtual-host
+            log_blocked_traffic: Field log-blocked-traffic
+            add_vhost_domain_to_dnsdb: Field add-vhost-domain-to-dnsdb
+            svr_pool_multiplex: Field svr-pool-multiplex
+            svr_pool_ttl: Field svr-pool-ttl
+            svr_pool_server_max_request: Field svr-pool-server-max-request
+            svr_pool_server_max_concurrent_request: Field svr-pool-server-max-concurrent-request
+            decrypted_traffic_mirror: Field decrypted-traffic-mirror
+            api_gateway: Field api-gateway
+            api_gateway6: Field api-gateway6
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -521,7 +678,13 @@ class AccessProxy6(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_access_proxy6.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -544,20 +707,35 @@ class AccessProxy6(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            vip=vip,
+            auth_portal=auth_portal,
+            auth_virtual_host=auth_virtual_host,
+            log_blocked_traffic=log_blocked_traffic,
+            add_vhost_domain_to_dnsdb=add_vhost_domain_to_dnsdb,
+            svr_pool_multiplex=svr_pool_multiplex,
+            svr_pool_ttl=svr_pool_ttl,
+            svr_pool_server_max_request=svr_pool_server_max_request,
+            svr_pool_server_max_concurrent_request=svr_pool_server_max_concurrent_request,
+            decrypted_traffic_mirror=decrypted_traffic_mirror,
+            api_gateway=api_gateway,
+            api_gateway6=api_gateway6,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

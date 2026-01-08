@@ -7,7 +7,957 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### � Enhanced Query Parameters & Schema Introspection (2026-01-07)
+## [0.5.32] - 2025-01-24
+
+### Fixed
+- **Object mode query by name now returns single object instead of list**
+  - When querying by name/mkey with `response_mode="object"`, now correctly returns single `FortiObject` instead of list
+  - Added `unwrap_single=True` parameter to old API endpoints when querying by identifier
+  - Example: `group = fgt.api.cmdb.firewall.service.group.get(name="test")` returns `FortiObject` not `list[FortiObject]`
+  - Aligns old API behavior with new v2 API which already had this feature
+
+- **FortiObject now wraps nested table field items instead of flattening to strings**
+  - Table field members (lists of dicts) now wrapped in `FortiObject` for attribute access
+  - Example: `group.member[0].name` now works (was: `AttributeError: 'str' object has no attribute 'name'`)
+  - Changed from auto-flattening `[{"name": "test"}]` → `["test"]` to wrapping in `FortiObject`
+  - Enables clean attribute access while maintaining compatibility
+
+- **Clean string representation for simple FortiObject members**
+  - Simple objects (containing only `name` and optionally `q_origin_key`) now show clean repr
+  - Example: `['port3', 'port4']` instead of `[FortiObject(port3), FortiObject(port4)]`
+  - Added `__str__` method for user-friendly output
+  - Improves readability when printing lists of members
+
+### Improved
+- **Type annotations for FortiOS client attributes**
+  - Added explicit type annotation `self._api: API = API(wrapped_client)` for better IDE support
+  - Added type annotations to test helper modules (`fgt: FortiOS`, `fgt_ResponseModeObject: FortiOS`)
+  - Improved Pylance autocomplete reliability after sys.path manipulation
+  - Better type inference for `fgt.api`, `fgt.api.cmdb`, etc.
+
+## [0.5.31] - 2026-01-08
+
+### Added
+- **Nested typed classes for table field children**
+  - Generated specific typed classes for table field items (e.g., `GroupMemberObject`)
+  - Each table field now has its own typed class with proper attribute definitions
+  - Example: `member: list[GroupMemberObject]` instead of generic `list[FortiObject]`
+  - Enables full IDE autocomplete for nested table attributes like `.name`, `.id`, etc.
+  - Pylance now validates attribute access and shows errors for non-existent fields
+
+- **Keyword argument support for mkey parameters**
+  - Added overloads to support both positional and keyword mkey arguments
+  - Both `get("name")` and `get(name="name")` now correctly infer single object return type
+  - Proper overload ordering ensures Pylance matches the most specific signature
+  - Works for both `response_mode="object"` and `response_mode="dict"`
+
+### Improved
+- **IDE autocomplete for table field members in object mode**
+  - Table fields now return typed objects instead of generic `FortiObject`
+  - Example: `group.member[0].name` shows autocomplete with proper type validation
+  - Response objects in `response_mode="object"` provide full attribute autocomplete
+  - Template generates nested classes for all table fields with children metadata
+
+- **Whitespace stripping in table field normalization**
+  - All string values automatically stripped of leading/trailing whitespace
+  - Prevents "Entry not found" errors from accidental spaces in member names
+  - Example: `" test_service1 "` → `"test_service1"` automatically
+  - Applied to all normalizers: `normalize_table_field()`, `normalize_string_list()`, `normalize_source_destination_list()`
+
+### Added
+- **Enhanced parameter documentation with schema descriptions**
+  - All POST and PUT method parameters now show field descriptions from FortiOS schema in IDE tooltips
+  - Example: Hovering over function shows full Args section with descriptions for every parameter
+  - Improved developer experience with rich, schema-driven documentation
+
+- **Accurate type hints for table fields vs multi-value option fields**
+  - Table fields: `str | list[str] | list[dict[str, Any]]` (supports flexible normalization)
+  - Multi-value option fields: `Literal[...] | list[str]` (string list only, no dict support)
+  - Single-value fields: Just their base type (`str`, `int`, `Literal[...]`)
+  - Removes confusing `list[dict[str, Any]]` from option fields like `method`, `digest_algo`
+
+- **Universal table field normalization with schema awareness**
+  - Added `normalize_table_field()` helper that supports ANY mkey (not just "name")
+  - Handles custom mkeys: `interface-name`, `id`, `index`, `seq-num`, `priority`, etc.
+  - Auto-detects single-field (flexible) vs multi-field (strict) validation from schema
+  - Generates intelligent examples based on field types (ip→192.168.1.10, id→1, cipher→TLS-AES-128-GCM-SHA256)
+  - Shows format documentation for ALL table fields (removed 10-field limit)
+
+### Fixed
+- **Fixed table field documentation not showing for all fields**
+  - Issue: Only 5 of 11 table fields were documented in complex endpoints like `firewall.vip`
+  - Root cause: Schema parser used kebab-case keys, template expected snake_case keys
+  - Solution: Convert field names to snake_case in `extract_table_fields_metadata()`
+  - Result: All table fields now show complete format documentation in IDE tooltips
+
+## [0.5.30] - 2026-01-08
+
+### Fixed
+- **Fixed stub generator comment truncation causing syntax errors**
+  - Added `sanitize_comment` filter to properly truncate help text in `.pyi` stubs
+  - Prevents broken comments like `# Sample one packet every configured number of packets (1 -` 
+  - Comments now safely truncate without breaking parentheses or special characters
+  - Fixes Pylance failing to parse endpoints like `system.interface` due to syntax errors
+
+## [0.5.29] - 2026-01-07
+
+### Improved
+- **Enhanced IDE autocomplete for typed endpoint responses**
+  - `AddressObject`, `PolicyObject`, etc. no longer inherit `__getattr__`, so Pylance flags invalid attribute access
+  - `address.nonexistent_field` now shows error: "Cannot access attribute 'nonexistent_field'"
+  - Added `AddressResponse` TypedDict for dict mode returns - all fields required (no NotRequired warnings)
+  - `response_mode="dict"` now returns `list[AddressResponse]` with full `["field"]` autocomplete
+  - `response_mode="object"` now returns `list[AddressObject]` with full `.field` autocomplete
+  - Added `@final` decorator to typed Object classes for stricter type checking
+
+### Fixed
+- **Fixed dict mode iteration type hints**
+  - `for addr in addresses:` with `response_mode="dict"` now correctly types `addr` as `AddressResponse`
+  - `addr["name"]` no longer shows "not a required key" warning
+
+## [0.5.28] - 2026-01-07
+
+### Fixed
+- **Fixed autocomplete when `response_mode` is set at client level**
+  - Fallback `get()` return type now includes Object types in union
+  - `result.name`, `result.subnet` etc. now have autocomplete even when `response_mode` isn't passed explicitly
+  - Supports pattern: `fgt_object = FortiGate(..., response_mode="object")`
+
+## [0.5.27] - 2026-01-07
+
+### Fixed
+- **Fixed return type annotations for sync usage** (TYPE HINT FIX)
+  - Removed `Coroutine` union types from return signatures in `.pyi` stubs
+  - Methods now return `dict[str, Any]` instead of `Union[dict[str, Any], Coroutine[...]]`
+  - Fixes Pylance errors like `"__getitem__" method not defined on type "Coroutine[...]"`
+  - Result: `result['status']` now works without type errors for sync clients
+
+## [0.5.26] - 2026-01-07
+
+### Added
+- **Added `__getitem__` support to `FortiObject`**
+  - Dictionary-style access now works: `settings['grayware']`
+  - Both attribute and bracket notation supported: `settings.grayware` or `settings['grayware']`
+  - Fixes Pylance `"__getitem__" method not defined on type` errors
+
+## [0.5.25] - 2026-01-07
+
+### Fixed
+- **Fixed singleton endpoint `get()` return types** (TYPE HINT FIX)
+  - Singleton endpoints (like `antivirus/settings`) now return single object instead of list
+  - `fgt.api.cmdb.antivirus.settings.get(response_mode="object")` returns `SettingsObject` not `list[SettingsObject]`
+  - Fixes Pylance errors when accessing attributes on singleton endpoint results
+  - Affects all 114 singleton endpoints
+
+### Improved
+- **Filter parameter now accepts both string and list**
+  - `filter` parameter type changed from `list[str] | None` to `str | list[str] | None`
+  - Single filter: `get(filter="name==test")` ✓
+  - Multiple filters: `get(filter=["name==test", "type==ipmask"])` ✓
+  - Better ergonomics matching FortiOS REST API behavior
+
+## [0.5.24] - 2026-01-07
+
+### Changed
+- Version alignment release for all packages (core, fortios, meta)
+
+## [0.5.23] - 2026-01-07
+
+### Fixed
+- **Fixed singleton endpoint PUT requests** (CRITICAL FIX)
+  - Singleton endpoints (like `alertemail/setting`) no longer require identifier in URL
+  - Fixed `ValueError: name is required for PUT` error for singleton endpoints
+  - Example: `fgt.api.cmdb.alertemail.setting.put(mailto1="test@example.com")` now works correctly
+  - Affects all singleton endpoints (no mkey, `endpoint_type: "singleton"`)
+- **Fixed stub files for endpoints with `SUPPORTS_CREATE = False`**
+  - Removed `post()` method overloads from stub files when endpoint doesn't support creation
+  - Fixes `NotImplementedError: You should not call an overloaded function` error
+  - Singleton and read-only endpoints now have correct type hints
+
+### Improved
+- Enhanced error message for FortiOS error -651 to include duplicate name/unique field conflict hint
+  - Now suggests: "Invalid value provided. Check parameter format and allowed values. May also indicate duplicate name or unique field conflict."
+  - Helps users identify when error is caused by duplicate names rather than just invalid formats
+
+## [0.5.22] - 2026-01-07
+
+### Added
+- **Interactive help system** for all API endpoints
+  - `help()` method on all endpoints (via `MetadataMixin`)
+  - Works as classmethod or instance method: `endpoint.help()` or `fgt.api.cmdb.firewall.address.help()`
+  - Context-aware help based on endpoint category (CMDB, Monitor, Log, Service)
+  - Two modes:
+    - No argument: Full endpoint help with capabilities, operations, and info methods
+    - With field name: Field-specific help showing type, description, constraints, and options
+  - Dynamically discovers all available methods on each endpoint
+  - Package-level `help()` function also available: `from hfortix_fortios import help`
+  - Example: `fgt.api.cmdb.firewall.address.help()` or `help(fgt.api.cmdb.firewall.address)`
+
+### Changed
+- **Metadata methods now return dict/list with JSON intent** for consistency
+  - `defaults()` - Returns `dict[str, Any]` with default field values (JSON-serializable)
+  - `schema()` - Returns `dict[str, Any]` with schema metadata (JSON-serializable)
+  - `fields()` - Returns `list[str]` by default, or `dict[str, Any]` if `detailed=True` (JSON-serializable)
+  - All return native Python types (dict/list) instead of strings
+  - Use `to_json()` for formatted output: `print(to_json(Settings.defaults()))`
+  - Breaking change from previous string returns
+  - Example: `schema = Address.schema(); print(f"Endpoint: {schema['endpoint']}")`
+- Updated `MetadataMixin.help()` to use new interactive help system
+  - Replaced string-returning help with interactive console output
+  - Field help now shows formatted output with constraints and options
+  - Removed `show_examples` parameter (examples removed from output)
+
+### Fixed
+- **Fixed `set()` method to accept all field parameters** (CRITICAL FIX)
+  - `set()` now accepts individual field parameters just like `post()` and `put()`
+  - Example: `fgt.api.cmdb.firewall.address.set(name="test", subnet="10.0.0.0/24")`
+  - Previously only accepted `payload_dict` parameter, causing `ValueError`
+  - All 1064 endpoints regenerated with the fix
+- **Fixed type stubs (.pyi) for list field parameters**
+  - All list fields now show correct types: `str | list[str] | list[dict[str, Any]] | None`
+  - Fixed "No overloads match" Pylance errors
+  - Example: `srcintf=["port3"]` now has proper type checking
+  - Affects all CRUD methods: `post()`, `put()`, `set()`
+  - All overloads updated to include complete field parameter lists
+
+### Removed
+- Removed `get_schema()` classmethod alias - use `schema()` instead
+- Removed `show_methods()` - functionality merged into `help()`
+
+## [0.5.21] - 2026-01-07
+
+### Added
+- **Formatting utility functions** - Type-agnostic data conversion utilities
+  - `to_json(data, indent=2)` - Convert any data to formatted JSON string
+  - `to_csv(data, separator=', ')` - Convert any data to comma-separated string
+  - `to_dict(data)` - Convert any data to dictionary
+  - `to_multiline(data, separator='\n')` - Convert any data to newline-separated string
+  - `to_quoted(data, quote='"', separator=', ')` - Convert any data to quoted string
+  - All functions handle ANY input type (objects, dicts, lists, primitives, None)
+  - Never raise exceptions - return sensible defaults for edge cases
+  - Available directly from package root: `from hfortix_fortios import to_csv, to_json`
+  - Full type hints and IDE autocomplete support
+
+### Documentation
+- Added comprehensive `FORMATTING_UTILITIES.md` guide with examples
+- Includes real-world usage examples for FortiOS data formatting
+
+## [0.5.20] - 2026-01-07
+
+### Removed
+- **FortiList wrapper class** - Reverted due to IDE autocomplete limitations
+  - Removed `.csv()`, `.json()`, `.list()`, `.dict()`, `.join()` methods
+  - FortiObject now returns plain Python lists for list fields
+  - Reason: Python's type system cannot provide autocomplete for union return types
+  - Users should use standard Python list operations and string formatting instead
+
+## [0.5.19] - 2026-01-07 [YANKED]
+
+### Added
+- **FortiList wrapper class** - Enhanced list type with convenient formatting methods (removed in 0.5.20)
+  - `.csv()` - Convert to comma-separated string (e.g., `"port1, port2, port3"`)
+  - `.json(**kwargs)` - Convert to JSON string with optional formatting
+  - `.list()` - Get as plain Python list
+  - `.dict()` - Convert back to FortiOS member_table format `[{'name': 'x'}]`
+  - `.join(separator)` - Join with custom separator (e.g., `' → '`, `' | '`)
+  
+### Changed
+- **FortiObject now auto-wraps list fields** in FortiList for cleaner API
+  - `policy.srcintf.csv()` instead of manual formatting
+  - `policy.dstaddr.join(' | ')` for custom separators
+  - All list operations still work normally (indexing, iteration, etc.)
+  
+### Improved
+- **Type hints for IDE autocomplete** - Added `.pyi` stubs with `@property` definitions
+  - Full autocomplete for 35+ common FortiOS list fields
+  - Includes: srcintf, dstintf, srcaddr, dstaddr, service, poolname, etc.
+  - Works automatically when package is installed via pip
+
+## [0.5.18] - 2026-01-07
+
+### 📊 Summary of Generator Optimizations (2026-01-07)
+
+**Major code generation improvements resulting in significant code reduction and better developer experience.**
+
+#### Total Impact
+
+| Metric | Reduction | Details |
+|--------|-----------|---------|
+| **Lines of Code Eliminated** | **-143,419 lines** | Removed duplicate/boilerplate code |
+| **Endpoint File Size** | **-25% average** | Per endpoint (e.g., 949 → 708 lines) |
+| **Helper File Size** | **-3.2% average** | Per helper (348 → 337 lines) |
+| **Files Regenerated** | **1,064 endpoints** | All CMDB/Monitor/Service endpoints |
+
+#### Breakdown by Optimization
+
+1. **Protocol-Based Type Hints**: -131,200 lines
+   - Eliminated duplicate `@overload` decorators (18 per endpoint × 1,063)
+   - Moved to shared `_protocols.py` module (300 lines)
+   - **Net savings: 130,900 lines**
+
+2. **Helper Validation Centralization**: -11,727 lines
+   - Eliminated duplicate validation functions (1,062 helpers)
+   - Centralized to `_helpers/validation.py` (235 lines)
+   - **Net savings: 11,492 lines**
+
+3. **Type Hint Fixes**: Better autocomplete, cleaner code
+   - Fixed GET method overload ambiguity
+   - Fixed schema parser for Literal types
+   - Improved parameter autocomplete for POST/PUT/DELETE
+
+#### Developer Experience Improvements
+
+✅ **Full autocomplete** for all 220+ parameters per endpoint  
+✅ **Correct type inference** for single vs list returns  
+✅ **99.9% easier maintenance** - change 1 file instead of 1,062  
+✅ **Faster generation** - simpler templates  
+✅ **Smaller repository** - 143K fewer lines to maintain  
+
+#### Quality Metrics
+
+- **Code duplication**: Reduced by 99.8%
+- **Consistency**: 100% uniform validation and type hints
+- **Type safety**: Complete overload coverage for all methods
+- **IDE support**: Full IntelliSense/autocomplete working
+
+---
+
+### 🧹 Code Optimization: Helper Validation Centralization
+
+**Optimization: Reduced code duplication by centralizing validation logic.**
+
+#### Changed
+
+- **Centralized Validation Functions**
+  - Created `hfortix_fortios/_helpers/validation.py` module with reusable validators
+  - Moved `validate_required_fields()` to central module (was duplicated across 1,062 files)
+  - Moved `validate_enum_field()` to central module (replaces verbose inline validation)
+  - Moved `validate_query_parameter()` to central module
+  - Added batch validation helpers: `validate_multiple_enums()`, `validate_multiple_query_params()`
+
+- **Helper Files Simplified**
+  - Removed duplicate validation code from all 1,062 endpoint helpers
+  - Helpers now import and use central validation functions
+  - Consistent error messages across all endpoints
+
+#### Impact
+
+- ✅ **11,727 lines eliminated** from helper files (3.2% reduction)
+- ✅ **11,492 net lines saved** (after adding 235-line central module)
+- ✅ **99.9% easier bug fixes** - change 1 file instead of 1,062
+- ✅ **100% consistent validation** - single source of truth
+- ✅ **Memory efficient** - validation functions loaded once, referenced 1,062 times
+- ✅ **Future-proof** - easy to add features (i18n, custom messages, etc.)
+
+#### File Size Changes
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Helper Lines | 370,493 | 358,766 | -11,727 (-3.2%) |
+| Avg Lines/Helper | 348 | 337 | -11 (-3.2%) |
+| Files 200-300 lines | 732 (69%) | 769 (72%) | +37 (+5%) |
+| Files 300-500 lines | 195 (18%) | 160 (15%) | -35 (-18%) |
+
+#### Before (Duplicated Code):
+```python
+# In every helper file - 1,062 duplicates
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """Validate required fields."""
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    # ... 20+ more lines of error formatting ...
+```
+
+#### After (Centralized):
+```python
+# In all helpers - import once, use everywhere
+from hfortix_fortios._helpers.validation import (
+    validate_required_fields as _validate_required_fields,
+    validate_enum_field as _validate_enum_field,
+)
+
+# Use central function - 1 line instead of 25
+is_valid, error = _validate_required_fields(
+    payload, REQUIRED_FIELDS, FIELD_DESCRIPTIONS
+)
+```
+
+#### For End Users
+
+**No action required.** This is an internal optimization:
+- No API changes
+- No behavioral changes
+- Validation works exactly the same
+- Error messages are consistent
+
+#### Documentation
+
+- See `packages/fortios/OPTIMIZATION_RESULTS.md` for detailed metrics
+- See `packages/fortios/OPTIMIZATION_BASELINE.md` for before state
+
+#### Files Changed
+
+- **New:** `packages/fortios/hfortix_fortios/_helpers/validation.py` (Central validation module)
+- **Modified:** `.dev/generator/templates/validator.py.j2` (Template updated)
+- **Regenerated:** All 1,062 helper files
+
+---
+
+### 🔧 Type Hint Fix: GET Method Overload Resolution
+
+**Critical fix: Resolved ambiguous overloads for `get()` method with `response_mode="object"`.**
+
+#### Fixed
+
+- **Overload Ambiguity for List Returns**
+  - Fixed Pylance incorrectly inferring single object when list was returned
+  - Issue: `get(response_mode="object")` without mkey should return `list[FortiObject]`
+  - Pylance was matching wrong overload, suggesting single object attributes on list
+
+- **Solution: Keyword-Only Overloads**
+  - Changed list overload to use `*,` (keyword-only) without mkey parameter
+  - Forces Pylance to match correct overload based on presence of mkey argument
+  - Clear distinction: with mkey → single object, without mkey → list
+
+#### Before (Ambiguous):
+```python
+# Both matched same overload - Pylance confused
+test1 = fgt.api.cmdb.firewall.policy.get(policyid=1, response_mode="object")  
+test2 = fgt.api.cmdb.firewall.policy.get(response_mode="object")
+
+# ❌ Pylance thought test2 was PolicyObject (wrong!)
+print(test2.name)  # Suggested .name attribute on list
+```
+
+#### After (Unambiguous):
+```python
+# Correct overload matching
+test1 = fgt.api.cmdb.firewall.policy.get(policyid=1, response_mode="object")
+# ✅ Correctly inferred as PolicyObject
+print(test1.name)  
+
+test2 = fgt.api.cmdb.firewall.policy.get(response_mode="object")
+# ✅ Correctly inferred as list[PolicyObject]
+print(test2[0].name)
+print(test2.name)  # ❌ Correctly shows error: list has no attribute 'name'
+```
+
+#### Technical Details
+
+**Updated Overload Pattern** (in `.pyi` stubs):
+```python
+# Single object - mkey required
+@overload
+def get(
+    self,
+    policyid: int,
+    *,
+    filter: list[str] | None = ...,
+    response_mode: Literal["object"] = ...,
+) -> PolicyObject: ...
+
+# List of objects - no mkey parameter, keyword-only
+@overload
+def get(
+    self,
+    *,  # ✅ Keyword-only, no policyid
+    filter: list[str] | None = ...,
+    response_mode: Literal["object"] = ...,
+) -> list[PolicyObject]: ...
+```
+
+#### Impact
+
+- ✅ **Correct type inference** for 750+ CMDB endpoints
+- ✅ **Proper autocomplete** for single vs list returns
+- ✅ **Better error detection** at development time
+- ✅ **Affects all endpoints** with mkey (primary key) parameters
+
+#### For End Users
+
+**No code changes required**, but you'll get better autocomplete:
+- IDE will correctly suggest attributes for single objects
+- IDE will correctly show list methods for multiple objects
+- Type errors will be caught during development, not runtime
+
+#### Documentation
+
+- See `TYPE_HINT_FIX.md` for detailed explanation
+- See `test_type_fix.py` for verification tests
+
+#### Files Changed
+
+- **Modified:** `.dev/generator/templates/endpoint_class.pyi.j2` (Template updated)
+- **Regenerated:** All 750+ `.pyi` stub files with mkey parameters
+
+---
+
+### 🔧 Full Autocomplete Implementation
+
+**Major fix: Complete autocomplete support for all methods and parameters.**
+
+#### Fixed
+
+- **Schema Parser Bug (Critical)**
+  - Fixed `_parse_field_v1_7()` storing raw dict objects instead of extracting option names
+  - Was: `options = [{"name": "enable", "help": "..."}, ...]` 
+  - Now: `options = ["enable", "disable"]`
+  - Affected all Literal type generation for 1,000+ endpoints
+
+- **Docstring Enhancer Compatibility**
+  - Updated to handle both dict and string formats for backward compatibility
+  - Gracefully handles schema format variations across FortiOS versions
+
+- **Parameter Autocomplete for POST/PUT**
+  - All endpoint-specific parameters now show in autocomplete
+  - Literal types display available enum values
+  - Type hints show correct parameter types (str, int, list, etc.)
+
+#### Before (Broken):
+```python
+# ❌ No autocomplete for parameters
+fgt.api.cmdb.firewall.policy.post(
+    # No suggestions appeared
+)
+
+# ❌ Literal types showed dict objects
+def post(self, status: Literal[{"name": "enable", ...}] | None = ...): ...
+```
+
+#### After (Fixed):
+```python
+# ✅ Full autocomplete for all parameters
+fgt.api.cmdb.firewall.policy.post(
+    name="test",       # ← Type "na" shows "name"
+    action="accept",   # ← Shows: "accept" | "deny" | "ipsec"
+    status="enable",   # ← Shows: "enable" | "disable"
+    srcintf=["port1"], # ← All parameters autocomplete!
+)
+
+# ✅ Clean Literal types
+def post(self, status: Literal["enable", "disable"] | None = ...): ...
+```
+
+#### Impact
+
+- ✅ **Full autocomplete** for GET, POST, PUT, DELETE methods
+- ✅ **Correct Literal types** for all enum fields (220+ per endpoint)
+- ✅ **Parameter discovery** - see all available parameters in IDE
+- ✅ **Value validation** - IDE shows valid enum values
+- ✅ **Affects 1,000+ endpoints** across all API categories
+
+#### For End Users
+
+**Significant developer experience improvement:**
+- IntelliSense/autocomplete now works for all parameters
+- Enum values are suggested automatically
+- Type errors caught during development
+- Much faster API exploration and development
+
+#### Documentation
+
+- See `AUTOCOMPLETE_FULLY_WORKING.md` for complete details
+- See `FORTIOBJECT_AUTOCOMPLETE_COMPLETE.md` for object mode specifics
+
+#### Files Changed
+
+- **Fixed:** `.dev/generator/schema_management/schema_parser.py` (Schema parsing)
+- **Fixed:** `.dev/generator/generators/docstring_enhancer.py` (Compatibility)
+- **Fixed:** `.dev/generator/templates/endpoint_class.pyi.j2` (Template cleanup)
+- **Regenerated:** All 1,000+ endpoint `.pyi` stub files
+
+---
+
+### 🚀 Major Refactoring: Protocol-Based Type Hints
+
+**Breaking change for generator only - no impact on end users.**
+
+#### Changed
+
+- **Generator Templates Refactored**
+  - Replaced 18 `@overload` decorators per endpoint with Protocol inheritance
+  - Created `_protocols.py` module with reusable `CRUDEndpoint` protocol
+  - Eliminated ~131,200 lines of duplicate overload code across 1,063 endpoints
+  - Average 25% file size reduction per endpoint (e.g., voip/profile.py: 949→708 lines)
+
+- **Class Inheritance Updated**
+  - All endpoint classes now inherit from `CRUDEndpoint` protocol
+  - Pattern: `class Profile(CRUDEndpoint, MetadataMixin)` instead of `class Profile(MetadataMixin)`
+  - Type hints for GET/POST/PUT/DELETE provided by protocol, not local overloads
+
+- **Generator Template Simplified**
+  - Removed ~263 lines of overload generation logic from `endpoint_class.py.j2`
+  - Added automatic `CRUDEndpoint` import for CRUD endpoints
+  - Cleaner, more maintainable template code
+
+#### Technical Details
+
+**Protocol Definition** (`_protocols.py`):
+```python
+from typing import Protocol, overload, Literal
+
+class GetProtocol(Protocol):
+    @overload
+    def get(self, name: str, ..., response_mode: Literal["object"]) -> FortiObject: ...
+    @overload
+    def get(self, name: None, ..., response_mode: Literal["object"]) -> list[FortiObject]: ...
+    # ... 4 more overloads
+
+class CRUDEndpoint(GetProtocol, PostProtocol, PutProtocol, DeleteProtocol, Protocol):
+    """Combined protocol for full CRUD endpoints."""
+    pass
+```
+
+**Before** (18 overloads per file):
+```python
+class Profile(MetadataMixin):
+    @overload
+    def get(self, name: str, ...) -> FortiObject: ...
+    @overload
+    def get(self, name: None, ...) -> list[FortiObject]: ...
+    # ... 16 more overloads
+    
+    def get(self, ...):  # Implementation
+```
+
+**After** (0 overloads per file):
+```python
+from hfortix_fortios._protocols import CRUDEndpoint
+
+class Profile(CRUDEndpoint, MetadataMixin):
+    # All overloads inherited from protocol!
+    
+    def get(self, ...):  # Implementation only
+```
+
+#### Impact
+
+- ✅ **99.8% reduction** in overload boilerplate code
+- ✅ **25% smaller** generated endpoint files
+- ✅ **Faster generation** - simpler templates
+- ✅ **Easier maintenance** - change overloads in one place
+- ✅ **Zero functional impact** - autocomplete and type checking work identically
+- ✅ **Zero runtime overhead** - protocols are compile-time only
+- ✅ **Backward compatible** - no API changes for end users
+
+#### For End Users
+
+**No action required.** This is a generator-level refactoring that doesn't affect:
+- API functionality
+- Method signatures
+- Autocomplete behavior
+- Type checking
+- Runtime performance
+
+Your existing code continues to work exactly as before.
+
+#### For Contributors
+
+- Generator backup created at `.dev/generator/archive/pre-protocol-refactor-20260107_145151/`
+- See `PROTOCOL_REFACTORING_COMPLETE.md` for full details
+- See `REFACTORING_OVERLOADS_GUIDE.md` for implementation guide
+- See `REFACTORING_VISUAL_COMPARISON.md` for before/after comparison
+
+#### Files Changed
+
+- **New:** `packages/fortios/hfortix_fortios/_protocols.py` (Protocol definitions)
+- **Modified:** `.dev/generator/templates/endpoint_class.py.j2` (Template simplified)
+- **Regenerated:** All 1,063 endpoint files in `packages/fortios/hfortix_fortios/api/v2/`
+
+---
+
+## [0.5.17] - 2026-01-07
+
+### ✨ Added `.json` Property to FortiObject
+
+**Enhancement: Convenient property access to underlying dictionary data.**
+
+#### Added
+
+- **`.json` Property**
+  - Added read-only `.json` property to `FortiObject` class
+  - Returns the underlying `dict[str, Any]` data structure
+  - Provides intuitive access to raw API response data
+  - Alias for existing `.to_dict()` method
+
+#### Usage Example
+
+```python
+fgt = FortiOS(host="...", token="...", response_mode="object")
+
+# Delete a policy and access response metadata
+result = fgt.api.cmdb.firewall.policy.delete(policyid=42)
+
+# New: Use .json property
+print(result.json)
+# {'http_method': 'DELETE', 'revision': '...', 'status': 'success', ...}
+
+# Still works: Use .to_dict() method
+print(result.to_dict())
+# {'http_method': 'DELETE', 'revision': '...', 'status': 'success', ...}
+```
+
+#### Why This Matters
+
+- **More Intuitive**: `.json` property name matches common API client conventions
+- **Discoverable**: Easier to find in IDE autocomplete than `.to_dict()` method
+- **Backwards Compatible**: Existing `.to_dict()` method still works
+- **Common Pattern**: Aligns with requests library's `.json()` method pattern
+
+## [0.5.16] - 2026-01-07
+
+### 🔧 Fixed Overload Matching for PyCharm Autocomplete
+
+**Critical fix: Improved overload signatures to ensure PyCharm correctly matches method calls.**
+
+#### Fixed
+
+- **Keyword-Only Arguments for `response_mode`**
+  - Made `response_mode` and `raw_json` keyword-only parameters in overloads (using `*,` separator)
+  - Prevents positional argument confusion and ensures PyCharm matches the correct overload
+  - When you specify `response_mode="object"`, PyCharm now correctly infers `FortiObject` return type
+
+- **Added Default Behavior Overload**
+  - Added 4th overload for calls without `response_mode` or `raw_json`
+  - Returns `dict[str, Any] | FortiObject` (or `list[FortiObject]` for GET)
+  - Ensures all call patterns have a matching overload
+
+- **Removed Ellipsis Defaults**
+  - Changed `response_mode: Literal["object"] = ...` to `response_mode: Literal["object"]`
+  - Makes the parameter truly required when specified, improving type inference
+
+#### New Overload Pattern
+
+```python
+# When you specify response_mode="object"
+@overload
+def delete(..., *, response_mode: Literal["object"]) -> FortiObject: ...
+
+# When you specify response_mode="dict"  
+@overload
+def delete(..., *, response_mode: Literal["dict"]) -> dict[str, Any]: ...
+
+# When you specify raw_json=True
+@overload
+def delete(..., *, raw_json: Literal[True]) -> dict[str, Any]: ...
+
+# When you don't specify either (default behavior)
+@overload
+def delete(...) -> dict[str, Any] | FortiObject: ...
+```
+
+#### Why This Matters
+
+- PyCharm's type inference now works correctly for all call patterns
+- Autocomplete shows `response_mode` as available parameter
+- When using `response_mode="object"`, `.status` and other FortiObject attributes autocomplete properly
+- No more `Cannot find reference 'status' in 'dict | Coroutine'` errors
+
+#### Migration
+
+- **No code changes required**
+- Update to v0.5.16: `pip install --upgrade hfortix-fortios>=0.5.16`
+- Restart IDE to clear type hint cache
+- Autocomplete should now work correctly
+
+## [0.5.15] - 2026-01-07
+
+### 🔧 Fixed Type Hints for `response_mode` Parameter Autocomplete
+
+**Critical IDE fix: `response_mode` parameter now appears in autocomplete suggestions.**
+
+#### Fixed
+
+- **Complete Overload Signatures for All CRUD Methods**
+  - Added missing `response_mode="dict"` overload to GET, POST, PUT, DELETE methods
+  - Previously only had `response_mode="object"` and `raw_json=True` overloads
+  - PyCharm and other type-aware IDEs now correctly show `response_mode` parameter in autocomplete
+  - Fixes "Cannot find reference 'status' in 'dict | Coroutine'" when using `response_mode="object"`
+  
+- **Overload Pattern Now Complete:**
+  ```python
+  @overload  # Returns FortiObject
+  def delete(..., response_mode: Literal["object"] = ...) -> FortiObject: ...
+  
+  @overload  # Returns dict (NEW - was missing!)
+  def delete(..., response_mode: Literal["dict"] = ...) -> dict[str, Any]: ...
+  
+  @overload  # Returns raw dict
+  def delete(..., raw_json: Literal[True] = ...) -> dict[str, Any]: ...
+  ```
+
+#### Technical Details
+
+- Without all three overloads, type checkers fall back to implementation signature
+- Implementation returns `Union[dict, FortiObject, Coroutine]` causing IDE confusion
+- All generated endpoints now have complete overload coverage
+- Applies to all 1064 generated endpoint methods across cmdb, monitor, and service APIs
+
+#### Migration
+
+- **No code changes required** - this is purely a type hint improvement
+- Regenerate endpoints if you've made custom modifications: `python .dev/generator/generate.py`
+- Restart IDE/language server to pick up new type hints
+- Install updated package: `pip install --upgrade hfortix-fortios>=0.5.15`
+
+## [0.5.14] - 2026-01-07
+
+### ✨ Enhanced Response Type Hints & Per-Method Response Mode Override
+
+**Major IDE experience improvement: Better autocomplete for API responses and flexible response mode control.**
+
+#### Added
+
+- **FortiObject Common Response Attributes** (`models.pyi`)
+  - Added type hints for common API response fields that now autocomplete in IDEs:
+    - `status` - API response status ("success" or "error")
+    - `http_status` - HTTP status code (200, 404, 500, etc.)
+    - `error` - Error code (integer, present when status="error")
+    - `error_description` - Human-readable error message
+    - `vdom` - Virtual domain name
+    - `serial` - Device serial number
+    - `version` - API version string
+    - `build` - Firmware build number
+  - Fixes PyCharm showing "Cannot find reference 'status' in 'dict | Coroutine'" errors
+  - Enables autocomplete for common response fields across all FortiObject instances
+
+- **Per-Method `response_mode` Override**
+  - All API methods (GET, POST, PUT, DELETE) now accept optional `response_mode` parameter
+  - Overrides client-level `response_mode` setting on a per-call basis
+  - Values: `"dict"` (returns dict) or `"object"` (returns FortiObject)
+  - **Example usage:**
+    ```python
+    # Client defaults to dict mode
+    fgt = FortiOS(host="...", token="...", response_mode="dict")
+    
+    # Override to object mode for single call
+    policy = fgt.api.cmdb.firewall.policy.get(
+        policyid=1, 
+        response_mode="object"  # Returns FortiObject!
+    )
+    print(policy.name)  # Clean attribute access
+    print(policy.status)  # Now with autocomplete!
+    ```
+
+#### Changed
+
+- **Client Response Processing** (`client.py`)
+  - Updated `ResponseProcessingClient` wrapper methods to accept `response_mode` parameter
+  - Methods now check for per-call override before using client-level default
+  - Logic: `mode = response_mode if response_mode is not None else self._response_mode`
+  - Maintains backward compatibility - existing code works unchanged
+
+- **Endpoint Template Updates** (`endpoint_class.py.j2`)
+  - Added `response_mode: Literal["dict", "object"] | None = None` parameter to:
+    - `get()` implementation
+    - `post()` implementation  
+    - `put()` implementation
+    - `delete()` implementation
+  - Updated docstrings to document new `response_mode` parameter
+  - All generated endpoints now pass `response_mode` to client methods
+
+- **Generator Improvements**
+  - Regenerated `cmdb.firewall.policy` endpoint with new template
+  - All future endpoint regenerations will include `response_mode` override capability
+
+#### Fixed
+
+- Fixed category stub files missing attribute type hints (v0.5.13 regression)
+  - `cmdb/__init__.pyi` - Now includes `firewall: firewall.Firewall` (and 36 other attributes)
+  - `monitor/__init__.pyi` - Now includes all monitor category attributes
+  - `service/__init__.pyi` - Now includes all service category attributes
+  - Generator regex updated from `r'self\.(\w+)\s*=\s*(\w+)\('` to `r'self\.(\w+)\s*=\s*(\w+)\.(\w+)\('`
+  - Fixes PyCharm "Unresolved attribute reference 'firewall' for class 'CMDB'" errors
+
+## [0.5.13] - 2026-01-07
+
+### 🔧 Category Attribute Type Hints
+
+**Fixed missing autocomplete for category attributes in PyCharm/VSCode.**
+
+#### Fixed
+
+- **Generator Stub File Creation**
+  - Fixed generator regex pattern to properly capture `module.Class` pattern in category `__init__.py` files
+  - Updated from `r'self\.(\w+)\s*=\s*(\w+)\('` to `r'self\.(\w+)\s*=\s*(\w+)\.(\w+)\('` 
+  - Regenerated category stub files with proper attribute declarations
+  - Files affected: `cmdb/__init__.pyi`, `monitor/__init__.pyi`, `service/__init__.pyi`
+  - Fixes autocomplete for `client.cmdb.firewall`, `client.monitor.system`, etc.
+
+## [0.5.11] - 2026-01-07
+
+### 🎯 Auto-Normalization for List Fields
+
+**Major usability improvement: API layer now automatically converts strings and lists to FortiOS format.**
+
+#### Added
+
+- **Universal Auto-Normalization Helper** (`build_api_payload()`)
+  - New helper function in `hfortix_fortios/_helpers/builders.py`
+  - Automatically normalizes 70+ common list fields to `[{'name': '...'}]` format
+  - Supports all API types: cmdb, monitor, log, service
+  - Fields auto-normalized include:
+    - Firewall: `srcintf`, `dstintf`, `srcaddr`, `dstaddr`, `service`, `poolname`, etc.
+    - Groups: `member`, `interface`, `device`, `gateway`
+    - User/Auth: `users`, `groups`, `fsso_groups`
+    - And many more (see `COMMON_LIST_FIELDS` in builders.py)
+  - **Accepts multiple input formats:**
+    - String: `"port1"` → `[{'name': 'port1'}]`
+    - List of strings: `["port1", "port2"]` → `[{'name': 'port1'}, {'name': 'port2'}]`
+    - Pre-formatted dicts: `[{'name': 'port1'}]` → unchanged (pass-through)
+  - **Flexible control:**
+    - `auto_normalize=True` (default) - Auto-detect and normalize common fields
+    - `auto_normalize=False` - Disable all normalization (raw mode)
+    - `normalize_fields={'custom_field'}` - Explicit field list override
+  - Backward compatible - pre-formatted data passes through unchanged
+
+#### Changed
+
+- **All CMDB Endpoints Regenerated**
+  - All `post()`, `put()`, and `set()` methods now use `build_api_payload()`
+  - 212+ uses of `build_api_payload` in generated code (0 old calls remaining)
+  - Updated docstrings with auto-normalization examples
+  - Added note in module docstring: "Auto-normalization: List fields accept strings or lists"
+
+- **Stub Generation Improvements**
+  - Concrete `get()` fallback now returns only `Union[dict[str, Any], list[dict[str, Any]]]`
+  - Removed typed objects from fallback to eliminate ambiguous hover types
+  - Overloads with `response_mode="object"` still return typed objects (e.g., `PolicyObject`)
+  - Fixes PyCharm/VSCode showing `FortiObject | FortiObject |` in hover tooltips
+  - Editor autocomplete now correctly narrows to typed object when `response_mode="object"` used
+
+#### Fixed
+
+- **User Code Now Works Without Manual Formatting**
+  - Before: `srcintf="port1"` → HTTP 500 "Input value is invalid"
+  - After: `srcintf="port1"` → Auto-converted to `[{'name': 'port1'}]` ✅
+  - Example that now works:
+    ```python
+    fgt.api.cmdb.firewall.policy.post(
+        name="test",
+        srcintf="any",      # Auto-normalized!
+        dstintf="wan1",
+        srcaddr="all",
+        dstaddr="all",
+        service="HTTP",
+        schedule="always"
+    )
+    ```
+
+- **Editor Type Inference**
+  - Hover over `policy` now shows specific `PolicyObject` type (when `response_mode="object"`)
+  - Autocomplete for `.name`, `.policyid`, etc. works correctly
+  - No more ambiguous `FortiObject | FortiObject |` unions
+
+#### Technical Details
+
+- Template: `.dev/generator/templates/endpoint_class.py.j2`
+- Helper: `packages/fortios/hfortix_fortios/_helpers/builders.py`
+- Test coverage: `test_normalization.py` (all tests passing)
+
+### 🔧 Enhanced Query Parameters & Schema Introspection (2026-01-07)
 
 **Improved developer experience with explicit query parameters and runtime schema introspection.**
 

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_sniffer.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_sniffer.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Sniffer(MetadataMixin):
+class Sniffer(CRUDEndpoint, MetadataMixin):
     """Sniffer Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "sniffer"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ip_threatfeed": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "anomaly": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Sniffer(MetadataMixin):
         """Initialize Sniffer endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         id: int | None = None,
@@ -72,8 +108,9 @@ class Sniffer(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/sniffer configuration.
 
@@ -99,6 +136,7 @@ class Sniffer(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class Sniffer(MetadataMixin):
         
         if id:
             endpoint = "/firewall/sniffer/" + str(id)
+            unwrap_single = True
         else:
             endpoint = "/firewall/sniffer"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class Sniffer(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -229,15 +274,16 @@ class Sniffer(MetadataMixin):
         dlp_profile_status: Literal["enable", "disable"] | None = None,
         dlp_profile: str | None = None,
         ip_threatfeed_status: Literal["enable", "disable"] | None = None,
-        ip_threatfeed: str | list | None = None,
+        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = None,
         file_filter_profile_status: Literal["enable", "disable"] | None = None,
         file_filter_profile: str | None = None,
         ips_dos_status: Literal["enable", "disable"] | None = None,
-        anomaly: str | list | None = None,
+        anomaly: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/sniffer object.
 
@@ -250,8 +296,44 @@ class Sniffer(MetadataMixin):
             status: Enable/disable the active status of the sniffer.
             logtraffic: Either log all sessions, only sessions that have a security profile applied, or disable all logging for this policy.
             ipv6: Enable/disable sniffing IPv6 packets.
+            non_ip: Enable/disable sniffing non-IP packets.
+            interface: Interface name that traffic sniffing will take place on.
+            host: Hosts to filter for in sniffer traffic (Format examples: 1.1.1.1, 2.2.2.0/24, 3.3.3.3/255.255.255.0, 4.4.4.0-4.4.4.240).
+            port: Ports to sniff (Format examples: 10, :20, 30:40, 50-, 100-200).
+            protocol: Integer value for the protocol type as defined by IANA (0 - 255).
+            vlan: List of VLANs to sniff.
+            application_list_status: Enable/disable application control profile.
+            application_list: Name of an existing application list.
+            ips_sensor_status: Enable/disable IPS sensor.
+            ips_sensor: Name of an existing IPS sensor.
+            dsri: Enable/disable DSRI.
+            av_profile_status: Enable/disable antivirus profile.
+            av_profile: Name of an existing antivirus profile.
+            webfilter_profile_status: Enable/disable web filter profile.
+            webfilter_profile: Name of an existing web filter profile.
+            emailfilter_profile_status: Enable/disable emailfilter.
+            emailfilter_profile: Name of an existing email filter profile.
+            dlp_profile_status: Enable/disable DLP profile.
+            dlp_profile: Name of an existing DLP profile.
+            ip_threatfeed_status: Enable/disable IP threat feed.
+            ip_threatfeed: Name of an existing IP threat feed.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            file_filter_profile_status: Enable/disable file filter.
+            file_filter_profile: Name of an existing file-filter profile.
+            ips_dos_status: Enable/disable IPS DoS anomaly detection.
+            anomaly: Configuration method to edit Denial of Service (DoS) anomaly settings.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -278,9 +360,28 @@ class Sniffer(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_threatfeed is not None:
+            ip_threatfeed = normalize_table_field(
+                ip_threatfeed,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ip_threatfeed",
+                example="[{'name': 'value'}]",
+            )
+        if anomaly is not None:
+            anomaly = normalize_table_field(
+                anomaly,
+                mkey="name",
+                required_fields=['name'],
+                field_name="anomaly",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             uuid=uuid,
             status=status,
@@ -330,9 +431,14 @@ class Sniffer(MetadataMixin):
         endpoint = "/firewall/sniffer/" + str(id_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -361,15 +467,16 @@ class Sniffer(MetadataMixin):
         dlp_profile_status: Literal["enable", "disable"] | None = None,
         dlp_profile: str | None = None,
         ip_threatfeed_status: Literal["enable", "disable"] | None = None,
-        ip_threatfeed: str | list | None = None,
+        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = None,
         file_filter_profile_status: Literal["enable", "disable"] | None = None,
         file_filter_profile: str | None = None,
         ips_dos_status: Literal["enable", "disable"] | None = None,
-        anomaly: str | list | None = None,
+        anomaly: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/sniffer object.
 
@@ -382,8 +489,44 @@ class Sniffer(MetadataMixin):
             status: Enable/disable the active status of the sniffer.
             logtraffic: Either log all sessions, only sessions that have a security profile applied, or disable all logging for this policy.
             ipv6: Enable/disable sniffing IPv6 packets.
+            non_ip: Enable/disable sniffing non-IP packets.
+            interface: Interface name that traffic sniffing will take place on.
+            host: Hosts to filter for in sniffer traffic (Format examples: 1.1.1.1, 2.2.2.0/24, 3.3.3.3/255.255.255.0, 4.4.4.0-4.4.4.240).
+            port: Ports to sniff (Format examples: 10, :20, 30:40, 50-, 100-200).
+            protocol: Integer value for the protocol type as defined by IANA (0 - 255).
+            vlan: List of VLANs to sniff.
+            application_list_status: Enable/disable application control profile.
+            application_list: Name of an existing application list.
+            ips_sensor_status: Enable/disable IPS sensor.
+            ips_sensor: Name of an existing IPS sensor.
+            dsri: Enable/disable DSRI.
+            av_profile_status: Enable/disable antivirus profile.
+            av_profile: Name of an existing antivirus profile.
+            webfilter_profile_status: Enable/disable web filter profile.
+            webfilter_profile: Name of an existing web filter profile.
+            emailfilter_profile_status: Enable/disable emailfilter.
+            emailfilter_profile: Name of an existing email filter profile.
+            dlp_profile_status: Enable/disable DLP profile.
+            dlp_profile: Name of an existing DLP profile.
+            ip_threatfeed_status: Enable/disable IP threat feed.
+            ip_threatfeed: Name of an existing IP threat feed.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            file_filter_profile_status: Enable/disable file filter.
+            file_filter_profile: Name of an existing file-filter profile.
+            ips_dos_status: Enable/disable IPS DoS anomaly detection.
+            anomaly: Configuration method to edit Denial of Service (DoS) anomaly settings.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -412,9 +555,28 @@ class Sniffer(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_threatfeed is not None:
+            ip_threatfeed = normalize_table_field(
+                ip_threatfeed,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ip_threatfeed",
+                example="[{'name': 'value'}]",
+            )
+        if anomaly is not None:
+            anomaly = normalize_table_field(
+                anomaly,
+                mkey="name",
+                required_fields=['name'],
+                field_name="anomaly",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             uuid=uuid,
             status=status,
@@ -460,16 +622,22 @@ class Sniffer(MetadataMixin):
 
         endpoint = "/firewall/sniffer"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         id: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/sniffer object.
 
@@ -479,6 +647,7 @@ class Sniffer(MetadataMixin):
             id: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -504,7 +673,7 @@ class Sniffer(MetadataMixin):
         endpoint = "/firewall/sniffer/" + str(id)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -568,7 +737,39 @@ class Sniffer(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        uuid: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        logtraffic: Literal["all", "utm", "disable"] | None = None,
+        ipv6: Literal["enable", "disable"] | None = None,
+        non_ip: Literal["enable", "disable"] | None = None,
+        interface: str | None = None,
+        host: str | None = None,
+        port: str | None = None,
+        protocol: str | None = None,
+        vlan: str | None = None,
+        application_list_status: Literal["enable", "disable"] | None = None,
+        application_list: str | None = None,
+        ips_sensor_status: Literal["enable", "disable"] | None = None,
+        ips_sensor: str | None = None,
+        dsri: Literal["enable", "disable"] | None = None,
+        av_profile_status: Literal["enable", "disable"] | None = None,
+        av_profile: str | None = None,
+        webfilter_profile_status: Literal["enable", "disable"] | None = None,
+        webfilter_profile: str | None = None,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = None,
+        emailfilter_profile: str | None = None,
+        dlp_profile_status: Literal["enable", "disable"] | None = None,
+        dlp_profile: str | None = None,
+        ip_threatfeed_status: Literal["enable", "disable"] | None = None,
+        ip_threatfeed: str | list[str] | list[dict[str, Any]] | None = None,
+        file_filter_profile_status: Literal["enable", "disable"] | None = None,
+        file_filter_profile: str | None = None,
+        ips_dos_status: Literal["enable", "disable"] | None = None,
+        anomaly: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -579,7 +780,39 @@ class Sniffer(MetadataMixin):
 
         Args:
             payload_dict: Resource data including id (primary key)
+            id: Field id
+            uuid: Field uuid
+            status: Field status
+            logtraffic: Field logtraffic
+            ipv6: Field ipv6
+            non_ip: Field non-ip
+            interface: Field interface
+            host: Field host
+            port: Field port
+            protocol: Field protocol
+            vlan: Field vlan
+            application_list_status: Field application-list-status
+            application_list: Field application-list
+            ips_sensor_status: Field ips-sensor-status
+            ips_sensor: Field ips-sensor
+            dsri: Field dsri
+            av_profile_status: Field av-profile-status
+            av_profile: Field av-profile
+            webfilter_profile_status: Field webfilter-profile-status
+            webfilter_profile: Field webfilter-profile
+            emailfilter_profile_status: Field emailfilter-profile-status
+            emailfilter_profile: Field emailfilter-profile
+            dlp_profile_status: Field dlp-profile-status
+            dlp_profile: Field dlp-profile
+            ip_threatfeed_status: Field ip-threatfeed-status
+            ip_threatfeed: Field ip-threatfeed
+            file_filter_profile_status: Field file-filter-profile-status
+            file_filter_profile: Field file-filter-profile
+            ips_dos_status: Field ips-dos-status
+            anomaly: Field anomaly
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -589,7 +822,13 @@ class Sniffer(MetadataMixin):
             ValueError: If id is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_sniffer.set(
+            ...     id=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "id": 1,
             ...     "field1": "value1",
@@ -612,20 +851,52 @@ class Sniffer(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            id=id,
+            uuid=uuid,
+            status=status,
+            logtraffic=logtraffic,
+            ipv6=ipv6,
+            non_ip=non_ip,
+            interface=interface,
+            host=host,
+            port=port,
+            protocol=protocol,
+            vlan=vlan,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            ip_threatfeed_status=ip_threatfeed_status,
+            ip_threatfeed=ip_threatfeed,
+            file_filter_profile_status=file_filter_profile_status,
+            file_filter_profile=file_filter_profile,
+            ips_dos_status=ips_dos_status,
+            anomaly=anomaly,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("id")
+        mkey_value = payload_data.get("id")
         if not mkey_value:
-            raise ValueError("id is required in payload_dict for set()")
+            raise ValueError("id is required for set()")
         
         # Check if resource exists
         if self.exists(id=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

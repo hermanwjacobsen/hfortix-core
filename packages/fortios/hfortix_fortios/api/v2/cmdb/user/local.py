@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_local.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_local.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Local(MetadataMixin):
+class Local(CRUDEndpoint, MetadataMixin):
     """Local Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Local(MetadataMixin):
         """Initialize Local endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Local(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/local configuration.
 
@@ -99,6 +118,7 @@ class Local(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Local(MetadataMixin):
         
         if name:
             endpoint = "/user/local/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/local"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Local(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -233,8 +260,9 @@ class Local(MetadataMixin):
         username_sensitivity: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/local object.
 
@@ -247,8 +275,31 @@ class Local(MetadataMixin):
             status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
             type: Authentication method.
             passwd: User's password.
+            ldap_server: Name of LDAP server with which the user must authenticate.
+            radius_server: Name of RADIUS server with which the user must authenticate.
+            tacacs_plus_server: Name of TACACS+ server with which the user must authenticate.
+            saml_server: Name of SAML server with which the user must authenticate.
+            two_factor: Enable/disable two-factor authentication.
+            two_factor_authentication: Authentication method by FortiToken Cloud.
+            two_factor_notification: Notification method for user activation by FortiToken Cloud.
+            fortitoken: Two-factor recipient's FortiToken serial number.
+            email_to: Two-factor recipient's email address.
+            sms_server: Send SMS through FortiGuard or other external server.
+            sms_custom_server: Two-factor recipient's SMS server.
+            sms_phone: Two-factor recipient's mobile phone number.
+            passwd_policy: Password policy to apply to this user, as defined in config user password-policy.
+            passwd_time: Time of the last password update.
+            authtimeout: Time in minutes before the authentication timeout for a user is reached.
+            workstation: Name of the remote user workstation, if you want to limit the user to authenticate only from a particular workstation.
+            auth_concurrent_override: Enable/disable overriding the policy-auth-concurrent under config system global.
+            auth_concurrent_value: Maximum number of concurrent logins permitted from the same user.
+            ppk_secret: IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal encoded with a leading 0x).
+            ppk_identity: IKEv2 Postquantum Preshared Key Identity.
+            qkd_profile: Quantum Key Distribution (QKD) profile.
+            username_sensitivity: Enable/disable case and accent sensitivity when performing username matching (accents are stripped and case is ignored when disabled).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -275,9 +326,10 @@ class Local(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             id=id,
             status=status,
@@ -324,9 +376,14 @@ class Local(MetadataMixin):
         endpoint = "/user/local/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -359,8 +416,9 @@ class Local(MetadataMixin):
         username_sensitivity: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/local object.
 
@@ -373,8 +431,31 @@ class Local(MetadataMixin):
             status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
             type: Authentication method.
             passwd: User's password.
+            ldap_server: Name of LDAP server with which the user must authenticate.
+            radius_server: Name of RADIUS server with which the user must authenticate.
+            tacacs_plus_server: Name of TACACS+ server with which the user must authenticate.
+            saml_server: Name of SAML server with which the user must authenticate.
+            two_factor: Enable/disable two-factor authentication.
+            two_factor_authentication: Authentication method by FortiToken Cloud.
+            two_factor_notification: Notification method for user activation by FortiToken Cloud.
+            fortitoken: Two-factor recipient's FortiToken serial number.
+            email_to: Two-factor recipient's email address.
+            sms_server: Send SMS through FortiGuard or other external server.
+            sms_custom_server: Two-factor recipient's SMS server.
+            sms_phone: Two-factor recipient's mobile phone number.
+            passwd_policy: Password policy to apply to this user, as defined in config user password-policy.
+            passwd_time: Time of the last password update.
+            authtimeout: Time in minutes before the authentication timeout for a user is reached.
+            workstation: Name of the remote user workstation, if you want to limit the user to authenticate only from a particular workstation.
+            auth_concurrent_override: Enable/disable overriding the policy-auth-concurrent under config system global.
+            auth_concurrent_value: Maximum number of concurrent logins permitted from the same user.
+            ppk_secret: IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal encoded with a leading 0x).
+            ppk_identity: IKEv2 Postquantum Preshared Key Identity.
+            qkd_profile: Quantum Key Distribution (QKD) profile.
+            username_sensitivity: Enable/disable case and accent sensitivity when performing username matching (accents are stripped and case is ignored when disabled).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -403,9 +484,10 @@ class Local(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             id=id,
             status=status,
@@ -448,16 +530,22 @@ class Local(MetadataMixin):
 
         endpoint = "/user/local"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/local object.
 
@@ -467,6 +555,7 @@ class Local(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -492,7 +581,7 @@ class Local(MetadataMixin):
         endpoint = "/user/local/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -556,7 +645,36 @@ class Local(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        id: int | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["password", "radius", "tacacs+", "ldap", "saml"] | None = None,
+        passwd: Any | None = None,
+        ldap_server: str | None = None,
+        radius_server: str | None = None,
+        tacacs_plus_server: str | None = None,
+        saml_server: str | None = None,
+        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = None,
+        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = None,
+        two_factor_notification: Literal["email", "sms"] | None = None,
+        fortitoken: str | None = None,
+        email_to: str | None = None,
+        sms_server: Literal["fortiguard", "custom"] | None = None,
+        sms_custom_server: str | None = None,
+        sms_phone: str | None = None,
+        passwd_policy: str | None = None,
+        passwd_time: str | None = None,
+        authtimeout: int | None = None,
+        workstation: str | None = None,
+        auth_concurrent_override: Literal["enable", "disable"] | None = None,
+        auth_concurrent_value: int | None = None,
+        ppk_secret: Any | None = None,
+        ppk_identity: str | None = None,
+        qkd_profile: str | None = None,
+        username_sensitivity: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -567,7 +685,36 @@ class Local(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            id: Field id
+            status: Field status
+            type: Field type
+            passwd: Field passwd
+            ldap_server: Field ldap-server
+            radius_server: Field radius-server
+            tacacs_plus_server: Field tacacs+-server
+            saml_server: Field saml-server
+            two_factor: Field two-factor
+            two_factor_authentication: Field two-factor-authentication
+            two_factor_notification: Field two-factor-notification
+            fortitoken: Field fortitoken
+            email_to: Field email-to
+            sms_server: Field sms-server
+            sms_custom_server: Field sms-custom-server
+            sms_phone: Field sms-phone
+            passwd_policy: Field passwd-policy
+            passwd_time: Field passwd-time
+            authtimeout: Field authtimeout
+            workstation: Field workstation
+            auth_concurrent_override: Field auth-concurrent-override
+            auth_concurrent_value: Field auth-concurrent-value
+            ppk_secret: Field ppk-secret
+            ppk_identity: Field ppk-identity
+            qkd_profile: Field qkd-profile
+            username_sensitivity: Field username-sensitivity
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -577,7 +724,13 @@ class Local(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_local.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -600,20 +753,49 @@ class Local(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            id=id,
+            status=status,
+            type=type,
+            passwd=passwd,
+            ldap_server=ldap_server,
+            radius_server=radius_server,
+            tacacs_plus_server=tacacs_plus_server,
+            saml_server=saml_server,
+            two_factor=two_factor,
+            two_factor_authentication=two_factor_authentication,
+            two_factor_notification=two_factor_notification,
+            fortitoken=fortitoken,
+            email_to=email_to,
+            sms_server=sms_server,
+            sms_custom_server=sms_custom_server,
+            sms_phone=sms_phone,
+            passwd_policy=passwd_policy,
+            passwd_time=passwd_time,
+            authtimeout=authtimeout,
+            workstation=workstation,
+            auth_concurrent_override=auth_concurrent_override,
+            auth_concurrent_value=auth_concurrent_value,
+            ppk_secret=ppk_secret,
+            ppk_identity=ppk_identity,
+            qkd_profile=qkd_profile,
+            username_sensitivity=username_sensitivity,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

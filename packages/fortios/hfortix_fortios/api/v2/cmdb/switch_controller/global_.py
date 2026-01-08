@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.switch_controller_global_.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.switch_controller_global_.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Global(MetadataMixin):
+class Global(CRUDEndpoint, MetadataMixin):
     """Global Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "disable_discovery": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "custom_command": {
+            "mkey": "command-entry",
+            "required_fields": ['command-name'],
+            "example": "[{'command-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Global(MetadataMixin):
         """Initialize Global endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Global(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve switch_controller/global_ configuration.
 
@@ -98,6 +135,7 @@ class Global(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Global(MetadataMixin):
         
         if name:
             endpoint = f"/switch-controller/global/{name}"
+            unwrap_single = True
         else:
             endpoint = "/switch-controller/global"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +236,11 @@ class Global(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -204,13 +249,13 @@ class Global(MetadataMixin):
         vlan_all_mode: Literal["all", "defined"] | None = None,
         vlan_optimization: Literal["prune", "configured", "none"] | None = None,
         vlan_identity: Literal["description", "name"] | None = None,
-        disable_discovery: str | list | None = None,
+        disable_discovery: str | list[str] | list[dict[str, Any]] | None = None,
         mac_retention_period: int | None = None,
         default_virtual_switch_vlan: str | None = None,
         dhcp_server_access_list: Literal["enable", "disable"] | None = None,
         dhcp_option82_format: Literal["ascii", "legacy"] | None = None,
-        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list | None = None,
-        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list | None = None,
+        dhcp_option82_circuit_id: Literal["intfname", "vlan", "hostname", "mode", "description"] | list[str] | None = None,
+        dhcp_option82_remote_id: Literal["mac", "hostname", "ip"] | list[str] | None = None,
         dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = None,
         dhcp_snoop_client_db_exp: int | None = None,
         dhcp_snoop_db_per_port_learn_limit: int | None = None,
@@ -220,16 +265,17 @@ class Global(MetadataMixin):
         mac_event_logging: Literal["enable", "disable"] | None = None,
         bounce_quarantined_link: Literal["disable", "enable"] | None = None,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = None,
-        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list | None = None,
-        custom_command: str | list | None = None,
+        update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = None,
+        custom_command: str | list[str] | list[dict[str, Any]] | None = None,
         fips_enforce: Literal["disable", "enable"] | None = None,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = None,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = None,
         firewall_auth_user_hold_period: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing switch_controller/global_ object.
 
@@ -242,8 +288,41 @@ class Global(MetadataMixin):
             vlan_all_mode: VLAN configuration mode, user-defined-vlans or all-possible-vlans.
             vlan_optimization: FortiLink VLAN optimization.
             vlan_identity: Identity of the VLAN. Commonly used for RADIUS Tunnel-Private-Group-Id.
+            disable_discovery: Prevent this FortiSwitch from discovering.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            mac_retention_period: Time in hours after which an inactive MAC is removed from client DB (0 = aged out based on mac-aging-interval).
+            default_virtual_switch_vlan: Default VLAN for ports when added to the virtual-switch.
+            dhcp_server_access_list: Enable/disable DHCP snooping server access list.
+            dhcp_option82_format: DHCP option-82 format string.
+            dhcp_option82_circuit_id: List the parameters to be included to inform about client identification.
+            dhcp_option82_remote_id: List the parameters to be included to inform about client identification.
+            dhcp_snoop_client_req: Client DHCP packet broadcast mode.
+            dhcp_snoop_client_db_exp: Expiry time for DHCP snooping server database entries (300 - 259200 sec, default = 86400 sec).
+            dhcp_snoop_db_per_port_learn_limit: Per Interface dhcp-server entries learn limit (0 - 1024, default = 64).
+            log_mac_limit_violations: Enable/disable logs for Learning Limit Violations.
+            mac_violation_timer: Set timeout for Learning Limit Violations (0 = disabled).
+            sn_dns_resolution: Enable/disable DNS resolution of the FortiSwitch unit's IP address with switch name.
+            mac_event_logging: Enable/disable MAC address event logging.
+            bounce_quarantined_link: Enable/disable bouncing (administratively bring the link down, up) of a switch port where a quarantined device was seen last. Helps to re-initiate the DHCP process for a device.
+            quarantine_mode: Quarantine mode.
+            update_user_device: Control which sources update the device user list.
+            custom_command: List of custom commands to be pushed to all FortiSwitches in the VDOM.
+                Default format: [{'command-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'command-entry': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'command-entry': 'val1'}, ...]
+                  - List of dicts: [{'command-name': 'value'}] (recommended)
+            fips_enforce: Enable/disable enforcement of FIPS on managed FortiSwitch devices.
+            firmware_provision_on_authorization: Enable/disable automatic provisioning of latest firmware on authorization.
+            switch_on_deauth: No-operation/Factory-reset the managed FortiSwitch on deauthorization.
+            firewall_auth_user_hold_period: Time period in minutes to hold firewall authenticated MAC users (5 - 1440, default = 5, disable = 0).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -270,9 +349,28 @@ class Global(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if disable_discovery is not None:
+            disable_discovery = normalize_table_field(
+                disable_discovery,
+                mkey="name",
+                required_fields=['name'],
+                field_name="disable_discovery",
+                example="[{'name': 'value'}]",
+            )
+        if custom_command is not None:
+            custom_command = normalize_table_field(
+                custom_command,
+                mkey="command-entry",
+                required_fields=['command-name'],
+                field_name="custom_command",
+                example="[{'command-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             mac_aging_interval=mac_aging_interval,
             https_image_push=https_image_push,
             vlan_all_mode=vlan_all_mode,
@@ -313,13 +411,11 @@ class Global(MetadataMixin):
                 endpoint="cmdb/switch_controller/global_",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/switch-controller/global/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/switch-controller/global"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

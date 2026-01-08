@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_central_management.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_central_management.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class CentralManagement(MetadataMixin):
+class CentralManagement(CRUDEndpoint, MetadataMixin):
     """CentralManagement Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "central_management"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_list": {
+            "mkey": "id",
+            "required_fields": ['server-type', 'server-address', 'server-address6', 'fqdn'],
+            "example": "[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class CentralManagement(MetadataMixin):
         """Initialize CentralManagement endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class CentralManagement(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/central_management configuration.
 
@@ -98,6 +130,7 @@ class CentralManagement(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class CentralManagement(MetadataMixin):
         
         if name:
             endpoint = f"/system/central-management/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/central-management"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class CentralManagement(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -214,7 +254,7 @@ class CentralManagement(MetadataMixin):
         fmg_source_ip6: str | None = None,
         local_cert: str | None = None,
         ca_cert: str | None = None,
-        server_list: str | list | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         fmg_update_port: Literal["8890", "443"] | None = None,
         fmg_update_http_header: Literal["enable", "disable"] | None = None,
         include_default_servers: Literal["enable", "disable"] | None = None,
@@ -224,8 +264,9 @@ class CentralManagement(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/central_management object.
 
@@ -238,8 +279,31 @@ class CentralManagement(MetadataMixin):
             fortigate_cloud_sso_default_profile: Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.
             schedule_config_restore: Enable/disable allowing the central management server to restore the configuration of this FortiGate.
             schedule_script_restore: Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.
+            allow_push_configuration: Enable/disable allowing the central management server to push configuration changes to this FortiGate.
+            allow_push_firmware: Enable/disable allowing the central management server to push firmware updates to this FortiGate.
+            allow_remote_firmware_upgrade: Enable/disable remotely upgrading the firmware on this FortiGate from the central management server.
+            allow_monitor: Enable/disable allowing the central management server to remotely monitor this FortiGate unit.
+            serial_number: Serial number.
+            fmg: IP address or FQDN of the FortiManager.
+            fmg_source_ip: IPv4 source address that this FortiGate uses when communicating with FortiManager.
+            fmg_source_ip6: IPv6 source address that this FortiGate uses when communicating with FortiManager.
+            local_cert: Certificate to be used by FGFM protocol.
+            ca_cert: CA certificate to be used by FGFM protocol.
+            vdom: Virtual domain (VDOM) name to use when communicating with FortiManager.
+            server_list: Additional severs that the FortiGate can use for updates (for AV, IPS, updates) and ratings (for web filter and antispam ratings) servers.
+                Default format: [{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]
+                Required format: List of dicts with keys: server-type, server-address, server-address6, fqdn
+                  (String format not allowed due to multiple required fields)
+            fmg_update_port: Port used to communicate with FortiManager that is acting as a FortiGuard update server.
+            fmg_update_http_header: Enable/disable inclusion of HTTP header in update request.
+            include_default_servers: Enable/disable inclusion of public FortiGuard servers in the override server list.
+            enc_algorithm: Encryption strength for communications between the FortiGate and central management.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -266,9 +330,20 @@ class CentralManagement(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['server-type', 'server-address', 'server-address6', 'fqdn'],
+                field_name="server_list",
+                example="[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             mode=mode,
             type=type,
             fortigate_cloud_sso_default_profile=fortigate_cloud_sso_default_profile,
@@ -305,13 +380,11 @@ class CentralManagement(MetadataMixin):
                 endpoint="cmdb/system/central_management",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/central-management/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/central-management"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

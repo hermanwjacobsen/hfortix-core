@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.webfilter_fortiguard.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.webfilter_fortiguard.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Fortiguard(MetadataMixin):
+class Fortiguard(CRUDEndpoint, MetadataMixin):
     """Fortiguard Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Fortiguard(MetadataMixin):
         """Initialize Fortiguard endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Fortiguard(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve webfilter/fortiguard configuration.
 
@@ -98,6 +117,7 @@ class Fortiguard(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +170,14 @@ class Fortiguard(MetadataMixin):
         
         if name:
             endpoint = f"/webfilter/fortiguard/{name}"
+            unwrap_single = True
         else:
             endpoint = "/webfilter/fortiguard"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +218,11 @@ class Fortiguard(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -213,8 +240,9 @@ class Fortiguard(MetadataMixin):
         embed_image: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing webfilter/fortiguard object.
 
@@ -227,8 +255,16 @@ class Fortiguard(MetadataMixin):
             cache_mem_permille: Maximum permille of available memory allocated to caching (1 - 150).
             ovrd_auth_port_http: Port to use for FortiGuard Web Filter HTTP override authentication.
             ovrd_auth_port_https: Port to use for FortiGuard Web Filter HTTPS override authentication in proxy mode.
+            ovrd_auth_port_https_flow: Port to use for FortiGuard Web Filter HTTPS override authentication in flow mode.
+            ovrd_auth_port_warning: Port to use for FortiGuard Web Filter Warning override authentication.
+            ovrd_auth_https: Enable/disable use of HTTPS for override authentication.
+            warn_auth_https: Enable/disable use of HTTPS for warning and authentication.
+            close_ports: Close ports used for HTTP/HTTPS override authentication and disable user overrides.
+            request_packet_size_limit: Limit size of URL request packets sent to FortiGuard server (0 for default).
+            embed_image: Enable/disable embedding images into replacement messages (default = enable).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -255,9 +291,10 @@ class Fortiguard(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             cache_mode=cache_mode,
             cache_prefix_match=cache_prefix_match,
             cache_mem_permille=cache_mem_permille,
@@ -283,13 +320,11 @@ class Fortiguard(MetadataMixin):
                 endpoint="cmdb/webfilter/fortiguard",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/webfilter/fortiguard/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/webfilter/fortiguard"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.router_policy6.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.router_policy6.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,83 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Policy6(MetadataMixin):
+class Policy6(CRUDEndpoint, MetadataMixin):
     """Policy6 Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "policy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "input_device": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "src": {
+            "mkey": "addr6",
+            "required_fields": ['addr6'],
+            "example": "[{'addr6': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst": {
+            "mkey": "addr6",
+            "required_fields": ['addr6'],
+            "example": "[{'addr6': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_id": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "internet_service_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "users": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +134,11 @@ class Policy6(MetadataMixin):
         """Initialize Policy6 endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         seq_num: int | None = None,
@@ -72,8 +148,9 @@ class Policy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/policy6 configuration.
 
@@ -99,6 +176,7 @@ class Policy6(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +233,14 @@ class Policy6(MetadataMixin):
         
         if seq_num:
             endpoint = "/router/policy6/" + str(seq_num)
+            unwrap_single = True
         else:
             endpoint = "/router/policy6"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,17 +281,22 @@ class Policy6(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
-        input_device: str | list | None = None,
+        input_device: str | list[str] | list[dict[str, Any]] | None = None,
         input_device_negate: Literal["enable", "disable"] | None = None,
-        src: str | list | None = None,
-        srcaddr: str | list | None = None,
+        src: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
         src_negate: Literal["enable", "disable"] | None = None,
-        dst: str | list | None = None,
-        dstaddr: str | list | None = None,
+        dst: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         dst_negate: Literal["enable", "disable"] | None = None,
         action: Literal["deny", "permit"] | None = None,
         protocol: int | None = None,
@@ -225,15 +310,16 @@ class Policy6(MetadataMixin):
         tos_mask: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         comments: str | None = None,
-        internet_service_id: str | list | None = None,
-        internet_service_custom: str | list | None = None,
-        internet_service_fortiguard: str | list | None = None,
-        users: str | list | None = None,
-        groups: str | list | None = None,
+        internet_service_id: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing router/policy6 object.
 
@@ -243,11 +329,83 @@ class Policy6(MetadataMixin):
             payload_dict: Object data as dict. Must include seq-num (primary key).
             seq_num: Sequence number(1-65535).
             input_device: Incoming interface name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_device_negate: Enable/disable negation of input device match.
             src: Source IPv6 prefix.
+                Default format: [{'addr6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr6': 'val1'}, ...]
+                  - List of dicts: [{'addr6': 'value'}] (recommended)
             srcaddr: Source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            src_negate: Enable/disable negating source address match.
+            dst: Destination IPv6 prefix.
+                Default format: [{'addr6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr6': 'val1'}, ...]
+                  - List of dicts: [{'addr6': 'value'}] (recommended)
+            dstaddr: Destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_negate: Enable/disable negating destination address match.
+            action: Action of the policy route.
+            protocol: Protocol number (0 - 255).
+            start_port: Start destination port number (1 - 65535).
+            end_port: End destination port number (1 - 65535).
+            start_source_port: Start source port number (1 - 65535).
+            end_source_port: End source port number (1 - 65535).
+            gateway: IPv6 address of the gateway.
+            output_device: Outgoing interface name.
+            tos: Type of service bit pattern.
+            tos_mask: Type of service evaluated bits.
+            status: Enable/disable this policy route.
+            comments: Optional comments.
+            internet_service_id: Destination Internet Service ID.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            internet_service_custom: Custom Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_fortiguard: FortiGuard Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            users: List of users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            groups: List of user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -274,9 +432,92 @@ class Policy6(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="addr6",
+                required_fields=['addr6'],
+                field_name="src",
+                example="[{'addr6': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="addr6",
+                required_fields=['addr6'],
+                field_name="dst",
+                example="[{'addr6': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             seq_num=seq_num,
             input_device=input_device,
             input_device_negate=input_device_negate,
@@ -322,20 +563,25 @@ class Policy6(MetadataMixin):
         endpoint = "/router/policy6/" + str(seq_num_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
-        input_device: str | list | None = None,
+        input_device: str | list[str] | list[dict[str, Any]] | None = None,
         input_device_negate: Literal["enable", "disable"] | None = None,
-        src: str | list | None = None,
-        srcaddr: str | list | None = None,
+        src: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
         src_negate: Literal["enable", "disable"] | None = None,
-        dst: str | list | None = None,
-        dstaddr: str | list | None = None,
+        dst: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         dst_negate: Literal["enable", "disable"] | None = None,
         action: Literal["deny", "permit"] | None = None,
         protocol: int | None = None,
@@ -349,15 +595,16 @@ class Policy6(MetadataMixin):
         tos_mask: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         comments: str | None = None,
-        internet_service_id: str | list | None = None,
-        internet_service_custom: str | list | None = None,
-        internet_service_fortiguard: str | list | None = None,
-        users: str | list | None = None,
-        groups: str | list | None = None,
+        internet_service_id: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new router/policy6 object.
 
@@ -367,11 +614,83 @@ class Policy6(MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             seq_num: Sequence number(1-65535).
             input_device: Incoming interface name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_device_negate: Enable/disable negation of input device match.
             src: Source IPv6 prefix.
+                Default format: [{'addr6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr6': 'val1'}, ...]
+                  - List of dicts: [{'addr6': 'value'}] (recommended)
             srcaddr: Source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            src_negate: Enable/disable negating source address match.
+            dst: Destination IPv6 prefix.
+                Default format: [{'addr6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'addr6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'addr6': 'val1'}, ...]
+                  - List of dicts: [{'addr6': 'value'}] (recommended)
+            dstaddr: Destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_negate: Enable/disable negating destination address match.
+            action: Action of the policy route.
+            protocol: Protocol number (0 - 255).
+            start_port: Start destination port number (1 - 65535).
+            end_port: End destination port number (1 - 65535).
+            start_source_port: Start source port number (1 - 65535).
+            end_source_port: End source port number (1 - 65535).
+            gateway: IPv6 address of the gateway.
+            output_device: Outgoing interface name.
+            tos: Type of service bit pattern.
+            tos_mask: Type of service evaluated bits.
+            status: Enable/disable this policy route.
+            comments: Optional comments.
+            internet_service_id: Destination Internet Service ID.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            internet_service_custom: Custom Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service_fortiguard: FortiGuard Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            users: List of users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            groups: List of user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -400,9 +719,92 @@ class Policy6(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="addr6",
+                required_fields=['addr6'],
+                field_name="src",
+                example="[{'addr6': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="addr6",
+                required_fields=['addr6'],
+                field_name="dst",
+                example="[{'addr6': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             seq_num=seq_num,
             input_device=input_device,
             input_device_negate=input_device_negate,
@@ -444,16 +846,22 @@ class Policy6(MetadataMixin):
 
         endpoint = "/router/policy6"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         seq_num: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete router/policy6 object.
 
@@ -463,6 +871,7 @@ class Policy6(MetadataMixin):
             seq_num: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -488,7 +897,7 @@ class Policy6(MetadataMixin):
         endpoint = "/router/policy6/" + str(seq_num)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -552,7 +961,35 @@ class Policy6(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        seq_num: int | None = None,
+        input_device: str | list[str] | list[dict[str, Any]] | None = None,
+        input_device_negate: Literal["enable", "disable"] | None = None,
+        src: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        src_negate: Literal["enable", "disable"] | None = None,
+        dst: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_negate: Literal["enable", "disable"] | None = None,
+        action: Literal["deny", "permit"] | None = None,
+        protocol: int | None = None,
+        start_port: int | None = None,
+        end_port: int | None = None,
+        start_source_port: int | None = None,
+        end_source_port: int | None = None,
+        gateway: str | None = None,
+        output_device: str | None = None,
+        tos: str | None = None,
+        tos_mask: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
+        internet_service_id: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        users: str | list[str] | list[dict[str, Any]] | None = None,
+        groups: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -563,7 +1000,35 @@ class Policy6(MetadataMixin):
 
         Args:
             payload_dict: Resource data including seq-num (primary key)
+            seq_num: Field seq-num
+            input_device: Field input-device
+            input_device_negate: Field input-device-negate
+            src: Field src
+            srcaddr: Field srcaddr
+            src_negate: Field src-negate
+            dst: Field dst
+            dstaddr: Field dstaddr
+            dst_negate: Field dst-negate
+            action: Field action
+            protocol: Field protocol
+            start_port: Field start-port
+            end_port: Field end-port
+            start_source_port: Field start-source-port
+            end_source_port: Field end-source-port
+            gateway: Field gateway
+            output_device: Field output-device
+            tos: Field tos
+            tos_mask: Field tos-mask
+            status: Field status
+            comments: Field comments
+            internet_service_id: Field internet-service-id
+            internet_service_custom: Field internet-service-custom
+            internet_service_fortiguard: Field internet-service-fortiguard
+            users: Field users
+            groups: Field groups
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -573,7 +1038,13 @@ class Policy6(MetadataMixin):
             ValueError: If seq-num is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.router_policy6.set(
+            ...     seq_num=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "seq-num": 1,
             ...     "field1": "value1",
@@ -596,20 +1067,48 @@ class Policy6(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            seq_num=seq_num,
+            input_device=input_device,
+            input_device_negate=input_device_negate,
+            src=src,
+            srcaddr=srcaddr,
+            src_negate=src_negate,
+            dst=dst,
+            dstaddr=dstaddr,
+            dst_negate=dst_negate,
+            action=action,
+            protocol=protocol,
+            start_port=start_port,
+            end_port=end_port,
+            start_source_port=start_source_port,
+            end_source_port=end_source_port,
+            gateway=gateway,
+            output_device=output_device,
+            tos=tos,
+            tos_mask=tos_mask,
+            status=status,
+            comments=comments,
+            internet_service_id=internet_service_id,
+            internet_service_custom=internet_service_custom,
+            internet_service_fortiguard=internet_service_fortiguard,
+            users=users,
+            groups=groups,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("seq-num")
+        mkey_value = payload_data.get("seq-num")
         if not mkey_value:
-            raise ValueError("seq-num is required in payload_dict for set()")
+            raise ValueError("seq-num is required for set()")
         
         # Check if resource exists
         if self.exists(seq_num=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

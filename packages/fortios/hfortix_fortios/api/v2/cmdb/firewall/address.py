@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_address.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_address.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,58 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Address(MetadataMixin):
+class Address(CRUDEndpoint, MetadataMixin):
     """Address Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "address"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "macaddr": {
+            "mkey": "macaddr",
+            "required_fields": ['macaddr'],
+            "example": "[{'macaddr': 'value'}]",
+        },
+        "fsso_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "sso_attribute_value": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "list": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "tagging": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +109,11 @@ class Address(MetadataMixin):
         """Initialize Address endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +123,9 @@ class Address(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/address configuration.
 
@@ -99,6 +151,7 @@ class Address(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +208,14 @@ class Address(MetadataMixin):
         
         if name:
             endpoint = "/firewall/address/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/address"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +256,11 @@ class Address(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -211,7 +271,7 @@ class Address(MetadataMixin):
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
-        macaddr: str | list | None = None,
+        macaddr: str | list[str] | list[dict[str, Any]] | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
         fqdn: str | None = None,
@@ -220,8 +280,8 @@ class Address(MetadataMixin):
         cache_ttl: int | None = None,
         wildcard: Any | None = None,
         sdn: str | None = None,
-        fsso_group: str | list | None = None,
-        sso_attribute_value: str | list | None = None,
+        fsso_group: str | list[str] | list[dict[str, Any]] | None = None,
+        sso_attribute_value: str | list[str] | list[dict[str, Any]] | None = None,
         interface: str | None = None,
         tenant: str | None = None,
         organization: str | None = None,
@@ -244,15 +304,16 @@ class Address(MetadataMixin):
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list: str | list | None = None,
-        tagging: str | list | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
+        tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/address object.
 
@@ -265,8 +326,74 @@ class Address(MetadataMixin):
             subnet: IP address and subnet mask of address.
             type: Type of address.
             route_tag: route-tag address.
+            sub_type: Sub-type of address.
+            clearpass_spt: SPT (System Posture Token) value.
+            macaddr: Multiple MAC address ranges.
+                Default format: [{'macaddr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'macaddr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'macaddr': 'val1'}, ...]
+                  - List of dicts: [{'macaddr': 'value'}] (recommended)
+            start_ip: First IP address (inclusive) in the range for the address.
+            end_ip: Final IP address (inclusive) in the range for the address.
+            fqdn: Fully Qualified Domain Name address.
+            country: IP addresses associated to a specific country.
+            wildcard_fqdn: Fully Qualified Domain Name with wildcard characters.
+            cache_ttl: Defines the minimal TTL of individual IP addresses in FQDN cache measured in seconds.
+            wildcard: IP address and wildcard netmask.
+            sdn: SDN.
+            fsso_group: FSSO group(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            sso_attribute_value: RADIUS attributes value.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            interface: Name of interface whose IP address is to be used.
+            tenant: Tenant.
+            organization: Organization domain name (Syntax: organization/domain).
+            epg_name: Endpoint group name.
+            subnet_name: Subnet name.
+            sdn_tag: SDN Tag.
+            policy_group: Policy group name.
+            obj_tag: Tag of dynamic address object.
+            obj_type: Object type.
+            tag_detection_level: Tag detection level of dynamic address object.
+            tag_type: Tag type of dynamic address object.
+            hw_vendor: Dynamic address matching hardware vendor.
+            hw_model: Dynamic address matching hardware model.
+            os: Dynamic address matching operating system.
+            sw_version: Dynamic address matching software version.
+            comment: Comment.
+            associated_interface: Network interface associated with address.
+            color: Color of icon on the GUI.
+            filter: Match criteria filter.
+            sdn_addr_type: Type of addresses to collect.
+            node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
+            obj_id: Object ID for NSX.
+            list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            allow_routing: Enable/disable use of this address in routing configurations.
+            passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
+            fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -293,9 +420,52 @@ class Address(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if fsso_group is not None:
+            fsso_group = normalize_table_field(
+                fsso_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fsso_group",
+                example="[{'name': 'value'}]",
+            )
+        if sso_attribute_value is not None:
+            sso_attribute_value = normalize_table_field(
+                sso_attribute_value,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sso_attribute_value",
+                example="[{'name': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             uuid=uuid,
             subnet=subnet,
@@ -360,9 +530,14 @@ class Address(MetadataMixin):
         endpoint = "/firewall/address/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -373,7 +548,7 @@ class Address(MetadataMixin):
         route_tag: int | None = None,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
-        macaddr: str | list | None = None,
+        macaddr: str | list[str] | list[dict[str, Any]] | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
         fqdn: str | None = None,
@@ -382,8 +557,8 @@ class Address(MetadataMixin):
         cache_ttl: int | None = None,
         wildcard: Any | None = None,
         sdn: str | None = None,
-        fsso_group: str | list | None = None,
-        sso_attribute_value: str | list | None = None,
+        fsso_group: str | list[str] | list[dict[str, Any]] | None = None,
+        sso_attribute_value: str | list[str] | list[dict[str, Any]] | None = None,
         interface: str | None = None,
         tenant: str | None = None,
         organization: str | None = None,
@@ -406,15 +581,16 @@ class Address(MetadataMixin):
         sdn_addr_type: Literal["private", "public", "all"] | None = None,
         node_ip_only: Literal["enable", "disable"] | None = None,
         obj_id: str | None = None,
-        list: str | list | None = None,
-        tagging: str | list | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
+        tagging: str | list[str] | list[dict[str, Any]] | None = None,
         allow_routing: Literal["enable", "disable"] | None = None,
         passive_fqdn_learning: Literal["disable", "enable"] | None = None,
         fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/address object.
 
@@ -427,8 +603,74 @@ class Address(MetadataMixin):
             subnet: IP address and subnet mask of address.
             type: Type of address.
             route_tag: route-tag address.
+            sub_type: Sub-type of address.
+            clearpass_spt: SPT (System Posture Token) value.
+            macaddr: Multiple MAC address ranges.
+                Default format: [{'macaddr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'macaddr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'macaddr': 'val1'}, ...]
+                  - List of dicts: [{'macaddr': 'value'}] (recommended)
+            start_ip: First IP address (inclusive) in the range for the address.
+            end_ip: Final IP address (inclusive) in the range for the address.
+            fqdn: Fully Qualified Domain Name address.
+            country: IP addresses associated to a specific country.
+            wildcard_fqdn: Fully Qualified Domain Name with wildcard characters.
+            cache_ttl: Defines the minimal TTL of individual IP addresses in FQDN cache measured in seconds.
+            wildcard: IP address and wildcard netmask.
+            sdn: SDN.
+            fsso_group: FSSO group(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            sso_attribute_value: RADIUS attributes value.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            interface: Name of interface whose IP address is to be used.
+            tenant: Tenant.
+            organization: Organization domain name (Syntax: organization/domain).
+            epg_name: Endpoint group name.
+            subnet_name: Subnet name.
+            sdn_tag: SDN Tag.
+            policy_group: Policy group name.
+            obj_tag: Tag of dynamic address object.
+            obj_type: Object type.
+            tag_detection_level: Tag detection level of dynamic address object.
+            tag_type: Tag type of dynamic address object.
+            hw_vendor: Dynamic address matching hardware vendor.
+            hw_model: Dynamic address matching hardware model.
+            os: Dynamic address matching operating system.
+            sw_version: Dynamic address matching software version.
+            comment: Comment.
+            associated_interface: Network interface associated with address.
+            color: Color of icon on the GUI.
+            filter: Match criteria filter.
+            sdn_addr_type: Type of addresses to collect.
+            node_ip_only: Enable/disable collection of node addresses only in Kubernetes.
+            obj_id: Object ID for NSX.
+            list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            allow_routing: Enable/disable use of this address in routing configurations.
+            passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
+            fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -457,9 +699,52 @@ class Address(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if fsso_group is not None:
+            fsso_group = normalize_table_field(
+                fsso_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fsso_group",
+                example="[{'name': 'value'}]",
+            )
+        if sso_attribute_value is not None:
+            sso_attribute_value = normalize_table_field(
+                sso_attribute_value,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sso_attribute_value",
+                example="[{'name': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             uuid=uuid,
             subnet=subnet,
@@ -520,16 +805,22 @@ class Address(MetadataMixin):
 
         endpoint = "/firewall/address"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/address object.
 
@@ -539,6 +830,7 @@ class Address(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -564,7 +856,7 @@ class Address(MetadataMixin):
         endpoint = "/firewall/address/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -628,7 +920,54 @@ class Address(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        uuid: str | None = None,
+        subnet: Any | None = None,
+        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = None,
+        route_tag: int | None = None,
+        sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = None,
+        clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = None,
+        macaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        start_ip: str | None = None,
+        end_ip: str | None = None,
+        fqdn: str | None = None,
+        country: str | None = None,
+        wildcard_fqdn: str | None = None,
+        cache_ttl: int | None = None,
+        wildcard: Any | None = None,
+        sdn: str | None = None,
+        fsso_group: str | list[str] | list[dict[str, Any]] | None = None,
+        sso_attribute_value: str | list[str] | list[dict[str, Any]] | None = None,
+        interface: str | None = None,
+        tenant: str | None = None,
+        organization: str | None = None,
+        epg_name: str | None = None,
+        subnet_name: str | None = None,
+        sdn_tag: str | None = None,
+        policy_group: str | None = None,
+        obj_tag: str | None = None,
+        obj_type: Literal["ip", "mac"] | None = None,
+        tag_detection_level: str | None = None,
+        tag_type: str | None = None,
+        hw_vendor: str | None = None,
+        hw_model: str | None = None,
+        os: str | None = None,
+        sw_version: str | None = None,
+        comment: str | None = None,
+        associated_interface: str | None = None,
+        color: int | None = None,
+        filter: str | None = None,
+        sdn_addr_type: Literal["private", "public", "all"] | None = None,
+        node_ip_only: Literal["enable", "disable"] | None = None,
+        obj_id: str | None = None,
+        list: str | list[str] | list[dict[str, Any]] | None = None,
+        tagging: str | list[str] | list[dict[str, Any]] | None = None,
+        allow_routing: Literal["enable", "disable"] | None = None,
+        passive_fqdn_learning: Literal["disable", "enable"] | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -639,7 +978,54 @@ class Address(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            uuid: Field uuid
+            subnet: Field subnet
+            type: Field type
+            route_tag: Field route-tag
+            sub_type: Field sub-type
+            clearpass_spt: Field clearpass-spt
+            macaddr: Field macaddr
+            start_ip: Field start-ip
+            end_ip: Field end-ip
+            fqdn: Field fqdn
+            country: Field country
+            wildcard_fqdn: Field wildcard-fqdn
+            cache_ttl: Field cache-ttl
+            wildcard: Field wildcard
+            sdn: Field sdn
+            fsso_group: Field fsso-group
+            sso_attribute_value: Field sso-attribute-value
+            interface: Field interface
+            tenant: Field tenant
+            organization: Field organization
+            epg_name: Field epg-name
+            subnet_name: Field subnet-name
+            sdn_tag: Field sdn-tag
+            policy_group: Field policy-group
+            obj_tag: Field obj-tag
+            obj_type: Field obj-type
+            tag_detection_level: Field tag-detection-level
+            tag_type: Field tag-type
+            hw_vendor: Field hw-vendor
+            hw_model: Field hw-model
+            os: Field os
+            sw_version: Field sw-version
+            comment: Field comment
+            associated_interface: Field associated-interface
+            color: Field color
+            filter: Field filter
+            sdn_addr_type: Field sdn-addr-type
+            node_ip_only: Field node-ip-only
+            obj_id: Field obj-id
+            list: Field list
+            tagging: Field tagging
+            allow_routing: Field allow-routing
+            passive_fqdn_learning: Field passive-fqdn-learning
+            fabric_object: Field fabric-object
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -649,7 +1035,13 @@ class Address(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_address.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -672,20 +1064,67 @@ class Address(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            uuid=uuid,
+            subnet=subnet,
+            type=type,
+            route_tag=route_tag,
+            sub_type=sub_type,
+            clearpass_spt=clearpass_spt,
+            macaddr=macaddr,
+            start_ip=start_ip,
+            end_ip=end_ip,
+            fqdn=fqdn,
+            country=country,
+            wildcard_fqdn=wildcard_fqdn,
+            cache_ttl=cache_ttl,
+            wildcard=wildcard,
+            sdn=sdn,
+            fsso_group=fsso_group,
+            sso_attribute_value=sso_attribute_value,
+            interface=interface,
+            tenant=tenant,
+            organization=organization,
+            epg_name=epg_name,
+            subnet_name=subnet_name,
+            sdn_tag=sdn_tag,
+            policy_group=policy_group,
+            obj_tag=obj_tag,
+            obj_type=obj_type,
+            tag_detection_level=tag_detection_level,
+            tag_type=tag_type,
+            hw_vendor=hw_vendor,
+            hw_model=hw_model,
+            os=os,
+            sw_version=sw_version,
+            comment=comment,
+            associated_interface=associated_interface,
+            color=color,
+            filter=filter,
+            sdn_addr_type=sdn_addr_type,
+            node_ip_only=node_ip_only,
+            obj_id=obj_id,
+            list=list,
+            tagging=tagging,
+            allow_routing=allow_routing,
+            passive_fqdn_learning=passive_fqdn_learning,
+            fabric_object=fabric_object,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_switch_interface.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_switch_interface.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class SwitchInterface(MetadataMixin):
+class SwitchInterface(CRUDEndpoint, MetadataMixin):
     """SwitchInterface Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "switch_interface"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "span_source_port": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "member": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class SwitchInterface(MetadataMixin):
         """Initialize SwitchInterface endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class SwitchInterface(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/switch_interface configuration.
 
@@ -99,6 +136,7 @@ class SwitchInterface(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class SwitchInterface(MetadataMixin):
         
         if name:
             endpoint = "/system/switch-interface/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/switch-interface"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,13 +241,18 @@ class SwitchInterface(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         span_dest_port: str | None = None,
-        span_source_port: str | list | None = None,
-        member: str | list | None = None,
+        span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
+        member: str | list[str] | list[dict[str, Any]] | None = None,
         type: Literal["switch", "hub"] | None = None,
         intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
@@ -215,8 +260,9 @@ class SwitchInterface(MetadataMixin):
         span_direction: Literal["rx", "tx", "both"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/switch_interface object.
 
@@ -228,9 +274,25 @@ class SwitchInterface(MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
+            type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
+            intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
+            mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
+            span: Enable/disable port spanning. Port spanning echoes traffic received by the software switch to the span destination port.
+            span_direction: The direction in which the SPAN port operates, either: rx, tx, or both.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -257,9 +319,28 @@ class SwitchInterface(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if span_source_port is not None:
+            span_source_port = normalize_table_field(
+                span_source_port,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="span_source_port",
+                example="[{'interface-name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
@@ -288,16 +369,21 @@ class SwitchInterface(MetadataMixin):
         endpoint = "/system/switch-interface/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         span_dest_port: str | None = None,
-        span_source_port: str | list | None = None,
-        member: str | list | None = None,
+        span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
+        member: str | list[str] | list[dict[str, Any]] | None = None,
         type: Literal["switch", "hub"] | None = None,
         intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
@@ -305,8 +391,9 @@ class SwitchInterface(MetadataMixin):
         span_direction: Literal["rx", "tx", "both"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/switch_interface object.
 
@@ -318,9 +405,25 @@ class SwitchInterface(MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
+            type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
+            intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
+            mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
+            span: Enable/disable port spanning. Port spanning echoes traffic received by the software switch to the span destination port.
+            span_direction: The direction in which the SPAN port operates, either: rx, tx, or both.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -349,9 +452,28 @@ class SwitchInterface(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if span_source_port is not None:
+            span_source_port = normalize_table_field(
+                span_source_port,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="span_source_port",
+                example="[{'interface-name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
@@ -376,16 +498,22 @@ class SwitchInterface(MetadataMixin):
 
         endpoint = "/system/switch-interface"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/switch_interface object.
 
@@ -395,6 +523,7 @@ class SwitchInterface(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -420,7 +549,7 @@ class SwitchInterface(MetadataMixin):
         endpoint = "/system/switch-interface/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -484,7 +613,18 @@ class SwitchInterface(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        span_dest_port: str | None = None,
+        span_source_port: str | list[str] | list[dict[str, Any]] | None = None,
+        member: str | list[str] | list[dict[str, Any]] | None = None,
+        type: Literal["switch", "hub"] | None = None,
+        intra_switch_policy: Literal["implicit", "explicit"] | None = None,
+        mac_ttl: int | None = None,
+        span: Literal["disable", "enable"] | None = None,
+        span_direction: Literal["rx", "tx", "both"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -495,7 +635,18 @@ class SwitchInterface(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            span_dest_port: Field span-dest-port
+            span_source_port: Field span-source-port
+            member: Field member
+            type: Field type
+            intra_switch_policy: Field intra-switch-policy
+            mac_ttl: Field mac-ttl
+            span: Field span
+            span_direction: Field span-direction
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -505,7 +656,13 @@ class SwitchInterface(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_switch_interface.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -528,20 +685,31 @@ class SwitchInterface(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            span_dest_port=span_dest_port,
+            span_source_port=span_source_port,
+            member=member,
+            type=type,
+            intra_switch_policy=intra_switch_policy,
+            mac_ttl=mac_ttl,
+            span=span,
+            span_direction=span_direction,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

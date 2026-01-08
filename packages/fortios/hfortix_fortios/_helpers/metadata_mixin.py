@@ -52,90 +52,80 @@ class MetadataMixin:
         return import_module(f"._helpers.{cls._helper_module_name}", package=package)
 
     @classmethod
-    def help(cls, field_name: str | None = None) -> str:
+    def help(cls, field_name: str | None = None, show_fields: bool = False) -> None:
         """
-        Get help text for endpoint or specific field.
+        Display interactive help for this endpoint or specific field.
 
         Args:
-            field_name: Optional field name to get help for. If None, shows endpoint help.
-
-        Returns:
-            Formatted help text
+            field_name: Optional field name to get help for. If None, shows full endpoint help.
+            show_fields: Ignored (kept for compatibility, field list removed)
 
         Examples:
-            >>> # Get endpoint information
-            >>> print(Settings.help())
+            >>> # Get comprehensive endpoint help
+            >>> Address.help()
             
             >>> # Get field information
-            >>> print(Settings.help("machine-learning-detection"))
+            >>> Address.help("name")
+            
+            >>> # Or use as instance method
+            >>> fgt.api.cmdb.firewall.address.help()
         """
-        helper_module = cls._get_helper_module()
-        get_schema_info = getattr(helper_module, 'get_schema_info')
-        get_field_metadata = getattr(helper_module, 'get_field_metadata')
+        if field_name is not None:
+            # Show field-specific help
+            helper_module = cls._get_helper_module()
+            get_field_metadata = getattr(helper_module, 'get_field_metadata')
+            
+            meta = get_field_metadata(field_name)
+            if meta is None:
+                print(f"\n❌ Unknown field: {field_name}\n")
+                return
 
-        if field_name is None:
-            # Endpoint help
-            info = get_schema_info()
-            lines = [
-                f"Endpoint: {info['endpoint']}",
-                f"Category: {info['category']}",
-                f"Help: {info.get('help', 'N/A')}",
-                "",
-                f"Total Fields: {info['total_fields']}",
-                f"Required Fields: {info['required_fields_count']}",
-                f"Fields with Defaults: {info['fields_with_defaults_count']}",
-            ]
-            if 'mkey' in info:
-                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
-            return "\n".join(lines)
+            print(f"\n{'=' * 80}")
+            print(f"FIELD: {meta['name']}")
+            print('=' * 80)
+            print(f"Type: {meta['type']}")
+            if 'description' in meta:
+                print(f"Description: {meta['description']}")
+            print(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+            if 'default' in meta:
+                print(f"Default: {meta['default']}")
+            if 'options' in meta:
+                print(f"Options: {', '.join(meta['options'])}")
+            if 'constraints' in meta:
+                constraints = meta['constraints']
+                if 'min' in constraints or 'max' in constraints:
+                    min_val = constraints.get('min', '?')
+                    max_val = constraints.get('max', '?')
+                    print(f"Range: {min_val} - {max_val}")
+                if 'max_length' in constraints:
+                    print(f"Max Length: {constraints['max_length']}")
+            print('=' * 80 + '\n')
+            return
         
-        # Field help
-        meta = get_field_metadata(field_name)
-        if meta is None:
-            return f"Unknown field: {field_name}"
-
-        lines = [
-            f"Field: {meta['name']}",
-            f"Type: {meta['type']}",
-        ]
-        if 'description' in meta:
-            lines.append(f"Description: {meta['description']}")
-        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
-        if 'default' in meta:
-            lines.append(f"Default: {meta['default']}")
-        if 'options' in meta:
-            lines.append(f"Options: {', '.join(meta['options'])}")
-        if 'constraints' in meta:
-            constraints = meta['constraints']
-            if 'min' in constraints or 'max' in constraints:
-                min_val = constraints.get('min', '?')
-                max_val = constraints.get('max', '?')
-                lines.append(f"Range: {min_val} - {max_val}")
-            if 'max_length' in constraints:
-                lines.append(f"Max Length: {constraints['max_length']}")
-
-        return "\n".join(lines)
+        # Show full endpoint help using the interactive help function
+        from ..help import help as interactive_help
+        interactive_help(cls)
 
     @classmethod
-    def fields(cls, detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+    def fields(cls, detailed: bool = False) -> Union[dict[str, Any], list[str]]:
         """
-        Get list of all field names or detailed field information.
+        Get field information as dict with JSON intent.
 
         Args:
-            detailed: If True, return dict with field metadata
+            detailed: If True, return dict with field metadata (default: False)
 
         Returns:
-            List of field names or dict of field metadata
+            Dict with field metadata if detailed=True, otherwise simple list of field names.
+            All return values are JSON-serializable.
 
         Examples:
             >>> # Simple list
             >>> fields = Settings.fields()
             >>> print(f"Available fields: {len(fields)}")
             
-            >>> # Detailed info
-            >>> fields = Settings.fields(detailed=True)
-            >>> for name, meta in fields.items():
-            ...     print(f"{name}: {meta['type']}")
+            >>> # Detailed dict with metadata (JSON intent)
+            >>> from hfortix_fortios.formatting import to_json
+            >>> print(to_json(Settings.fields(detailed=True)))
         """
         helper_module = cls._get_helper_module()
         get_all_fields = getattr(helper_module, 'get_all_fields')
@@ -146,7 +136,7 @@ class MetadataMixin:
         if not detailed:
             return field_names
 
-        # Build detailed dict
+        # Build detailed dict - JSON serializable
         detailed_fields = {}
         for fname in field_names:
             meta = get_field_metadata(fname)
@@ -222,17 +212,22 @@ class MetadataMixin:
     @classmethod
     def defaults(cls) -> dict[str, Any]:
         """
-        Get all fields with default values.
+        Get all fields with default values as dict with JSON intent.
+
+        Returns dict regardless of client return_mode.
+        Dict is JSON-serializable for easy conversion.
 
         Returns:
-            Dict mapping field names to default values
+            Dict with field default values (JSON-serializable)
 
         Examples:
             >>> defaults = Settings.defaults()
-            >>> print(f"Fields with defaults: {len(defaults)}")
-            >>> # Use as starting point for payload
             >>> payload = defaults.copy()
             >>> payload['name'] = 'my-custom-name'
+            
+            >>> # Print as formatted JSON
+            >>> from hfortix_fortios.formatting import to_json
+            >>> print(to_json(Settings.defaults()))
         """
         helper_module = cls._get_helper_module()
         FIELDS_WITH_DEFAULTS = getattr(helper_module, 'FIELDS_WITH_DEFAULTS')
@@ -242,18 +237,25 @@ class MetadataMixin:
     @classmethod
     def schema(cls) -> dict[str, Any]:
         """
-        Get complete schema information for this endpoint.
+        Get complete schema information as dict with JSON intent.
+
+        Returns dict regardless of client return_mode.
+        Dict is JSON-serializable for easy conversion.
 
         Returns:
-            Schema metadata dict containing endpoint info, field counts, and primary key
+            Dict with schema metadata (JSON-serializable)
 
         Examples:
             >>> schema = Settings.schema()
             >>> print(f"Endpoint: {schema['endpoint']}")
             >>> print(f"Total fields: {schema['total_fields']}")
-            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+            
+            >>> # Print as formatted JSON
+            >>> from hfortix_fortios.formatting import to_json
+            >>> print(to_json(Settings.schema()))
         """
         helper_module = cls._get_helper_module()
         get_schema_info = getattr(helper_module, 'get_schema_info')
 
         return get_schema_info()
+

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_automation_trigger.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_automation_trigger.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,48 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class AutomationTrigger(MetadataMixin):
+class AutomationTrigger(CRUDEndpoint, MetadataMixin):
     """AutomationTrigger Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "automation_trigger"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "vdom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "logid": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "fields": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +99,11 @@ class AutomationTrigger(MetadataMixin):
         """Initialize AutomationTrigger endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +113,9 @@ class AutomationTrigger(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/automation_trigger configuration.
 
@@ -99,6 +141,7 @@ class AutomationTrigger(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +198,14 @@ class AutomationTrigger(MetadataMixin):
         
         if name:
             endpoint = "/system/automation-trigger/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/automation-trigger"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +246,11 @@ class AutomationTrigger(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -211,14 +261,14 @@ class AutomationTrigger(MetadataMixin):
         license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = None,
         report_type: Literal["posture", "coverage", "optimization", "any"] | None = None,
         stitch_name: str | None = None,
-        logid: str | list | None = None,
+        logid: str | list[str] | list[dict[str, Any]] | None = None,
         trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = None,
         trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         trigger_day: int | None = None,
         trigger_hour: int | None = None,
         trigger_minute: int | None = None,
         trigger_datetime: Any | None = None,
-        fields: str | list | None = None,
+        fields: str | list[str] | list[dict[str, Any]] | None = None,
         faz_event_name: str | None = None,
         faz_event_severity: str | None = None,
         faz_event_tags: str | None = None,
@@ -227,8 +277,9 @@ class AutomationTrigger(MetadataMixin):
         fabric_event_severity: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/automation_trigger object.
 
@@ -241,8 +292,41 @@ class AutomationTrigger(MetadataMixin):
             trigger_type: Trigger type.
             event_type: Event type.
             vdom: Virtual domain(s) that this trigger is valid for.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            license_type: License type.
+            report_type: Security Rating report.
+            stitch_name: Triggering stitch name.
+            logid: Log IDs to trigger event.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            trigger_frequency: Scheduled trigger frequency (default = daily).
+            trigger_weekday: Day of week for trigger.
+            trigger_day: Day within a month to trigger.
+            trigger_hour: Hour of the day on which to trigger (0 - 23, default = 1).
+            trigger_minute: Minute of the hour on which to trigger (0 - 59, default = 0).
+            trigger_datetime: Trigger date and time (YYYY-MM-DD HH:MM:SS).
+            fields: Customized trigger field settings.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            faz_event_name: FortiAnalyzer event handler name.
+            faz_event_severity: FortiAnalyzer event severity.
+            faz_event_tags: FortiAnalyzer event tags.
+            serial: Fabric connector serial number.
+            fabric_event_name: Fabric connector event handler name.
+            fabric_event_severity: Fabric connector event severity.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -269,9 +353,36 @@ class AutomationTrigger(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if logid is not None:
+            logid = normalize_table_field(
+                logid,
+                mkey="id",
+                required_fields=['id'],
+                field_name="logid",
+                example="[{'id': 1}]",
+            )
+        if fields is not None:
+            fields = normalize_table_field(
+                fields,
+                mkey="id",
+                required_fields=['id'],
+                field_name="fields",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             trigger_type=trigger_type,
@@ -312,9 +423,14 @@ class AutomationTrigger(MetadataMixin):
         endpoint = "/system/automation-trigger/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -325,14 +441,14 @@ class AutomationTrigger(MetadataMixin):
         license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = None,
         report_type: Literal["posture", "coverage", "optimization", "any"] | None = None,
         stitch_name: str | None = None,
-        logid: str | list | None = None,
+        logid: str | list[str] | list[dict[str, Any]] | None = None,
         trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = None,
         trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         trigger_day: int | None = None,
         trigger_hour: int | None = None,
         trigger_minute: int | None = None,
         trigger_datetime: Any | None = None,
-        fields: str | list | None = None,
+        fields: str | list[str] | list[dict[str, Any]] | None = None,
         faz_event_name: str | None = None,
         faz_event_severity: str | None = None,
         faz_event_tags: str | None = None,
@@ -341,8 +457,9 @@ class AutomationTrigger(MetadataMixin):
         fabric_event_severity: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/automation_trigger object.
 
@@ -355,8 +472,41 @@ class AutomationTrigger(MetadataMixin):
             trigger_type: Trigger type.
             event_type: Event type.
             vdom: Virtual domain(s) that this trigger is valid for.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            license_type: License type.
+            report_type: Security Rating report.
+            stitch_name: Triggering stitch name.
+            logid: Log IDs to trigger event.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            trigger_frequency: Scheduled trigger frequency (default = daily).
+            trigger_weekday: Day of week for trigger.
+            trigger_day: Day within a month to trigger.
+            trigger_hour: Hour of the day on which to trigger (0 - 23, default = 1).
+            trigger_minute: Minute of the hour on which to trigger (0 - 59, default = 0).
+            trigger_datetime: Trigger date and time (YYYY-MM-DD HH:MM:SS).
+            fields: Customized trigger field settings.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            faz_event_name: FortiAnalyzer event handler name.
+            faz_event_severity: FortiAnalyzer event severity.
+            faz_event_tags: FortiAnalyzer event tags.
+            serial: Fabric connector serial number.
+            fabric_event_name: Fabric connector event handler name.
+            fabric_event_severity: Fabric connector event severity.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -385,9 +535,36 @@ class AutomationTrigger(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if logid is not None:
+            logid = normalize_table_field(
+                logid,
+                mkey="id",
+                required_fields=['id'],
+                field_name="logid",
+                example="[{'id': 1}]",
+            )
+        if fields is not None:
+            fields = normalize_table_field(
+                fields,
+                mkey="id",
+                required_fields=['id'],
+                field_name="fields",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             trigger_type=trigger_type,
@@ -424,16 +601,22 @@ class AutomationTrigger(MetadataMixin):
 
         endpoint = "/system/automation-trigger"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/automation_trigger object.
 
@@ -443,6 +626,7 @@ class AutomationTrigger(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -468,7 +652,7 @@ class AutomationTrigger(MetadataMixin):
         endpoint = "/system/automation-trigger/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -532,7 +716,30 @@ class AutomationTrigger(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        description: str | None = None,
+        trigger_type: Literal["event-based", "scheduled"] | None = None,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = None,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = None,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = None,
+        stitch_name: str | None = None,
+        logid: str | list[str] | list[dict[str, Any]] | None = None,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = None,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
+        trigger_day: int | None = None,
+        trigger_hour: int | None = None,
+        trigger_minute: int | None = None,
+        trigger_datetime: Any | None = None,
+        fields: str | list[str] | list[dict[str, Any]] | None = None,
+        faz_event_name: str | None = None,
+        faz_event_severity: str | None = None,
+        faz_event_tags: str | None = None,
+        serial: str | None = None,
+        fabric_event_name: str | None = None,
+        fabric_event_severity: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -543,7 +750,30 @@ class AutomationTrigger(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            description: Field description
+            trigger_type: Field trigger-type
+            event_type: Field event-type
+            license_type: Field license-type
+            report_type: Field report-type
+            stitch_name: Field stitch-name
+            logid: Field logid
+            trigger_frequency: Field trigger-frequency
+            trigger_weekday: Field trigger-weekday
+            trigger_day: Field trigger-day
+            trigger_hour: Field trigger-hour
+            trigger_minute: Field trigger-minute
+            trigger_datetime: Field trigger-datetime
+            fields: Field fields
+            faz_event_name: Field faz-event-name
+            faz_event_severity: Field faz-event-severity
+            faz_event_tags: Field faz-event-tags
+            serial: Field serial
+            fabric_event_name: Field fabric-event-name
+            fabric_event_severity: Field fabric-event-severity
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -553,7 +783,13 @@ class AutomationTrigger(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_automation_trigger.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -576,20 +812,43 @@ class AutomationTrigger(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            description=description,
+            trigger_type=trigger_type,
+            event_type=event_type,
+            license_type=license_type,
+            report_type=report_type,
+            stitch_name=stitch_name,
+            logid=logid,
+            trigger_frequency=trigger_frequency,
+            trigger_weekday=trigger_weekday,
+            trigger_day=trigger_day,
+            trigger_hour=trigger_hour,
+            trigger_minute=trigger_minute,
+            trigger_datetime=trigger_datetime,
+            fields=fields,
+            faz_event_name=faz_event_name,
+            faz_event_severity=faz_event_severity,
+            faz_event_tags=faz_event_tags,
+            serial=serial,
+            fabric_event_name=fabric_event_name,
+            fabric_event_severity=fabric_event_severity,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

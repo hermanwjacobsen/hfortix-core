@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.switch_controller_security_policy_x802_1x.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.switch_controller_security_policy_x802_1x.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class X8021x(MetadataMixin):
+class X8021x(CRUDEndpoint, MetadataMixin):
     """X8021x Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "x802_1x"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "user_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class X8021x(MetadataMixin):
         """Initialize X8021x endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class X8021x(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve switch_controller/security_policy/x802_1x configuration.
 
@@ -99,6 +131,7 @@ class X8021x(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class X8021x(MetadataMixin):
         
         if name:
             endpoint = "/switch-controller.security-policy/802-1X/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/switch-controller.security-policy/802-1X"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,12 +236,17 @@ class X8021x(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         security_mode: Literal["802.1X", "802.1X-mac-based"] | None = None,
-        user_group: str | list | None = None,
+        user_group: str | list[str] | list[dict[str, Any]] | None = None,
         mac_auth_bypass: Literal["disable", "enable"] | None = None,
         auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = None,
         auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = None,
@@ -229,8 +269,9 @@ class X8021x(MetadataMixin):
         dacl: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing switch_controller/security_policy/x802_1x object.
 
@@ -241,10 +282,34 @@ class X8021x(MetadataMixin):
             name: Policy name.
             security_mode: Port or MAC based 802.1X security mode.
             user_group: Name of user-group to assign to this MAC Authentication Bypass (MAB) policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             mac_auth_bypass: Enable/disable MAB for this policy.
             auth_order: Configure authentication order.
+            auth_priority: Configure authentication priority.
+            open_auth: Enable/disable open authentication for this policy.
+            eap_passthru: Enable/disable EAP pass-through mode, allowing protocols (such as LLDP) to pass through ports for more flexible authentication.
+            eap_auto_untagged_vlans: Enable/disable automatic inclusion of untagged VLANs.
+            guest_vlan: Enable the guest VLAN feature to allow limited access to non-802.1X-compliant clients.
+            guest_vlan_id: Guest VLAN name.
+            guest_auth_delay: Guest authentication delay (1 - 900  sec, default = 30).
+            auth_fail_vlan: Enable to allow limited access to clients that cannot authenticate.
+            auth_fail_vlan_id: VLAN ID on which authentication failed.
+            framevid_apply: Enable/disable the capability to apply the EAP/MAB frame VLAN to the port native VLAN.
+            radius_timeout_overwrite: Enable to override the global RADIUS session timeout.
+            policy_type: Policy type.
+            authserver_timeout_period: Authentication server timeout period (3 - 15 sec, default = 3).
+            authserver_timeout_vlan: Enable/disable the authentication server timeout VLAN to allow limited access when RADIUS is unavailable.
+            authserver_timeout_vlanid: Authentication server timeout VLAN name.
+            authserver_timeout_tagged: Configure timeout option for the tagged VLAN which allows limited access when the authentication server is unavailable.
+            authserver_timeout_tagged_vlanid: Tagged VLAN name for which the timeout option is applied to (only one VLAN ID).
+            dacl: Enable/disable dynamic access control list on this interface.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -271,9 +336,20 @@ class X8021x(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_group is not None:
+            user_group = normalize_table_field(
+                user_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_group",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             security_mode=security_mode,
             user_group=user_group,
@@ -316,15 +392,20 @@ class X8021x(MetadataMixin):
         endpoint = "/switch-controller.security-policy/802-1X/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         security_mode: Literal["802.1X", "802.1X-mac-based"] | None = None,
-        user_group: str | list | None = None,
+        user_group: str | list[str] | list[dict[str, Any]] | None = None,
         mac_auth_bypass: Literal["disable", "enable"] | None = None,
         auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = None,
         auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = None,
@@ -347,8 +428,9 @@ class X8021x(MetadataMixin):
         dacl: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new switch_controller/security_policy/x802_1x object.
 
@@ -359,10 +441,34 @@ class X8021x(MetadataMixin):
             name: Policy name.
             security_mode: Port or MAC based 802.1X security mode.
             user_group: Name of user-group to assign to this MAC Authentication Bypass (MAB) policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             mac_auth_bypass: Enable/disable MAB for this policy.
             auth_order: Configure authentication order.
+            auth_priority: Configure authentication priority.
+            open_auth: Enable/disable open authentication for this policy.
+            eap_passthru: Enable/disable EAP pass-through mode, allowing protocols (such as LLDP) to pass through ports for more flexible authentication.
+            eap_auto_untagged_vlans: Enable/disable automatic inclusion of untagged VLANs.
+            guest_vlan: Enable the guest VLAN feature to allow limited access to non-802.1X-compliant clients.
+            guest_vlan_id: Guest VLAN name.
+            guest_auth_delay: Guest authentication delay (1 - 900  sec, default = 30).
+            auth_fail_vlan: Enable to allow limited access to clients that cannot authenticate.
+            auth_fail_vlan_id: VLAN ID on which authentication failed.
+            framevid_apply: Enable/disable the capability to apply the EAP/MAB frame VLAN to the port native VLAN.
+            radius_timeout_overwrite: Enable to override the global RADIUS session timeout.
+            policy_type: Policy type.
+            authserver_timeout_period: Authentication server timeout period (3 - 15 sec, default = 3).
+            authserver_timeout_vlan: Enable/disable the authentication server timeout VLAN to allow limited access when RADIUS is unavailable.
+            authserver_timeout_vlanid: Authentication server timeout VLAN name.
+            authserver_timeout_tagged: Configure timeout option for the tagged VLAN which allows limited access when the authentication server is unavailable.
+            authserver_timeout_tagged_vlanid: Tagged VLAN name for which the timeout option is applied to (only one VLAN ID).
+            dacl: Enable/disable dynamic access control list on this interface.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -391,9 +497,20 @@ class X8021x(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_group is not None:
+            user_group = normalize_table_field(
+                user_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_group",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             security_mode=security_mode,
             user_group=user_group,
@@ -432,16 +549,22 @@ class X8021x(MetadataMixin):
 
         endpoint = "/switch-controller.security-policy/802-1X"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete switch_controller/security_policy/x802_1x object.
 
@@ -451,6 +574,7 @@ class X8021x(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -476,7 +600,7 @@ class X8021x(MetadataMixin):
         endpoint = "/switch-controller.security-policy/802-1X/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -540,7 +664,32 @@ class X8021x(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        security_mode: Literal["802.1X", "802.1X-mac-based"] | None = None,
+        user_group: str | list[str] | list[dict[str, Any]] | None = None,
+        mac_auth_bypass: Literal["disable", "enable"] | None = None,
+        auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = None,
+        auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = None,
+        open_auth: Literal["disable", "enable"] | None = None,
+        eap_passthru: Literal["disable", "enable"] | None = None,
+        eap_auto_untagged_vlans: Literal["disable", "enable"] | None = None,
+        guest_vlan: Literal["disable", "enable"] | None = None,
+        guest_vlan_id: str | None = None,
+        guest_auth_delay: int | None = None,
+        auth_fail_vlan: Literal["disable", "enable"] | None = None,
+        auth_fail_vlan_id: str | None = None,
+        framevid_apply: Literal["disable", "enable"] | None = None,
+        radius_timeout_overwrite: Literal["disable", "enable"] | None = None,
+        policy_type: Literal["802.1X"] | None = None,
+        authserver_timeout_period: int | None = None,
+        authserver_timeout_vlan: Literal["disable", "enable"] | None = None,
+        authserver_timeout_vlanid: str | None = None,
+        authserver_timeout_tagged: Literal["disable", "lldp-voice", "static"] | None = None,
+        authserver_timeout_tagged_vlanid: str | None = None,
+        dacl: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -551,7 +700,32 @@ class X8021x(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            security_mode: Field security-mode
+            user_group: Field user-group
+            mac_auth_bypass: Field mac-auth-bypass
+            auth_order: Field auth-order
+            auth_priority: Field auth-priority
+            open_auth: Field open-auth
+            eap_passthru: Field eap-passthru
+            eap_auto_untagged_vlans: Field eap-auto-untagged-vlans
+            guest_vlan: Field guest-vlan
+            guest_vlan_id: Field guest-vlan-id
+            guest_auth_delay: Field guest-auth-delay
+            auth_fail_vlan: Field auth-fail-vlan
+            auth_fail_vlan_id: Field auth-fail-vlan-id
+            framevid_apply: Field framevid-apply
+            radius_timeout_overwrite: Field radius-timeout-overwrite
+            policy_type: Field policy-type
+            authserver_timeout_period: Field authserver-timeout-period
+            authserver_timeout_vlan: Field authserver-timeout-vlan
+            authserver_timeout_vlanid: Field authserver-timeout-vlanid
+            authserver_timeout_tagged: Field authserver-timeout-tagged
+            authserver_timeout_tagged_vlanid: Field authserver-timeout-tagged-vlanid
+            dacl: Field dacl
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -561,7 +735,13 @@ class X8021x(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.switch_controller_security_policy_x802_1x.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -584,20 +764,45 @@ class X8021x(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            security_mode=security_mode,
+            user_group=user_group,
+            mac_auth_bypass=mac_auth_bypass,
+            auth_order=auth_order,
+            auth_priority=auth_priority,
+            open_auth=open_auth,
+            eap_passthru=eap_passthru,
+            eap_auto_untagged_vlans=eap_auto_untagged_vlans,
+            guest_vlan=guest_vlan,
+            guest_vlan_id=guest_vlan_id,
+            guest_auth_delay=guest_auth_delay,
+            auth_fail_vlan=auth_fail_vlan,
+            auth_fail_vlan_id=auth_fail_vlan_id,
+            framevid_apply=framevid_apply,
+            radius_timeout_overwrite=radius_timeout_overwrite,
+            policy_type=policy_type,
+            authserver_timeout_period=authserver_timeout_period,
+            authserver_timeout_vlan=authserver_timeout_vlan,
+            authserver_timeout_vlanid=authserver_timeout_vlanid,
+            authserver_timeout_tagged=authserver_timeout_tagged,
+            authserver_timeout_tagged_vlanid=authserver_timeout_tagged_vlanid,
+            dacl=dacl,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

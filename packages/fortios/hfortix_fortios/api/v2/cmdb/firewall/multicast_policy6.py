@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_multicast_policy6.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_multicast_policy6.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class MulticastPolicy6(MetadataMixin):
+class MulticastPolicy6(CRUDEndpoint, MetadataMixin):
     """MulticastPolicy6 Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "multicast_policy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class MulticastPolicy6(MetadataMixin):
         """Initialize MulticastPolicy6 endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         id: int | None = None,
@@ -72,8 +108,9 @@ class MulticastPolicy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/multicast_policy6 configuration.
 
@@ -99,6 +136,7 @@ class MulticastPolicy6(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class MulticastPolicy6(MetadataMixin):
         
         if id:
             endpoint = "/firewall/multicast-policy6/" + str(id)
+            unwrap_single = True
         else:
             endpoint = "/firewall/multicast-policy6"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class MulticastPolicy6(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -210,8 +255,8 @@ class MulticastPolicy6(MetadataMixin):
         name: str | None = None,
         srcintf: str | None = None,
         dstintf: str | None = None,
-        srcaddr: str | list | None = None,
-        dstaddr: str | list | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         action: Literal["accept", "deny"] | None = None,
         protocol: int | None = None,
         start_port: int | None = None,
@@ -223,8 +268,9 @@ class MulticastPolicy6(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/multicast_policy6 object.
 
@@ -237,8 +283,31 @@ class MulticastPolicy6(MetadataMixin):
             status: Enable/disable this policy.
             name: Policy name.
             srcintf: IPv6 source interface name.
+            dstintf: IPv6 destination interface name.
+            srcaddr: IPv6 source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: IPv6 destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            action: Accept or deny traffic matching the policy.
+            protocol: Integer value for the protocol type as defined by IANA (0 - 255, default = 0).
+            start_port: Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).
+            end_port: Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 65535).
+            utm_status: Enable to add an IPS security profile to the policy.
+            ips_sensor: Name of an existing IPS sensor.
+            logtraffic: Enable or disable logging. Log all sessions or security profile sessions.
+            auto_asic_offload: Enable/disable offloading policy traffic for hardware acceleration.
+            comments: Comment.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -265,9 +334,28 @@ class MulticastPolicy6(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             uuid=uuid,
             status=status,
@@ -304,9 +392,14 @@ class MulticastPolicy6(MetadataMixin):
         endpoint = "/firewall/multicast-policy6/" + str(id_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -316,8 +409,8 @@ class MulticastPolicy6(MetadataMixin):
         name: str | None = None,
         srcintf: str | None = None,
         dstintf: str | None = None,
-        srcaddr: str | list | None = None,
-        dstaddr: str | list | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         action: Literal["accept", "deny"] | None = None,
         protocol: int | None = None,
         start_port: int | None = None,
@@ -329,8 +422,9 @@ class MulticastPolicy6(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/multicast_policy6 object.
 
@@ -343,8 +437,31 @@ class MulticastPolicy6(MetadataMixin):
             status: Enable/disable this policy.
             name: Policy name.
             srcintf: IPv6 source interface name.
+            dstintf: IPv6 destination interface name.
+            srcaddr: IPv6 source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: IPv6 destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            action: Accept or deny traffic matching the policy.
+            protocol: Integer value for the protocol type as defined by IANA (0 - 255, default = 0).
+            start_port: Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).
+            end_port: Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 65535).
+            utm_status: Enable to add an IPS security profile to the policy.
+            ips_sensor: Name of an existing IPS sensor.
+            logtraffic: Enable or disable logging. Log all sessions or security profile sessions.
+            auto_asic_offload: Enable/disable offloading policy traffic for hardware acceleration.
+            comments: Comment.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -373,9 +490,28 @@ class MulticastPolicy6(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             uuid=uuid,
             status=status,
@@ -408,16 +544,22 @@ class MulticastPolicy6(MetadataMixin):
 
         endpoint = "/firewall/multicast-policy6"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         id: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/multicast_policy6 object.
 
@@ -427,6 +569,7 @@ class MulticastPolicy6(MetadataMixin):
             id: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -452,7 +595,7 @@ class MulticastPolicy6(MetadataMixin):
         endpoint = "/firewall/multicast-policy6/" + str(id)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -516,7 +659,26 @@ class MulticastPolicy6(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        uuid: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        name: str | None = None,
+        srcintf: str | None = None,
+        dstintf: str | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        action: Literal["accept", "deny"] | None = None,
+        protocol: int | None = None,
+        start_port: int | None = None,
+        end_port: int | None = None,
+        utm_status: Literal["enable", "disable"] | None = None,
+        ips_sensor: str | None = None,
+        logtraffic: Literal["all", "utm", "disable"] | None = None,
+        auto_asic_offload: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -527,7 +689,26 @@ class MulticastPolicy6(MetadataMixin):
 
         Args:
             payload_dict: Resource data including id (primary key)
+            id: Field id
+            uuid: Field uuid
+            status: Field status
+            name: Field name
+            srcintf: Field srcintf
+            dstintf: Field dstintf
+            srcaddr: Field srcaddr
+            dstaddr: Field dstaddr
+            action: Field action
+            protocol: Field protocol
+            start_port: Field start-port
+            end_port: Field end-port
+            utm_status: Field utm-status
+            ips_sensor: Field ips-sensor
+            logtraffic: Field logtraffic
+            auto_asic_offload: Field auto-asic-offload
+            comments: Field comments
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -537,7 +718,13 @@ class MulticastPolicy6(MetadataMixin):
             ValueError: If id is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_multicast_policy6.set(
+            ...     id=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "id": 1,
             ...     "field1": "value1",
@@ -560,20 +747,39 @@ class MulticastPolicy6(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            id=id,
+            uuid=uuid,
+            status=status,
+            name=name,
+            srcintf=srcintf,
+            dstintf=dstintf,
+            srcaddr=srcaddr,
+            dstaddr=dstaddr,
+            action=action,
+            protocol=protocol,
+            start_port=start_port,
+            end_port=end_port,
+            utm_status=utm_status,
+            ips_sensor=ips_sensor,
+            logtraffic=logtraffic,
+            auto_asic_offload=auto_asic_offload,
+            comments=comments,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("id")
+        mkey_value = payload_data.get("id")
         if not mkey_value:
-            raise ValueError("id is required in payload_dict for set()")
+            raise ValueError("id is required for set()")
         
         # Check if resource exists
         if self.exists(id=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

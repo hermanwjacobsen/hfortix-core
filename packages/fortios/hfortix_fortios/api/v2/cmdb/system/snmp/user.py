@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_snmp_user.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_snmp_user.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class User(MetadataMixin):
+class User(CRUDEndpoint, MetadataMixin):
     """User Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "user"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "vdoms": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class User(MetadataMixin):
         """Initialize User endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class User(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/snmp/user configuration.
 
@@ -99,6 +131,7 @@ class User(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class User(MetadataMixin):
         
         if name:
             endpoint = "/system.snmp/user/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system.snmp/user"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class User(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -211,14 +251,14 @@ class User(MetadataMixin):
         trap_rport: int | None = None,
         queries: Literal["enable", "disable"] | None = None,
         query_port: int | None = None,
-        notify_hosts: str | list | None = None,
-        notify_hosts6: str | list | None = None,
+        notify_hosts: str | list[str] | None = None,
+        notify_hosts6: str | list[str] | None = None,
         source_ip: str | None = None,
         source_ipv6: str | None = None,
         ha_direct: Literal["enable", "disable"] | None = None,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list | None = None,
+        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = None,
         mib_view: str | None = None,
-        vdoms: str | list | None = None,
+        vdoms: str | list[str] | list[dict[str, Any]] | None = None,
         security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = None,
         auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = None,
         auth_pwd: Any | None = None,
@@ -229,8 +269,9 @@ class User(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/snmp/user object.
 
@@ -243,8 +284,32 @@ class User(MetadataMixin):
             trap_status: Enable/disable traps for this SNMP user.
             trap_lport: SNMPv3 local trap port (default = 162).
             trap_rport: SNMPv3 trap remote port (default = 162).
+            queries: Enable/disable SNMP queries for this user.
+            query_port: SNMPv3 query port (default = 161).
+            notify_hosts: SNMP managers to send notifications (traps) to.
+            notify_hosts6: IPv6 SNMP managers to send notifications (traps) to.
+            source_ip: Source IP for SNMP trap.
+            source_ipv6: Source IPv6 for SNMP trap.
+            ha_direct: Enable/disable direct management of HA cluster members.
+            events: SNMP notifications (traps) to send.
+            mib_view: SNMP access control MIB view.
+            vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            security_level: Security level for message authentication and encryption.
+            auth_proto: Authentication protocol.
+            auth_pwd: Password for authentication protocol.
+            priv_proto: Privacy (encryption) protocol.
+            priv_pwd: Password for privacy (encryption) protocol.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -271,9 +336,20 @@ class User(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             trap_status=trap_status,
@@ -316,9 +392,14 @@ class User(MetadataMixin):
         endpoint = "/system.snmp/user/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -329,14 +410,14 @@ class User(MetadataMixin):
         trap_rport: int | None = None,
         queries: Literal["enable", "disable"] | None = None,
         query_port: int | None = None,
-        notify_hosts: str | list | None = None,
-        notify_hosts6: str | list | None = None,
+        notify_hosts: str | list[str] | None = None,
+        notify_hosts6: str | list[str] | None = None,
         source_ip: str | None = None,
         source_ipv6: str | None = None,
         ha_direct: Literal["enable", "disable"] | None = None,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list | None = None,
+        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = None,
         mib_view: str | None = None,
-        vdoms: str | list | None = None,
+        vdoms: str | list[str] | list[dict[str, Any]] | None = None,
         security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = None,
         auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = None,
         auth_pwd: Any | None = None,
@@ -347,8 +428,9 @@ class User(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/snmp/user object.
 
@@ -361,8 +443,32 @@ class User(MetadataMixin):
             trap_status: Enable/disable traps for this SNMP user.
             trap_lport: SNMPv3 local trap port (default = 162).
             trap_rport: SNMPv3 trap remote port (default = 162).
+            queries: Enable/disable SNMP queries for this user.
+            query_port: SNMPv3 query port (default = 161).
+            notify_hosts: SNMP managers to send notifications (traps) to.
+            notify_hosts6: IPv6 SNMP managers to send notifications (traps) to.
+            source_ip: Source IP for SNMP trap.
+            source_ipv6: Source IPv6 for SNMP trap.
+            ha_direct: Enable/disable direct management of HA cluster members.
+            events: SNMP notifications (traps) to send.
+            mib_view: SNMP access control MIB view.
+            vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            security_level: Security level for message authentication and encryption.
+            auth_proto: Authentication protocol.
+            auth_pwd: Password for authentication protocol.
+            priv_proto: Privacy (encryption) protocol.
+            priv_pwd: Password for privacy (encryption) protocol.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -391,9 +497,20 @@ class User(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             trap_status=trap_status,
@@ -432,16 +549,22 @@ class User(MetadataMixin):
 
         endpoint = "/system.snmp/user"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/snmp/user object.
 
@@ -451,6 +574,7 @@ class User(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -476,7 +600,7 @@ class User(MetadataMixin):
         endpoint = "/system.snmp/user/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -540,7 +664,32 @@ class User(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        trap_status: Literal["enable", "disable"] | None = None,
+        trap_lport: int | None = None,
+        trap_rport: int | None = None,
+        queries: Literal["enable", "disable"] | None = None,
+        query_port: int | None = None,
+        notify_hosts: str | list[str] | list[dict[str, Any]] | None = None,
+        notify_hosts6: str | list[str] | list[dict[str, Any]] | None = None,
+        source_ip: str | None = None,
+        source_ipv6: str | None = None,
+        ha_direct: Literal["enable", "disable"] | None = None,
+        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | list[dict[str, Any]] | None = None,
+        mib_view: str | None = None,
+        vdoms: str | list[str] | list[dict[str, Any]] | None = None,
+        security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = None,
+        auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = None,
+        auth_pwd: Any | None = None,
+        priv_proto: Literal["aes", "des", "aes256", "aes256cisco"] | None = None,
+        priv_pwd: Any | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
+        interface: str | None = None,
+        vrf_select: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -551,7 +700,32 @@ class User(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            status: Field status
+            trap_status: Field trap-status
+            trap_lport: Field trap-lport
+            trap_rport: Field trap-rport
+            queries: Field queries
+            query_port: Field query-port
+            notify_hosts: Field notify-hosts
+            notify_hosts6: Field notify-hosts6
+            source_ip: Field source-ip
+            source_ipv6: Field source-ipv6
+            ha_direct: Field ha-direct
+            events: Field events
+            mib_view: Field mib-view
+            vdoms: Field vdoms
+            security_level: Field security-level
+            auth_proto: Field auth-proto
+            auth_pwd: Field auth-pwd
+            priv_proto: Field priv-proto
+            priv_pwd: Field priv-pwd
+            interface_select_method: Field interface-select-method
+            interface: Field interface
+            vrf_select: Field vrf-select
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -561,7 +735,13 @@ class User(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_snmp_user.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -584,20 +764,45 @@ class User(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            status=status,
+            trap_status=trap_status,
+            trap_lport=trap_lport,
+            trap_rport=trap_rport,
+            queries=queries,
+            query_port=query_port,
+            notify_hosts=notify_hosts,
+            notify_hosts6=notify_hosts6,
+            source_ip=source_ip,
+            source_ipv6=source_ipv6,
+            ha_direct=ha_direct,
+            events=events,
+            mib_view=mib_view,
+            vdoms=vdoms,
+            security_level=security_level,
+            auth_proto=auth_proto,
+            auth_pwd=auth_pwd,
+            priv_proto=priv_proto,
+            priv_pwd=priv_pwd,
+            interface_select_method=interface_select_method,
+            interface=interface,
+            vrf_select=vrf_select,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_ssl_ssh_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_ssl_ssh_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,53 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class SslSshProfile(MetadataMixin):
+class SslSshProfile(CRUDEndpoint, MetadataMixin):
     """SslSshProfile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ssl_ssh_profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ssl_exempt": {
+            "mkey": "id",
+            "required_fields": ['type'],
+            "example": "[{'type': 'fortiguard-category'}]",
+        },
+        "ech_outer_sni": {
+            "mkey": "name",
+            "required_fields": ['name', 'sni'],
+            "example": "[{'name': 'value', 'sni': 'value'}]",
+        },
+        "server_cert": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ssl_server": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +104,11 @@ class SslSshProfile(MetadataMixin):
         """Initialize SslSshProfile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +118,9 @@ class SslSshProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/ssl_ssh_profile configuration.
 
@@ -99,6 +146,7 @@ class SslSshProfile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +203,14 @@ class SslSshProfile(MetadataMixin):
         
         if name:
             endpoint = "/firewall/ssl-ssh-profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/ssl-ssh-profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +251,11 @@ class SslSshProfile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -216,14 +271,14 @@ class SslSshProfile(MetadataMixin):
         dot: str | None = None,
         allowlist: Literal["enable", "disable"] | None = None,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = None,
-        ssl_exempt: str | list | None = None,
-        ech_outer_sni: str | list | None = None,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = None,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = None,
         server_cert_mode: Literal["re-sign", "replace"] | None = None,
         use_ssl_server: Literal["disable", "enable"] | None = None,
         caname: str | None = None,
         untrusted_caname: str | None = None,
-        server_cert: str | list | None = None,
-        ssl_server: str | list | None = None,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = None,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = None,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = None,
         ssl_exemption_log: Literal["disable", "enable"] | None = None,
         ssl_anomaly_log: Literal["disable", "enable"] | None = None,
@@ -235,8 +290,9 @@ class SslSshProfile(MetadataMixin):
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/ssl_ssh_profile object.
 
@@ -249,8 +305,51 @@ class SslSshProfile(MetadataMixin):
             ssl: Configure SSL options.
             https: Configure HTTPS options.
             ftps: Configure FTPS options.
+            imaps: Configure IMAPS options.
+            pop3s: Configure POP3S options.
+            smtps: Configure SMTPS options.
+            ssh: Configure SSH options.
+            dot: Configure DNS over TLS options.
+            allowlist: Enable/disable exempting servers by FortiGuard allowlist.
+            block_blocklisted_certificates: Enable/disable blocking SSL-based botnet communication by FortiGuard certificate blocklist.
+            ssl_exempt: Servers to exempt from SSL inspection.
+                Default format: [{'type': 'fortiguard-category'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'type': 'fortiguard-category'}] (recommended)
+            ech_outer_sni: ClientHelloOuter SNIs to be blocked.
+                Default format: [{'name': 'value', 'sni': 'value'}]
+                Required format: List of dicts with keys: name, sni
+                  (String format not allowed due to multiple required fields)
+            server_cert_mode: Re-sign or replace the server's certificate.
+            use_ssl_server: Enable/disable the use of SSL server table for SSL offloading.
+            caname: CA certificate used by SSL Inspection.
+            untrusted_caname: Untrusted CA certificate used by SSL Inspection.
+            server_cert: Certificate used by SSL Inspection to replace server certificate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ssl_server: SSL server settings used for client certificate request.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            ssl_exemption_ip_rating: Enable/disable IP based URL rating.
+            ssl_exemption_log: Enable/disable logging of SSL exemptions.
+            ssl_anomaly_log: Enable/disable logging of SSL anomalies.
+            ssl_negotiation_log: Enable/disable logging of SSL negotiation events.
+            ssl_server_cert_log: Enable/disable logging of server certificate information.
+            ssl_handshake_log: Enable/disable logging of TLS handshakes.
+            rpc_over_https: Enable/disable inspection of RPC over HTTPS.
+            mapi_over_https: Enable/disable inspection of MAPI over HTTPS.
+            supported_alpn: Configure ALPN option.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -277,9 +376,44 @@ class SslSshProfile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ssl_exempt is not None:
+            ssl_exempt = normalize_table_field(
+                ssl_exempt,
+                mkey="id",
+                required_fields=['type'],
+                field_name="ssl_exempt",
+                example="[{'type': 'fortiguard-category'}]",
+            )
+        if ech_outer_sni is not None:
+            ech_outer_sni = normalize_table_field(
+                ech_outer_sni,
+                mkey="name",
+                required_fields=['name', 'sni'],
+                field_name="ech_outer_sni",
+                example="[{'name': 'value', 'sni': 'value'}]",
+            )
+        if server_cert is not None:
+            server_cert = normalize_table_field(
+                server_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="server_cert",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_server is not None:
+            ssl_server = normalize_table_field(
+                ssl_server,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="ssl_server",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             ssl=ssl,
@@ -328,9 +462,14 @@ class SslSshProfile(MetadataMixin):
         endpoint = "/firewall/ssl-ssh-profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -346,14 +485,14 @@ class SslSshProfile(MetadataMixin):
         dot: str | None = None,
         allowlist: Literal["enable", "disable"] | None = None,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = None,
-        ssl_exempt: str | list | None = None,
-        ech_outer_sni: str | list | None = None,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = None,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = None,
         server_cert_mode: Literal["re-sign", "replace"] | None = None,
         use_ssl_server: Literal["disable", "enable"] | None = None,
         caname: str | None = None,
         untrusted_caname: str | None = None,
-        server_cert: str | list | None = None,
-        ssl_server: str | list | None = None,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = None,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = None,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = None,
         ssl_exemption_log: Literal["disable", "enable"] | None = None,
         ssl_anomaly_log: Literal["disable", "enable"] | None = None,
@@ -365,8 +504,9 @@ class SslSshProfile(MetadataMixin):
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/ssl_ssh_profile object.
 
@@ -379,8 +519,51 @@ class SslSshProfile(MetadataMixin):
             ssl: Configure SSL options.
             https: Configure HTTPS options.
             ftps: Configure FTPS options.
+            imaps: Configure IMAPS options.
+            pop3s: Configure POP3S options.
+            smtps: Configure SMTPS options.
+            ssh: Configure SSH options.
+            dot: Configure DNS over TLS options.
+            allowlist: Enable/disable exempting servers by FortiGuard allowlist.
+            block_blocklisted_certificates: Enable/disable blocking SSL-based botnet communication by FortiGuard certificate blocklist.
+            ssl_exempt: Servers to exempt from SSL inspection.
+                Default format: [{'type': 'fortiguard-category'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'type': 'fortiguard-category'}] (recommended)
+            ech_outer_sni: ClientHelloOuter SNIs to be blocked.
+                Default format: [{'name': 'value', 'sni': 'value'}]
+                Required format: List of dicts with keys: name, sni
+                  (String format not allowed due to multiple required fields)
+            server_cert_mode: Re-sign or replace the server's certificate.
+            use_ssl_server: Enable/disable the use of SSL server table for SSL offloading.
+            caname: CA certificate used by SSL Inspection.
+            untrusted_caname: Untrusted CA certificate used by SSL Inspection.
+            server_cert: Certificate used by SSL Inspection to replace server certificate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ssl_server: SSL server settings used for client certificate request.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            ssl_exemption_ip_rating: Enable/disable IP based URL rating.
+            ssl_exemption_log: Enable/disable logging of SSL exemptions.
+            ssl_anomaly_log: Enable/disable logging of SSL anomalies.
+            ssl_negotiation_log: Enable/disable logging of SSL negotiation events.
+            ssl_server_cert_log: Enable/disable logging of server certificate information.
+            ssl_handshake_log: Enable/disable logging of TLS handshakes.
+            rpc_over_https: Enable/disable inspection of RPC over HTTPS.
+            mapi_over_https: Enable/disable inspection of MAPI over HTTPS.
+            supported_alpn: Configure ALPN option.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -409,9 +592,44 @@ class SslSshProfile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ssl_exempt is not None:
+            ssl_exempt = normalize_table_field(
+                ssl_exempt,
+                mkey="id",
+                required_fields=['type'],
+                field_name="ssl_exempt",
+                example="[{'type': 'fortiguard-category'}]",
+            )
+        if ech_outer_sni is not None:
+            ech_outer_sni = normalize_table_field(
+                ech_outer_sni,
+                mkey="name",
+                required_fields=['name', 'sni'],
+                field_name="ech_outer_sni",
+                example="[{'name': 'value', 'sni': 'value'}]",
+            )
+        if server_cert is not None:
+            server_cert = normalize_table_field(
+                server_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="server_cert",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_server is not None:
+            ssl_server = normalize_table_field(
+                ssl_server,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="ssl_server",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             ssl=ssl,
@@ -456,16 +674,22 @@ class SslSshProfile(MetadataMixin):
 
         endpoint = "/firewall/ssl-ssh-profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/ssl_ssh_profile object.
 
@@ -475,6 +699,7 @@ class SslSshProfile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -500,7 +725,7 @@ class SslSshProfile(MetadataMixin):
         endpoint = "/firewall/ssl-ssh-profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -564,7 +789,38 @@ class SslSshProfile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        ssl: str | None = None,
+        https: str | None = None,
+        ftps: str | None = None,
+        imaps: str | None = None,
+        pop3s: str | None = None,
+        smtps: str | None = None,
+        ssh: str | None = None,
+        dot: str | None = None,
+        allowlist: Literal["enable", "disable"] | None = None,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = None,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = None,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = None,
+        server_cert_mode: Literal["re-sign", "replace"] | None = None,
+        use_ssl_server: Literal["disable", "enable"] | None = None,
+        caname: str | None = None,
+        untrusted_caname: str | None = None,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = None,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = None,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = None,
+        ssl_exemption_log: Literal["disable", "enable"] | None = None,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = None,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = None,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = None,
+        ssl_handshake_log: Literal["disable", "enable"] | None = None,
+        rpc_over_https: Literal["enable", "disable"] | None = None,
+        mapi_over_https: Literal["enable", "disable"] | None = None,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -575,7 +831,38 @@ class SslSshProfile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            ssl: Field ssl
+            https: Field https
+            ftps: Field ftps
+            imaps: Field imaps
+            pop3s: Field pop3s
+            smtps: Field smtps
+            ssh: Field ssh
+            dot: Field dot
+            allowlist: Field allowlist
+            block_blocklisted_certificates: Field block-blocklisted-certificates
+            ssl_exempt: Field ssl-exempt
+            ech_outer_sni: Field ech-outer-sni
+            server_cert_mode: Field server-cert-mode
+            use_ssl_server: Field use-ssl-server
+            caname: Field caname
+            untrusted_caname: Field untrusted-caname
+            server_cert: Field server-cert
+            ssl_server: Field ssl-server
+            ssl_exemption_ip_rating: Field ssl-exemption-ip-rating
+            ssl_exemption_log: Field ssl-exemption-log
+            ssl_anomaly_log: Field ssl-anomaly-log
+            ssl_negotiation_log: Field ssl-negotiation-log
+            ssl_server_cert_log: Field ssl-server-cert-log
+            ssl_handshake_log: Field ssl-handshake-log
+            rpc_over_https: Field rpc-over-https
+            mapi_over_https: Field mapi-over-https
+            supported_alpn: Field supported-alpn
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -585,7 +872,13 @@ class SslSshProfile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_ssl_ssh_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -608,20 +901,51 @@ class SslSshProfile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            ssl=ssl,
+            https=https,
+            ftps=ftps,
+            imaps=imaps,
+            pop3s=pop3s,
+            smtps=smtps,
+            ssh=ssh,
+            dot=dot,
+            allowlist=allowlist,
+            block_blocklisted_certificates=block_blocklisted_certificates,
+            ssl_exempt=ssl_exempt,
+            ech_outer_sni=ech_outer_sni,
+            server_cert_mode=server_cert_mode,
+            use_ssl_server=use_ssl_server,
+            caname=caname,
+            untrusted_caname=untrusted_caname,
+            server_cert=server_cert,
+            ssl_server=ssl_server,
+            ssl_exemption_ip_rating=ssl_exemption_ip_rating,
+            ssl_exemption_log=ssl_exemption_log,
+            ssl_anomaly_log=ssl_anomaly_log,
+            ssl_negotiation_log=ssl_negotiation_log,
+            ssl_server_cert_log=ssl_server_cert_log,
+            ssl_handshake_log=ssl_handshake_log,
+            rpc_over_https=rpc_over_https,
+            mapi_over_https=mapi_over_https,
+            supported_alpn=supported_alpn,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

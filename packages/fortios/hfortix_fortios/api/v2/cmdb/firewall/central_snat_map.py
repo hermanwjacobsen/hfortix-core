@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_central_snat_map.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_central_snat_map.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,73 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class CentralSnatMap(MetadataMixin):
+class CentralSnatMap(CRUDEndpoint, MetadataMixin):
     """CentralSnatMap Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "central_snat_map"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "orig_addr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "orig_addr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst_addr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst_addr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "nat_ippool": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "nat_ippool6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +124,11 @@ class CentralSnatMap(MetadataMixin):
         """Initialize CentralSnatMap endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         policyid: int | None = None,
@@ -72,8 +138,9 @@ class CentralSnatMap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/central_snat_map configuration.
 
@@ -99,6 +166,7 @@ class CentralSnatMap(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +223,14 @@ class CentralSnatMap(MetadataMixin):
         
         if policyid:
             endpoint = "/firewall/central-snat-map/" + str(policyid)
+            unwrap_single = True
         else:
             endpoint = "/firewall/central-snat-map"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +271,11 @@ class CentralSnatMap(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -208,19 +283,19 @@ class CentralSnatMap(MetadataMixin):
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         type: Literal["ipv4", "ipv6"] | None = None,
-        srcintf: str | list | None = None,
-        dstintf: str | list | None = None,
-        orig_addr: str | list | None = None,
-        orig_addr6: str | list | None = None,
-        dst_addr: str | list | None = None,
-        dst_addr6: str | list | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr6: str | list[str] | list[dict[str, Any]] | None = None,
         protocol: int | None = None,
         orig_port: str | None = None,
         nat: Literal["disable", "enable"] | None = None,
         nat46: Literal["enable", "disable"] | None = None,
         nat64: Literal["enable", "disable"] | None = None,
-        nat_ippool: str | list | None = None,
-        nat_ippool6: str | list | None = None,
+        nat_ippool: str | list[str] | list[dict[str, Any]] | None = None,
+        nat_ippool6: str | list[str] | list[dict[str, Any]] | None = None,
         port_preserve: Literal["enable", "disable"] | None = None,
         port_random: Literal["enable", "disable"] | None = None,
         nat_port: str | None = None,
@@ -228,8 +303,9 @@ class CentralSnatMap(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/central_snat_map object.
 
@@ -242,8 +318,66 @@ class CentralSnatMap(MetadataMixin):
             status: Enable/disable the active status of this policy.
             type: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstintf: Destination interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            orig_addr: IPv4 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            orig_addr6: IPv6 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_addr: IPv4 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_addr6: IPv6 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            protocol: Integer value for the protocol type (0 - 255).
+            orig_port: Original TCP port (1 to 65535, 0 means any port).
+            nat: Enable/disable source NAT.
+            nat46: Enable/disable NAT46.
+            nat64: Enable/disable NAT64.
+            nat_ippool: Name of the IP pools to be used to translate addresses from available IP Pools.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            nat_ippool6: IPv6 pools to be used for source NAT.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            port_preserve: Enable/disable preservation of the original source port from source NAT if it has not been used.
+            port_random: Enable/disable random source port selection for source NAT.
+            nat_port: Translated port or port range (1 to 65535, 0 means any port).
+            dst_port: Destination port or port range (1 to 65535, 0 means any port).
+            comments: Comment.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -270,9 +404,76 @@ class CentralSnatMap(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr is not None:
+            orig_addr = normalize_table_field(
+                orig_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr6 is not None:
+            orig_addr6 = normalize_table_field(
+                orig_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr is not None:
+            dst_addr = normalize_table_field(
+                dst_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr6 is not None:
+            dst_addr6 = normalize_table_field(
+                dst_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool is not None:
+            nat_ippool = normalize_table_field(
+                nat_ippool,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool6 is not None:
+            nat_ippool6 = normalize_table_field(
+                nat_ippool6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool6",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -314,9 +515,14 @@ class CentralSnatMap(MetadataMixin):
         endpoint = "/firewall/central-snat-map/" + str(policyid_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -324,19 +530,19 @@ class CentralSnatMap(MetadataMixin):
         uuid: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         type: Literal["ipv4", "ipv6"] | None = None,
-        srcintf: str | list | None = None,
-        dstintf: str | list | None = None,
-        orig_addr: str | list | None = None,
-        orig_addr6: str | list | None = None,
-        dst_addr: str | list | None = None,
-        dst_addr6: str | list | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr6: str | list[str] | list[dict[str, Any]] | None = None,
         protocol: int | None = None,
         orig_port: str | None = None,
         nat: Literal["disable", "enable"] | None = None,
         nat46: Literal["enable", "disable"] | None = None,
         nat64: Literal["enable", "disable"] | None = None,
-        nat_ippool: str | list | None = None,
-        nat_ippool6: str | list | None = None,
+        nat_ippool: str | list[str] | list[dict[str, Any]] | None = None,
+        nat_ippool6: str | list[str] | list[dict[str, Any]] | None = None,
         port_preserve: Literal["enable", "disable"] | None = None,
         port_random: Literal["enable", "disable"] | None = None,
         nat_port: str | None = None,
@@ -344,8 +550,9 @@ class CentralSnatMap(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/central_snat_map object.
 
@@ -358,8 +565,66 @@ class CentralSnatMap(MetadataMixin):
             status: Enable/disable the active status of this policy.
             type: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstintf: Destination interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            orig_addr: IPv4 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            orig_addr6: IPv6 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_addr: IPv4 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dst_addr6: IPv6 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            protocol: Integer value for the protocol type (0 - 255).
+            orig_port: Original TCP port (1 to 65535, 0 means any port).
+            nat: Enable/disable source NAT.
+            nat46: Enable/disable NAT46.
+            nat64: Enable/disable NAT64.
+            nat_ippool: Name of the IP pools to be used to translate addresses from available IP Pools.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            nat_ippool6: IPv6 pools to be used for source NAT.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            port_preserve: Enable/disable preservation of the original source port from source NAT if it has not been used.
+            port_random: Enable/disable random source port selection for source NAT.
+            nat_port: Translated port or port range (1 to 65535, 0 means any port).
+            dst_port: Destination port or port range (1 to 65535, 0 means any port).
+            comments: Comment.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -388,9 +653,76 @@ class CentralSnatMap(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr is not None:
+            orig_addr = normalize_table_field(
+                orig_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr6 is not None:
+            orig_addr6 = normalize_table_field(
+                orig_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr is not None:
+            dst_addr = normalize_table_field(
+                dst_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr6 is not None:
+            dst_addr6 = normalize_table_field(
+                dst_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool is not None:
+            nat_ippool = normalize_table_field(
+                nat_ippool,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool6 is not None:
+            nat_ippool6 = normalize_table_field(
+                nat_ippool6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool6",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -428,16 +760,22 @@ class CentralSnatMap(MetadataMixin):
 
         endpoint = "/firewall/central-snat-map"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         policyid: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/central_snat_map object.
 
@@ -447,6 +785,7 @@ class CentralSnatMap(MetadataMixin):
             policyid: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -472,7 +811,7 @@ class CentralSnatMap(MetadataMixin):
         endpoint = "/firewall/central-snat-map/" + str(policyid)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -536,7 +875,31 @@ class CentralSnatMap(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        policyid: int | None = None,
+        uuid: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["ipv4", "ipv6"] | None = None,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = None,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        orig_addr6: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr: str | list[str] | list[dict[str, Any]] | None = None,
+        dst_addr6: str | list[str] | list[dict[str, Any]] | None = None,
+        protocol: int | None = None,
+        orig_port: str | None = None,
+        nat: Literal["disable", "enable"] | None = None,
+        nat46: Literal["enable", "disable"] | None = None,
+        nat64: Literal["enable", "disable"] | None = None,
+        nat_ippool: str | list[str] | list[dict[str, Any]] | None = None,
+        nat_ippool6: str | list[str] | list[dict[str, Any]] | None = None,
+        port_preserve: Literal["enable", "disable"] | None = None,
+        port_random: Literal["enable", "disable"] | None = None,
+        nat_port: str | None = None,
+        dst_port: str | None = None,
+        comments: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -547,7 +910,31 @@ class CentralSnatMap(MetadataMixin):
 
         Args:
             payload_dict: Resource data including policyid (primary key)
+            policyid: Field policyid
+            uuid: Field uuid
+            status: Field status
+            type: Field type
+            srcintf: Field srcintf
+            dstintf: Field dstintf
+            orig_addr: Field orig-addr
+            orig_addr6: Field orig-addr6
+            dst_addr: Field dst-addr
+            dst_addr6: Field dst-addr6
+            protocol: Field protocol
+            orig_port: Field orig-port
+            nat: Field nat
+            nat46: Field nat46
+            nat64: Field nat64
+            nat_ippool: Field nat-ippool
+            nat_ippool6: Field nat-ippool6
+            port_preserve: Field port-preserve
+            port_random: Field port-random
+            nat_port: Field nat-port
+            dst_port: Field dst-port
+            comments: Field comments
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -557,7 +944,13 @@ class CentralSnatMap(MetadataMixin):
             ValueError: If policyid is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_central_snat_map.set(
+            ...     policyid=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "policyid": 1,
             ...     "field1": "value1",
@@ -580,20 +973,44 @@ class CentralSnatMap(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            policyid=policyid,
+            uuid=uuid,
+            status=status,
+            type=type,
+            srcintf=srcintf,
+            dstintf=dstintf,
+            orig_addr=orig_addr,
+            orig_addr6=orig_addr6,
+            dst_addr=dst_addr,
+            dst_addr6=dst_addr6,
+            protocol=protocol,
+            orig_port=orig_port,
+            nat=nat,
+            nat46=nat46,
+            nat64=nat64,
+            nat_ippool=nat_ippool,
+            nat_ippool6=nat_ippool6,
+            port_preserve=port_preserve,
+            port_random=port_random,
+            nat_port=nat_port,
+            dst_port=dst_port,
+            comments=comments,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("policyid")
+        mkey_value = payload_data.get("policyid")
         if not mkey_value:
-            raise ValueError("policyid is required in payload_dict for set()")
+            raise ValueError("policyid is required for set()")
         
         # Check if resource exists
         if self.exists(policyid=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

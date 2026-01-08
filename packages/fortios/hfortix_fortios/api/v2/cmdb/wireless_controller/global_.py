@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.wireless_controller_global_.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.wireless_controller_global_.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Global(MetadataMixin):
+class Global(CRUDEndpoint, MetadataMixin):
     """Global Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Global(MetadataMixin):
         """Initialize Global endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Global(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve wireless_controller/global_ configuration.
 
@@ -98,6 +117,7 @@ class Global(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +170,14 @@ class Global(MetadataMixin):
         
         if name:
             endpoint = f"/wireless-controller/global/{name}"
+            unwrap_single = True
         else:
             endpoint = "/wireless-controller/global"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +218,11 @@ class Global(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -207,7 +234,7 @@ class Global(MetadataMixin):
         rolling_wtp_upgrade: Literal["enable", "disable"] | None = None,
         rolling_wtp_upgrade_threshold: str | None = None,
         max_retransmit: int | None = None,
-        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list | None = None,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = None,
         data_ethernet_II: Literal["enable", "disable"] | None = None,
         link_aggregation: Literal["enable", "disable"] | None = None,
         mesh_eth_type: int | None = None,
@@ -234,8 +261,9 @@ class Global(MetadataMixin):
         max_ble_device: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing wireless_controller/global_ object.
 
@@ -248,8 +276,37 @@ class Global(MetadataMixin):
             acd_process_count: Configure the number cw_acd daemons for multi-core CPU support (default = 0).
             wpad_process_count: Wpad daemon process count for multi-core CPU support.
             image_download: Enable/disable WTP image download at join time.
+            rolling_wtp_upgrade: Enable/disable rolling WTP upgrade (default = disable).
+            rolling_wtp_upgrade_threshold: Minimum signal level/threshold in dBm required for the managed WTP to be included in rolling WTP upgrade (-95 to -20, default = -80).
+            max_retransmit: Maximum number of tunnel packet retransmissions (0 - 64, default = 3).
+            control_message_offload: Configure CAPWAP control message data channel offload.
+            data_ethernet_II: Configure the wireless controller to use Ethernet II or 802.3 frames with 802.3 data tunnel mode (default = enable).
+            link_aggregation: Enable/disable calculating the CAPWAP transmit hash to load balance sessions to link aggregation nodes (default = disable).
+            mesh_eth_type: Mesh Ethernet identifier included in backhaul packets (0 - 65535, default = 8755).
+            fiapp_eth_type: Ethernet type for Fortinet Inter-Access Point Protocol (IAPP), or IEEE 802.11f, packets (0 - 65535, default = 5252).
+            discovery_mc_addr: Multicast IP address for AP discovery (default = 244.0.1.140).
+            discovery_mc_addr6: Multicast IPv6 address for AP discovery (default = FF02::18C).
+            max_clients: Maximum number of clients that can connect simultaneously (default = 0, meaning no limitation).
+            rogue_scan_mac_adjacency: Maximum numerical difference between an AP's Ethernet and wireless MAC values to match for rogue detection (0 - 31, default = 7).
+            ipsec_base_ip: Base IP address for IPsec VPN tunnels between the access points and the wireless controller (default = 169.254.0.1).
+            wtp_share: Enable/disable sharing of WTPs between VDOMs.
+            tunnel_mode: Compatible/strict tunnel mode.
+            nac_interval: Interval in seconds between two WiFi network access control (NAC) checks (10 - 600, default = 120).
+            ap_log_server: Enable/disable configuring FortiGate to redirect wireless event log messages or FortiAPs to send UTM log messages to a syslog server (default = disable).
+            ap_log_server_ip: IP address that FortiGate or FortiAPs send log messages to.
+            ap_log_server_port: Port that FortiGate or FortiAPs send log messages to.
+            max_sta_offline: Maximum number of station offline stored on the controller (default = 0).
+            max_sta_offline_ip2mac: Maximum number of station offline ip2mac stored on the controller (default = 0).
+            max_sta_cap: Maximum number of station cap stored on the controller (default = 0).
+            max_sta_cap_wtp: Maximum number of station cap's wtp info stored on the controller (1 - 16, default = 8).
+            max_rogue_ap: Maximum number of rogue APs stored on the controller (default = 0).
+            max_rogue_ap_wtp: Maximum number of rogue AP's wtp info stored on the controller (1 - 16, default = 16).
+            max_rogue_sta: Maximum number of rogue stations stored on the controller (default = 0).
+            max_wids_entry: Maximum number of wids entries stored on the controller (default = 0).
+            max_ble_device: Maximum number of BLE devices stored on the controller (default = 0).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -276,9 +333,10 @@ class Global(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             location=location,
             acd_process_count=acd_process_count,
@@ -325,13 +383,11 @@ class Global(MetadataMixin):
                 endpoint="cmdb/wireless_controller/global_",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/wireless-controller/global/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/wireless-controller/global"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

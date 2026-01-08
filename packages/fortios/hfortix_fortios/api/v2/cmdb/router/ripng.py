@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.router_ripng.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.router_ripng.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,78 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ripng(MetadataMixin):
+class Ripng(CRUDEndpoint, MetadataMixin):
     """Ripng Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ripng"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "distance": {
+            "mkey": "id",
+            "required_fields": ['id', 'distance'],
+            "example": "[{'id': 1, 'distance': 1}]",
+        },
+        "distribute_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'direction', 'listname'],
+            "example": "[{'id': 1, 'direction': 'in', 'listname': 'value'}]",
+        },
+        "neighbor": {
+            "mkey": "id",
+            "required_fields": ['ip6', 'interface'],
+            "example": "[{'ip6': 'value', 'interface': 'value'}]",
+        },
+        "network": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "aggregate_address": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "offset_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'direction', 'access-list6', 'offset'],
+            "example": "[{'id': 1, 'direction': 'in', 'access-list6': 'value', 'offset': 1}]",
+        },
+        "passive_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "redistribute": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +129,11 @@ class Ripng(MetadataMixin):
         """Initialize Ripng endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +143,9 @@ class Ripng(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/ripng configuration.
 
@@ -98,6 +170,7 @@ class Ripng(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +223,14 @@ class Ripng(MetadataMixin):
         
         if name:
             endpoint = f"/router/ripng/{name}"
+            unwrap_single = True
         else:
             endpoint = "/router/ripng"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,28 +271,34 @@ class Ripng(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         default_information_originate: Literal["enable", "disable"] | None = None,
         default_metric: int | None = None,
         max_out_metric: int | None = None,
-        distance: str | list | None = None,
-        distribute_list: str | list | None = None,
-        neighbor: str | list | None = None,
-        network: str | list | None = None,
-        aggregate_address: str | list | None = None,
-        offset_list: str | list | None = None,
-        passive_interface: str | list | None = None,
-        redistribute: str | list | None = None,
+        distance: str | list[str] | list[dict[str, Any]] | None = None,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
+        aggregate_address: str | list[str] | list[dict[str, Any]] | None = None,
+        offset_list: str | list[str] | list[dict[str, Any]] | None = None,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = None,
         update_timer: int | None = None,
         timeout_timer: int | None = None,
         garbage_timer: int | None = None,
-        interface: str | list | None = None,
+        interface: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing router/ripng object.
 
@@ -229,9 +310,57 @@ class Ripng(MetadataMixin):
             default_metric: Default metric.
             max_out_metric: Maximum metric allowed to output(0 means 'not set').
             distance: Distance.
+                Default format: [{'id': 1, 'distance': 1}]
+                Required format: List of dicts with keys: id, distance
+                  (String format not allowed due to multiple required fields)
             distribute_list: Distribute list.
+                Default format: [{'id': 1, 'direction': 'in', 'listname': 'value'}]
+                Required format: List of dicts with keys: id, direction, listname
+                  (String format not allowed due to multiple required fields)
+            neighbor: Neighbor.
+                Default format: [{'ip6': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: ip6, interface
+                  (String format not allowed due to multiple required fields)
+            network: Network.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            aggregate_address: Aggregate address.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            offset_list: Offset list.
+                Default format: [{'id': 1, 'direction': 'in', 'access-list6': 'value', 'offset': 1}]
+                Required format: List of dicts with keys: id, direction, access-list6, offset
+                  (String format not allowed due to multiple required fields)
+            passive_interface: Passive interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            redistribute: Redistribute configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            update_timer: Update timer in seconds.
+            timeout_timer: Timeout timer in seconds.
+            garbage_timer: Garbage timer in seconds.
+            interface: RIPng interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -258,9 +387,84 @@ class Ripng(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if distance is not None:
+            distance = normalize_table_field(
+                distance,
+                mkey="id",
+                required_fields=['id', 'distance'],
+                field_name="distance",
+                example="[{'id': 1, 'distance': 1}]",
+            )
+        if distribute_list is not None:
+            distribute_list = normalize_table_field(
+                distribute_list,
+                mkey="id",
+                required_fields=['id', 'direction', 'listname'],
+                field_name="distribute_list",
+                example="[{'id': 1, 'direction': 'in', 'listname': 'value'}]",
+            )
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="id",
+                required_fields=['ip6', 'interface'],
+                field_name="neighbor",
+                example="[{'ip6': 'value', 'interface': 'value'}]",
+            )
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['id'],
+                field_name="network",
+                example="[{'id': 1}]",
+            )
+        if aggregate_address is not None:
+            aggregate_address = normalize_table_field(
+                aggregate_address,
+                mkey="id",
+                required_fields=['id'],
+                field_name="aggregate_address",
+                example="[{'id': 1}]",
+            )
+        if offset_list is not None:
+            offset_list = normalize_table_field(
+                offset_list,
+                mkey="id",
+                required_fields=['id', 'direction', 'access-list6', 'offset'],
+                field_name="offset_list",
+                example="[{'id': 1, 'direction': 'in', 'access-list6': 'value', 'offset': 1}]",
+            )
+        if passive_interface is not None:
+            passive_interface = normalize_table_field(
+                passive_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="passive_interface",
+                example="[{'name': 'value'}]",
+            )
+        if redistribute is not None:
+            redistribute = normalize_table_field(
+                redistribute,
+                mkey="name",
+                required_fields=['name'],
+                field_name="redistribute",
+                example="[{'name': 'value'}]",
+            )
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="interface",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             default_information_originate=default_information_originate,
             default_metric=default_metric,
             max_out_metric=max_out_metric,
@@ -289,13 +493,11 @@ class Ripng(MetadataMixin):
                 endpoint="cmdb/router/ripng",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/router/ripng/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/router/ripng"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

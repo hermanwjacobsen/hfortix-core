@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.alertemail_setting.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.alertemail_setting.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Setting(MetadataMixin):
+class Setting(CRUDEndpoint, MetadataMixin):
     """Setting Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Setting(MetadataMixin):
         """Initialize Setting endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Setting(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve alertemail/setting configuration.
 
@@ -98,6 +117,7 @@ class Setting(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +170,14 @@ class Setting(MetadataMixin):
         
         if name:
             endpoint = f"/alertemail/setting/{name}"
+            unwrap_single = True
         else:
             endpoint = "/alertemail/setting"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +218,11 @@ class Setting(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -236,8 +263,9 @@ class Setting(MetadataMixin):
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing alertemail/setting object.
 
@@ -250,8 +278,39 @@ class Setting(MetadataMixin):
             mailto2: Optional second email address to send alert email to (max. 63 characters).
             mailto3: Optional third email address to send alert email to (max. 63 characters).
             filter_mode: How to filter log messages that are sent to alert emails.
+            email_interval: Interval between sending alert emails (1 - 99999 min, default = 5).
+            IPS_logs: Enable/disable IPS logs in alert email.
+            firewall_authentication_failure_logs: Enable/disable firewall authentication failure logs in alert email.
+            HA_logs: Enable/disable HA logs in alert email.
+            IPsec_errors_logs: Enable/disable IPsec error logs in alert email.
+            FDS_update_logs: Enable/disable FortiGuard update logs in alert email.
+            PPP_errors_logs: Enable/disable PPP error logs in alert email.
+            sslvpn_authentication_errors_logs: Enable/disable Agentless VPN authentication error logs in alert email.
+            antivirus_logs: Enable/disable antivirus logs in alert email.
+            webfilter_logs: Enable/disable web filter logs in alert email.
+            configuration_changes_logs: Enable/disable configuration change logs in alert email.
+            violation_traffic_logs: Enable/disable violation traffic logs in alert email.
+            admin_login_logs: Enable/disable administrator login/logout logs in alert email.
+            FDS_license_expiring_warning: Enable/disable FortiGuard license expiration warnings in alert email.
+            log_disk_usage_warning: Enable/disable disk usage warnings in alert email.
+            fortiguard_log_quota_warning: Enable/disable FortiCloud log quota warnings in alert email.
+            amc_interface_bypass_mode: Enable/disable Fortinet Advanced Mezzanine Card (AMC) interface bypass mode logs in alert email.
+            FIPS_CC_errors: Enable/disable FIPS and Common Criteria error logs in alert email.
+            FSSO_disconnect_logs: Enable/disable logging of FSSO collector agent disconnect.
+            ssh_logs: Enable/disable SSH logs in alert email.
+            local_disk_usage: Disk usage percentage at which to send alert email (1 - 99 percent, default = 75).
+            emergency_interval: Emergency alert interval in minutes.
+            alert_interval: Alert alert interval in minutes.
+            critical_interval: Critical alert interval in minutes.
+            error_interval: Error alert interval in minutes.
+            warning_interval: Warning alert interval in minutes.
+            notification_interval: Notification alert interval in minutes.
+            information_interval: Information alert interval in minutes.
+            debug_interval: Debug alert interval in minutes.
+            severity: Lowest severity level to log.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -278,9 +337,10 @@ class Setting(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             username=username,
             mailto1=mailto1,
             mailto2=mailto2,
@@ -329,13 +389,11 @@ class Setting(MetadataMixin):
                 endpoint="cmdb/alertemail/setting",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/alertemail/setting/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/alertemail/setting"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.router_ospf.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.router_ospf.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,73 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ospf(MetadataMixin):
+class Ospf(CRUDEndpoint, MetadataMixin):
     """Ospf Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ospf"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "area": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "ospf_interface": {
+            "mkey": "name",
+            "required_fields": ['interface'],
+            "example": "[{'interface': 'value'}]",
+        },
+        "network": {
+            "mkey": "id",
+            "required_fields": ['prefix', 'area'],
+            "example": "[{'prefix': 'value', 'area': '192.168.1.10'}]",
+        },
+        "neighbor": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "passive_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "summary_address": {
+            "mkey": "id",
+            "required_fields": ['prefix'],
+            "example": "[{'prefix': 'value'}]",
+        },
+        "distribute_list": {
+            "mkey": "id",
+            "required_fields": ['access-list', 'protocol'],
+            "example": "[{'access-list': 'value', 'protocol': 'connected'}]",
+        },
+        "redistribute": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +124,11 @@ class Ospf(MetadataMixin):
         """Initialize Ospf endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +138,9 @@ class Ospf(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/ospf configuration.
 
@@ -98,6 +165,7 @@ class Ospf(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +218,14 @@ class Ospf(MetadataMixin):
         
         if name:
             endpoint = f"/router/ospf/{name}"
+            unwrap_single = True
         else:
             endpoint = "/router/ospf"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +266,11 @@ class Ospf(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -224,18 +299,19 @@ class Ospf(MetadataMixin):
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = None,
         restart_period: int | None = None,
         restart_on_topology_change: Literal["enable", "disable"] | None = None,
-        area: str | list | None = None,
-        ospf_interface: str | list | None = None,
-        network: str | list | None = None,
-        neighbor: str | list | None = None,
-        passive_interface: str | list | None = None,
-        summary_address: str | list | None = None,
-        distribute_list: str | list | None = None,
-        redistribute: str | list | None = None,
+        area: str | list[str] | list[dict[str, Any]] | None = None,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = None,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = None,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing router/ospf object.
 
@@ -248,8 +324,73 @@ class Ospf(MetadataMixin):
             distance_external: Administrative external distance.
             distance_inter_area: Administrative inter-area distance.
             distance_intra_area: Administrative intra-area distance.
+            database_overflow: Enable/disable database overflow.
+            database_overflow_max_lsas: Database overflow maximum LSAs.
+            database_overflow_time_to_recover: Database overflow time to recover (sec).
+            default_information_originate: Enable/disable generation of default route.
+            default_information_metric: Default information metric.
+            default_information_metric_type: Default information metric type.
+            default_information_route_map: Default information route map.
+            default_metric: Default metric of redistribute routes.
+            distance: Distance of the route.
+            lsa_refresh_interval: The minimal OSPF LSA update time interval
+            rfc1583_compatible: Enable/disable RFC1583 compatibility.
+            router_id: Router ID.
+            spf_timers: SPF calculation frequency.
+            bfd: Bidirectional Forwarding Detection (BFD).
+            log_neighbour_changes: Log of OSPF neighbor changes.
+            distribute_list_in: Filter incoming routes.
+            distribute_route_map_in: Filter incoming external routes by route-map.
+            restart_mode: OSPF restart mode (graceful or LLS).
+            restart_period: Graceful restart period.
+            restart_on_topology_change: Enable/disable continuing graceful restart upon topology change.
+            area: OSPF area configuration.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            ospf_interface: OSPF interface configuration.
+                Default format: [{'interface': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'interface': 'value'}] (recommended)
+            network: OSPF network configuration.
+                Default format: [{'prefix': 'value', 'area': '192.168.1.10'}]
+                Required format: List of dicts with keys: prefix, area
+                  (String format not allowed due to multiple required fields)
+            neighbor: OSPF neighbor configuration are used when OSPF runs on non-broadcast media.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            passive_interface: Passive interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            summary_address: IP address summary configuration.
+                Default format: [{'prefix': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'prefix': 'value'}] (recommended)
+            distribute_list: Distribute list configuration.
+                Default format: [{'access-list': 'value', 'protocol': 'connected'}]
+                Required format: List of dicts with keys: access-list, protocol
+                  (String format not allowed due to multiple required fields)
+            redistribute: Redistribute configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -276,9 +417,76 @@ class Ospf(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if area is not None:
+            area = normalize_table_field(
+                area,
+                mkey="id",
+                required_fields=['id'],
+                field_name="area",
+                example="[{'id': 1}]",
+            )
+        if ospf_interface is not None:
+            ospf_interface = normalize_table_field(
+                ospf_interface,
+                mkey="name",
+                required_fields=['interface'],
+                field_name="ospf_interface",
+                example="[{'interface': 'value'}]",
+            )
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['prefix', 'area'],
+                field_name="network",
+                example="[{'prefix': 'value', 'area': '192.168.1.10'}]",
+            )
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="neighbor",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if passive_interface is not None:
+            passive_interface = normalize_table_field(
+                passive_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="passive_interface",
+                example="[{'name': 'value'}]",
+            )
+        if summary_address is not None:
+            summary_address = normalize_table_field(
+                summary_address,
+                mkey="id",
+                required_fields=['prefix'],
+                field_name="summary_address",
+                example="[{'prefix': 'value'}]",
+            )
+        if distribute_list is not None:
+            distribute_list = normalize_table_field(
+                distribute_list,
+                mkey="id",
+                required_fields=['access-list', 'protocol'],
+                field_name="distribute_list",
+                example="[{'access-list': 'value', 'protocol': 'connected'}]",
+            )
+        if redistribute is not None:
+            redistribute = normalize_table_field(
+                redistribute,
+                mkey="name",
+                required_fields=['name'],
+                field_name="redistribute",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             abr_type=abr_type,
             auto_cost_ref_bandwidth=auto_cost_ref_bandwidth,
             distance_external=distance_external,
@@ -325,13 +533,11 @@ class Ospf(MetadataMixin):
                 endpoint="cmdb/router/ospf",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/router/ospf/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/router/ospf"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

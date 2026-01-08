@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_shaper_per_ip_shaper.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_shaper_per_ip_shaper.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class PerIpShaper(MetadataMixin):
+class PerIpShaper(CRUDEndpoint, MetadataMixin):
     """PerIpShaper Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class PerIpShaper(MetadataMixin):
         """Initialize PerIpShaper endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class PerIpShaper(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/shaper/per_ip_shaper configuration.
 
@@ -99,6 +118,7 @@ class PerIpShaper(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class PerIpShaper(MetadataMixin):
         
         if name:
             endpoint = "/firewall.shaper/per-ip-shaper/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall.shaper/per-ip-shaper"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class PerIpShaper(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -216,8 +243,9 @@ class PerIpShaper(MetadataMixin):
         diffservcode_rev: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/shaper/per_ip_shaper object.
 
@@ -230,8 +258,14 @@ class PerIpShaper(MetadataMixin):
             bandwidth_unit: Unit of measurement for maximum bandwidth for this shaper (Kbps, Mbps or Gbps).
             max_concurrent_session: Maximum number of concurrent sessions allowed by this shaper (0 - 2097000). 0 means no limit.
             max_concurrent_tcp_session: Maximum number of concurrent TCP sessions allowed by this shaper (0 - 2097000). 0 means no limit.
+            max_concurrent_udp_session: Maximum number of concurrent UDP sessions allowed by this shaper (0 - 2097000). 0 means no limit.
+            diffserv_forward: Enable/disable changing the Forward (original) DiffServ setting applied to traffic accepted by this shaper.
+            diffserv_reverse: Enable/disable changing the Reverse (reply) DiffServ setting applied to traffic accepted by this shaper.
+            diffservcode_forward: Forward (original) DiffServ setting to be applied to traffic accepted by this shaper.
+            diffservcode_rev: Reverse (reply) DiffServ setting to be applied to traffic accepted by this shaper.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -258,9 +292,10 @@ class PerIpShaper(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             max_bandwidth=max_bandwidth,
             bandwidth_unit=bandwidth_unit,
@@ -290,9 +325,14 @@ class PerIpShaper(MetadataMixin):
         endpoint = "/firewall.shaper/per-ip-shaper/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -308,8 +348,9 @@ class PerIpShaper(MetadataMixin):
         diffservcode_rev: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/shaper/per_ip_shaper object.
 
@@ -322,8 +363,14 @@ class PerIpShaper(MetadataMixin):
             bandwidth_unit: Unit of measurement for maximum bandwidth for this shaper (Kbps, Mbps or Gbps).
             max_concurrent_session: Maximum number of concurrent sessions allowed by this shaper (0 - 2097000). 0 means no limit.
             max_concurrent_tcp_session: Maximum number of concurrent TCP sessions allowed by this shaper (0 - 2097000). 0 means no limit.
+            max_concurrent_udp_session: Maximum number of concurrent UDP sessions allowed by this shaper (0 - 2097000). 0 means no limit.
+            diffserv_forward: Enable/disable changing the Forward (original) DiffServ setting applied to traffic accepted by this shaper.
+            diffserv_reverse: Enable/disable changing the Reverse (reply) DiffServ setting applied to traffic accepted by this shaper.
+            diffservcode_forward: Forward (original) DiffServ setting to be applied to traffic accepted by this shaper.
+            diffservcode_rev: Reverse (reply) DiffServ setting to be applied to traffic accepted by this shaper.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -352,9 +399,10 @@ class PerIpShaper(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             max_bandwidth=max_bandwidth,
             bandwidth_unit=bandwidth_unit,
@@ -380,16 +428,22 @@ class PerIpShaper(MetadataMixin):
 
         endpoint = "/firewall.shaper/per-ip-shaper"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/shaper/per_ip_shaper object.
 
@@ -399,6 +453,7 @@ class PerIpShaper(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -424,7 +479,7 @@ class PerIpShaper(MetadataMixin):
         endpoint = "/firewall.shaper/per-ip-shaper/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -488,7 +543,19 @@ class PerIpShaper(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        max_bandwidth: int | None = None,
+        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = None,
+        max_concurrent_session: int | None = None,
+        max_concurrent_tcp_session: int | None = None,
+        max_concurrent_udp_session: int | None = None,
+        diffserv_forward: Literal["enable", "disable"] | None = None,
+        diffserv_reverse: Literal["enable", "disable"] | None = None,
+        diffservcode_forward: str | None = None,
+        diffservcode_rev: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -499,7 +566,19 @@ class PerIpShaper(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            max_bandwidth: Field max-bandwidth
+            bandwidth_unit: Field bandwidth-unit
+            max_concurrent_session: Field max-concurrent-session
+            max_concurrent_tcp_session: Field max-concurrent-tcp-session
+            max_concurrent_udp_session: Field max-concurrent-udp-session
+            diffserv_forward: Field diffserv-forward
+            diffserv_reverse: Field diffserv-reverse
+            diffservcode_forward: Field diffservcode-forward
+            diffservcode_rev: Field diffservcode-rev
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -509,7 +588,13 @@ class PerIpShaper(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_shaper_per_ip_shaper.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -532,20 +617,32 @@ class PerIpShaper(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            max_bandwidth=max_bandwidth,
+            bandwidth_unit=bandwidth_unit,
+            max_concurrent_session=max_concurrent_session,
+            max_concurrent_tcp_session=max_concurrent_tcp_session,
+            max_concurrent_udp_session=max_concurrent_udp_session,
+            diffserv_forward=diffserv_forward,
+            diffserv_reverse=diffserv_reverse,
+            diffservcode_forward=diffservcode_forward,
+            diffservcode_rev=diffservcode_rev,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

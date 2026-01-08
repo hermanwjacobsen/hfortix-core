@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_federated_upgrade.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_federated_upgrade.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class FederatedUpgrade(MetadataMixin):
+class FederatedUpgrade(CRUDEndpoint, MetadataMixin):
     """FederatedUpgrade Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "federated_upgrade"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "known_ha_members": {
+            "mkey": "serial",
+            "required_fields": ['serial'],
+            "example": "[{'serial': 'value'}]",
+        },
+        "node_list": {
+            "mkey": "serial",
+            "required_fields": ['serial', 'timing', 'maximum-minutes', 'time', 'setup-time', 'upgrade-path', 'device-type'],
+            "example": "[{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class FederatedUpgrade(MetadataMixin):
         """Initialize FederatedUpgrade endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class FederatedUpgrade(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/federated_upgrade configuration.
 
@@ -98,6 +135,7 @@ class FederatedUpgrade(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class FederatedUpgrade(MetadataMixin):
         
         if name:
             endpoint = f"/system/federated-upgrade/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/federated-upgrade"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +236,11 @@ class FederatedUpgrade(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -207,14 +252,15 @@ class FederatedUpgrade(MetadataMixin):
         next_path_index: int | None = None,
         ignore_signing_errors: Literal["enable", "disable"] | None = None,
         ha_reboot_controller: str | None = None,
-        known_ha_members: str | list | None = None,
+        known_ha_members: str | list[str] | list[dict[str, Any]] | None = None,
         initial_version: str | None = None,
         starter_admin: str | None = None,
-        node_list: str | list | None = None,
+        node_list: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/federated_upgrade object.
 
@@ -227,8 +273,24 @@ class FederatedUpgrade(MetadataMixin):
             failure_reason: Reason for upgrade failure.
             failure_device: Serial number of the node to include.
             upgrade_id: Unique identifier for this upgrade.
+            next_path_index: The index of the next image to upgrade to.
+            ignore_signing_errors: Allow/reject use of FortiGate firmware images that are unsigned.
+            ha_reboot_controller: Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.
+            known_ha_members: Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
+                Default format: [{'serial': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'serial': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
+                  - List of dicts: [{'serial': 'value'}] (recommended)
+            initial_version: Firmware version when the upgrade was set up.
+            starter_admin: Admin that started the upgrade.
+            node_list: Nodes which will be included in the upgrade.
+                Default format: [{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]
+                Required format: List of dicts with keys: serial, timing, maximum-minutes, time, setup-time, upgrade-path, device-type
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -255,9 +317,28 @@ class FederatedUpgrade(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if known_ha_members is not None:
+            known_ha_members = normalize_table_field(
+                known_ha_members,
+                mkey="serial",
+                required_fields=['serial'],
+                field_name="known_ha_members",
+                example="[{'serial': 'value'}]",
+            )
+        if node_list is not None:
+            node_list = normalize_table_field(
+                node_list,
+                mkey="serial",
+                required_fields=['serial', 'timing', 'maximum-minutes', 'time', 'setup-time', 'upgrade-path', 'device-type'],
+                field_name="node_list",
+                example="[{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             source=source,
             failure_reason=failure_reason,
@@ -283,13 +364,11 @@ class FederatedUpgrade(MetadataMixin):
                 endpoint="cmdb/system/federated_upgrade",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/federated-upgrade/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/federated-upgrade"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

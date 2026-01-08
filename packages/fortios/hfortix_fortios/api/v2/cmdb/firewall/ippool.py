@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_ippool.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_ippool.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ippool(MetadataMixin):
+class Ippool(CRUDEndpoint, MetadataMixin):
     """Ippool Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Ippool(MetadataMixin):
         """Initialize Ippool endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Ippool(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/ippool configuration.
 
@@ -99,6 +118,7 @@ class Ippool(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Ippool(MetadataMixin):
         
         if name:
             endpoint = "/firewall/ippool/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/ippool"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Ippool(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -233,8 +260,9 @@ class Ippool(MetadataMixin):
         subnet_broadcast_in_ippool: Literal["disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/ippool object.
 
@@ -247,8 +275,31 @@ class Ippool(MetadataMixin):
             startip: First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             startport: First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).
+            endport: Final port number (inclusive) in the range for the address pool (1024 - 65535, Default: 65533).
+            source_startip: First IPv4 address (inclusive) in the range of the source addresses to be translated (format = xxx.xxx.xxx.xxx, default = 0.0.0.0).
+            source_endip: Final IPv4 address (inclusive) in the range of the source addresses to be translated (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
+            block_size: Number of addresses in a block (64 - 4096, default = 128).
+            port_per_user: Number of port for each user (32 - 60416, default = 0, which is auto).
+            num_blocks_per_user: Number of addresses blocks that can be used by a user (1 to 128, default = 8).
+            pba_timeout: Port block allocation timeout (seconds).
+            pba_interim_log: Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).
+            permit_any_host: Enable/disable fullcone NAT. Accept UDP packets from any host.
+            arp_reply: Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).
+            arp_intf: Select an interface from available options that will reply to ARP requests. (If blank, any is selected).
+            associated_interface: Associated interface name.
+            comments: Comment.
+            nat64: Enable/disable NAT64.
+            add_nat64_route: Enable/disable adding NAT64 route.
+            source_prefix6: Source IPv6 network to be translated (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx, default = ::/0).
+            client_prefix_length: Subnet length of a single deterministic NAT64 client (1 - 128, default = 64).
+            tcp_session_quota: Maximum number of concurrent TCP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            udp_session_quota: Maximum number of concurrent UDP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            icmp_session_quota: Maximum number of concurrent ICMP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            privileged_port_use_pba: Enable/disable selection of the external port from the port block allocation for NAT'ing privileged ports (deafult = disable).
+            subnet_broadcast_in_ippool: Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -275,9 +326,10 @@ class Ippool(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             startip=startip,
@@ -324,9 +376,14 @@ class Ippool(MetadataMixin):
         endpoint = "/firewall/ippool/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -359,8 +416,9 @@ class Ippool(MetadataMixin):
         subnet_broadcast_in_ippool: Literal["disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/ippool object.
 
@@ -373,8 +431,31 @@ class Ippool(MetadataMixin):
             startip: First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             endip: Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
             startport: First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).
+            endport: Final port number (inclusive) in the range for the address pool (1024 - 65535, Default: 65533).
+            source_startip: First IPv4 address (inclusive) in the range of the source addresses to be translated (format = xxx.xxx.xxx.xxx, default = 0.0.0.0).
+            source_endip: Final IPv4 address (inclusive) in the range of the source addresses to be translated (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).
+            block_size: Number of addresses in a block (64 - 4096, default = 128).
+            port_per_user: Number of port for each user (32 - 60416, default = 0, which is auto).
+            num_blocks_per_user: Number of addresses blocks that can be used by a user (1 to 128, default = 8).
+            pba_timeout: Port block allocation timeout (seconds).
+            pba_interim_log: Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).
+            permit_any_host: Enable/disable fullcone NAT. Accept UDP packets from any host.
+            arp_reply: Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).
+            arp_intf: Select an interface from available options that will reply to ARP requests. (If blank, any is selected).
+            associated_interface: Associated interface name.
+            comments: Comment.
+            nat64: Enable/disable NAT64.
+            add_nat64_route: Enable/disable adding NAT64 route.
+            source_prefix6: Source IPv6 network to be translated (format = xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx, default = ::/0).
+            client_prefix_length: Subnet length of a single deterministic NAT64 client (1 - 128, default = 64).
+            tcp_session_quota: Maximum number of concurrent TCP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            udp_session_quota: Maximum number of concurrent UDP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            icmp_session_quota: Maximum number of concurrent ICMP sessions allowed per client (0 - 2097000, default = 0 which means no limit).
+            privileged_port_use_pba: Enable/disable selection of the external port from the port block allocation for NAT'ing privileged ports (deafult = disable).
+            subnet_broadcast_in_ippool: Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -403,9 +484,10 @@ class Ippool(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             startip=startip,
@@ -448,16 +530,22 @@ class Ippool(MetadataMixin):
 
         endpoint = "/firewall/ippool"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/ippool object.
 
@@ -467,6 +555,7 @@ class Ippool(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -492,7 +581,7 @@ class Ippool(MetadataMixin):
         endpoint = "/firewall/ippool/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -556,7 +645,36 @@ class Ippool(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = None,
+        startip: str | None = None,
+        endip: str | None = None,
+        startport: int | None = None,
+        endport: int | None = None,
+        source_startip: str | None = None,
+        source_endip: str | None = None,
+        block_size: int | None = None,
+        port_per_user: int | None = None,
+        num_blocks_per_user: int | None = None,
+        pba_timeout: int | None = None,
+        pba_interim_log: int | None = None,
+        permit_any_host: Literal["disable", "enable"] | None = None,
+        arp_reply: Literal["disable", "enable"] | None = None,
+        arp_intf: str | None = None,
+        associated_interface: str | None = None,
+        comments: str | None = None,
+        nat64: Literal["disable", "enable"] | None = None,
+        add_nat64_route: Literal["disable", "enable"] | None = None,
+        source_prefix6: str | None = None,
+        client_prefix_length: int | None = None,
+        tcp_session_quota: int | None = None,
+        udp_session_quota: int | None = None,
+        icmp_session_quota: int | None = None,
+        privileged_port_use_pba: Literal["disable", "enable"] | None = None,
+        subnet_broadcast_in_ippool: Literal["disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -567,7 +685,36 @@ class Ippool(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            type: Field type
+            startip: Field startip
+            endip: Field endip
+            startport: Field startport
+            endport: Field endport
+            source_startip: Field source-startip
+            source_endip: Field source-endip
+            block_size: Field block-size
+            port_per_user: Field port-per-user
+            num_blocks_per_user: Field num-blocks-per-user
+            pba_timeout: Field pba-timeout
+            pba_interim_log: Field pba-interim-log
+            permit_any_host: Field permit-any-host
+            arp_reply: Field arp-reply
+            arp_intf: Field arp-intf
+            associated_interface: Field associated-interface
+            comments: Field comments
+            nat64: Field nat64
+            add_nat64_route: Field add-nat64-route
+            source_prefix6: Field source-prefix6
+            client_prefix_length: Field client-prefix-length
+            tcp_session_quota: Field tcp-session-quota
+            udp_session_quota: Field udp-session-quota
+            icmp_session_quota: Field icmp-session-quota
+            privileged_port_use_pba: Field privileged-port-use-pba
+            subnet_broadcast_in_ippool: Field subnet-broadcast-in-ippool
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -577,7 +724,13 @@ class Ippool(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_ippool.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -600,20 +753,49 @@ class Ippool(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            type=type,
+            startip=startip,
+            endip=endip,
+            startport=startport,
+            endport=endport,
+            source_startip=source_startip,
+            source_endip=source_endip,
+            block_size=block_size,
+            port_per_user=port_per_user,
+            num_blocks_per_user=num_blocks_per_user,
+            pba_timeout=pba_timeout,
+            pba_interim_log=pba_interim_log,
+            permit_any_host=permit_any_host,
+            arp_reply=arp_reply,
+            arp_intf=arp_intf,
+            associated_interface=associated_interface,
+            comments=comments,
+            nat64=nat64,
+            add_nat64_route=add_nat64_route,
+            source_prefix6=source_prefix6,
+            client_prefix_length=client_prefix_length,
+            tcp_session_quota=tcp_session_quota,
+            udp_session_quota=udp_session_quota,
+            icmp_session_quota=icmp_session_quota,
+            privileged_port_use_pba=privileged_port_use_pba,
+            subnet_broadcast_in_ippool=subnet_broadcast_in_ippool,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

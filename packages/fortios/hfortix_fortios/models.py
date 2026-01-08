@@ -4,6 +4,8 @@ FortiOS Object Models
 Provides zero-maintenance object wrappers for FortiOS API responses.
 """
 
+from __future__ import annotations
+
 from typing import Any, Literal
 
 
@@ -55,26 +57,28 @@ class FortiObject:
         """
         self._data = data
     
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(self, name: str):
         """
         Dynamic attribute access with automatic member_table flattening.
         
         For most FortiOS fields (strings, ints, etc.), returns the value as-is.
         For member_table fields (lists of dicts with 'name' key), automatically
-        flattens to a list of name strings for cleaner access.
+        wraps each dict in a FortiObject for clean attribute access.
         
         Args:
             name: Attribute name to access
             
         Returns:
-            Field value, with member_table fields auto-flattened
+            Field value, with member_table dicts wrapped in FortiObject
             
         Raises:
             AttributeError: If accessing private attributes (starting with '_')
             
         Examples:
-            >>> obj.srcaddr  # Member table
-            ['addr1', 'addr2']
+            >>> obj.srcaddr  # Member table as list of FortiObjects
+            [FortiObject({'name': 'addr1'}), FortiObject({'name': 'addr2'})]
+            >>> obj.srcaddr[0].name  # Access name attribute
+            'addr1'
             >>> obj.action  # Regular field
             'accept'
         """
@@ -83,11 +87,10 @@ class FortiObject:
         
         value = self._data.get(name)
         
-        # Auto-flatten member_table fields (lists of dicts with 'name' key)
-        # This handles ~90% of FortiOS list fields
+        # Auto-wrap member_table fields (lists of dicts) in FortiObject
         if isinstance(value, list) and value:
-            if isinstance(value[0], dict) and 'name' in value[0]:
-                return [item['name'] for item in value]
+            if isinstance(value[0], dict):
+                return [FortiObject(item) for item in value]
         
         return value
     
@@ -123,16 +126,74 @@ class FortiObject:
         """
         return self._data
     
+    @property
+    def json(self) -> dict:
+        """
+        Get the raw JSON data as a dictionary.
+        
+        This is an alias for to_dict() providing a more intuitive interface.
+        Use this when you need the complete API response structure.
+        
+        Returns:
+            Original API response dictionary
+            
+        Examples:
+            >>> delete = fgt.api.cmdb.firewall.policy.delete(policyid=1, response_mode="object")
+            >>> delete.json
+            {'http_method': 'DELETE', 'status': 'success', 'http_status': 200, ...}
+            >>> delete.json['status']
+            'success'
+        """
+        return self._data
+    
     def __repr__(self) -> str:
         """
         String representation of the object.
         
+        For simple objects (only containing 'name' and optionally 'q_origin_key'),
+        returns just the name for cleaner output in lists. Otherwise, returns
+        full FortiObject representation.
+        
         Returns:
-            String showing object type and identifier (name or policyid)
+            String showing object identifier or full representation
+            
+        Examples:
+            >>> repr(simple_member)  # Object with just {name: 'test'}
+            "'test'"
+            >>> repr(complex_obj)  # Object with multiple fields
+            "FortiObject(test)"
         """
         # Try to find a meaningful identifier
-        identifier = self._data.get('name') or self._data.get('policyid') or 'object'
-        return f"FortiObject({identifier})"
+        identifier = self._data.get('name') or self._data.get('policyid')
+        
+        # For simple member objects (only name + q_origin_key), just show the name
+        # This makes lists of members much cleaner: ['addr1', 'addr2'] vs [FortiObject(addr1), ...]
+        keys = set(self._data.keys())
+        if keys == {'name'} or keys == {'name', 'q_origin_key'}:
+            return repr(self._data.get('name'))
+        
+        # For complex objects, show the full FortiObject representation
+        if identifier:
+            return f"FortiObject({identifier})"
+        return f"FortiObject({len(self._data)} fields)"
+
+    
+    def __str__(self) -> str:
+        """
+        User-friendly string representation.
+        
+        Returns the primary identifier (name) for cleaner output in lists.
+        Falls back to policyid or generic representation if name is not available.
+        
+        Examples:
+            >>> str(obj)  # With name field
+            'firewall_policy'
+            >>> str(obj)  # With policyid field
+            '1'
+        """
+        # Try to find a meaningful identifier - prefer name, then policyid
+        return str(self._data.get('name') or self._data.get('policyid') or f"FortiObject({len(self._data)} fields)")
+
     
     def __contains__(self, key: str) -> bool:
         """
@@ -149,6 +210,32 @@ class FortiObject:
             True
         """
         return key in self._data
+    
+    def __getitem__(self, key: str):
+        """
+        Dictionary-style access to fields.
+        
+        Provides dict-like bracket notation access to object fields,
+        with the same auto-flattening behavior as attribute access.
+        
+        Args:
+            key: Field name to access
+            
+        Returns:
+            Field value, with member_table fields auto-flattened
+            
+        Raises:
+            KeyError: If the field does not exist
+            
+        Examples:
+            >>> obj['srcaddr']
+            ['addr1', 'addr2']
+            >>> obj['action']
+            'accept'
+        """
+        if key not in self._data:
+            raise KeyError(key)
+        return getattr(self, key)
     
     def __len__(self) -> int:
         """
@@ -228,7 +315,8 @@ class FortiObject:
 def process_response(
     result: Any,
     response_mode: str | None,
-    client: Any = None
+    client: Any = None,
+    unwrap_single: bool = False
 ) -> Any:
     """
     Process API response based on response_mode setting.
@@ -239,6 +327,7 @@ def process_response(
         result: Raw API response (list or dict)
         response_mode: Response mode - "dict", "object", or None (use client default)
         client: HTTP client instance (to get default response_mode)
+        unwrap_single: If True and result is single-item list, return just the item
         
     Returns:
         Processed response - either dict/list or FortiObject/list[FortiObject]
@@ -278,14 +367,30 @@ def process_response(
     # Object mode - wrap in FortiObject
     if isinstance(result, list):
         # raw_json=False: Direct list of results
-        return [FortiObject(item) for item in result]
+        wrapped = [FortiObject(item) for item in result]
+        
+        # If unwrap_single=True and we have exactly 1 item, return just that item
+        # This happens when querying by mkey (e.g., get(name="specific_object"))
+        if unwrap_single and len(wrapped) == 1:
+            return wrapped[0]
+        
+        return wrapped
     elif isinstance(result, dict):
         # Check if this is a raw_json=True response with 'results' key
         if 'results' in result and isinstance(result['results'], list):
             # raw_json=True: Preserve full response but wrap results in FortiObject
+            wrapped_results = [FortiObject(item) for item in result['results']]
+            
+            # If unwrap_single=True and we have exactly 1 item, unwrap it
+            if unwrap_single and len(wrapped_results) == 1:
+                return {
+                    **result,
+                    'results': wrapped_results[0]
+                }
+            
             return {
                 **result,
-                'results': [FortiObject(item) for item in result['results']]
+                'results': wrapped_results
             }
         else:
             # Single object response (e.g., get with specific ID)

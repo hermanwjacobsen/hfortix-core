@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_admin.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_admin.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Admin(MetadataMixin):
+class Admin(CRUDEndpoint, MetadataMixin):
     """Admin Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "admin"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "vdom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "guest_usergroups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Admin(MetadataMixin):
         """Initialize Admin endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Admin(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/admin configuration.
 
@@ -99,6 +136,7 @@ class Admin(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class Admin(MetadataMixin):
         
         if name:
             endpoint = "/system/admin/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/admin"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class Admin(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -252,14 +297,15 @@ class Admin(MetadataMixin):
         sms_custom_server: str | None = None,
         sms_phone: str | None = None,
         guest_auth: Literal["disable", "enable"] | None = None,
-        guest_usergroups: str | list | None = None,
+        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
         guest_lang: str | None = None,
         status: Any | None = None,
         list: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/admin object.
 
@@ -269,11 +315,70 @@ class Admin(MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: User name.
             vdom: Virtual domain(s) that the administrator can access.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             remote_auth: Enable/disable authentication using a remote RADIUS, LDAP, or TACACS+ server.
             remote_group: User group name used for remote auth.
             wildcard: Enable/disable wildcard RADIUS authentication.
+            password: Admin user password.
+            peer_auth: Set to enable peer certificate authentication (for HTTPS admin access).
+            peer_group: Name of peer group defined under config user group which has PKI members. Used for peer certificate authentication (for HTTPS admin access).
+            trusthost1: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost2: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost3: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost4: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost5: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost6: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost7: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost8: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost9: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost10: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            ip6_trusthost1: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost2: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost3: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost4: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost5: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost6: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost7: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost8: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost9: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost10: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            accprofile: Access profile for this administrator. Access profiles control administrator access to FortiGate features.
+            allow_remove_admin_session: Enable/disable allow admin session to be removed by privileged admin users.
+            comments: Comment.
+            ssh_public_key1: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_public_key2: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_public_key3: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_certificate: Select the certificate to be used by the FortiGate for authentication with an SSH client.
+            schedule: Firewall schedule used to restrict when the administrator can log in. No schedule means no restrictions.
+            accprofile_override: Enable to use the name of an access profile provided by the remote authentication server to control the FortiGate features that this administrator can access.
+            vdom_override: Enable to use the names of VDOMs provided by the remote authentication server to control the VDOMs that this administrator can access.
+            password_expire: Password expire time.
+            force_password_change: Enable/disable force password change on next login.
+            two_factor: Enable/disable two-factor authentication.
+            two_factor_authentication: Authentication method by FortiToken Cloud.
+            two_factor_notification: Notification method for user activation by FortiToken Cloud.
+            fortitoken: This administrator's FortiToken serial number.
+            email_to: This administrator's email address.
+            sms_server: Send SMS messages using the FortiGuard SMS server or a custom server.
+            sms_custom_server: Custom SMS server to send SMS messages to.
+            sms_phone: Phone number on which the administrator receives SMS messages.
+            guest_auth: Enable/disable guest authentication.
+            guest_usergroups: Select guest user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            guest_lang: Guest management portal language.
+            status: print admin status information
+            list: print admin list information
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -300,9 +405,28 @@ class Admin(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if guest_usergroups is not None:
+            guest_usergroups = normalize_table_field(
+                guest_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="guest_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             remote_auth=remote_auth,
             remote_group=remote_group,
@@ -374,9 +498,14 @@ class Admin(MetadataMixin):
         endpoint = "/system/admin/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -428,14 +557,15 @@ class Admin(MetadataMixin):
         sms_custom_server: str | None = None,
         sms_phone: str | None = None,
         guest_auth: Literal["disable", "enable"] | None = None,
-        guest_usergroups: str | list | None = None,
+        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
         guest_lang: str | None = None,
         status: Any | None = None,
         list: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/admin object.
 
@@ -445,11 +575,70 @@ class Admin(MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: User name.
             vdom: Virtual domain(s) that the administrator can access.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             remote_auth: Enable/disable authentication using a remote RADIUS, LDAP, or TACACS+ server.
             remote_group: User group name used for remote auth.
             wildcard: Enable/disable wildcard RADIUS authentication.
+            password: Admin user password.
+            peer_auth: Set to enable peer certificate authentication (for HTTPS admin access).
+            peer_group: Name of peer group defined under config user group which has PKI members. Used for peer certificate authentication (for HTTPS admin access).
+            trusthost1: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost2: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost3: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost4: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost5: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost6: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost7: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost8: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost9: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            trusthost10: Any IPv4 address or subnet address and netmask from which the administrator can connect to the FortiGate unit. Default allows access from any IPv4 address.
+            ip6_trusthost1: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost2: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost3: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost4: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost5: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost6: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost7: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost8: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost9: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            ip6_trusthost10: Any IPv6 address from which the administrator can connect to the FortiGate unit. Default allows access from any IPv6 address.
+            accprofile: Access profile for this administrator. Access profiles control administrator access to FortiGate features.
+            allow_remove_admin_session: Enable/disable allow admin session to be removed by privileged admin users.
+            comments: Comment.
+            ssh_public_key1: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_public_key2: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_public_key3: Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.
+            ssh_certificate: Select the certificate to be used by the FortiGate for authentication with an SSH client.
+            schedule: Firewall schedule used to restrict when the administrator can log in. No schedule means no restrictions.
+            accprofile_override: Enable to use the name of an access profile provided by the remote authentication server to control the FortiGate features that this administrator can access.
+            vdom_override: Enable to use the names of VDOMs provided by the remote authentication server to control the VDOMs that this administrator can access.
+            password_expire: Password expire time.
+            force_password_change: Enable/disable force password change on next login.
+            two_factor: Enable/disable two-factor authentication.
+            two_factor_authentication: Authentication method by FortiToken Cloud.
+            two_factor_notification: Notification method for user activation by FortiToken Cloud.
+            fortitoken: This administrator's FortiToken serial number.
+            email_to: This administrator's email address.
+            sms_server: Send SMS messages using the FortiGuard SMS server or a custom server.
+            sms_custom_server: Custom SMS server to send SMS messages to.
+            sms_phone: Phone number on which the administrator receives SMS messages.
+            guest_auth: Enable/disable guest authentication.
+            guest_usergroups: Select guest user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            guest_lang: Guest management portal language.
+            status: print admin status information
+            list: print admin list information
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -478,9 +667,28 @@ class Admin(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if guest_usergroups is not None:
+            guest_usergroups = normalize_table_field(
+                guest_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="guest_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             remote_auth=remote_auth,
             remote_group=remote_group,
@@ -548,16 +756,22 @@ class Admin(MetadataMixin):
 
         endpoint = "/system/admin"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/admin object.
 
@@ -567,6 +781,7 @@ class Admin(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -592,7 +807,7 @@ class Admin(MetadataMixin):
         endpoint = "/system/admin/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -656,7 +871,61 @@ class Admin(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        remote_auth: Literal["enable", "disable"] | None = None,
+        remote_group: str | None = None,
+        wildcard: Literal["enable", "disable"] | None = None,
+        password: Any | None = None,
+        peer_auth: Literal["enable", "disable"] | None = None,
+        peer_group: str | None = None,
+        trusthost1: str | None = None,
+        trusthost2: str | None = None,
+        trusthost3: str | None = None,
+        trusthost4: str | None = None,
+        trusthost5: str | None = None,
+        trusthost6: str | None = None,
+        trusthost7: str | None = None,
+        trusthost8: str | None = None,
+        trusthost9: str | None = None,
+        trusthost10: str | None = None,
+        ip6_trusthost1: str | None = None,
+        ip6_trusthost2: str | None = None,
+        ip6_trusthost3: str | None = None,
+        ip6_trusthost4: str | None = None,
+        ip6_trusthost5: str | None = None,
+        ip6_trusthost6: str | None = None,
+        ip6_trusthost7: str | None = None,
+        ip6_trusthost8: str | None = None,
+        ip6_trusthost9: str | None = None,
+        ip6_trusthost10: str | None = None,
+        accprofile: str | None = None,
+        allow_remove_admin_session: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
+        ssh_public_key1: str | None = None,
+        ssh_public_key2: str | None = None,
+        ssh_public_key3: str | None = None,
+        ssh_certificate: str | None = None,
+        schedule: str | None = None,
+        accprofile_override: Literal["enable", "disable"] | None = None,
+        vdom_override: Literal["enable", "disable"] | None = None,
+        password_expire: Any | None = None,
+        force_password_change: Literal["enable", "disable"] | None = None,
+        two_factor: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"] | None = None,
+        two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = None,
+        two_factor_notification: Literal["email", "sms"] | None = None,
+        fortitoken: str | None = None,
+        email_to: str | None = None,
+        sms_server: Literal["fortiguard", "custom"] | None = None,
+        sms_custom_server: str | None = None,
+        sms_phone: str | None = None,
+        guest_auth: Literal["disable", "enable"] | None = None,
+        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = None,
+        guest_lang: str | None = None,
+        status: Any | None = None,
+        list: Any | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -667,7 +936,61 @@ class Admin(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            remote_auth: Field remote-auth
+            remote_group: Field remote-group
+            wildcard: Field wildcard
+            password: Field password
+            peer_auth: Field peer-auth
+            peer_group: Field peer-group
+            trusthost1: Field trusthost1
+            trusthost2: Field trusthost2
+            trusthost3: Field trusthost3
+            trusthost4: Field trusthost4
+            trusthost5: Field trusthost5
+            trusthost6: Field trusthost6
+            trusthost7: Field trusthost7
+            trusthost8: Field trusthost8
+            trusthost9: Field trusthost9
+            trusthost10: Field trusthost10
+            ip6_trusthost1: Field ip6-trusthost1
+            ip6_trusthost2: Field ip6-trusthost2
+            ip6_trusthost3: Field ip6-trusthost3
+            ip6_trusthost4: Field ip6-trusthost4
+            ip6_trusthost5: Field ip6-trusthost5
+            ip6_trusthost6: Field ip6-trusthost6
+            ip6_trusthost7: Field ip6-trusthost7
+            ip6_trusthost8: Field ip6-trusthost8
+            ip6_trusthost9: Field ip6-trusthost9
+            ip6_trusthost10: Field ip6-trusthost10
+            accprofile: Field accprofile
+            allow_remove_admin_session: Field allow-remove-admin-session
+            comments: Field comments
+            ssh_public_key1: Field ssh-public-key1
+            ssh_public_key2: Field ssh-public-key2
+            ssh_public_key3: Field ssh-public-key3
+            ssh_certificate: Field ssh-certificate
+            schedule: Field schedule
+            accprofile_override: Field accprofile-override
+            vdom_override: Field vdom-override
+            password_expire: Field password-expire
+            force_password_change: Field force-password-change
+            two_factor: Field two-factor
+            two_factor_authentication: Field two-factor-authentication
+            two_factor_notification: Field two-factor-notification
+            fortitoken: Field fortitoken
+            email_to: Field email-to
+            sms_server: Field sms-server
+            sms_custom_server: Field sms-custom-server
+            sms_phone: Field sms-phone
+            guest_auth: Field guest-auth
+            guest_usergroups: Field guest-usergroups
+            guest_lang: Field guest-lang
+            status: Field status
+            list: Field list
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -677,7 +1000,13 @@ class Admin(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_admin.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -700,20 +1029,74 @@ class Admin(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            remote_auth=remote_auth,
+            remote_group=remote_group,
+            wildcard=wildcard,
+            password=password,
+            peer_auth=peer_auth,
+            peer_group=peer_group,
+            trusthost1=trusthost1,
+            trusthost2=trusthost2,
+            trusthost3=trusthost3,
+            trusthost4=trusthost4,
+            trusthost5=trusthost5,
+            trusthost6=trusthost6,
+            trusthost7=trusthost7,
+            trusthost8=trusthost8,
+            trusthost9=trusthost9,
+            trusthost10=trusthost10,
+            ip6_trusthost1=ip6_trusthost1,
+            ip6_trusthost2=ip6_trusthost2,
+            ip6_trusthost3=ip6_trusthost3,
+            ip6_trusthost4=ip6_trusthost4,
+            ip6_trusthost5=ip6_trusthost5,
+            ip6_trusthost6=ip6_trusthost6,
+            ip6_trusthost7=ip6_trusthost7,
+            ip6_trusthost8=ip6_trusthost8,
+            ip6_trusthost9=ip6_trusthost9,
+            ip6_trusthost10=ip6_trusthost10,
+            accprofile=accprofile,
+            allow_remove_admin_session=allow_remove_admin_session,
+            comments=comments,
+            ssh_public_key1=ssh_public_key1,
+            ssh_public_key2=ssh_public_key2,
+            ssh_public_key3=ssh_public_key3,
+            ssh_certificate=ssh_certificate,
+            schedule=schedule,
+            accprofile_override=accprofile_override,
+            vdom_override=vdom_override,
+            password_expire=password_expire,
+            force_password_change=force_password_change,
+            two_factor=two_factor,
+            two_factor_authentication=two_factor_authentication,
+            two_factor_notification=two_factor_notification,
+            fortitoken=fortitoken,
+            email_to=email_to,
+            sms_server=sms_server,
+            sms_custom_server=sms_custom_server,
+            sms_phone=sms_phone,
+            guest_auth=guest_auth,
+            guest_usergroups=guest_usergroups,
+            guest_lang=guest_lang,
+            status=status,
+            list=list,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

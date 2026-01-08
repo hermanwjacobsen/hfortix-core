@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_ntp.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_ntp.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Ntp(MetadataMixin):
+class Ntp(CRUDEndpoint, MetadataMixin):
     """Ntp Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ntp"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ntpserver": {
+            "mkey": "id",
+            "required_fields": ['id', 'server', 'key', 'key-id', 'interface'],
+            "example": "[{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]",
+        },
+        "interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Ntp(MetadataMixin):
         """Initialize Ntp endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Ntp(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/ntp configuration.
 
@@ -98,6 +135,7 @@ class Ntp(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Ntp(MetadataMixin):
         
         if name:
             endpoint = f"/system/ntp/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/ntp"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,13 +236,18 @@ class Ntp(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         ntpsync: Literal["enable", "disable"] | None = None,
         type: Literal["fortiguard", "custom"] | None = None,
         syncinterval: int | None = None,
-        ntpserver: str | list | None = None,
+        ntpserver: str | list[str] | list[dict[str, Any]] | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
         server_mode: Literal["enable", "disable"] | None = None,
@@ -210,11 +255,12 @@ class Ntp(MetadataMixin):
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = None,
         key: Any | None = None,
         key_id: int | None = None,
-        interface: str | list | None = None,
+        interface: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/ntp object.
 
@@ -226,9 +272,25 @@ class Ntp(MetadataMixin):
             type: Use the FortiGuard NTP server or any other available NTP Server.
             syncinterval: NTP synchronization interval (1 - 1440 min).
             ntpserver: Configure the FortiGate to connect to any available third-party NTP server.
+                Default format: [{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]
+                Required format: List of dicts with keys: id, server, key, key-id, interface
+                  (String format not allowed due to multiple required fields)
             source_ip: Source IP address for communication to the NTP server.
+            source_ip6: Source IPv6 address for communication to the NTP server.
+            server_mode: Enable/disable FortiGate NTP Server Mode. Your FortiGate becomes an NTP server for other devices on your network. The FortiGate relays NTP requests to its configured NTP server.
+            authentication: Enable/disable authentication.
+            key_type: Key type for authentication (MD5, SHA1, SHA256).
+            key: Key for authentication.
+            key_id: Key ID for authentication.
+            interface: FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -255,9 +317,28 @@ class Ntp(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ntpserver is not None:
+            ntpserver = normalize_table_field(
+                ntpserver,
+                mkey="id",
+                required_fields=['id', 'server', 'key', 'key-id', 'interface'],
+                field_name="ntpserver",
+                example="[{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]",
+            )
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ntpsync=ntpsync,
             type=type,
             syncinterval=syncinterval,
@@ -283,13 +364,11 @@ class Ntp(MetadataMixin):
                 endpoint="cmdb/system/ntp",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/ntp/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/ntp"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

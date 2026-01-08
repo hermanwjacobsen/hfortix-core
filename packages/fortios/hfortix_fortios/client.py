@@ -659,43 +659,47 @@ class FortiOS:
         class ResponseProcessingClient:
             """Wrapper that processes responses based on response_mode setting."""
             
-            def __init__(self, client, response_mode):
+            def __init__(self, client: Any, response_mode: Literal["dict", "object"]):
                 self._wrapped_client = client
                 self._response_mode = response_mode
             
-            def get(self, api_type, path, params=None, vdom=None, raw_json=False):
+            def get(self, api_type: str, path: str, params=None, vdom=None, raw_json=False, response_mode=None, unwrap_single=False):
                 """GET request with response processing."""
                 result = self._wrapped_client.get(api_type, path, params, vdom, raw_json)
-                return process_response(result, self._response_mode)
+                mode = response_mode if response_mode is not None else self._response_mode
+                return process_response(result, mode, client=self, unwrap_single=unwrap_single)  # type: ignore
             
-            def post(self, api_type, path, data=None, params=None, vdom=None, raw_json=False):
+            def post(self, api_type: str, path: str, data=None, params=None, vdom=None, raw_json=False, response_mode=None):
                 """POST request with response processing."""
-                result = self._wrapped_client.post(api_type, path, data, params, vdom, raw_json)
-                return process_response(result, self._response_mode)
+                result = self._wrapped_client.post(api_type, path, data, params, vdom, raw_json)  # type: ignore
+                mode = response_mode if response_mode is not None else self._response_mode
+                return process_response(result, mode)  # type: ignore
             
-            def put(self, api_type, path, data=None, params=None, vdom=None, raw_json=False):
+            def put(self, api_type: str, path: str, data=None, params=None, vdom=None, raw_json=False, response_mode=None):
                 """PUT request with response processing."""
-                result = self._wrapped_client.put(api_type, path, data, params, vdom, raw_json)
-                return process_response(result, self._response_mode)
+                result = self._wrapped_client.put(api_type, path, data, params, vdom, raw_json)  # type: ignore
+                mode = response_mode if response_mode is not None else self._response_mode
+                return process_response(result, mode)  # type: ignore
             
-            def delete(self, api_type, path, params=None, vdom=None, raw_json=False):
+            def delete(self, api_type: str, path: str, params=None, vdom=None, raw_json=False, response_mode=None):
                 """DELETE request with response processing."""
                 result = self._wrapped_client.delete(api_type, path, params, vdom, raw_json)
-                return process_response(result, self._response_mode)
+                mode = response_mode if response_mode is not None else self._response_mode
+                return process_response(result, mode)  # type: ignore
             
             def __getattr__(self, name):
                 """Delegate all other attributes to the wrapped client."""
                 return getattr(self._wrapped_client, name)
         
-        # Wrap client for response processing
-        wrapped_client = ResponseProcessingClient(self._client, self._response_mode)
+        # Wrap client for response processing and cast to IHTTPClient for type checking
+        wrapped_client = cast(IHTTPClient, ResponseProcessingClient(self._client, self._response_mode))
 
         # Initialize API namespace.
         # Store it privately and expose a property so IDEs treat it as a
         # concrete
         # instance attribute (often improves autocomplete ranking vs dunder
         # attrs).
-        self._api = API(wrapped_client)  # type: ignore[arg-type]
+        self._api: API = API(wrapped_client)
 
         # Log initialization
         logger = logging.getLogger("hfortix.client")

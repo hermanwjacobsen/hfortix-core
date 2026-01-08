@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_accprofile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_accprofile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Accprofile(MetadataMixin):
+class Accprofile(CRUDEndpoint, MetadataMixin):
     """Accprofile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Accprofile(MetadataMixin):
         """Initialize Accprofile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Accprofile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/accprofile configuration.
 
@@ -99,6 +118,7 @@ class Accprofile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Accprofile(MetadataMixin):
         
         if name:
             endpoint = "/system/accprofile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/accprofile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Accprofile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -235,8 +262,9 @@ class Accprofile(MetadataMixin):
         system_execute_telnet: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/accprofile object.
 
@@ -249,8 +277,33 @@ class Accprofile(MetadataMixin):
             comments: Comment.
             secfabgrp: Security Fabric.
             ftviewgrp: FortiView.
+            authgrp: Administrator access to Users and Devices.
+            sysgrp: System Configuration.
+            netgrp: Network Configuration.
+            loggrp: Administrator access to Logging and Reporting including viewing log messages.
+            fwgrp: Administrator access to the Firewall configuration.
+            vpngrp: Administrator access to IPsec, SSL, PPTP, and L2TP VPN.
+            utmgrp: Administrator access to Security Profiles.
+            wanoptgrp: Administrator access to WAN Opt & Cache.
+            wifi: Administrator access to the WiFi controller and Switch controller.
+            netgrp_permission: Custom network permission.
+            sysgrp_permission: Custom system permission.
+            fwgrp_permission: Custom firewall permission.
+            loggrp_permission: Custom Log & Report permission.
+            utmgrp_permission: Custom Security Profile permissions.
+            secfabgrp_permission: Custom Security Fabric permissions.
+            admintimeout_override: Enable/disable overriding the global administrator idle timeout.
+            admintimeout: Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).
+            cli_diagnose: Enable/disable permission to run diagnostic commands.
+            cli_get: Enable/disable permission to run get commands.
+            cli_show: Enable/disable permission to run show commands.
+            cli_exec: Enable/disable permission to run execute commands.
+            cli_config: Enable/disable permission to run config commands.
+            system_execute_ssh: Enable/disable permission to execute SSH commands.
+            system_execute_telnet: Enable/disable permission to execute TELNET commands.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -277,9 +330,10 @@ class Accprofile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             scope=scope,
             comments=comments,
@@ -328,9 +382,14 @@ class Accprofile(MetadataMixin):
         endpoint = "/system/accprofile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -365,8 +424,9 @@ class Accprofile(MetadataMixin):
         system_execute_telnet: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/accprofile object.
 
@@ -379,8 +439,33 @@ class Accprofile(MetadataMixin):
             comments: Comment.
             secfabgrp: Security Fabric.
             ftviewgrp: FortiView.
+            authgrp: Administrator access to Users and Devices.
+            sysgrp: System Configuration.
+            netgrp: Network Configuration.
+            loggrp: Administrator access to Logging and Reporting including viewing log messages.
+            fwgrp: Administrator access to the Firewall configuration.
+            vpngrp: Administrator access to IPsec, SSL, PPTP, and L2TP VPN.
+            utmgrp: Administrator access to Security Profiles.
+            wanoptgrp: Administrator access to WAN Opt & Cache.
+            wifi: Administrator access to the WiFi controller and Switch controller.
+            netgrp_permission: Custom network permission.
+            sysgrp_permission: Custom system permission.
+            fwgrp_permission: Custom firewall permission.
+            loggrp_permission: Custom Log & Report permission.
+            utmgrp_permission: Custom Security Profile permissions.
+            secfabgrp_permission: Custom Security Fabric permissions.
+            admintimeout_override: Enable/disable overriding the global administrator idle timeout.
+            admintimeout: Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).
+            cli_diagnose: Enable/disable permission to run diagnostic commands.
+            cli_get: Enable/disable permission to run get commands.
+            cli_show: Enable/disable permission to run show commands.
+            cli_exec: Enable/disable permission to run execute commands.
+            cli_config: Enable/disable permission to run config commands.
+            system_execute_ssh: Enable/disable permission to execute SSH commands.
+            system_execute_telnet: Enable/disable permission to execute TELNET commands.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -409,9 +494,10 @@ class Accprofile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             scope=scope,
             comments=comments,
@@ -456,16 +542,22 @@ class Accprofile(MetadataMixin):
 
         endpoint = "/system/accprofile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/accprofile object.
 
@@ -475,6 +567,7 @@ class Accprofile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -500,7 +593,7 @@ class Accprofile(MetadataMixin):
         endpoint = "/system/accprofile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -564,7 +657,38 @@ class Accprofile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
+        comments: str | None = None,
+        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        ftviewgrp: Literal["none", "read", "read-write"] | None = None,
+        authgrp: Literal["none", "read", "read-write"] | None = None,
+        sysgrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        netgrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        loggrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        fwgrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        vpngrp: Literal["none", "read", "read-write"] | None = None,
+        utmgrp: Literal["none", "read", "read-write", "custom"] | None = None,
+        wanoptgrp: Literal["none", "read", "read-write"] | None = None,
+        wifi: Literal["none", "read", "read-write"] | None = None,
+        netgrp_permission: str | None = None,
+        sysgrp_permission: str | None = None,
+        fwgrp_permission: str | None = None,
+        loggrp_permission: str | None = None,
+        utmgrp_permission: str | None = None,
+        secfabgrp_permission: str | None = None,
+        admintimeout_override: Literal["enable", "disable"] | None = None,
+        admintimeout: int | None = None,
+        cli_diagnose: Literal["enable", "disable"] | None = None,
+        cli_get: Literal["enable", "disable"] | None = None,
+        cli_show: Literal["enable", "disable"] | None = None,
+        cli_exec: Literal["enable", "disable"] | None = None,
+        cli_config: Literal["enable", "disable"] | None = None,
+        system_execute_ssh: Literal["enable", "disable"] | None = None,
+        system_execute_telnet: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -575,7 +699,38 @@ class Accprofile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            scope: Field scope
+            comments: Field comments
+            secfabgrp: Field secfabgrp
+            ftviewgrp: Field ftviewgrp
+            authgrp: Field authgrp
+            sysgrp: Field sysgrp
+            netgrp: Field netgrp
+            loggrp: Field loggrp
+            fwgrp: Field fwgrp
+            vpngrp: Field vpngrp
+            utmgrp: Field utmgrp
+            wanoptgrp: Field wanoptgrp
+            wifi: Field wifi
+            netgrp_permission: Field netgrp-permission
+            sysgrp_permission: Field sysgrp-permission
+            fwgrp_permission: Field fwgrp-permission
+            loggrp_permission: Field loggrp-permission
+            utmgrp_permission: Field utmgrp-permission
+            secfabgrp_permission: Field secfabgrp-permission
+            admintimeout_override: Field admintimeout-override
+            admintimeout: Field admintimeout
+            cli_diagnose: Field cli-diagnose
+            cli_get: Field cli-get
+            cli_show: Field cli-show
+            cli_exec: Field cli-exec
+            cli_config: Field cli-config
+            system_execute_ssh: Field system-execute-ssh
+            system_execute_telnet: Field system-execute-telnet
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -585,7 +740,13 @@ class Accprofile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_accprofile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -608,20 +769,51 @@ class Accprofile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            scope=scope,
+            comments=comments,
+            secfabgrp=secfabgrp,
+            ftviewgrp=ftviewgrp,
+            authgrp=authgrp,
+            sysgrp=sysgrp,
+            netgrp=netgrp,
+            loggrp=loggrp,
+            fwgrp=fwgrp,
+            vpngrp=vpngrp,
+            utmgrp=utmgrp,
+            wanoptgrp=wanoptgrp,
+            wifi=wifi,
+            netgrp_permission=netgrp_permission,
+            sysgrp_permission=sysgrp_permission,
+            fwgrp_permission=fwgrp_permission,
+            loggrp_permission=loggrp_permission,
+            utmgrp_permission=utmgrp_permission,
+            secfabgrp_permission=secfabgrp_permission,
+            admintimeout_override=admintimeout_override,
+            admintimeout=admintimeout,
+            cli_diagnose=cli_diagnose,
+            cli_get=cli_get,
+            cli_show=cli_show,
+            cli_exec=cli_exec,
+            cli_config=cli_config,
+            system_execute_ssh=system_execute_ssh,
+            system_execute_telnet=system_execute_telnet,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

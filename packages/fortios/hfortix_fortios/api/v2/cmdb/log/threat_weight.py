@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.log_threat_weight.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.log_threat_weight.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,48 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ThreatWeight(MetadataMixin):
+class ThreatWeight(CRUDEndpoint, MetadataMixin):
     """ThreatWeight Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "threat_weight"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "web": {
+            "mkey": "id",
+            "required_fields": ['category'],
+            "example": "[{'category': 1}]",
+        },
+        "geolocation": {
+            "mkey": "id",
+            "required_fields": ['country'],
+            "example": "[{'country': 'value'}]",
+        },
+        "application": {
+            "mkey": "id",
+            "required_fields": ['category'],
+            "example": "[{'category': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +99,11 @@ class ThreatWeight(MetadataMixin):
         """Initialize ThreatWeight endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +113,9 @@ class ThreatWeight(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve log/threat_weight configuration.
 
@@ -98,6 +140,7 @@ class ThreatWeight(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +193,14 @@ class ThreatWeight(MetadataMixin):
         
         if name:
             endpoint = f"/log/threat-weight/{name}"
+            unwrap_single = True
         else:
             endpoint = "/log/threat-weight"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +241,11 @@ class ThreatWeight(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -207,13 +257,14 @@ class ThreatWeight(MetadataMixin):
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = None,
         malware: str | None = None,
         ips: str | None = None,
-        web: str | list | None = None,
-        geolocation: str | list | None = None,
-        application: str | list | None = None,
+        web: str | list[str] | list[dict[str, Any]] | None = None,
+        geolocation: str | list[str] | list[dict[str, Any]] | None = None,
+        application: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing log/threat_weight object.
 
@@ -226,8 +277,30 @@ class ThreatWeight(MetadataMixin):
             blocked_connection: Threat weight score for blocked connections.
             failed_connection: Threat weight score for failed connections.
             url_block_detected: Threat weight score for URL blocking.
+            botnet_connection_detected: Threat weight score for detected botnet connections.
+            malware: Anti-virus malware threat weight settings.
+            ips: IPS threat weight settings.
+            web: Web filtering threat weight settings.
+                Default format: [{'category': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'category': 1}] (recommended)
+            geolocation: Geolocation-based threat weight settings.
+                Default format: [{'country': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'country': 'value'}] (recommended)
+            application: Application-control threat weight settings.
+                Default format: [{'category': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'category': 1}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -254,9 +327,36 @@ class ThreatWeight(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if web is not None:
+            web = normalize_table_field(
+                web,
+                mkey="id",
+                required_fields=['category'],
+                field_name="web",
+                example="[{'category': 1}]",
+            )
+        if geolocation is not None:
+            geolocation = normalize_table_field(
+                geolocation,
+                mkey="id",
+                required_fields=['country'],
+                field_name="geolocation",
+                example="[{'country': 'value'}]",
+            )
+        if application is not None:
+            application = normalize_table_field(
+                application,
+                mkey="id",
+                required_fields=['category'],
+                field_name="application",
+                example="[{'category': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             level=level,
             blocked_connection=blocked_connection,
@@ -281,13 +381,11 @@ class ThreatWeight(MetadataMixin):
                 endpoint="cmdb/log/threat_weight",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/log/threat-weight/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/log/threat-weight"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

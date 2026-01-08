@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_profile_protocol_options.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_profile_protocol_options.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ProfileProtocolOptions(MetadataMixin):
+class ProfileProtocolOptions(CRUDEndpoint, MetadataMixin):
     """ProfileProtocolOptions Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class ProfileProtocolOptions(MetadataMixin):
         """Initialize ProfileProtocolOptions endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class ProfileProtocolOptions(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/profile_protocol_options configuration.
 
@@ -99,6 +118,7 @@ class ProfileProtocolOptions(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class ProfileProtocolOptions(MetadataMixin):
         
         if name:
             endpoint = "/firewall/profile-protocol-options/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/profile-protocol-options"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class ProfileProtocolOptions(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -223,8 +250,9 @@ class ProfileProtocolOptions(MetadataMixin):
         rpc_over_http: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/profile_protocol_options object.
 
@@ -237,8 +265,21 @@ class ProfileProtocolOptions(MetadataMixin):
             replacemsg_group: Name of the replacement message group to be used.
             oversize_log: Enable/disable logging for antivirus oversize file blocking.
             switching_protocols_log: Enable/disable logging for HTTP/HTTPS switching protocols.
+            http: Configure HTTP protocol options.
+            ftp: Configure FTP protocol options.
+            imap: Configure IMAP protocol options.
+            mapi: Configure MAPI protocol options.
+            pop3: Configure POP3 protocol options.
+            smtp: Configure SMTP protocol options.
+            nntp: Configure NNTP protocol options.
+            ssh: Configure SFTP and SCP protocol options.
+            dns: Configure DNS protocol options.
+            cifs: Configure CIFS protocol options.
+            mail_signature: Configure Mail signature.
+            rpc_over_http: Enable/disable inspection of RPC over HTTP.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -265,9 +306,10 @@ class ProfileProtocolOptions(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -304,9 +346,14 @@ class ProfileProtocolOptions(MetadataMixin):
         endpoint = "/firewall/profile-protocol-options/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -329,8 +376,9 @@ class ProfileProtocolOptions(MetadataMixin):
         rpc_over_http: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/profile_protocol_options object.
 
@@ -343,8 +391,21 @@ class ProfileProtocolOptions(MetadataMixin):
             replacemsg_group: Name of the replacement message group to be used.
             oversize_log: Enable/disable logging for antivirus oversize file blocking.
             switching_protocols_log: Enable/disable logging for HTTP/HTTPS switching protocols.
+            http: Configure HTTP protocol options.
+            ftp: Configure FTP protocol options.
+            imap: Configure IMAP protocol options.
+            mapi: Configure MAPI protocol options.
+            pop3: Configure POP3 protocol options.
+            smtp: Configure SMTP protocol options.
+            nntp: Configure NNTP protocol options.
+            ssh: Configure SFTP and SCP protocol options.
+            dns: Configure DNS protocol options.
+            cifs: Configure CIFS protocol options.
+            mail_signature: Configure Mail signature.
+            rpc_over_http: Enable/disable inspection of RPC over HTTP.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -373,9 +434,10 @@ class ProfileProtocolOptions(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -408,16 +470,22 @@ class ProfileProtocolOptions(MetadataMixin):
 
         endpoint = "/firewall/profile-protocol-options"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/profile_protocol_options object.
 
@@ -427,6 +495,7 @@ class ProfileProtocolOptions(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -452,7 +521,7 @@ class ProfileProtocolOptions(MetadataMixin):
         endpoint = "/firewall/profile-protocol-options/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -516,7 +585,26 @@ class ProfileProtocolOptions(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        replacemsg_group: str | None = None,
+        oversize_log: Literal["disable", "enable"] | None = None,
+        switching_protocols_log: Literal["disable", "enable"] | None = None,
+        http: str | None = None,
+        ftp: str | None = None,
+        imap: str | None = None,
+        mapi: str | None = None,
+        pop3: str | None = None,
+        smtp: str | None = None,
+        nntp: str | None = None,
+        ssh: str | None = None,
+        dns: str | None = None,
+        cifs: str | None = None,
+        mail_signature: str | None = None,
+        rpc_over_http: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -527,7 +615,26 @@ class ProfileProtocolOptions(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            replacemsg_group: Field replacemsg-group
+            oversize_log: Field oversize-log
+            switching_protocols_log: Field switching-protocols-log
+            http: Field http
+            ftp: Field ftp
+            imap: Field imap
+            mapi: Field mapi
+            pop3: Field pop3
+            smtp: Field smtp
+            nntp: Field nntp
+            ssh: Field ssh
+            dns: Field dns
+            cifs: Field cifs
+            mail_signature: Field mail-signature
+            rpc_over_http: Field rpc-over-http
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -537,7 +644,13 @@ class ProfileProtocolOptions(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_profile_protocol_options.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -560,20 +673,39 @@ class ProfileProtocolOptions(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            replacemsg_group=replacemsg_group,
+            oversize_log=oversize_log,
+            switching_protocols_log=switching_protocols_log,
+            http=http,
+            ftp=ftp,
+            imap=imap,
+            mapi=mapi,
+            pop3=pop3,
+            smtp=smtp,
+            nntp=nntp,
+            ssh=ssh,
+            dns=dns,
+            cifs=cifs,
+            mail_signature=mail_signature,
+            rpc_over_http=rpc_over_http,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

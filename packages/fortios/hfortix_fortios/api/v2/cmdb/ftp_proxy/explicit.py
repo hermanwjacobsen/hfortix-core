@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.ftp_proxy_explicit.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.ftp_proxy_explicit.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Explicit(MetadataMixin):
+class Explicit(CRUDEndpoint, MetadataMixin):
     """Explicit Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "explicit"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ssl_cert": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Explicit(MetadataMixin):
         """Initialize Explicit endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Explicit(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve ftp_proxy/explicit configuration.
 
@@ -98,6 +130,7 @@ class Explicit(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class Explicit(MetadataMixin):
         
         if name:
             endpoint = f"/ftp-proxy/explicit/{name}"
+            unwrap_single = True
         else:
             endpoint = "/ftp-proxy/explicit"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,23 +231,29 @@ class Explicit(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         status: Literal["enable", "disable"] | None = None,
         incoming_port: str | None = None,
         incoming_ip: str | None = None,
-        outgoing_ip: str | list | None = None,
+        outgoing_ip: str | list[str] | None = None,
         sec_default_action: Literal["accept", "deny"] | None = None,
         server_data_mode: Literal["client", "passive"] | None = None,
         ssl: Literal["enable", "disable"] | None = None,
-        ssl_cert: str | list | None = None,
+        ssl_cert: str | list[str] | list[dict[str, Any]] | None = None,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = None,
         ssl_algorithm: Literal["high", "medium", "low"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing ftp_proxy/explicit object.
 
@@ -225,8 +266,19 @@ class Explicit(MetadataMixin):
             incoming_ip: Accept incoming FTP requests from this IP address. An interface must have this IP address.
             outgoing_ip: Outgoing FTP requests will leave from this IP address. An interface must have this IP address.
             sec_default_action: Accept or deny explicit FTP proxy sessions when no FTP proxy firewall policy exists.
+            server_data_mode: Determine mode of data session on FTP server side.
+            ssl: Enable/disable the explicit FTPS proxy.
+            ssl_cert: List of certificate names to use for SSL connections to this server.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ssl_dh_bits: Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).
+            ssl_algorithm: Relative strength of encryption algorithms accepted in negotiation.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -253,9 +305,20 @@ class Explicit(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if ssl_cert is not None:
+            ssl_cert = normalize_table_field(
+                ssl_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_cert",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             incoming_port=incoming_port,
             incoming_ip=incoming_ip,
@@ -279,13 +342,11 @@ class Explicit(MetadataMixin):
                 endpoint="cmdb/ftp_proxy/explicit",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/ftp-proxy/explicit/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/ftp-proxy/explicit"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

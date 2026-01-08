@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.webfilter_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.webfilter_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Profile(MetadataMixin):
+class Profile(CRUDEndpoint, MetadataMixin):
     """Profile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "wisp_servers": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Profile(MetadataMixin):
         """Initialize Profile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve webfilter/profile configuration.
 
@@ -99,6 +131,7 @@ class Profile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Profile(MetadataMixin):
         
         if name:
             endpoint = "/webfilter/profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/webfilter/profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class Profile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -208,17 +248,17 @@ class Profile(MetadataMixin):
         comment: str | None = None,
         feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list | None = None,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = None,
         https_replacemsg: Literal["enable", "disable"] | None = None,
         web_flow_log_encoding: Literal["utf-8", "punycode"] | None = None,
-        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list | None = None,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = None,
         post_action: Literal["normal", "block"] | None = None,
         override: str | None = None,
         web: str | None = None,
         ftgd_wf: str | None = None,
         antiphish: str | None = None,
         wisp: Literal["enable", "disable"] | None = None,
-        wisp_servers: str | list | None = None,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = None,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = None,
         log_all_url: Literal["enable", "disable"] | None = None,
         web_content_log: Literal["enable", "disable"] | None = None,
@@ -241,8 +281,9 @@ class Profile(MetadataMixin):
         web_antiphishing_log: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing webfilter/profile object.
 
@@ -255,8 +296,44 @@ class Profile(MetadataMixin):
             feature_set: Flow/proxy feature set.
             replacemsg_group: Replacement message group.
             options: Options.
+            https_replacemsg: Enable replacement messages for HTTPS.
+            web_flow_log_encoding: Log encoding in flow mode.
+            ovrd_perm: Permitted override types.
+            post_action: Action taken for HTTP POST traffic.
+            override: Web Filter override settings.
+            web: Web content filtering settings.
+            ftgd_wf: FortiGuard Web Filter settings.
+            antiphish: AntiPhishing profile.
+            wisp: Enable/disable web proxy WISP.
+            wisp_servers: WISP servers.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            wisp_algorithm: WISP server selection algorithm.
+            log_all_url: Enable/disable logging all URLs visited.
+            web_content_log: Enable/disable logging logging blocked web content.
+            web_filter_activex_log: Enable/disable logging ActiveX.
+            web_filter_command_block_log: Enable/disable logging blocked commands.
+            web_filter_cookie_log: Enable/disable logging cookie filtering.
+            web_filter_applet_log: Enable/disable logging Java applets.
+            web_filter_jscript_log: Enable/disable logging JScripts.
+            web_filter_js_log: Enable/disable logging Java scripts.
+            web_filter_vbs_log: Enable/disable logging VBS scripts.
+            web_filter_unknown_log: Enable/disable logging unknown scripts.
+            web_filter_referer_log: Enable/disable logging referrers.
+            web_filter_cookie_removal_log: Enable/disable logging blocked cookies.
+            web_url_log: Enable/disable logging URL filtering.
+            web_invalid_domain_log: Enable/disable logging invalid domain names.
+            web_ftgd_err_log: Enable/disable logging rating errors.
+            web_ftgd_quota_usage: Enable/disable logging daily quota usage.
+            extended_log: Enable/disable extended logging for web filtering.
+            web_extended_all_action_log: Enable/disable extended any filter action logging for web filtering.
+            web_antiphishing_log: Enable/disable logging of AntiPhishing checks.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -283,9 +360,20 @@ class Profile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if wisp_servers is not None:
+            wisp_servers = normalize_table_field(
+                wisp_servers,
+                mkey="name",
+                required_fields=['name'],
+                field_name="wisp_servers",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             feature_set=feature_set,
@@ -340,9 +428,14 @@ class Profile(MetadataMixin):
         endpoint = "/webfilter/profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -350,17 +443,17 @@ class Profile(MetadataMixin):
         comment: str | None = None,
         feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list | None = None,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = None,
         https_replacemsg: Literal["enable", "disable"] | None = None,
         web_flow_log_encoding: Literal["utf-8", "punycode"] | None = None,
-        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list | None = None,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = None,
         post_action: Literal["normal", "block"] | None = None,
         override: str | None = None,
         web: str | None = None,
         ftgd_wf: str | None = None,
         antiphish: str | None = None,
         wisp: Literal["enable", "disable"] | None = None,
-        wisp_servers: str | list | None = None,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = None,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = None,
         log_all_url: Literal["enable", "disable"] | None = None,
         web_content_log: Literal["enable", "disable"] | None = None,
@@ -383,8 +476,9 @@ class Profile(MetadataMixin):
         web_antiphishing_log: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new webfilter/profile object.
 
@@ -397,8 +491,44 @@ class Profile(MetadataMixin):
             feature_set: Flow/proxy feature set.
             replacemsg_group: Replacement message group.
             options: Options.
+            https_replacemsg: Enable replacement messages for HTTPS.
+            web_flow_log_encoding: Log encoding in flow mode.
+            ovrd_perm: Permitted override types.
+            post_action: Action taken for HTTP POST traffic.
+            override: Web Filter override settings.
+            web: Web content filtering settings.
+            ftgd_wf: FortiGuard Web Filter settings.
+            antiphish: AntiPhishing profile.
+            wisp: Enable/disable web proxy WISP.
+            wisp_servers: WISP servers.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            wisp_algorithm: WISP server selection algorithm.
+            log_all_url: Enable/disable logging all URLs visited.
+            web_content_log: Enable/disable logging logging blocked web content.
+            web_filter_activex_log: Enable/disable logging ActiveX.
+            web_filter_command_block_log: Enable/disable logging blocked commands.
+            web_filter_cookie_log: Enable/disable logging cookie filtering.
+            web_filter_applet_log: Enable/disable logging Java applets.
+            web_filter_jscript_log: Enable/disable logging JScripts.
+            web_filter_js_log: Enable/disable logging Java scripts.
+            web_filter_vbs_log: Enable/disable logging VBS scripts.
+            web_filter_unknown_log: Enable/disable logging unknown scripts.
+            web_filter_referer_log: Enable/disable logging referrers.
+            web_filter_cookie_removal_log: Enable/disable logging blocked cookies.
+            web_url_log: Enable/disable logging URL filtering.
+            web_invalid_domain_log: Enable/disable logging invalid domain names.
+            web_ftgd_err_log: Enable/disable logging rating errors.
+            web_ftgd_quota_usage: Enable/disable logging daily quota usage.
+            extended_log: Enable/disable extended logging for web filtering.
+            web_extended_all_action_log: Enable/disable extended any filter action logging for web filtering.
+            web_antiphishing_log: Enable/disable logging of AntiPhishing checks.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -427,9 +557,20 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if wisp_servers is not None:
+            wisp_servers = normalize_table_field(
+                wisp_servers,
+                mkey="name",
+                required_fields=['name'],
+                field_name="wisp_servers",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             feature_set=feature_set,
@@ -480,16 +621,22 @@ class Profile(MetadataMixin):
 
         endpoint = "/webfilter/profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete webfilter/profile object.
 
@@ -499,6 +646,7 @@ class Profile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -524,7 +672,7 @@ class Profile(MetadataMixin):
         endpoint = "/webfilter/profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -588,7 +736,44 @@ class Profile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
+        replacemsg_group: str | None = None,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | list[dict[str, Any]] | None = None,
+        https_replacemsg: Literal["enable", "disable"] | None = None,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = None,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | list[dict[str, Any]] | None = None,
+        post_action: Literal["normal", "block"] | None = None,
+        override: str | None = None,
+        web: str | None = None,
+        ftgd_wf: str | None = None,
+        antiphish: str | None = None,
+        wisp: Literal["enable", "disable"] | None = None,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = None,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = None,
+        log_all_url: Literal["enable", "disable"] | None = None,
+        web_content_log: Literal["enable", "disable"] | None = None,
+        web_filter_activex_log: Literal["enable", "disable"] | None = None,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = None,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = None,
+        web_filter_applet_log: Literal["enable", "disable"] | None = None,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = None,
+        web_filter_js_log: Literal["enable", "disable"] | None = None,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = None,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = None,
+        web_filter_referer_log: Literal["enable", "disable"] | None = None,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = None,
+        web_url_log: Literal["enable", "disable"] | None = None,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = None,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = None,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = None,
+        web_antiphishing_log: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -599,7 +784,44 @@ class Profile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            feature_set: Field feature-set
+            replacemsg_group: Field replacemsg-group
+            options: Field options
+            https_replacemsg: Field https-replacemsg
+            web_flow_log_encoding: Field web-flow-log-encoding
+            ovrd_perm: Field ovrd-perm
+            post_action: Field post-action
+            override: Field override
+            web: Field web
+            ftgd_wf: Field ftgd-wf
+            antiphish: Field antiphish
+            wisp: Field wisp
+            wisp_servers: Field wisp-servers
+            wisp_algorithm: Field wisp-algorithm
+            log_all_url: Field log-all-url
+            web_content_log: Field web-content-log
+            web_filter_activex_log: Field web-filter-activex-log
+            web_filter_command_block_log: Field web-filter-command-block-log
+            web_filter_cookie_log: Field web-filter-cookie-log
+            web_filter_applet_log: Field web-filter-applet-log
+            web_filter_jscript_log: Field web-filter-jscript-log
+            web_filter_js_log: Field web-filter-js-log
+            web_filter_vbs_log: Field web-filter-vbs-log
+            web_filter_unknown_log: Field web-filter-unknown-log
+            web_filter_referer_log: Field web-filter-referer-log
+            web_filter_cookie_removal_log: Field web-filter-cookie-removal-log
+            web_url_log: Field web-url-log
+            web_invalid_domain_log: Field web-invalid-domain-log
+            web_ftgd_err_log: Field web-ftgd-err-log
+            web_ftgd_quota_usage: Field web-ftgd-quota-usage
+            extended_log: Field extended-log
+            web_extended_all_action_log: Field web-extended-all-action-log
+            web_antiphishing_log: Field web-antiphishing-log
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -609,7 +831,13 @@ class Profile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.webfilter_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -632,20 +860,57 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            feature_set=feature_set,
+            replacemsg_group=replacemsg_group,
+            options=options,
+            https_replacemsg=https_replacemsg,
+            web_flow_log_encoding=web_flow_log_encoding,
+            ovrd_perm=ovrd_perm,
+            post_action=post_action,
+            override=override,
+            web=web,
+            ftgd_wf=ftgd_wf,
+            antiphish=antiphish,
+            wisp=wisp,
+            wisp_servers=wisp_servers,
+            wisp_algorithm=wisp_algorithm,
+            log_all_url=log_all_url,
+            web_content_log=web_content_log,
+            web_filter_activex_log=web_filter_activex_log,
+            web_filter_command_block_log=web_filter_command_block_log,
+            web_filter_cookie_log=web_filter_cookie_log,
+            web_filter_applet_log=web_filter_applet_log,
+            web_filter_jscript_log=web_filter_jscript_log,
+            web_filter_js_log=web_filter_js_log,
+            web_filter_vbs_log=web_filter_vbs_log,
+            web_filter_unknown_log=web_filter_unknown_log,
+            web_filter_referer_log=web_filter_referer_log,
+            web_filter_cookie_removal_log=web_filter_cookie_removal_log,
+            web_url_log=web_url_log,
+            web_invalid_domain_log=web_invalid_domain_log,
+            web_ftgd_err_log=web_ftgd_err_log,
+            web_ftgd_quota_usage=web_ftgd_quota_usage,
+            extended_log=extended_log,
+            web_extended_all_action_log=web_extended_all_action_log,
+            web_antiphishing_log=web_antiphishing_log,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

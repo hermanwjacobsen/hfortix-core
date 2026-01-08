@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_local_in_policy6.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_local_in_policy6.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,78 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class LocalInPolicy6(MetadataMixin):
+class LocalInPolicy6(CRUDEndpoint, MetadataMixin):
     """LocalInPolicy6 Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "local_in_policy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "intf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +129,11 @@ class LocalInPolicy6(MetadataMixin):
         """Initialize LocalInPolicy6 endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         policyid: int | None = None,
@@ -72,8 +143,9 @@ class LocalInPolicy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/local_in_policy6 configuration.
 
@@ -99,6 +171,7 @@ class LocalInPolicy6(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +228,14 @@ class LocalInPolicy6(MetadataMixin):
         
         if policyid:
             endpoint = "/firewall/local-in-policy6/" + str(policyid)
+            unwrap_single = True
         else:
             endpoint = "/firewall/local-in-policy6"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,24 +276,29 @@ class LocalInPolicy6(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
         uuid: str | None = None,
-        intf: str | list | None = None,
-        srcaddr: str | list | None = None,
+        intf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
         srcaddr_negate: Literal["enable", "disable"] | None = None,
-        dstaddr: str | list | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service6_src: Literal["enable", "disable"] | None = None,
-        internet_service6_src_name: str | list | None = None,
-        internet_service6_src_group: str | list | None = None,
-        internet_service6_src_custom: str | list | None = None,
-        internet_service6_src_custom_group: str | list | None = None,
-        internet_service6_src_fortiguard: str | list | None = None,
+        internet_service6_src_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
         dstaddr_negate: Literal["enable", "disable"] | None = None,
         action: Literal["accept", "deny"] | None = None,
-        service: str | list | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         service_negate: Literal["enable", "disable"] | None = None,
         internet_service6_src_negate: Literal["enable", "disable"] | None = None,
         schedule: str | None = None,
@@ -228,8 +308,9 @@ class LocalInPolicy6(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/local_in_policy6 object.
 
@@ -240,10 +321,73 @@ class LocalInPolicy6(MetadataMixin):
             policyid: User defined local in policy ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             intf: Incoming interface name from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
+            dstaddr: Destination address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src: Enable/disable use of IPv6 Internet Services in source for this local-in policy.If enabled, source address is not used.
+            internet_service6_src_name: IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_group: Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_custom: Custom IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_custom_group: Custom Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_fortiguard: FortiGuard IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
+            action: Action performed on traffic matching the policy (default = deny).
+            service: Service object from available options. Separate names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service_negate: When enabled service specifies what the service must NOT be.
+            internet_service6_src_negate: When enabled internet-service6-src specifies what the service must NOT be.
+            schedule: Schedule object from available options.
+            status: Enable/disable this local-in policy.
+            virtual_patch: Enable/disable the virtual patching feature.
+            logtraffic: Enable/disable local-in traffic logging.
+            comments: Comment.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -270,9 +414,84 @@ class LocalInPolicy6(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if intf is not None:
+            intf = normalize_table_field(
+                intf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="intf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_name is not None:
+            internet_service6_src_name = normalize_table_field(
+                internet_service6_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_group is not None:
+            internet_service6_src_group = normalize_table_field(
+                internet_service6_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom is not None:
+            internet_service6_src_custom = normalize_table_field(
+                internet_service6_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom_group is not None:
+            internet_service6_src_custom_group = normalize_table_field(
+                internet_service6_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_fortiguard is not None:
+            internet_service6_src_fortiguard = normalize_table_field(
+                internet_service6_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             intf=intf,
@@ -314,27 +533,32 @@ class LocalInPolicy6(MetadataMixin):
         endpoint = "/firewall/local-in-policy6/" + str(policyid_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
         uuid: str | None = None,
-        intf: str | list | None = None,
-        srcaddr: str | list | None = None,
+        intf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
         srcaddr_negate: Literal["enable", "disable"] | None = None,
-        dstaddr: str | list | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
         internet_service6_src: Literal["enable", "disable"] | None = None,
-        internet_service6_src_name: str | list | None = None,
-        internet_service6_src_group: str | list | None = None,
-        internet_service6_src_custom: str | list | None = None,
-        internet_service6_src_custom_group: str | list | None = None,
-        internet_service6_src_fortiguard: str | list | None = None,
+        internet_service6_src_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
         dstaddr_negate: Literal["enable", "disable"] | None = None,
         action: Literal["accept", "deny"] | None = None,
-        service: str | list | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         service_negate: Literal["enable", "disable"] | None = None,
         internet_service6_src_negate: Literal["enable", "disable"] | None = None,
         schedule: str | None = None,
@@ -344,8 +568,9 @@ class LocalInPolicy6(MetadataMixin):
         comments: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/local_in_policy6 object.
 
@@ -356,10 +581,73 @@ class LocalInPolicy6(MetadataMixin):
             policyid: User defined local in policy ID.
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             intf: Incoming interface name from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
+            dstaddr: Destination address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src: Enable/disable use of IPv6 Internet Services in source for this local-in policy.If enabled, source address is not used.
+            internet_service6_src_name: IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_group: Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_custom: Custom IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_custom_group: Custom Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            internet_service6_src_fortiguard: FortiGuard IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
+            action: Action performed on traffic matching the policy (default = deny).
+            service: Service object from available options. Separate names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service_negate: When enabled service specifies what the service must NOT be.
+            internet_service6_src_negate: When enabled internet-service6-src specifies what the service must NOT be.
+            schedule: Schedule object from available options.
+            status: Enable/disable this local-in policy.
+            virtual_patch: Enable/disable the virtual patching feature.
+            logtraffic: Enable/disable local-in traffic logging.
+            comments: Comment.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -388,9 +676,84 @@ class LocalInPolicy6(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if intf is not None:
+            intf = normalize_table_field(
+                intf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="intf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_name is not None:
+            internet_service6_src_name = normalize_table_field(
+                internet_service6_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_group is not None:
+            internet_service6_src_group = normalize_table_field(
+                internet_service6_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom is not None:
+            internet_service6_src_custom = normalize_table_field(
+                internet_service6_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom_group is not None:
+            internet_service6_src_custom_group = normalize_table_field(
+                internet_service6_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_fortiguard is not None:
+            internet_service6_src_fortiguard = normalize_table_field(
+                internet_service6_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             intf=intf,
@@ -428,16 +791,22 @@ class LocalInPolicy6(MetadataMixin):
 
         endpoint = "/firewall/local-in-policy6"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         policyid: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/local_in_policy6 object.
 
@@ -447,6 +816,7 @@ class LocalInPolicy6(MetadataMixin):
             policyid: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -472,7 +842,7 @@ class LocalInPolicy6(MetadataMixin):
         endpoint = "/firewall/local-in-policy6/" + str(policyid)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -536,7 +906,31 @@ class LocalInPolicy6(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        policyid: int | None = None,
+        uuid: str | None = None,
+        intf: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        srcaddr_negate: Literal["enable", "disable"] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src: Literal["enable", "disable"] | None = None,
+        internet_service6_src_name: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_custom_group: str | list[str] | list[dict[str, Any]] | None = None,
+        internet_service6_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr_negate: Literal["enable", "disable"] | None = None,
+        action: Literal["accept", "deny"] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
+        service_negate: Literal["enable", "disable"] | None = None,
+        internet_service6_src_negate: Literal["enable", "disable"] | None = None,
+        schedule: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        virtual_patch: Literal["enable", "disable"] | None = None,
+        logtraffic: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -547,7 +941,31 @@ class LocalInPolicy6(MetadataMixin):
 
         Args:
             payload_dict: Resource data including policyid (primary key)
+            policyid: Field policyid
+            uuid: Field uuid
+            intf: Field intf
+            srcaddr: Field srcaddr
+            srcaddr_negate: Field srcaddr-negate
+            dstaddr: Field dstaddr
+            internet_service6_src: Field internet-service6-src
+            internet_service6_src_name: Field internet-service6-src-name
+            internet_service6_src_group: Field internet-service6-src-group
+            internet_service6_src_custom: Field internet-service6-src-custom
+            internet_service6_src_custom_group: Field internet-service6-src-custom-group
+            internet_service6_src_fortiguard: Field internet-service6-src-fortiguard
+            dstaddr_negate: Field dstaddr-negate
+            action: Field action
+            service: Field service
+            service_negate: Field service-negate
+            internet_service6_src_negate: Field internet-service6-src-negate
+            schedule: Field schedule
+            status: Field status
+            virtual_patch: Field virtual-patch
+            logtraffic: Field logtraffic
+            comments: Field comments
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -557,7 +975,13 @@ class LocalInPolicy6(MetadataMixin):
             ValueError: If policyid is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_local_in_policy6.set(
+            ...     policyid=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "policyid": 1,
             ...     "field1": "value1",
@@ -580,20 +1004,44 @@ class LocalInPolicy6(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            policyid=policyid,
+            uuid=uuid,
+            intf=intf,
+            srcaddr=srcaddr,
+            srcaddr_negate=srcaddr_negate,
+            dstaddr=dstaddr,
+            internet_service6_src=internet_service6_src,
+            internet_service6_src_name=internet_service6_src_name,
+            internet_service6_src_group=internet_service6_src_group,
+            internet_service6_src_custom=internet_service6_src_custom,
+            internet_service6_src_custom_group=internet_service6_src_custom_group,
+            internet_service6_src_fortiguard=internet_service6_src_fortiguard,
+            dstaddr_negate=dstaddr_negate,
+            action=action,
+            service=service,
+            service_negate=service_negate,
+            internet_service6_src_negate=internet_service6_src_negate,
+            schedule=schedule,
+            status=status,
+            virtual_patch=virtual_patch,
+            logtraffic=logtraffic,
+            comments=comments,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("policyid")
+        mkey_value = payload_data.get("policyid")
         if not mkey_value:
-            raise ValueError("policyid is required in payload_dict for set()")
+            raise ValueError("policyid is required for set()")
         
         # Check if resource exists
         if self.exists(policyid=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

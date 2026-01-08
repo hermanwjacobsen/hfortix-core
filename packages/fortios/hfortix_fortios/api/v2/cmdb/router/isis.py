@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.router_isis.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.router_isis.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,63 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Isis(MetadataMixin):
+class Isis(CRUDEndpoint, MetadataMixin):
     """Isis Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "isis"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "isis_net": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "isis_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "summary_address": {
+            "mkey": "id",
+            "required_fields": ['prefix'],
+            "example": "[{'prefix': 'value'}]",
+        },
+        "summary_address6": {
+            "mkey": "id",
+            "required_fields": ['prefix6'],
+            "example": "[{'prefix6': 'value'}]",
+        },
+        "redistribute": {
+            "mkey": "protocol",
+            "required_fields": ['protocol'],
+            "example": "[{'protocol': 'value'}]",
+        },
+        "redistribute6": {
+            "mkey": "protocol",
+            "required_fields": ['protocol'],
+            "example": "[{'protocol': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +114,11 @@ class Isis(MetadataMixin):
         """Initialize Isis endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +128,9 @@ class Isis(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/isis configuration.
 
@@ -98,6 +155,7 @@ class Isis(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +208,14 @@ class Isis(MetadataMixin):
         
         if name:
             endpoint = f"/router/isis/{name}"
+            unwrap_single = True
         else:
             endpoint = "/router/isis"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +256,11 @@ class Isis(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -221,7 +286,7 @@ class Isis(MetadataMixin):
         adjacency_check: Literal["enable", "disable"] | None = None,
         adjacency_check6: Literal["enable", "disable"] | None = None,
         overload_bit: Literal["enable", "disable"] | None = None,
-        overload_bit_suppress: Literal["external", "interlevel"] | list | None = None,
+        overload_bit_suppress: Literal["external", "interlevel"] | list[str] | None = None,
         overload_bit_on_startup: int | None = None,
         default_originate: Literal["enable", "disable"] | None = None,
         default_originate6: Literal["enable", "disable"] | None = None,
@@ -234,16 +299,17 @@ class Isis(MetadataMixin):
         redistribute6_l1_list: str | None = None,
         redistribute6_l2: Literal["enable", "disable"] | None = None,
         redistribute6_l2_list: str | None = None,
-        isis_net: str | list | None = None,
-        isis_interface: str | list | None = None,
-        summary_address: str | list | None = None,
-        summary_address6: str | list | None = None,
-        redistribute: str | list | None = None,
-        redistribute6: str | list | None = None,
+        isis_net: str | list[str] | list[dict[str, Any]] | None = None,
+        isis_interface: str | list[str] | list[dict[str, Any]] | None = None,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = None,
+        summary_address6: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute6: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing router/isis object.
 
@@ -256,8 +322,75 @@ class Isis(MetadataMixin):
             adv_passive_only6: Enable/disable IPv6 IS-IS advertisement of passive interfaces only.
             auth_mode_l1: Level 1 authentication mode.
             auth_mode_l2: Level 2 authentication mode.
+            auth_password_l1: Authentication password for level 1 PDUs.
+            auth_password_l2: Authentication password for level 2 PDUs.
+            auth_keychain_l1: Authentication key-chain for level 1 PDUs.
+            auth_keychain_l2: Authentication key-chain for level 2 PDUs.
+            auth_sendonly_l1: Enable/disable level 1 authentication send-only.
+            auth_sendonly_l2: Enable/disable level 2 authentication send-only.
+            ignore_lsp_errors: Enable/disable ignoring of LSP errors with bad checksums.
+            lsp_gen_interval_l1: Minimum interval for level 1 LSP regenerating.
+            lsp_gen_interval_l2: Minimum interval for level 2 LSP regenerating.
+            lsp_refresh_interval: LSP refresh time in seconds.
+            max_lsp_lifetime: Maximum LSP lifetime in seconds.
+            spf_interval_exp_l1: Level 1 SPF calculation delay.
+            spf_interval_exp_l2: Level 2 SPF calculation delay.
+            dynamic_hostname: Enable/disable dynamic hostname.
+            adjacency_check: Enable/disable adjacency check.
+            adjacency_check6: Enable/disable IPv6 adjacency check.
+            overload_bit: Enable/disable signal other routers not to use us in SPF.
+            overload_bit_suppress: Suppress overload-bit for the specific prefixes.
+            overload_bit_on_startup: Overload-bit only temporarily after reboot.
+            default_originate: Enable/disable distribution of default route information.
+            default_originate6: Enable/disable distribution of default IPv6 route information.
+            metric_style: Use old-style (ISO 10589) or new-style packet formats.
+            redistribute_l1: Enable/disable redistribution of level 1 routes into level 2.
+            redistribute_l1_list: Access-list for route redistribution from l1 to l2.
+            redistribute_l2: Enable/disable redistribution of level 2 routes into level 1.
+            redistribute_l2_list: Access-list for route redistribution from l2 to l1.
+            redistribute6_l1: Enable/disable redistribution of level 1 IPv6 routes into level 2.
+            redistribute6_l1_list: Access-list for IPv6 route redistribution from l1 to l2.
+            redistribute6_l2: Enable/disable redistribution of level 2 IPv6 routes into level 1.
+            redistribute6_l2_list: Access-list for IPv6 route redistribution from l2 to l1.
+            isis_net: IS-IS net configuration.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            isis_interface: IS-IS interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            summary_address: IS-IS summary addresses.
+                Default format: [{'prefix': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'prefix': 'value'}] (recommended)
+            summary_address6: IS-IS IPv6 summary address.
+                Default format: [{'prefix6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'prefix6': 'value'}] (recommended)
+            redistribute: IS-IS redistribute protocols.
+                Default format: [{'protocol': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'protocol': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
+                  - List of dicts: [{'protocol': 'value'}] (recommended)
+            redistribute6: IS-IS IPv6 redistribution for routing protocols.
+                Default format: [{'protocol': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'protocol': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
+                  - List of dicts: [{'protocol': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -284,9 +417,60 @@ class Isis(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if isis_net is not None:
+            isis_net = normalize_table_field(
+                isis_net,
+                mkey="id",
+                required_fields=['id'],
+                field_name="isis_net",
+                example="[{'id': 1}]",
+            )
+        if isis_interface is not None:
+            isis_interface = normalize_table_field(
+                isis_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="isis_interface",
+                example="[{'name': 'value'}]",
+            )
+        if summary_address is not None:
+            summary_address = normalize_table_field(
+                summary_address,
+                mkey="id",
+                required_fields=['prefix'],
+                field_name="summary_address",
+                example="[{'prefix': 'value'}]",
+            )
+        if summary_address6 is not None:
+            summary_address6 = normalize_table_field(
+                summary_address6,
+                mkey="id",
+                required_fields=['prefix6'],
+                field_name="summary_address6",
+                example="[{'prefix6': 'value'}]",
+            )
+        if redistribute is not None:
+            redistribute = normalize_table_field(
+                redistribute,
+                mkey="protocol",
+                required_fields=['protocol'],
+                field_name="redistribute",
+                example="[{'protocol': 'value'}]",
+            )
+        if redistribute6 is not None:
+            redistribute6 = normalize_table_field(
+                redistribute6,
+                mkey="protocol",
+                required_fields=['protocol'],
+                field_name="redistribute6",
+                example="[{'protocol': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             is_type=is_type,
             adv_passive_only=adv_passive_only,
             adv_passive_only6=adv_passive_only6,
@@ -341,13 +525,11 @@ class Isis(MetadataMixin):
                 endpoint="cmdb/router/isis",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/router/isis/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/router/isis"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

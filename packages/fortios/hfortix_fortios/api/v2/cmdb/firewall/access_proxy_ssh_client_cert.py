@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_access_proxy_ssh_client_cert.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_access_proxy_ssh_client_cert.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class AccessProxySshClientCert(MetadataMixin):
+class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
     """AccessProxySshClientCert Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "access_proxy_ssh_client_cert"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "cert_extension": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class AccessProxySshClientCert(MetadataMixin):
         """Initialize AccessProxySshClientCert endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class AccessProxySshClientCert(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/access_proxy_ssh_client_cert configuration.
 
@@ -99,6 +131,7 @@ class AccessProxySshClientCert(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class AccessProxySshClientCert(MetadataMixin):
         
         if name:
             endpoint = "/firewall/access-proxy-ssh-client-cert/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/firewall/access-proxy-ssh-client-cert"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class AccessProxySshClientCert(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -211,12 +251,13 @@ class AccessProxySshClientCert(MetadataMixin):
         permit_port_forwarding: Literal["enable", "disable"] | None = None,
         permit_pty: Literal["enable", "disable"] | None = None,
         permit_user_rc: Literal["enable", "disable"] | None = None,
-        cert_extension: str | list | None = None,
+        cert_extension: str | list[str] | list[dict[str, Any]] | None = None,
         auth_ca: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/access_proxy_ssh_client_cert object.
 
@@ -229,8 +270,18 @@ class AccessProxySshClientCert(MetadataMixin):
             permit_x11_forwarding: Enable/disable appending permit-x11-forwarding certificate extension.
             permit_agent_forwarding: Enable/disable appending permit-agent-forwarding certificate extension.
             permit_port_forwarding: Enable/disable appending permit-port-forwarding certificate extension.
+            permit_pty: Enable/disable appending permit-pty certificate extension.
+            permit_user_rc: Enable/disable appending permit-user-rc certificate extension.
+            cert_extension: Configure certificate extension for user certificate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            auth_ca: Name of the SSH server public key authentication CA.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -257,9 +308,20 @@ class AccessProxySshClientCert(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if cert_extension is not None:
+            cert_extension = normalize_table_field(
+                cert_extension,
+                mkey="name",
+                required_fields=['name'],
+                field_name="cert_extension",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             source_address=source_address,
             permit_x11_forwarding=permit_x11_forwarding,
@@ -288,9 +350,14 @@ class AccessProxySshClientCert(MetadataMixin):
         endpoint = "/firewall/access-proxy-ssh-client-cert/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -301,12 +368,13 @@ class AccessProxySshClientCert(MetadataMixin):
         permit_port_forwarding: Literal["enable", "disable"] | None = None,
         permit_pty: Literal["enable", "disable"] | None = None,
         permit_user_rc: Literal["enable", "disable"] | None = None,
-        cert_extension: str | list | None = None,
+        cert_extension: str | list[str] | list[dict[str, Any]] | None = None,
         auth_ca: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/access_proxy_ssh_client_cert object.
 
@@ -319,8 +387,18 @@ class AccessProxySshClientCert(MetadataMixin):
             permit_x11_forwarding: Enable/disable appending permit-x11-forwarding certificate extension.
             permit_agent_forwarding: Enable/disable appending permit-agent-forwarding certificate extension.
             permit_port_forwarding: Enable/disable appending permit-port-forwarding certificate extension.
+            permit_pty: Enable/disable appending permit-pty certificate extension.
+            permit_user_rc: Enable/disable appending permit-user-rc certificate extension.
+            cert_extension: Configure certificate extension for user certificate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            auth_ca: Name of the SSH server public key authentication CA.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -349,9 +427,20 @@ class AccessProxySshClientCert(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if cert_extension is not None:
+            cert_extension = normalize_table_field(
+                cert_extension,
+                mkey="name",
+                required_fields=['name'],
+                field_name="cert_extension",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             source_address=source_address,
             permit_x11_forwarding=permit_x11_forwarding,
@@ -376,16 +465,22 @@ class AccessProxySshClientCert(MetadataMixin):
 
         endpoint = "/firewall/access-proxy-ssh-client-cert"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/access_proxy_ssh_client_cert object.
 
@@ -395,6 +490,7 @@ class AccessProxySshClientCert(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -420,7 +516,7 @@ class AccessProxySshClientCert(MetadataMixin):
         endpoint = "/firewall/access-proxy-ssh-client-cert/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -484,7 +580,18 @@ class AccessProxySshClientCert(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        source_address: Literal["enable", "disable"] | None = None,
+        permit_x11_forwarding: Literal["enable", "disable"] | None = None,
+        permit_agent_forwarding: Literal["enable", "disable"] | None = None,
+        permit_port_forwarding: Literal["enable", "disable"] | None = None,
+        permit_pty: Literal["enable", "disable"] | None = None,
+        permit_user_rc: Literal["enable", "disable"] | None = None,
+        cert_extension: str | list[str] | list[dict[str, Any]] | None = None,
+        auth_ca: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -495,7 +602,18 @@ class AccessProxySshClientCert(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            source_address: Field source-address
+            permit_x11_forwarding: Field permit-x11-forwarding
+            permit_agent_forwarding: Field permit-agent-forwarding
+            permit_port_forwarding: Field permit-port-forwarding
+            permit_pty: Field permit-pty
+            permit_user_rc: Field permit-user-rc
+            cert_extension: Field cert-extension
+            auth_ca: Field auth-ca
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -505,7 +623,13 @@ class AccessProxySshClientCert(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_access_proxy_ssh_client_cert.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -528,20 +652,31 @@ class AccessProxySshClientCert(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            source_address=source_address,
+            permit_x11_forwarding=permit_x11_forwarding,
+            permit_agent_forwarding=permit_agent_forwarding,
+            permit_port_forwarding=permit_port_forwarding,
+            permit_pty=permit_pty,
+            permit_user_rc=permit_user_rc,
+            cert_extension=cert_extension,
+            auth_ca=auth_ca,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.report_layout.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.report_layout.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Layout(MetadataMixin):
+class Layout(CRUDEndpoint, MetadataMixin):
     """Layout Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "layout"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "body_item": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Layout(MetadataMixin):
         """Initialize Layout endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Layout(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve report/layout configuration.
 
@@ -99,6 +131,7 @@ class Layout(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Layout(MetadataMixin):
         
         if name:
             endpoint = "/report/layout/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/report/layout"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class Layout(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -209,8 +249,8 @@ class Layout(MetadataMixin):
         subtitle: str | None = None,
         description: str | None = None,
         style_theme: str | None = None,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list | None = None,
-        format: Literal["pdf"] | list | None = None,
+        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = None,
+        format: Literal["pdf"] | list[str] | None = None,
         schedule_type: Literal["demand", "daily", "weekly"] | None = None,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
@@ -220,11 +260,12 @@ class Layout(MetadataMixin):
         email_recipients: str | None = None,
         max_pdf_report: int | None = None,
         page: str | None = None,
-        body_item: str | list | None = None,
+        body_item: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing report/layout object.
 
@@ -237,8 +278,26 @@ class Layout(MetadataMixin):
             subtitle: Report subtitle.
             description: Description.
             style_theme: Report style theme.
+            options: Report layout options.
+            format: Report format.
+            schedule_type: Report schedule type.
+            day: Schedule days of week to generate report.
+            time: Schedule time to generate report (format = hh:mm).
+            cutoff_option: Cutoff-option is either run-time or custom.
+            cutoff_time: Custom cutoff time to generate report (format = hh:mm).
+            email_send: Enable/disable sending emails after reports are generated.
+            email_recipients: Email recipients for generated reports.
+            max_pdf_report: Maximum number of PDF reports to keep at one time (oldest report is overwritten).
+            page: Configure report page.
+            body_item: Configure report body item.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -265,9 +324,20 @@ class Layout(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if body_item is not None:
+            body_item = normalize_table_field(
+                body_item,
+                mkey="id",
+                required_fields=['id'],
+                field_name="body_item",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             title=title,
             subtitle=subtitle,
@@ -304,9 +374,14 @@ class Layout(MetadataMixin):
         endpoint = "/report/layout/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -315,8 +390,8 @@ class Layout(MetadataMixin):
         subtitle: str | None = None,
         description: str | None = None,
         style_theme: str | None = None,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list | None = None,
-        format: Literal["pdf"] | list | None = None,
+        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | None = None,
+        format: Literal["pdf"] | list[str] | None = None,
         schedule_type: Literal["demand", "daily", "weekly"] | None = None,
         day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
@@ -326,11 +401,12 @@ class Layout(MetadataMixin):
         email_recipients: str | None = None,
         max_pdf_report: int | None = None,
         page: str | None = None,
-        body_item: str | list | None = None,
+        body_item: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new report/layout object.
 
@@ -343,8 +419,26 @@ class Layout(MetadataMixin):
             subtitle: Report subtitle.
             description: Description.
             style_theme: Report style theme.
+            options: Report layout options.
+            format: Report format.
+            schedule_type: Report schedule type.
+            day: Schedule days of week to generate report.
+            time: Schedule time to generate report (format = hh:mm).
+            cutoff_option: Cutoff-option is either run-time or custom.
+            cutoff_time: Custom cutoff time to generate report (format = hh:mm).
+            email_send: Enable/disable sending emails after reports are generated.
+            email_recipients: Email recipients for generated reports.
+            max_pdf_report: Maximum number of PDF reports to keep at one time (oldest report is overwritten).
+            page: Configure report page.
+            body_item: Configure report body item.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -373,9 +467,20 @@ class Layout(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if body_item is not None:
+            body_item = normalize_table_field(
+                body_item,
+                mkey="id",
+                required_fields=['id'],
+                field_name="body_item",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             title=title,
             subtitle=subtitle,
@@ -408,16 +513,22 @@ class Layout(MetadataMixin):
 
         endpoint = "/report/layout"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete report/layout object.
 
@@ -427,6 +538,7 @@ class Layout(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -452,7 +564,7 @@ class Layout(MetadataMixin):
         endpoint = "/report/layout/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -516,7 +628,26 @@ class Layout(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        title: str | None = None,
+        subtitle: str | None = None,
+        description: str | None = None,
+        style_theme: str | None = None,
+        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list[str] | list[dict[str, Any]] | None = None,
+        format: Literal["pdf"] | list[str] | list[dict[str, Any]] | None = None,
+        schedule_type: Literal["demand", "daily", "weekly"] | None = None,
+        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
+        time: str | None = None,
+        cutoff_option: Literal["run-time", "custom"] | None = None,
+        cutoff_time: str | None = None,
+        email_send: Literal["enable", "disable"] | None = None,
+        email_recipients: str | None = None,
+        max_pdf_report: int | None = None,
+        page: str | None = None,
+        body_item: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -527,7 +658,26 @@ class Layout(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            title: Field title
+            subtitle: Field subtitle
+            description: Field description
+            style_theme: Field style-theme
+            options: Field options
+            format: Field format
+            schedule_type: Field schedule-type
+            day: Field day
+            time: Field time
+            cutoff_option: Field cutoff-option
+            cutoff_time: Field cutoff-time
+            email_send: Field email-send
+            email_recipients: Field email-recipients
+            max_pdf_report: Field max-pdf-report
+            page: Field page
+            body_item: Field body-item
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -537,7 +687,13 @@ class Layout(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.report_layout.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -560,20 +716,39 @@ class Layout(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            title=title,
+            subtitle=subtitle,
+            description=description,
+            style_theme=style_theme,
+            options=options,
+            format=format,
+            schedule_type=schedule_type,
+            day=day,
+            time=time,
+            cutoff_option=cutoff_option,
+            cutoff_time=cutoff_time,
+            email_send=email_send,
+            email_recipients=email_recipients,
+            max_pdf_report=max_pdf_report,
+            page=page,
+            body_item=body_item,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

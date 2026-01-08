@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_settings.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_settings.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Settings(MetadataMixin):
+class Settings(CRUDEndpoint, MetadataMixin):
     """Settings Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "settings"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "gui_default_policy_columns": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Settings(MetadataMixin):
         """Initialize Settings endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Settings(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/settings configuration.
 
@@ -98,6 +130,7 @@ class Settings(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class Settings(MetadataMixin):
         
         if name:
             endpoint = f"/system/settings/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/settings"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class Settings(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -221,7 +261,7 @@ class Settings(MetadataMixin):
         bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = None,
         utf8_spam_tagging: Literal["enable", "disable"] | None = None,
         wccp_cache_engine: Literal["enable", "disable"] | None = None,
-        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list | None = None,
+        vpn_stats_log: Literal["ipsec", "pptp", "l2tp", "ssl"] | list[str] | None = None,
         vpn_stats_period: int | None = None,
         v4_ecmp_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based"] | None = None,
         mac_ttl: int | None = None,
@@ -232,10 +272,10 @@ class Settings(MetadataMixin):
         dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         dhcp_proxy_interface: str | None = None,
         dhcp_proxy_vrf_select: int | None = None,
-        dhcp_server_ip: str | list | None = None,
-        dhcp6_server_ip: str | list | None = None,
+        dhcp_server_ip: str | list[str] | None = None,
+        dhcp6_server_ip: str | list[str] | None = None,
         central_nat: Literal["enable", "disable"] | None = None,
-        gui_default_policy_columns: str | list | None = None,
+        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | None = None,
         lldp_reception: Literal["enable", "disable", "global"] | None = None,
         lldp_transmission: Literal["enable", "disable", "global"] | None = None,
         link_down_access: Literal["enable", "disable"] | None = None,
@@ -259,8 +299,8 @@ class Settings(MetadataMixin):
         sip_nat_trace: Literal["enable", "disable"] | None = None,
         h323_direct_model: Literal["disable", "enable"] | None = None,
         status: Literal["enable", "disable"] | None = None,
-        sip_tcp_port: int | list | None = None,
-        sip_udp_port: int | list | None = None,
+        sip_tcp_port: int | list[str] | None = None,
+        sip_udp_port: int | list[str] | None = None,
         sip_ssl_port: int | None = None,
         sccp_port: int | None = None,
         multicast_forward: Literal["enable", "disable"] | None = None,
@@ -343,8 +383,9 @@ class Settings(MetadataMixin):
         internet_service_app_ctrl_size: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/settings object.
 
@@ -357,8 +398,151 @@ class Settings(MetadataMixin):
             lan_extension_controller_addr: Controller IP address or FQDN to connect.
             lan_extension_controller_port: Controller port to connect.
             opmode: Firewall operation mode (NAT or Transparent).
+            ngfw_mode: Next Generation Firewall (NGFW) mode.
+            http_external_dest: Offload HTTP traffic to FortiWeb or FortiCache.
+            firewall_session_dirty: Select how to manage sessions affected by firewall policy configuration changes.
+            manageip: Transparent mode IPv4 management IP address and netmask.
+            gateway: Transparent mode IPv4 default gateway IP address.
+            ip: IP address and netmask.
+            manageip6: Transparent mode IPv6 management IP address and netmask.
+            gateway6: Transparent mode IPv6 default gateway IP address.
+            ip6: IPv6 address prefix for NAT mode.
+            device: Interface to use for management access for NAT mode.
+            bfd: Enable/disable Bi-directional Forwarding Detection (BFD) on all interfaces.
+            bfd_desired_min_tx: BFD desired minimal transmit interval (1 - 100000 ms, default = 250).
+            bfd_required_min_rx: BFD required minimal receive interval (1 - 100000 ms, default = 250).
+            bfd_detect_mult: BFD detection multiplier (1 - 50, default = 3).
+            bfd_dont_enforce_src_port: Enable to not enforce verifying the source port of BFD Packets.
+            utf8_spam_tagging: Enable/disable converting antispam tags to UTF-8 for better non-ASCII character support.
+            wccp_cache_engine: Enable/disable WCCP cache engine.
+            vpn_stats_log: Enable/disable periodic VPN log statistics for one or more types of VPN. Separate names with a space.
+            vpn_stats_period: Period to send VPN log statistics (0 or 60 - 86400 sec).
+            v4_ecmp_mode: IPv4 Equal-cost multi-path (ECMP) routing and load balancing mode.
+            mac_ttl: Duration of MAC addresses in Transparent mode (300 - 8640000 sec, default = 300).
+            fw_session_hairpin: Enable/disable checking for a matching policy each time hairpin traffic goes through the FortiGate.
+            prp_trailer_action: Enable/disable action to take on PRP trailer.
+            snat_hairpin_traffic: Enable/disable source NAT (SNAT) for VIP hairpin traffic.
+            dhcp_proxy: Enable/disable the DHCP Proxy.
+            dhcp_proxy_interface_select_method: Specify how to select outgoing interface to reach server.
+            dhcp_proxy_interface: Specify outgoing interface to reach server.
+            dhcp_proxy_vrf_select: VRF ID used for connection to server.
+            dhcp_server_ip: DHCP Server IPv4 address.
+            dhcp6_server_ip: DHCPv6 server IPv6 address.
+            central_nat: Enable/disable central NAT.
+            gui_default_policy_columns: Default columns to display for policy lists on GUI.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            lldp_reception: Enable/disable Link Layer Discovery Protocol (LLDP) reception for this VDOM or apply global settings to this VDOM.
+            lldp_transmission: Enable/disable Link Layer Discovery Protocol (LLDP) transmission for this VDOM or apply global settings to this VDOM.
+            link_down_access: Enable/disable link down access traffic.
+            nat46_generate_ipv6_fragment_header: Enable/disable NAT46 IPv6 fragment header generation.
+            nat46_force_ipv4_packet_forwarding: Enable/disable mandatory IPv4 packet forwarding in NAT46.
+            nat64_force_ipv6_packet_forwarding: Enable/disable mandatory IPv6 packet forwarding in NAT64.
+            detect_unknown_esp: Enable/disable detection of unknown ESP packets (default = enable).
+            intree_ses_best_route: Force the intree session to always use the best route.
+            auxiliary_session: Enable/disable auxiliary session.
+            asymroute: Enable/disable IPv4 asymmetric routing.
+            asymroute_icmp: Enable/disable ICMP asymmetric routing.
+            tcp_session_without_syn: Enable/disable allowing TCP session without SYN flags.
+            ses_denied_traffic: Enable/disable including denied session in the session table.
+            ses_denied_multicast_traffic: Enable/disable including denied multicast session in the session table.
+            strict_src_check: Enable/disable strict source verification.
+            allow_linkdown_path: Enable/disable link down path.
+            asymroute6: Enable/disable asymmetric IPv6 routing.
+            asymroute6_icmp: Enable/disable asymmetric ICMPv6 routing.
+            sctp_session_without_init: Enable/disable SCTP session creation without SCTP INIT.
+            sip_expectation: Enable/disable the SIP kernel session helper to create an expectation for port 5060.
+            sip_nat_trace: Enable/disable recording the original SIP source IP address when NAT is used.
+            h323_direct_model: Enable/disable H323 direct model.
+            status: Enable/disable this VDOM.
+            sip_tcp_port: TCP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).
+            sip_udp_port: UDP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).
+            sip_ssl_port: TCP port the SIP proxy monitors for SIP SSL/TLS traffic (0 - 65535, default = 5061).
+            sccp_port: TCP port the SCCP proxy monitors for SCCP traffic (0 - 65535, default = 2000).
+            multicast_forward: Enable/disable multicast forwarding.
+            multicast_ttl_notchange: Enable/disable preventing the FortiGate from changing the TTL for forwarded multicast packets.
+            multicast_skip_policy: Enable/disable allowing multicast traffic through the FortiGate without a policy check.
+            allow_subnet_overlap: Enable/disable allowing interface subnets to use overlapping IP addresses.
+            deny_tcp_with_icmp: Enable/disable denying TCP by sending an ICMP communication prohibited packet.
+            ecmp_max_paths: Maximum number of Equal Cost Multi-Path (ECMP) next-hops. Set to 1 to disable ECMP routing (1 - 255, default = 255).
+            discovered_device_timeout: Timeout for discovered devices (1 - 365 days, default = 28).
+            email_portal_check_dns: Enable/disable using DNS to validate email addresses collected by a captive portal.
+            default_voip_alg_mode: Configure how the FortiGate handles VoIP traffic when a policy that accepts the traffic doesn't include a VoIP profile.
+            gui_icap: Enable/disable ICAP on the GUI.
+            gui_implicit_policy: Enable/disable implicit firewall policies on the GUI.
+            gui_dns_database: Enable/disable DNS database settings on the GUI.
+            gui_load_balance: Enable/disable server load balancing on the GUI.
+            gui_multicast_policy: Enable/disable multicast firewall policies on the GUI.
+            gui_dos_policy: Enable/disable DoS policies on the GUI.
+            gui_object_colors: Enable/disable object colors on the GUI.
+            gui_route_tag_address_creation: Enable/disable route-tag addresses on the GUI.
+            gui_voip_profile: Enable/disable VoIP profiles on the GUI.
+            gui_ap_profile: Enable/disable FortiAP profiles on the GUI.
+            gui_security_profile_group: Enable/disable Security Profile Groups on the GUI.
+            gui_local_in_policy: Enable/disable Local-In policies on the GUI.
+            gui_wanopt_cache: Enable/disable WAN Optimization and Web Caching on the GUI.
+            gui_explicit_proxy: Enable/disable the explicit proxy on the GUI.
+            gui_dynamic_routing: Enable/disable dynamic routing on the GUI.
+            gui_sslvpn_personal_bookmarks: Enable/disable SSL-VPN personal bookmark management on the GUI.
+            gui_sslvpn_realms: Enable/disable SSL-VPN realms on the GUI.
+            gui_policy_based_ipsec: Enable/disable policy-based IPsec VPN on the GUI.
+            gui_threat_weight: Enable/disable threat weight on the GUI.
+            gui_spamfilter: Enable/disable Antispam on the GUI.
+            gui_file_filter: Enable/disable File-filter on the GUI.
+            gui_application_control: Enable/disable application control on the GUI.
+            gui_ips: Enable/disable IPS on the GUI.
+            gui_dhcp_advanced: Enable/disable advanced DHCP options on the GUI.
+            gui_vpn: Enable/disable IPsec VPN settings pages on the GUI.
+            gui_sslvpn: Enable/disable SSL-VPN settings pages on the GUI.
+            gui_wireless_controller: Enable/disable the wireless controller on the GUI.
+            gui_advanced_wireless_features: Enable/disable advanced wireless features in GUI.
+            gui_switch_controller: Enable/disable the switch controller on the GUI.
+            gui_fortiap_split_tunneling: Enable/disable FortiAP split tunneling on the GUI.
+            gui_webfilter_advanced: Enable/disable advanced web filtering on the GUI.
+            gui_traffic_shaping: Enable/disable traffic shaping on the GUI.
+            gui_wan_load_balancing: Enable/disable SD-WAN on the GUI.
+            gui_antivirus: Enable/disable AntiVirus on the GUI.
+            gui_webfilter: Enable/disable Web filtering on the GUI.
+            gui_videofilter: Enable/disable Video filtering on the GUI.
+            gui_dnsfilter: Enable/disable DNS Filtering on the GUI.
+            gui_waf_profile: Enable/disable Web Application Firewall on the GUI.
+            gui_dlp_profile: Enable/disable Data Loss Prevention on the GUI.
+            gui_dlp_advanced: Enable/disable Show advanced DLP expressions on the GUI.
+            gui_virtual_patch_profile: Enable/disable Virtual Patching on the GUI.
+            gui_casb: Enable/disable Inline-CASB on the GUI.
+            gui_fortiextender_controller: Enable/disable FortiExtender on the GUI.
+            gui_advanced_policy: Enable/disable advanced policy configuration on the GUI.
+            gui_allow_unnamed_policy: Enable/disable the requirement for policy naming on the GUI.
+            gui_email_collection: Enable/disable email collection on the GUI.
+            gui_multiple_interface_policy: Enable/disable adding multiple interfaces to a policy on the GUI.
+            gui_policy_disclaimer: Enable/disable policy disclaimer on the GUI.
+            gui_ztna: Enable/disable Zero Trust Network Access features on the GUI.
+            gui_ot: Enable/disable Operational technology features on the GUI.
+            gui_dynamic_device_os_id: Enable/disable Create dynamic addresses to manage known devices.
+            gui_gtp: Enable/disable Manage general radio packet service (GPRS) protocols on the GUI.
+            location_id: Local location ID in the form of an IPv4 address.
+            ike_session_resume: Enable/disable IKEv2 session resumption (RFC 5723).
+            ike_quick_crash_detect: Enable/disable IKE quick crash detection (RFC 6290).
+            ike_dn_format: Configure IKE ASN.1 Distinguished Name format conventions.
+            ike_port: UDP port for IKE/IPsec traffic (default 500).
+            ike_tcp_port: TCP port for IKE/IPsec traffic (default 443).
+            ike_policy_route: Enable/disable IKE Policy Based Routing (PBR).
+            ike_detailed_event_logs: Enable/disable detail log for IKE events.
+            block_land_attack: Enable/disable blocking of land attacks.
+            default_app_port_as_service: Enable/disable policy service enforcement based on application default ports.
+            fqdn_session_check: Enable/disable dirty session check caused by FQDN updates.
+            ext_resource_session_check: Enable/disable dirty session check caused by external resource updates.
+            dyn_addr_session_check: Enable/disable dirty session check caused by dynamic address updates.
+            default_policy_expiry_days: Default policy expiry in days (0 - 365 days, default = 30).
+            gui_enforce_change_summary: Enforce change summaries for select tables in the GUI.
+            internet_service_database_cache: Enable/disable Internet Service database caching.
+            internet_service_app_ctrl_size: Maximum number of tuple entries (protocol, port, IP address, application ID) stored by the FortiGate unit (0 - 4294967295, default = 32768). A smaller value limits the FortiGate unit from learning about internet applications.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -385,9 +569,20 @@ class Settings(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if gui_default_policy_columns is not None:
+            gui_default_policy_columns = normalize_table_field(
+                gui_default_policy_columns,
+                mkey="name",
+                required_fields=['name'],
+                field_name="gui_default_policy_columns",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             comments=comments,
             vdom_type=vdom_type,
             lan_extension_controller_addr=lan_extension_controller_addr,
@@ -543,13 +738,11 @@ class Settings(MetadataMixin):
                 endpoint="cmdb/system/settings",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/settings/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/settings"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

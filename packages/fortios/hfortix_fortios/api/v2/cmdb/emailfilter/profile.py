@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.emailfilter_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.emailfilter_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Profile(MetadataMixin):
+class Profile(CRUDEndpoint, MetadataMixin):
     """Profile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Profile(MetadataMixin):
         """Initialize Profile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve emailfilter/profile configuration.
 
@@ -99,6 +118,7 @@ class Profile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Profile(MetadataMixin):
         
         if name:
             endpoint = "/emailfilter/profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/emailfilter/profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Profile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -212,7 +239,7 @@ class Profile(MetadataMixin):
         spam_log_fortiguard_response: Literal["disable", "enable"] | None = None,
         spam_filtering: Literal["enable", "disable"] | None = None,
         external: Literal["enable", "disable"] | None = None,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list | None = None,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = None,
         imap: str | None = None,
         pop3: str | None = None,
         smtp: str | None = None,
@@ -229,8 +256,9 @@ class Profile(MetadataMixin):
         spam_iptrust_table: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing emailfilter/profile object.
 
@@ -243,8 +271,27 @@ class Profile(MetadataMixin):
             feature_set: Flow/proxy feature set.
             replacemsg_group: Replacement message group.
             spam_log: Enable/disable spam logging for email filtering.
+            spam_log_fortiguard_response: Enable/disable logging FortiGuard spam response.
+            spam_filtering: Enable/disable spam filtering.
+            external: Enable/disable external Email inspection.
+            options: Options.
+            imap: IMAP.
+            pop3: POP3.
+            smtp: SMTP.
+            mapi: MAPI.
+            msn_hotmail: MSN Hotmail.
+            yahoo_mail: Yahoo! Mail.
+            gmail: Gmail.
+            other_webmails: Other supported webmails.
+            spam_bword_threshold: Spam banned word threshold.
+            spam_bword_table: Anti-spam banned word table ID.
+            spam_bal_table: Anti-spam block/allow list table ID.
+            spam_mheader_table: Anti-spam MIME header table ID.
+            spam_rbl_table: Anti-spam DNSBL table ID.
+            spam_iptrust_table: Anti-spam IP trust table ID.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -271,9 +318,10 @@ class Profile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             feature_set=feature_set,
@@ -316,9 +364,14 @@ class Profile(MetadataMixin):
         endpoint = "/emailfilter/profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -330,7 +383,7 @@ class Profile(MetadataMixin):
         spam_log_fortiguard_response: Literal["disable", "enable"] | None = None,
         spam_filtering: Literal["enable", "disable"] | None = None,
         external: Literal["enable", "disable"] | None = None,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list | None = None,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = None,
         imap: str | None = None,
         pop3: str | None = None,
         smtp: str | None = None,
@@ -347,8 +400,9 @@ class Profile(MetadataMixin):
         spam_iptrust_table: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new emailfilter/profile object.
 
@@ -361,8 +415,27 @@ class Profile(MetadataMixin):
             feature_set: Flow/proxy feature set.
             replacemsg_group: Replacement message group.
             spam_log: Enable/disable spam logging for email filtering.
+            spam_log_fortiguard_response: Enable/disable logging FortiGuard spam response.
+            spam_filtering: Enable/disable spam filtering.
+            external: Enable/disable external Email inspection.
+            options: Options.
+            imap: IMAP.
+            pop3: POP3.
+            smtp: SMTP.
+            mapi: MAPI.
+            msn_hotmail: MSN Hotmail.
+            yahoo_mail: Yahoo! Mail.
+            gmail: Gmail.
+            other_webmails: Other supported webmails.
+            spam_bword_threshold: Spam banned word threshold.
+            spam_bword_table: Anti-spam banned word table ID.
+            spam_bal_table: Anti-spam block/allow list table ID.
+            spam_mheader_table: Anti-spam MIME header table ID.
+            spam_rbl_table: Anti-spam DNSBL table ID.
+            spam_iptrust_table: Anti-spam IP trust table ID.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -391,9 +464,10 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             feature_set=feature_set,
@@ -432,16 +506,22 @@ class Profile(MetadataMixin):
 
         endpoint = "/emailfilter/profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete emailfilter/profile object.
 
@@ -451,6 +531,7 @@ class Profile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -476,7 +557,7 @@ class Profile(MetadataMixin):
         endpoint = "/emailfilter/profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -540,7 +621,32 @@ class Profile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
+        replacemsg_group: str | None = None,
+        spam_log: Literal["disable", "enable"] | None = None,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = None,
+        spam_filtering: Literal["enable", "disable"] | None = None,
+        external: Literal["enable", "disable"] | None = None,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | list[dict[str, Any]] | None = None,
+        imap: str | None = None,
+        pop3: str | None = None,
+        smtp: str | None = None,
+        mapi: str | None = None,
+        msn_hotmail: str | None = None,
+        yahoo_mail: str | None = None,
+        gmail: str | None = None,
+        other_webmails: str | None = None,
+        spam_bword_threshold: int | None = None,
+        spam_bword_table: int | None = None,
+        spam_bal_table: int | None = None,
+        spam_mheader_table: int | None = None,
+        spam_rbl_table: int | None = None,
+        spam_iptrust_table: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -551,7 +657,32 @@ class Profile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            feature_set: Field feature-set
+            replacemsg_group: Field replacemsg-group
+            spam_log: Field spam-log
+            spam_log_fortiguard_response: Field spam-log-fortiguard-response
+            spam_filtering: Field spam-filtering
+            external: Field external
+            options: Field options
+            imap: Field imap
+            pop3: Field pop3
+            smtp: Field smtp
+            mapi: Field mapi
+            msn_hotmail: Field msn-hotmail
+            yahoo_mail: Field yahoo-mail
+            gmail: Field gmail
+            other_webmails: Field other-webmails
+            spam_bword_threshold: Field spam-bword-threshold
+            spam_bword_table: Field spam-bword-table
+            spam_bal_table: Field spam-bal-table
+            spam_mheader_table: Field spam-mheader-table
+            spam_rbl_table: Field spam-rbl-table
+            spam_iptrust_table: Field spam-iptrust-table
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -561,7 +692,13 @@ class Profile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.emailfilter_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -584,20 +721,45 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            feature_set=feature_set,
+            replacemsg_group=replacemsg_group,
+            spam_log=spam_log,
+            spam_log_fortiguard_response=spam_log_fortiguard_response,
+            spam_filtering=spam_filtering,
+            external=external,
+            options=options,
+            imap=imap,
+            pop3=pop3,
+            smtp=smtp,
+            mapi=mapi,
+            msn_hotmail=msn_hotmail,
+            yahoo_mail=yahoo_mail,
+            gmail=gmail,
+            other_webmails=other_webmails,
+            spam_bword_threshold=spam_bword_threshold,
+            spam_bword_table=spam_bword_table,
+            spam_bal_table=spam_bal_table,
+            spam_mheader_table=spam_mheader_table,
+            spam_rbl_table=spam_rbl_table,
+            spam_iptrust_table=spam_iptrust_table,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

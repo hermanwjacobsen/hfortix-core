@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.wireless_controller_ble_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.wireless_controller_ble_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class BleProfile(MetadataMixin):
+class BleProfile(CRUDEndpoint, MetadataMixin):
     """BleProfile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class BleProfile(MetadataMixin):
         """Initialize BleProfile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class BleProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve wireless_controller/ble_profile configuration.
 
@@ -99,6 +118,7 @@ class BleProfile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class BleProfile(MetadataMixin):
         
         if name:
             endpoint = "/wireless-controller/ble-profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/wireless-controller/ble-profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,12 +223,17 @@ class BleProfile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list | None = None,
+        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list[str] | None = None,
         ibeacon_uuid: str | None = None,
         major_id: int | None = None,
         minor_id: int | None = None,
@@ -224,8 +251,9 @@ class BleProfile(MetadataMixin):
         scan_window: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing wireless_controller/ble_profile object.
 
@@ -238,8 +266,22 @@ class BleProfile(MetadataMixin):
             advertising: Advertising type.
             ibeacon_uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             major_id: Major ID.
+            minor_id: Minor ID.
+            eddystone_namespace: Eddystone namespace ID.
+            eddystone_instance: Eddystone instance ID.
+            eddystone_url: Eddystone URL.
+            txpower: Transmit power level (default = 0).
+            beacon_interval: Beacon interval (default = 100 msec).
+            ble_scanning: Enable/disable Bluetooth Low Energy (BLE) scanning.
+            scan_type: Scan Type (default = active).
+            scan_threshold: Minimum signal level/threshold in dBm required for the AP to report detected BLE device (-95 to -20, default = -90).
+            scan_period: Scan Period (default = 4000 msec).
+            scan_time: Scan Time (default = 1000 msec).
+            scan_interval: Scan Interval (default = 50 msec).
+            scan_window: Scan Windows (default = 50 msec).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -266,9 +308,10 @@ class BleProfile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             advertising=advertising,
@@ -306,15 +349,20 @@ class BleProfile(MetadataMixin):
         endpoint = "/wireless-controller/ble-profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list | None = None,
+        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list[str] | None = None,
         ibeacon_uuid: str | None = None,
         major_id: int | None = None,
         minor_id: int | None = None,
@@ -332,8 +380,9 @@ class BleProfile(MetadataMixin):
         scan_window: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new wireless_controller/ble_profile object.
 
@@ -346,8 +395,22 @@ class BleProfile(MetadataMixin):
             advertising: Advertising type.
             ibeacon_uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             major_id: Major ID.
+            minor_id: Minor ID.
+            eddystone_namespace: Eddystone namespace ID.
+            eddystone_instance: Eddystone instance ID.
+            eddystone_url: Eddystone URL.
+            txpower: Transmit power level (default = 0).
+            beacon_interval: Beacon interval (default = 100 msec).
+            ble_scanning: Enable/disable Bluetooth Low Energy (BLE) scanning.
+            scan_type: Scan Type (default = active).
+            scan_threshold: Minimum signal level/threshold in dBm required for the AP to report detected BLE device (-95 to -20, default = -90).
+            scan_period: Scan Period (default = 4000 msec).
+            scan_time: Scan Time (default = 1000 msec).
+            scan_interval: Scan Interval (default = 50 msec).
+            scan_window: Scan Windows (default = 50 msec).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -376,9 +439,10 @@ class BleProfile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             advertising=advertising,
@@ -412,16 +476,22 @@ class BleProfile(MetadataMixin):
 
         endpoint = "/wireless-controller/ble-profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete wireless_controller/ble_profile object.
 
@@ -431,6 +501,7 @@ class BleProfile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -456,7 +527,7 @@ class BleProfile(MetadataMixin):
         endpoint = "/wireless-controller/ble-profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -520,7 +591,27 @@ class BleProfile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list[str] | list[dict[str, Any]] | None = None,
+        ibeacon_uuid: str | None = None,
+        major_id: int | None = None,
+        minor_id: int | None = None,
+        eddystone_namespace: str | None = None,
+        eddystone_instance: str | None = None,
+        eddystone_url: str | None = None,
+        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"] | None = None,
+        beacon_interval: int | None = None,
+        ble_scanning: Literal["enable", "disable"] | None = None,
+        scan_type: Literal["active", "passive"] | None = None,
+        scan_threshold: str | None = None,
+        scan_period: int | None = None,
+        scan_time: int | None = None,
+        scan_interval: int | None = None,
+        scan_window: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -531,7 +622,27 @@ class BleProfile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            advertising: Field advertising
+            ibeacon_uuid: Field ibeacon-uuid
+            major_id: Field major-id
+            minor_id: Field minor-id
+            eddystone_namespace: Field eddystone-namespace
+            eddystone_instance: Field eddystone-instance
+            eddystone_url: Field eddystone-url
+            txpower: Field txpower
+            beacon_interval: Field beacon-interval
+            ble_scanning: Field ble-scanning
+            scan_type: Field scan-type
+            scan_threshold: Field scan-threshold
+            scan_period: Field scan-period
+            scan_time: Field scan-time
+            scan_interval: Field scan-interval
+            scan_window: Field scan-window
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -541,7 +652,13 @@ class BleProfile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.wireless_controller_ble_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -564,20 +681,40 @@ class BleProfile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            advertising=advertising,
+            ibeacon_uuid=ibeacon_uuid,
+            major_id=major_id,
+            minor_id=minor_id,
+            eddystone_namespace=eddystone_namespace,
+            eddystone_instance=eddystone_instance,
+            eddystone_url=eddystone_url,
+            txpower=txpower,
+            beacon_interval=beacon_interval,
+            ble_scanning=ble_scanning,
+            scan_type=scan_type,
+            scan_threshold=scan_threshold,
+            scan_period=scan_period,
+            scan_time=scan_time,
+            scan_interval=scan_interval,
+            scan_window=scan_window,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

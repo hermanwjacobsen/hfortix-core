@@ -47,6 +47,8 @@ from hfortix_core import (
 )
 
 from .client import FortiOS
+from .formatting import to_csv, to_dict, to_json, to_multiline, to_quoted
+from .help import help
 from .models import FortiObject
 
 # Import type definitions for IDE support
@@ -77,12 +79,20 @@ from .types import (
 #     TrafficShaper,
 # )
 
-__version__ = "0.5.1"
+__version__ = "0.5.32"
 __all__ = [
     # Main client
     "FortiOS",
     "FortiObject",
     "configure_logging",
+    # Formatting utilities
+    "to_json",
+    "to_csv",
+    "to_dict",
+    "to_multiline",
+    "to_quoted",
+    # Help system
+    "help",
     # Type definitions for IDE support
     "FortiOSSuccessResponse",
     "FortiOSErrorResponse",

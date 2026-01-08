@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.web_proxy_explicit.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.web_proxy_explicit.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Explicit(MetadataMixin):
+class Explicit(CRUDEndpoint, MetadataMixin):
     """Explicit Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "explicit"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "secure_web_proxy_cert": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "pac_policy": {
+            "mkey": "policyid",
+            "required_fields": ['policyid', 'srcaddr', 'dstaddr', 'pac-file-name'],
+            "example": "[{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Explicit(MetadataMixin):
         """Initialize Explicit endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Explicit(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve web_proxy/explicit configuration.
 
@@ -98,6 +135,7 @@ class Explicit(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Explicit(MetadataMixin):
         
         if name:
             endpoint = f"/web-proxy/explicit/{name}"
+            unwrap_single = True
         else:
             endpoint = "/web-proxy/explicit"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +236,11 @@ class Explicit(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -206,7 +251,7 @@ class Explicit(MetadataMixin):
         http_incoming_port: str | None = None,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = None,
         https_incoming_port: str | None = None,
-        secure_web_proxy_cert: str | list | None = None,
+        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | None = None,
         client_cert: Literal["disable", "enable"] | None = None,
         user_agent_detect: Literal["disable", "enable"] | None = None,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = None,
@@ -214,13 +259,13 @@ class Explicit(MetadataMixin):
         ftp_incoming_port: str | None = None,
         socks_incoming_port: str | None = None,
         incoming_ip: str | None = None,
-        outgoing_ip: str | list | None = None,
+        outgoing_ip: str | list[str] | None = None,
         interface_select_method: Literal["sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         ipv6_status: Literal["enable", "disable"] | None = None,
         incoming_ip6: str | None = None,
-        outgoing_ip6: str | list | None = None,
+        outgoing_ip6: str | list[str] | None = None,
         strict_guest: Literal["enable", "disable"] | None = None,
         pref_dns_result: Literal["ipv4", "ipv6", "ipv4-strict", "ipv6-strict"] | None = None,
         unknown_http_version: Literal["reject", "best-effort"] | None = None,
@@ -234,13 +279,14 @@ class Explicit(MetadataMixin):
         pac_file_through_https: Literal["enable", "disable"] | None = None,
         pac_file_name: str | None = None,
         pac_file_data: str | None = None,
-        pac_policy: str | list | None = None,
+        pac_policy: str | list[str] | list[dict[str, Any]] | None = None,
         ssl_algorithm: Literal["high", "medium", "low"] | None = None,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing web_proxy/explicit object.
 
@@ -253,8 +299,50 @@ class Explicit(MetadataMixin):
             ftp_over_http: Enable to proxy FTP-over-HTTP sessions sent from a web browser.
             socks: Enable/disable the SOCKS proxy.
             http_incoming_port: Accept incoming HTTP requests on one or more ports (0 - 65535, default = 8080).
+            http_connection_mode: HTTP connection mode (default = static).
+            https_incoming_port: Accept incoming HTTPS requests on one or more ports (0 - 65535, default = 0, use the same as HTTP).
+            secure_web_proxy_cert: Name of certificates for secure web proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            client_cert: Enable/disable to request client certificate.
+            user_agent_detect: Enable/disable to detect device type by HTTP user-agent if no client certificate provided.
+            empty_cert_action: Action of an empty client certificate.
+            ssl_dh_bits: Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).
+            ftp_incoming_port: Accept incoming FTP-over-HTTP requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).
+            socks_incoming_port: Accept incoming SOCKS proxy requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).
+            incoming_ip: Restrict the explicit HTTP proxy to only accept sessions from this IP address. An interface must have this IP address.
+            outgoing_ip: Outgoing HTTP requests will have this IP address as their source address. An interface must have this IP address.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
+            ipv6_status: Enable/disable allowing an IPv6 web proxy destination in policies and all IPv6 related entries in this command.
+            incoming_ip6: Restrict the explicit web proxy to only accept sessions from this IPv6 address. An interface must have this IPv6 address.
+            outgoing_ip6: Outgoing HTTP requests will leave this IPv6. Multiple interfaces can be specified. Interfaces must have these IPv6 addresses.
+            strict_guest: Enable/disable strict guest user checking by the explicit web proxy.
+            pref_dns_result: Prefer resolving addresses using the configured IPv4 or IPv6 DNS server (default = ipv4).
+            unknown_http_version: How to handle HTTP sessions that do not comply with HTTP 0.9, 1.0, or 1.1.
+            realm: Authentication realm used to identify the explicit web proxy (maximum of 63 characters).
+            sec_default_action: Accept or deny explicit web proxy sessions when no web proxy firewall policy exists.
+            https_replacement_message: Enable/disable sending the client a replacement message for HTTPS requests.
+            message_upon_server_error: Enable/disable displaying a replacement message when a server error is detected.
+            pac_file_server_status: Enable/disable Proxy Auto-Configuration (PAC) for users of this explicit proxy profile.
+            pac_file_url: PAC file access URL.
+            pac_file_server_port: Port number that PAC traffic from client web browsers uses to connect to the explicit web proxy (0 - 65535, default = 0; use the same as HTTP).
+            pac_file_through_https: Enable/disable to get Proxy Auto-Configuration (PAC) through HTTPS.
+            pac_file_name: Pac file name.
+            pac_file_data: PAC file contents enclosed in quotes (maximum of 256K bytes).
+            pac_policy: PAC policies.
+                Default format: [{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]
+                Required format: List of dicts with keys: policyid, srcaddr, dstaddr, pac-file-name
+                  (String format not allowed due to multiple required fields)
+            ssl_algorithm: Relative strength of encryption algorithms accepted in HTTPS deep scan: high, medium, or low.
+            trace_auth_no_rsp: Enable/disable logging timed-out authentication requests.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -281,9 +369,28 @@ class Explicit(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if secure_web_proxy_cert is not None:
+            secure_web_proxy_cert = normalize_table_field(
+                secure_web_proxy_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="secure_web_proxy_cert",
+                example="[{'name': 'value'}]",
+            )
+        if pac_policy is not None:
+            pac_policy = normalize_table_field(
+                pac_policy,
+                mkey="policyid",
+                required_fields=['policyid', 'srcaddr', 'dstaddr', 'pac-file-name'],
+                field_name="pac_policy",
+                example="[{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             secure_web_proxy=secure_web_proxy,
             ftp_over_http=ftp_over_http,
@@ -335,13 +442,11 @@ class Explicit(MetadataMixin):
                 endpoint="cmdb/web_proxy/explicit",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/web-proxy/explicit/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/web-proxy/explicit"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

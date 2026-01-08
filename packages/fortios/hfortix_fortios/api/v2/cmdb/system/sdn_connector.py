@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_sdn_connector.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_sdn_connector.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,83 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class SdnConnector(MetadataMixin):
+class SdnConnector(CRUDEndpoint, MetadataMixin):
     """SdnConnector Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "sdn_connector"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_list": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "external_account_list": {
+            "mkey": "role-arn",
+            "required_fields": ['role-arn', 'region-list'],
+            "example": "[{'role-arn': 'value', 'region-list': 'value'}]",
+        },
+        "nic": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "route_table": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "compartment_list": {
+            "mkey": "compartment-id",
+            "required_fields": ['compartment-id'],
+            "example": "[{'compartment-id': 'value'}]",
+        },
+        "oci_region_list": {
+            "mkey": "region",
+            "required_fields": ['region'],
+            "example": "[{'region': 'value'}]",
+        },
+        "external_ip": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "route": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "gcp_project_list": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "forwarding_rule": {
+            "mkey": "rule-name",
+            "required_fields": ['rule-name', 'target'],
+            "example": "[{'rule-name': 'value', 'target': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +134,11 @@ class SdnConnector(MetadataMixin):
         """Initialize SdnConnector endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +148,9 @@ class SdnConnector(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/sdn_connector configuration.
 
@@ -99,6 +176,7 @@ class SdnConnector(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +233,14 @@ class SdnConnector(MetadataMixin):
         
         if name:
             endpoint = "/system/sdn-connector/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/sdn-connector"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +281,11 @@ class SdnConnector(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -213,7 +298,7 @@ class SdnConnector(MetadataMixin):
         ha_status: Literal["disable", "enable"] | None = None,
         verify_certificate: Literal["disable", "enable"] | None = None,
         server: str | None = None,
-        server_list: str | list | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         server_port: int | None = None,
         message_server_port: int | None = None,
         username: str | None = None,
@@ -226,7 +311,7 @@ class SdnConnector(MetadataMixin):
         region: str | None = None,
         vpc_id: str | None = None,
         alt_resource_ip: Literal["disable", "enable"] | None = None,
-        external_account_list: str | list | None = None,
+        external_account_list: str | list[str] | list[dict[str, Any]] | None = None,
         tenant_id: str | None = None,
         client_id: str | None = None,
         client_secret: Any | None = None,
@@ -235,18 +320,18 @@ class SdnConnector(MetadataMixin):
         login_endpoint: str | None = None,
         resource_url: str | None = None,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = None,
-        nic: str | list | None = None,
-        route_table: str | list | None = None,
+        nic: str | list[str] | list[dict[str, Any]] | None = None,
+        route_table: str | list[str] | list[dict[str, Any]] | None = None,
         user_id: str | None = None,
-        compartment_list: str | list | None = None,
-        oci_region_list: str | list | None = None,
+        compartment_list: str | list[str] | list[dict[str, Any]] | None = None,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | None = None,
         oci_region_type: Literal["commercial", "government"] | None = None,
         oci_cert: str | None = None,
         oci_fingerprint: str | None = None,
-        external_ip: str | list | None = None,
-        route: str | list | None = None,
-        gcp_project_list: str | list | None = None,
-        forwarding_rule: str | list | None = None,
+        external_ip: str | list[str] | list[dict[str, Any]] | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | None = None,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | None = None,
         service_account: str | None = None,
         private_key: str | None = None,
         secret_token: str | None = None,
@@ -260,8 +345,9 @@ class SdnConnector(MetadataMixin):
         update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/sdn_connector object.
 
@@ -274,8 +360,105 @@ class SdnConnector(MetadataMixin):
             type: Type of SDN connector.
             proxy: SDN proxy.
             use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
+            microsoft_365: Enable to use as Microsoft 365 connector.
+            ha_status: Enable/disable use for FortiGate HA service.
+            verify_certificate: Enable/disable server certificate verification.
+            vdom: Virtual domain name of the remote SDN connector.
+            server: Server address of the remote SDN connector.
+            server_list: Server address list of the remote SDN connector.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            server_port: Port number of the remote SDN connector.
+            message_server_port: HTTP port number of the SAP message server.
+            username: Username of the remote SDN connector as login credentials.
+            password: Password of the remote SDN connector as login credentials.
+            vcenter_server: vCenter server address for NSX quarantine.
+            vcenter_username: vCenter server username for NSX quarantine.
+            vcenter_password: vCenter server password for NSX quarantine.
+            access_key: AWS / ACS access key ID.
+            secret_key: AWS / ACS secret access key.
+            region: AWS / ACS region name.
+            vpc_id: AWS VPC ID.
+            alt_resource_ip: Enable/disable AWS alternative resource IP.
+            external_account_list: Configure AWS external account list.
+                Default format: [{'role-arn': 'value', 'region-list': 'value'}]
+                Required format: List of dicts with keys: role-arn, region-list
+                  (String format not allowed due to multiple required fields)
+            tenant_id: Tenant ID (directory ID).
+            client_id: Azure client ID (application ID).
+            client_secret: Azure client secret (application key).
+            subscription_id: Azure subscription ID.
+            resource_group: Azure resource group.
+            login_endpoint: Azure Stack login endpoint.
+            resource_url: Azure Stack resource URL.
+            azure_region: Azure server region.
+            nic: Configure Azure network interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            route_table: Configure Azure route table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            user_id: User ID.
+            compartment_list: Configure OCI compartment list.
+                Default format: [{'compartment-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'compartment-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'compartment-id': 'val1'}, ...]
+                  - List of dicts: [{'compartment-id': 'value'}] (recommended)
+            oci_region_list: Configure OCI region list.
+                Default format: [{'region': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'region': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'region': 'val1'}, ...]
+                  - List of dicts: [{'region': 'value'}] (recommended)
+            oci_region_type: OCI region type.
+            oci_cert: OCI certificate.
+            oci_fingerprint: OCI pubkey fingerprint.
+            external_ip: Configure GCP external IP.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            route: Configure GCP route.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            gcp_project_list: Configure GCP project list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            forwarding_rule: Configure GCP forwarding rule.
+                Default format: [{'rule-name': 'value', 'target': 'value'}]
+                Required format: List of dicts with keys: rule-name, target
+                  (String format not allowed due to multiple required fields)
+            service_account: GCP service account email.
+            private_key: Private key of GCP service account.
+            secret_token: Secret token of Kubernetes service account.
+            domain: Domain name.
+            group_name: Full path group name of computers.
+            server_cert: Trust servers that contain this certificate only.
+            server_ca_cert: Trust only those servers whose certificate is directly/indirectly signed by this certificate.
+            api_key: IBM cloud API key or service ID API key.
+            ibm_region: IBM cloud region name.
+            par_id: Public address range ID.
+            update_interval: Dynamic object update interval (30 - 3600 sec, default = 60, 0 = disabled).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -302,9 +485,92 @@ class SdnConnector(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="server_list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if external_account_list is not None:
+            external_account_list = normalize_table_field(
+                external_account_list,
+                mkey="role-arn",
+                required_fields=['role-arn', 'region-list'],
+                field_name="external_account_list",
+                example="[{'role-arn': 'value', 'region-list': 'value'}]",
+            )
+        if nic is not None:
+            nic = normalize_table_field(
+                nic,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nic",
+                example="[{'name': 'value'}]",
+            )
+        if route_table is not None:
+            route_table = normalize_table_field(
+                route_table,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route_table",
+                example="[{'name': 'value'}]",
+            )
+        if compartment_list is not None:
+            compartment_list = normalize_table_field(
+                compartment_list,
+                mkey="compartment-id",
+                required_fields=['compartment-id'],
+                field_name="compartment_list",
+                example="[{'compartment-id': 'value'}]",
+            )
+        if oci_region_list is not None:
+            oci_region_list = normalize_table_field(
+                oci_region_list,
+                mkey="region",
+                required_fields=['region'],
+                field_name="oci_region_list",
+                example="[{'region': 'value'}]",
+            )
+        if external_ip is not None:
+            external_ip = normalize_table_field(
+                external_ip,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip",
+                example="[{'name': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route",
+                example="[{'name': 'value'}]",
+            )
+        if gcp_project_list is not None:
+            gcp_project_list = normalize_table_field(
+                gcp_project_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="gcp_project_list",
+                example="[{'id': 1}]",
+            )
+        if forwarding_rule is not None:
+            forwarding_rule = normalize_table_field(
+                forwarding_rule,
+                mkey="rule-name",
+                required_fields=['rule-name', 'target'],
+                field_name="forwarding_rule",
+                example="[{'rule-name': 'value', 'target': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             type=type,
@@ -378,9 +644,14 @@ class SdnConnector(MetadataMixin):
         endpoint = "/system/sdn-connector/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -393,7 +664,7 @@ class SdnConnector(MetadataMixin):
         ha_status: Literal["disable", "enable"] | None = None,
         verify_certificate: Literal["disable", "enable"] | None = None,
         server: str | None = None,
-        server_list: str | list | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         server_port: int | None = None,
         message_server_port: int | None = None,
         username: str | None = None,
@@ -406,7 +677,7 @@ class SdnConnector(MetadataMixin):
         region: str | None = None,
         vpc_id: str | None = None,
         alt_resource_ip: Literal["disable", "enable"] | None = None,
-        external_account_list: str | list | None = None,
+        external_account_list: str | list[str] | list[dict[str, Any]] | None = None,
         tenant_id: str | None = None,
         client_id: str | None = None,
         client_secret: Any | None = None,
@@ -415,18 +686,18 @@ class SdnConnector(MetadataMixin):
         login_endpoint: str | None = None,
         resource_url: str | None = None,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = None,
-        nic: str | list | None = None,
-        route_table: str | list | None = None,
+        nic: str | list[str] | list[dict[str, Any]] | None = None,
+        route_table: str | list[str] | list[dict[str, Any]] | None = None,
         user_id: str | None = None,
-        compartment_list: str | list | None = None,
-        oci_region_list: str | list | None = None,
+        compartment_list: str | list[str] | list[dict[str, Any]] | None = None,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | None = None,
         oci_region_type: Literal["commercial", "government"] | None = None,
         oci_cert: str | None = None,
         oci_fingerprint: str | None = None,
-        external_ip: str | list | None = None,
-        route: str | list | None = None,
-        gcp_project_list: str | list | None = None,
-        forwarding_rule: str | list | None = None,
+        external_ip: str | list[str] | list[dict[str, Any]] | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | None = None,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | None = None,
         service_account: str | None = None,
         private_key: str | None = None,
         secret_token: str | None = None,
@@ -440,8 +711,9 @@ class SdnConnector(MetadataMixin):
         update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/sdn_connector object.
 
@@ -454,8 +726,105 @@ class SdnConnector(MetadataMixin):
             type: Type of SDN connector.
             proxy: SDN proxy.
             use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
+            microsoft_365: Enable to use as Microsoft 365 connector.
+            ha_status: Enable/disable use for FortiGate HA service.
+            verify_certificate: Enable/disable server certificate verification.
+            vdom: Virtual domain name of the remote SDN connector.
+            server: Server address of the remote SDN connector.
+            server_list: Server address list of the remote SDN connector.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            server_port: Port number of the remote SDN connector.
+            message_server_port: HTTP port number of the SAP message server.
+            username: Username of the remote SDN connector as login credentials.
+            password: Password of the remote SDN connector as login credentials.
+            vcenter_server: vCenter server address for NSX quarantine.
+            vcenter_username: vCenter server username for NSX quarantine.
+            vcenter_password: vCenter server password for NSX quarantine.
+            access_key: AWS / ACS access key ID.
+            secret_key: AWS / ACS secret access key.
+            region: AWS / ACS region name.
+            vpc_id: AWS VPC ID.
+            alt_resource_ip: Enable/disable AWS alternative resource IP.
+            external_account_list: Configure AWS external account list.
+                Default format: [{'role-arn': 'value', 'region-list': 'value'}]
+                Required format: List of dicts with keys: role-arn, region-list
+                  (String format not allowed due to multiple required fields)
+            tenant_id: Tenant ID (directory ID).
+            client_id: Azure client ID (application ID).
+            client_secret: Azure client secret (application key).
+            subscription_id: Azure subscription ID.
+            resource_group: Azure resource group.
+            login_endpoint: Azure Stack login endpoint.
+            resource_url: Azure Stack resource URL.
+            azure_region: Azure server region.
+            nic: Configure Azure network interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            route_table: Configure Azure route table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            user_id: User ID.
+            compartment_list: Configure OCI compartment list.
+                Default format: [{'compartment-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'compartment-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'compartment-id': 'val1'}, ...]
+                  - List of dicts: [{'compartment-id': 'value'}] (recommended)
+            oci_region_list: Configure OCI region list.
+                Default format: [{'region': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'region': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'region': 'val1'}, ...]
+                  - List of dicts: [{'region': 'value'}] (recommended)
+            oci_region_type: OCI region type.
+            oci_cert: OCI certificate.
+            oci_fingerprint: OCI pubkey fingerprint.
+            external_ip: Configure GCP external IP.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            route: Configure GCP route.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            gcp_project_list: Configure GCP project list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            forwarding_rule: Configure GCP forwarding rule.
+                Default format: [{'rule-name': 'value', 'target': 'value'}]
+                Required format: List of dicts with keys: rule-name, target
+                  (String format not allowed due to multiple required fields)
+            service_account: GCP service account email.
+            private_key: Private key of GCP service account.
+            secret_token: Secret token of Kubernetes service account.
+            domain: Domain name.
+            group_name: Full path group name of computers.
+            server_cert: Trust servers that contain this certificate only.
+            server_ca_cert: Trust only those servers whose certificate is directly/indirectly signed by this certificate.
+            api_key: IBM cloud API key or service ID API key.
+            ibm_region: IBM cloud region name.
+            par_id: Public address range ID.
+            update_interval: Dynamic object update interval (30 - 3600 sec, default = 60, 0 = disabled).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -484,9 +853,92 @@ class SdnConnector(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="server_list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if external_account_list is not None:
+            external_account_list = normalize_table_field(
+                external_account_list,
+                mkey="role-arn",
+                required_fields=['role-arn', 'region-list'],
+                field_name="external_account_list",
+                example="[{'role-arn': 'value', 'region-list': 'value'}]",
+            )
+        if nic is not None:
+            nic = normalize_table_field(
+                nic,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nic",
+                example="[{'name': 'value'}]",
+            )
+        if route_table is not None:
+            route_table = normalize_table_field(
+                route_table,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route_table",
+                example="[{'name': 'value'}]",
+            )
+        if compartment_list is not None:
+            compartment_list = normalize_table_field(
+                compartment_list,
+                mkey="compartment-id",
+                required_fields=['compartment-id'],
+                field_name="compartment_list",
+                example="[{'compartment-id': 'value'}]",
+            )
+        if oci_region_list is not None:
+            oci_region_list = normalize_table_field(
+                oci_region_list,
+                mkey="region",
+                required_fields=['region'],
+                field_name="oci_region_list",
+                example="[{'region': 'value'}]",
+            )
+        if external_ip is not None:
+            external_ip = normalize_table_field(
+                external_ip,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip",
+                example="[{'name': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route",
+                example="[{'name': 'value'}]",
+            )
+        if gcp_project_list is not None:
+            gcp_project_list = normalize_table_field(
+                gcp_project_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="gcp_project_list",
+                example="[{'id': 1}]",
+            )
+        if forwarding_rule is not None:
+            forwarding_rule = normalize_table_field(
+                forwarding_rule,
+                mkey="rule-name",
+                required_fields=['rule-name', 'target'],
+                field_name="forwarding_rule",
+                example="[{'rule-name': 'value', 'target': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             status=status,
             type=type,
@@ -556,16 +1008,22 @@ class SdnConnector(MetadataMixin):
 
         endpoint = "/system/sdn-connector"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/sdn_connector object.
 
@@ -575,6 +1033,7 @@ class SdnConnector(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -600,7 +1059,7 @@ class SdnConnector(MetadataMixin):
         endpoint = "/system/sdn-connector/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -664,7 +1123,63 @@ class SdnConnector(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = None,
+        proxy: str | None = None,
+        use_metadata_iam: Literal["disable", "enable"] | None = None,
+        microsoft_365: Literal["disable", "enable"] | None = None,
+        ha_status: Literal["disable", "enable"] | None = None,
+        verify_certificate: Literal["disable", "enable"] | None = None,
+        server: str | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
+        server_port: int | None = None,
+        message_server_port: int | None = None,
+        username: str | None = None,
+        password: Any | None = None,
+        vcenter_server: str | None = None,
+        vcenter_username: str | None = None,
+        vcenter_password: Any | None = None,
+        access_key: str | None = None,
+        secret_key: Any | None = None,
+        region: str | None = None,
+        vpc_id: str | None = None,
+        alt_resource_ip: Literal["disable", "enable"] | None = None,
+        external_account_list: str | list[str] | list[dict[str, Any]] | None = None,
+        tenant_id: str | None = None,
+        client_id: str | None = None,
+        client_secret: Any | None = None,
+        subscription_id: str | None = None,
+        resource_group: str | None = None,
+        login_endpoint: str | None = None,
+        resource_url: str | None = None,
+        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = None,
+        nic: str | list[str] | list[dict[str, Any]] | None = None,
+        route_table: str | list[str] | list[dict[str, Any]] | None = None,
+        user_id: str | None = None,
+        compartment_list: str | list[str] | list[dict[str, Any]] | None = None,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | None = None,
+        oci_region_type: Literal["commercial", "government"] | None = None,
+        oci_cert: str | None = None,
+        oci_fingerprint: str | None = None,
+        external_ip: str | list[str] | list[dict[str, Any]] | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | None = None,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | None = None,
+        service_account: str | None = None,
+        private_key: str | None = None,
+        secret_token: str | None = None,
+        domain: str | None = None,
+        group_name: str | None = None,
+        server_cert: str | None = None,
+        server_ca_cert: str | None = None,
+        api_key: Any | None = None,
+        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = None,
+        par_id: str | None = None,
+        update_interval: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -675,7 +1190,63 @@ class SdnConnector(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            status: Field status
+            type: Field type
+            proxy: Field proxy
+            use_metadata_iam: Field use-metadata-iam
+            microsoft_365: Field microsoft-365
+            ha_status: Field ha-status
+            verify_certificate: Field verify-certificate
+            server: Field server
+            server_list: Field server-list
+            server_port: Field server-port
+            message_server_port: Field message-server-port
+            username: Field username
+            password: Field password
+            vcenter_server: Field vcenter-server
+            vcenter_username: Field vcenter-username
+            vcenter_password: Field vcenter-password
+            access_key: Field access-key
+            secret_key: Field secret-key
+            region: Field region
+            vpc_id: Field vpc-id
+            alt_resource_ip: Field alt-resource-ip
+            external_account_list: Field external-account-list
+            tenant_id: Field tenant-id
+            client_id: Field client-id
+            client_secret: Field client-secret
+            subscription_id: Field subscription-id
+            resource_group: Field resource-group
+            login_endpoint: Field login-endpoint
+            resource_url: Field resource-url
+            azure_region: Field azure-region
+            nic: Field nic
+            route_table: Field route-table
+            user_id: Field user-id
+            compartment_list: Field compartment-list
+            oci_region_list: Field oci-region-list
+            oci_region_type: Field oci-region-type
+            oci_cert: Field oci-cert
+            oci_fingerprint: Field oci-fingerprint
+            external_ip: Field external-ip
+            route: Field route
+            gcp_project_list: Field gcp-project-list
+            forwarding_rule: Field forwarding-rule
+            service_account: Field service-account
+            private_key: Field private-key
+            secret_token: Field secret-token
+            domain: Field domain
+            group_name: Field group-name
+            server_cert: Field server-cert
+            server_ca_cert: Field server-ca-cert
+            api_key: Field api-key
+            ibm_region: Field ibm-region
+            par_id: Field par-id
+            update_interval: Field update-interval
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -685,7 +1256,13 @@ class SdnConnector(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_sdn_connector.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -708,20 +1285,76 @@ class SdnConnector(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            status=status,
+            type=type,
+            proxy=proxy,
+            use_metadata_iam=use_metadata_iam,
+            microsoft_365=microsoft_365,
+            ha_status=ha_status,
+            verify_certificate=verify_certificate,
+            server=server,
+            server_list=server_list,
+            server_port=server_port,
+            message_server_port=message_server_port,
+            username=username,
+            password=password,
+            vcenter_server=vcenter_server,
+            vcenter_username=vcenter_username,
+            vcenter_password=vcenter_password,
+            access_key=access_key,
+            secret_key=secret_key,
+            region=region,
+            vpc_id=vpc_id,
+            alt_resource_ip=alt_resource_ip,
+            external_account_list=external_account_list,
+            tenant_id=tenant_id,
+            client_id=client_id,
+            client_secret=client_secret,
+            subscription_id=subscription_id,
+            resource_group=resource_group,
+            login_endpoint=login_endpoint,
+            resource_url=resource_url,
+            azure_region=azure_region,
+            nic=nic,
+            route_table=route_table,
+            user_id=user_id,
+            compartment_list=compartment_list,
+            oci_region_list=oci_region_list,
+            oci_region_type=oci_region_type,
+            oci_cert=oci_cert,
+            oci_fingerprint=oci_fingerprint,
+            external_ip=external_ip,
+            route=route,
+            gcp_project_list=gcp_project_list,
+            forwarding_rule=forwarding_rule,
+            service_account=service_account,
+            private_key=private_key,
+            secret_token=secret_token,
+            domain=domain,
+            group_name=group_name,
+            server_cert=server_cert,
+            server_ca_cert=server_ca_cert,
+            api_key=api_key,
+            ibm_region=ibm_region,
+            par_id=par_id,
+            update_interval=update_interval,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

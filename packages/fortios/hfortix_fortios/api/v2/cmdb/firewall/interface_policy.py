@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.firewall_interface_policy.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.firewall_interface_policy.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,48 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class InterfacePolicy(MetadataMixin):
+class InterfacePolicy(CRUDEndpoint, MetadataMixin):
     """InterfacePolicy Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "interface_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +99,11 @@ class InterfacePolicy(MetadataMixin):
         """Initialize InterfacePolicy endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         policyid: int | None = None,
@@ -72,8 +113,9 @@ class InterfacePolicy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve firewall/interface_policy configuration.
 
@@ -99,6 +141,7 @@ class InterfacePolicy(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +198,14 @@ class InterfacePolicy(MetadataMixin):
         
         if policyid:
             endpoint = "/firewall/interface-policy/" + str(policyid)
+            unwrap_single = True
         else:
             endpoint = "/firewall/interface-policy"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +246,11 @@ class InterfacePolicy(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -210,9 +260,9 @@ class InterfacePolicy(MetadataMixin):
         comments: str | None = None,
         logtraffic: Literal["all", "utm", "disable"] | None = None,
         interface: str | None = None,
-        srcaddr: str | list | None = None,
-        dstaddr: str | list | None = None,
-        service: str | list | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         application_list_status: Literal["enable", "disable"] | None = None,
         application_list: str | None = None,
         ips_sensor_status: Literal["enable", "disable"] | None = None,
@@ -230,8 +280,9 @@ class InterfacePolicy(MetadataMixin):
         dlp_profile: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing firewall/interface_policy object.
 
@@ -244,8 +295,43 @@ class InterfacePolicy(MetadataMixin):
             status: Enable/disable this policy.
             comments: Comments.
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
+            interface: Monitored interface name from available interfaces.
+            srcaddr: Address object to limit traffic monitoring to network traffic sent from the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: Address object to limit traffic monitoring to network traffic sent to the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service: Service object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            application_list_status: Enable/disable application control.
+            application_list: Application list name.
+            ips_sensor_status: Enable/disable IPS.
+            ips_sensor: IPS sensor name.
+            dsri: Enable/disable DSRI.
+            av_profile_status: Enable/disable antivirus.
+            av_profile: Antivirus profile.
+            webfilter_profile_status: Enable/disable web filtering.
+            webfilter_profile: Web filter profile.
+            casb_profile_status: Enable/disable CASB.
+            casb_profile: CASB profile.
+            emailfilter_profile_status: Enable/disable email filter.
+            emailfilter_profile: Email filter profile.
+            dlp_profile_status: Enable/disable DLP.
+            dlp_profile: DLP profile name.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +358,36 @@ class InterfacePolicy(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -318,9 +431,14 @@ class InterfacePolicy(MetadataMixin):
         endpoint = "/firewall/interface-policy/" + str(policyid_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -330,9 +448,9 @@ class InterfacePolicy(MetadataMixin):
         comments: str | None = None,
         logtraffic: Literal["all", "utm", "disable"] | None = None,
         interface: str | None = None,
-        srcaddr: str | list | None = None,
-        dstaddr: str | list | None = None,
-        service: str | list | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
         application_list_status: Literal["enable", "disable"] | None = None,
         application_list: str | None = None,
         ips_sensor_status: Literal["enable", "disable"] | None = None,
@@ -350,8 +468,9 @@ class InterfacePolicy(MetadataMixin):
         dlp_profile: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new firewall/interface_policy object.
 
@@ -364,8 +483,43 @@ class InterfacePolicy(MetadataMixin):
             status: Enable/disable this policy.
             comments: Comments.
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
+            interface: Monitored interface name from available interfaces.
+            srcaddr: Address object to limit traffic monitoring to network traffic sent from the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            dstaddr: Address object to limit traffic monitoring to network traffic sent to the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service: Service object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            application_list_status: Enable/disable application control.
+            application_list: Application list name.
+            ips_sensor_status: Enable/disable IPS.
+            ips_sensor: IPS sensor name.
+            dsri: Enable/disable DSRI.
+            av_profile_status: Enable/disable antivirus.
+            av_profile: Antivirus profile.
+            webfilter_profile_status: Enable/disable web filtering.
+            webfilter_profile: Web filter profile.
+            casb_profile_status: Enable/disable CASB.
+            casb_profile: CASB profile.
+            emailfilter_profile_status: Enable/disable email filter.
+            emailfilter_profile: Email filter profile.
+            dlp_profile_status: Enable/disable DLP.
+            dlp_profile: DLP profile name.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -394,9 +548,36 @@ class InterfacePolicy(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -436,16 +617,22 @@ class InterfacePolicy(MetadataMixin):
 
         endpoint = "/firewall/interface-policy"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         policyid: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete firewall/interface_policy object.
 
@@ -455,6 +642,7 @@ class InterfacePolicy(MetadataMixin):
             policyid: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -480,7 +668,7 @@ class InterfacePolicy(MetadataMixin):
         endpoint = "/firewall/interface-policy/" + str(policyid)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -544,7 +732,33 @@ class InterfacePolicy(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        policyid: int | None = None,
+        uuid: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        comments: str | None = None,
+        logtraffic: Literal["all", "utm", "disable"] | None = None,
+        interface: str | None = None,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
+        application_list_status: Literal["enable", "disable"] | None = None,
+        application_list: str | None = None,
+        ips_sensor_status: Literal["enable", "disable"] | None = None,
+        ips_sensor: str | None = None,
+        dsri: Literal["enable", "disable"] | None = None,
+        av_profile_status: Literal["enable", "disable"] | None = None,
+        av_profile: str | None = None,
+        webfilter_profile_status: Literal["enable", "disable"] | None = None,
+        webfilter_profile: str | None = None,
+        casb_profile_status: Literal["enable", "disable"] | None = None,
+        casb_profile: str | None = None,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = None,
+        emailfilter_profile: str | None = None,
+        dlp_profile_status: Literal["enable", "disable"] | None = None,
+        dlp_profile: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -555,7 +769,33 @@ class InterfacePolicy(MetadataMixin):
 
         Args:
             payload_dict: Resource data including policyid (primary key)
+            policyid: Field policyid
+            uuid: Field uuid
+            status: Field status
+            comments: Field comments
+            logtraffic: Field logtraffic
+            interface: Field interface
+            srcaddr: Field srcaddr
+            dstaddr: Field dstaddr
+            service: Field service
+            application_list_status: Field application-list-status
+            application_list: Field application-list
+            ips_sensor_status: Field ips-sensor-status
+            ips_sensor: Field ips-sensor
+            dsri: Field dsri
+            av_profile_status: Field av-profile-status
+            av_profile: Field av-profile
+            webfilter_profile_status: Field webfilter-profile-status
+            webfilter_profile: Field webfilter-profile
+            casb_profile_status: Field casb-profile-status
+            casb_profile: Field casb-profile
+            emailfilter_profile_status: Field emailfilter-profile-status
+            emailfilter_profile: Field emailfilter-profile
+            dlp_profile_status: Field dlp-profile-status
+            dlp_profile: Field dlp-profile
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -565,7 +805,13 @@ class InterfacePolicy(MetadataMixin):
             ValueError: If policyid is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.firewall_interface_policy.set(
+            ...     policyid=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "policyid": 1,
             ...     "field1": "value1",
@@ -588,20 +834,46 @@ class InterfacePolicy(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            policyid=policyid,
+            uuid=uuid,
+            status=status,
+            comments=comments,
+            logtraffic=logtraffic,
+            interface=interface,
+            srcaddr=srcaddr,
+            dstaddr=dstaddr,
+            service=service,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            casb_profile_status=casb_profile_status,
+            casb_profile=casb_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("policyid")
+        mkey_value = payload_data.get("policyid")
         if not mkey_value:
-            raise ValueError("policyid is required in payload_dict for set()")
+            raise ValueError("policyid is required for set()")
         
         # Check if resource exists
         if self.exists(policyid=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

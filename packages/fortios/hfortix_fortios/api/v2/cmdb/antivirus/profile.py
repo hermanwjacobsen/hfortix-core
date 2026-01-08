@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.antivirus_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.antivirus_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Profile(MetadataMixin):
+class Profile(CRUDEndpoint, MetadataMixin):
     """Profile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "external_blocklist": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Profile(MetadataMixin):
         """Initialize Profile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve antivirus/profile configuration.
 
@@ -99,6 +131,7 @@ class Profile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Profile(MetadataMixin):
         
         if name:
             endpoint = "/antivirus/profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/antivirus/profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class Profile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -227,7 +267,7 @@ class Profile(MetadataMixin):
         content_disarm: str | None = None,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = None,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = None,
-        external_blocklist: str | list | None = None,
+        external_blocklist: str | list[str] | list[dict[str, Any]] | None = None,
         ems_threat_feed: Literal["disable", "enable"] | None = None,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = None,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = None,
@@ -239,8 +279,9 @@ class Profile(MetadataMixin):
         scan_mode: Literal["default", "legacy"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing antivirus/profile object.
 
@@ -253,8 +294,42 @@ class Profile(MetadataMixin):
             replacemsg_group: Replacement message group customized for this profile.
             feature_set: Flow/proxy feature set.
             fortisandbox_mode: FortiSandbox scan modes.
+            fortisandbox_max_upload: Maximum size of files that can be uploaded to FortiSandbox in Mbytes.
+            analytics_ignore_filetype: Do not submit files matching this DLP file-pattern to FortiSandbox (post-transfer scan only).
+            analytics_accept_filetype: Only submit files matching this DLP file-pattern to FortiSandbox (post-transfer scan only).
+            analytics_db: Enable/disable using the FortiSandbox signature database to supplement the AV signature databases.
+            mobile_malware_db: Enable/disable using the mobile malware signature database.
+            http: Configure HTTP AntiVirus options.
+            ftp: Configure FTP AntiVirus options.
+            imap: Configure IMAP AntiVirus options.
+            pop3: Configure POP3 AntiVirus options.
+            smtp: Configure SMTP AntiVirus options.
+            mapi: Configure MAPI AntiVirus options.
+            nntp: Configure NNTP AntiVirus options.
+            cifs: Configure CIFS AntiVirus options.
+            ssh: Configure SFTP and SCP AntiVirus options.
+            nac_quar: Configure AntiVirus quarantine settings.
+            content_disarm: AV Content Disarm and Reconstruction settings.
+            outbreak_prevention_archive_scan: Enable/disable outbreak-prevention archive scanning.
+            external_blocklist_enable_all: Enable/disable all external blocklists.
+            external_blocklist: One or more external malware block lists.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ems_threat_feed: Enable/disable use of EMS threat feed when performing AntiVirus scan. Analyzes files including the content of archives.
+            fortindr_error_action: Action to take if FortiNDR encounters an error.
+            fortindr_timeout_action: Action to take if FortiNDR encounters a scan timeout.
+            fortisandbox_scan_timeout: FortiSandbox inline scan timeout in seconds (30 - 180, default = 60).
+            fortisandbox_error_action: Action to take if FortiSandbox inline scan encounters an error.
+            fortisandbox_timeout_action: Action to take if FortiSandbox inline scan encounters a scan timeout.
+            av_virus_log: Enable/disable AntiVirus logging.
+            extended_log: Enable/disable extended logging for antivirus.
+            scan_mode: Configure scan mode (default or legacy).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -281,9 +356,20 @@ class Profile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if external_blocklist is not None:
+            external_blocklist = normalize_table_field(
+                external_blocklist,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_blocklist",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -336,9 +422,14 @@ class Profile(MetadataMixin):
         endpoint = "/antivirus/profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -365,7 +456,7 @@ class Profile(MetadataMixin):
         content_disarm: str | None = None,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = None,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = None,
-        external_blocklist: str | list | None = None,
+        external_blocklist: str | list[str] | list[dict[str, Any]] | None = None,
         ems_threat_feed: Literal["disable", "enable"] | None = None,
         fortindr_error_action: Literal["log-only", "block", "ignore"] | None = None,
         fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = None,
@@ -377,8 +468,9 @@ class Profile(MetadataMixin):
         scan_mode: Literal["default", "legacy"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new antivirus/profile object.
 
@@ -391,8 +483,42 @@ class Profile(MetadataMixin):
             replacemsg_group: Replacement message group customized for this profile.
             feature_set: Flow/proxy feature set.
             fortisandbox_mode: FortiSandbox scan modes.
+            fortisandbox_max_upload: Maximum size of files that can be uploaded to FortiSandbox in Mbytes.
+            analytics_ignore_filetype: Do not submit files matching this DLP file-pattern to FortiSandbox (post-transfer scan only).
+            analytics_accept_filetype: Only submit files matching this DLP file-pattern to FortiSandbox (post-transfer scan only).
+            analytics_db: Enable/disable using the FortiSandbox signature database to supplement the AV signature databases.
+            mobile_malware_db: Enable/disable using the mobile malware signature database.
+            http: Configure HTTP AntiVirus options.
+            ftp: Configure FTP AntiVirus options.
+            imap: Configure IMAP AntiVirus options.
+            pop3: Configure POP3 AntiVirus options.
+            smtp: Configure SMTP AntiVirus options.
+            mapi: Configure MAPI AntiVirus options.
+            nntp: Configure NNTP AntiVirus options.
+            cifs: Configure CIFS AntiVirus options.
+            ssh: Configure SFTP and SCP AntiVirus options.
+            nac_quar: Configure AntiVirus quarantine settings.
+            content_disarm: AV Content Disarm and Reconstruction settings.
+            outbreak_prevention_archive_scan: Enable/disable outbreak-prevention archive scanning.
+            external_blocklist_enable_all: Enable/disable all external blocklists.
+            external_blocklist: One or more external malware block lists.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            ems_threat_feed: Enable/disable use of EMS threat feed when performing AntiVirus scan. Analyzes files including the content of archives.
+            fortindr_error_action: Action to take if FortiNDR encounters an error.
+            fortindr_timeout_action: Action to take if FortiNDR encounters a scan timeout.
+            fortisandbox_scan_timeout: FortiSandbox inline scan timeout in seconds (30 - 180, default = 60).
+            fortisandbox_error_action: Action to take if FortiSandbox inline scan encounters an error.
+            fortisandbox_timeout_action: Action to take if FortiSandbox inline scan encounters a scan timeout.
+            av_virus_log: Enable/disable AntiVirus logging.
+            extended_log: Enable/disable extended logging for antivirus.
+            scan_mode: Configure scan mode (default or legacy).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -421,9 +547,20 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if external_blocklist is not None:
+            external_blocklist = normalize_table_field(
+                external_blocklist,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_blocklist",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -472,16 +609,22 @@ class Profile(MetadataMixin):
 
         endpoint = "/antivirus/profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete antivirus/profile object.
 
@@ -491,6 +634,7 @@ class Profile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -516,7 +660,7 @@ class Profile(MetadataMixin):
         endpoint = "/antivirus/profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -580,7 +724,42 @@ class Profile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        replacemsg_group: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
+        fortisandbox_mode: Literal["inline", "analytics-suspicious", "analytics-everything"] | None = None,
+        fortisandbox_max_upload: int | None = None,
+        analytics_ignore_filetype: int | None = None,
+        analytics_accept_filetype: int | None = None,
+        analytics_db: Literal["disable", "enable"] | None = None,
+        mobile_malware_db: Literal["disable", "enable"] | None = None,
+        http: str | None = None,
+        ftp: str | None = None,
+        imap: str | None = None,
+        pop3: str | None = None,
+        smtp: str | None = None,
+        mapi: str | None = None,
+        nntp: str | None = None,
+        cifs: str | None = None,
+        ssh: str | None = None,
+        nac_quar: str | None = None,
+        content_disarm: str | None = None,
+        outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = None,
+        external_blocklist_enable_all: Literal["disable", "enable"] | None = None,
+        external_blocklist: str | list[str] | list[dict[str, Any]] | None = None,
+        ems_threat_feed: Literal["disable", "enable"] | None = None,
+        fortindr_error_action: Literal["log-only", "block", "ignore"] | None = None,
+        fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = None,
+        fortisandbox_scan_timeout: int | None = None,
+        fortisandbox_error_action: Literal["log-only", "block", "ignore"] | None = None,
+        fortisandbox_timeout_action: Literal["log-only", "block", "ignore"] | None = None,
+        av_virus_log: Literal["enable", "disable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
+        scan_mode: Literal["default", "legacy"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -591,7 +770,42 @@ class Profile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            replacemsg_group: Field replacemsg-group
+            feature_set: Field feature-set
+            fortisandbox_mode: Field fortisandbox-mode
+            fortisandbox_max_upload: Field fortisandbox-max-upload
+            analytics_ignore_filetype: Field analytics-ignore-filetype
+            analytics_accept_filetype: Field analytics-accept-filetype
+            analytics_db: Field analytics-db
+            mobile_malware_db: Field mobile-malware-db
+            http: Field http
+            ftp: Field ftp
+            imap: Field imap
+            pop3: Field pop3
+            smtp: Field smtp
+            mapi: Field mapi
+            nntp: Field nntp
+            cifs: Field cifs
+            ssh: Field ssh
+            nac_quar: Field nac-quar
+            content_disarm: Field content-disarm
+            outbreak_prevention_archive_scan: Field outbreak-prevention-archive-scan
+            external_blocklist_enable_all: Field external-blocklist-enable-all
+            external_blocklist: Field external-blocklist
+            ems_threat_feed: Field ems-threat-feed
+            fortindr_error_action: Field fortindr-error-action
+            fortindr_timeout_action: Field fortindr-timeout-action
+            fortisandbox_scan_timeout: Field fortisandbox-scan-timeout
+            fortisandbox_error_action: Field fortisandbox-error-action
+            fortisandbox_timeout_action: Field fortisandbox-timeout-action
+            av_virus_log: Field av-virus-log
+            extended_log: Field extended-log
+            scan_mode: Field scan-mode
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -601,7 +815,13 @@ class Profile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.antivirus_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -624,20 +844,55 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            replacemsg_group=replacemsg_group,
+            feature_set=feature_set,
+            fortisandbox_mode=fortisandbox_mode,
+            fortisandbox_max_upload=fortisandbox_max_upload,
+            analytics_ignore_filetype=analytics_ignore_filetype,
+            analytics_accept_filetype=analytics_accept_filetype,
+            analytics_db=analytics_db,
+            mobile_malware_db=mobile_malware_db,
+            http=http,
+            ftp=ftp,
+            imap=imap,
+            pop3=pop3,
+            smtp=smtp,
+            mapi=mapi,
+            nntp=nntp,
+            cifs=cifs,
+            ssh=ssh,
+            nac_quar=nac_quar,
+            content_disarm=content_disarm,
+            outbreak_prevention_archive_scan=outbreak_prevention_archive_scan,
+            external_blocklist_enable_all=external_blocklist_enable_all,
+            external_blocklist=external_blocklist,
+            ems_threat_feed=ems_threat_feed,
+            fortindr_error_action=fortindr_error_action,
+            fortindr_timeout_action=fortindr_timeout_action,
+            fortisandbox_scan_timeout=fortisandbox_scan_timeout,
+            fortisandbox_error_action=fortisandbox_error_action,
+            fortisandbox_timeout_action=fortisandbox_timeout_action,
+            av_virus_log=av_virus_log,
+            extended_log=extended_log,
+            scan_mode=scan_mode,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

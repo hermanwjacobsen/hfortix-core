@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_link_monitor.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_link_monitor.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,48 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class LinkMonitor(MetadataMixin):
+class LinkMonitor(CRUDEndpoint, MetadataMixin):
     """LinkMonitor Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "link_monitor"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server": {
+            "mkey": "address",
+            "required_fields": ['address'],
+            "example": "[{'address': 'value'}]",
+        },
+        "route": {
+            "mkey": "subnet",
+            "required_fields": ['subnet'],
+            "example": "[{'subnet': 'value'}]",
+        },
+        "server_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'dst'],
+            "example": "[{'id': 1, 'dst': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +99,11 @@ class LinkMonitor(MetadataMixin):
         """Initialize LinkMonitor endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +113,9 @@ class LinkMonitor(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/link_monitor configuration.
 
@@ -99,6 +141,7 @@ class LinkMonitor(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +198,14 @@ class LinkMonitor(MetadataMixin):
         
         if name:
             endpoint = "/system/link-monitor/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/link-monitor"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +246,11 @@ class LinkMonitor(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -209,12 +259,12 @@ class LinkMonitor(MetadataMixin):
         srcintf: str | None = None,
         server_config: Literal["default", "individual"] | None = None,
         server_type: Literal["static", "dynamic"] | None = None,
-        server: str | list | None = None,
-        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list | None = None,
+        server: str | list[str] | list[dict[str, Any]] | None = None,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = None,
         port: int | None = None,
         gateway_ip: str | None = None,
         gateway_ip6: str | None = None,
-        route: str | list | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
         http_get: str | None = None,
@@ -237,11 +287,12 @@ class LinkMonitor(MetadataMixin):
         diffservcode: str | None = None,
         class_id: int | None = None,
         service_detection: Literal["enable", "disable"] | None = None,
-        server_list: str | list | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/link_monitor object.
 
@@ -254,8 +305,51 @@ class LinkMonitor(MetadataMixin):
             srcintf: Interface that receives the traffic to be monitored.
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
+            server: IP address of the server(s) to be monitored.
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
+            protocol: Protocols used to monitor the server.
+            port: Port number of the traffic to be used to monitor the server.
+            gateway_ip: Gateway IP address used to probe the server.
+            gateway_ip6: Gateway IPv6 address used to probe the server.
+            route: Subnet to monitor.
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
+            source_ip: Source IP address used in packet to the server.
+            source_ip6: Source IPv6 address used in packet to the server.
+            http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
+            http_agent: String in the http-agent field in the HTTP header.
+            http_match: String that you expect to see in the HTTP-GET requests of the traffic to be monitored.
+            interval: Detection interval in milliseconds (20 - 3600 * 1000 msec, default = 500).
+            probe_timeout: Time to wait before a probe packet is considered lost (20 - 5000 msec, default = 500).
+            failtime: Number of retry attempts before the server is considered down (1 - 3600, default = 5).
+            recoverytime: Number of successful responses received before server is considered recovered (1 - 3600, default = 5).
+            probe_count: Number of most recent probes that should be used to calculate latency and jitter (5 - 30, default = 30).
+            security_mode: Twamp controller security mode.
+            password: TWAMP controller password in authentication mode.
+            packet_size: Packet size of a TWAMP test session (124/158 - 1024).
+            ha_priority: HA election priority (1 - 50).
+            fail_weight: Threshold weight to trigger link failure alert.
+            update_cascade_interface: Enable/disable update cascade interface.
+            update_static_route: Enable/disable updating the static route.
+            update_policy_route: Enable/disable updating the policy route.
+            status: Enable/disable this link monitor.
+            diffservcode: Differentiated services code point (DSCP) in the IP header of the probe packet.
+            class_id: Traffic class ID.
+            service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
+            server_list: Servers for link-monitor to monitor.
+                Default format: [{'id': 1, 'dst': 'value'}]
+                Required format: List of dicts with keys: id, dst
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -282,9 +376,36 @@ class LinkMonitor(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server is not None:
+            server = normalize_table_field(
+                server,
+                mkey="address",
+                required_fields=['address'],
+                field_name="server",
+                example="[{'address': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="route",
+                example="[{'subnet': 'value'}]",
+            )
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['id', 'dst'],
+                field_name="server_list",
+                example="[{'id': 1, 'dst': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             addr_mode=addr_mode,
             srcintf=srcintf,
@@ -338,9 +459,14 @@ class LinkMonitor(MetadataMixin):
         endpoint = "/system/link-monitor/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -349,12 +475,12 @@ class LinkMonitor(MetadataMixin):
         srcintf: str | None = None,
         server_config: Literal["default", "individual"] | None = None,
         server_type: Literal["static", "dynamic"] | None = None,
-        server: str | list | None = None,
-        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list | None = None,
+        server: str | list[str] | list[dict[str, Any]] | None = None,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = None,
         port: int | None = None,
         gateway_ip: str | None = None,
         gateway_ip6: str | None = None,
-        route: str | list | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
         http_get: str | None = None,
@@ -377,11 +503,12 @@ class LinkMonitor(MetadataMixin):
         diffservcode: str | None = None,
         class_id: int | None = None,
         service_detection: Literal["enable", "disable"] | None = None,
-        server_list: str | list | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/link_monitor object.
 
@@ -394,8 +521,51 @@ class LinkMonitor(MetadataMixin):
             srcintf: Interface that receives the traffic to be monitored.
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
+            server: IP address of the server(s) to be monitored.
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
+            protocol: Protocols used to monitor the server.
+            port: Port number of the traffic to be used to monitor the server.
+            gateway_ip: Gateway IP address used to probe the server.
+            gateway_ip6: Gateway IPv6 address used to probe the server.
+            route: Subnet to monitor.
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
+            source_ip: Source IP address used in packet to the server.
+            source_ip6: Source IPv6 address used in packet to the server.
+            http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
+            http_agent: String in the http-agent field in the HTTP header.
+            http_match: String that you expect to see in the HTTP-GET requests of the traffic to be monitored.
+            interval: Detection interval in milliseconds (20 - 3600 * 1000 msec, default = 500).
+            probe_timeout: Time to wait before a probe packet is considered lost (20 - 5000 msec, default = 500).
+            failtime: Number of retry attempts before the server is considered down (1 - 3600, default = 5).
+            recoverytime: Number of successful responses received before server is considered recovered (1 - 3600, default = 5).
+            probe_count: Number of most recent probes that should be used to calculate latency and jitter (5 - 30, default = 30).
+            security_mode: Twamp controller security mode.
+            password: TWAMP controller password in authentication mode.
+            packet_size: Packet size of a TWAMP test session (124/158 - 1024).
+            ha_priority: HA election priority (1 - 50).
+            fail_weight: Threshold weight to trigger link failure alert.
+            update_cascade_interface: Enable/disable update cascade interface.
+            update_static_route: Enable/disable updating the static route.
+            update_policy_route: Enable/disable updating the policy route.
+            status: Enable/disable this link monitor.
+            diffservcode: Differentiated services code point (DSCP) in the IP header of the probe packet.
+            class_id: Traffic class ID.
+            service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
+            server_list: Servers for link-monitor to monitor.
+                Default format: [{'id': 1, 'dst': 'value'}]
+                Required format: List of dicts with keys: id, dst
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -424,9 +594,36 @@ class LinkMonitor(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server is not None:
+            server = normalize_table_field(
+                server,
+                mkey="address",
+                required_fields=['address'],
+                field_name="server",
+                example="[{'address': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="route",
+                example="[{'subnet': 'value'}]",
+            )
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['id', 'dst'],
+                field_name="server_list",
+                example="[{'id': 1, 'dst': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             addr_mode=addr_mode,
             srcintf=srcintf,
@@ -476,16 +673,22 @@ class LinkMonitor(MetadataMixin):
 
         endpoint = "/system/link-monitor"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/link_monitor object.
 
@@ -495,6 +698,7 @@ class LinkMonitor(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -520,7 +724,7 @@ class LinkMonitor(MetadataMixin):
         endpoint = "/system/link-monitor/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -584,7 +788,43 @@ class LinkMonitor(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        addr_mode: Literal["ipv4", "ipv6"] | None = None,
+        srcintf: str | None = None,
+        server_config: Literal["default", "individual"] | None = None,
+        server_type: Literal["static", "dynamic"] | None = None,
+        server: str | list[str] | list[dict[str, Any]] | None = None,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | list[dict[str, Any]] | None = None,
+        port: int | None = None,
+        gateway_ip: str | None = None,
+        gateway_ip6: str | None = None,
+        route: str | list[str] | list[dict[str, Any]] | None = None,
+        source_ip: str | None = None,
+        source_ip6: str | None = None,
+        http_get: str | None = None,
+        http_agent: str | None = None,
+        http_match: str | None = None,
+        interval: int | None = None,
+        probe_timeout: int | None = None,
+        failtime: int | None = None,
+        recoverytime: int | None = None,
+        probe_count: int | None = None,
+        security_mode: Literal["none", "authentication"] | None = None,
+        password: Any | None = None,
+        packet_size: int | None = None,
+        ha_priority: int | None = None,
+        fail_weight: int | None = None,
+        update_cascade_interface: Literal["enable", "disable"] | None = None,
+        update_static_route: Literal["enable", "disable"] | None = None,
+        update_policy_route: Literal["enable", "disable"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        diffservcode: str | None = None,
+        class_id: int | None = None,
+        service_detection: Literal["enable", "disable"] | None = None,
+        server_list: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -595,7 +835,43 @@ class LinkMonitor(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            addr_mode: Field addr-mode
+            srcintf: Field srcintf
+            server_config: Field server-config
+            server_type: Field server-type
+            server: Field server
+            protocol: Field protocol
+            port: Field port
+            gateway_ip: Field gateway-ip
+            gateway_ip6: Field gateway-ip6
+            route: Field route
+            source_ip: Field source-ip
+            source_ip6: Field source-ip6
+            http_get: Field http-get
+            http_agent: Field http-agent
+            http_match: Field http-match
+            interval: Field interval
+            probe_timeout: Field probe-timeout
+            failtime: Field failtime
+            recoverytime: Field recoverytime
+            probe_count: Field probe-count
+            security_mode: Field security-mode
+            password: Field password
+            packet_size: Field packet-size
+            ha_priority: Field ha-priority
+            fail_weight: Field fail-weight
+            update_cascade_interface: Field update-cascade-interface
+            update_static_route: Field update-static-route
+            update_policy_route: Field update-policy-route
+            status: Field status
+            diffservcode: Field diffservcode
+            class_id: Field class-id
+            service_detection: Field service-detection
+            server_list: Field server-list
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -605,7 +881,13 @@ class LinkMonitor(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_link_monitor.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -628,20 +910,56 @@ class LinkMonitor(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            addr_mode=addr_mode,
+            srcintf=srcintf,
+            server_config=server_config,
+            server_type=server_type,
+            server=server,
+            protocol=protocol,
+            port=port,
+            gateway_ip=gateway_ip,
+            gateway_ip6=gateway_ip6,
+            route=route,
+            source_ip=source_ip,
+            source_ip6=source_ip6,
+            http_get=http_get,
+            http_agent=http_agent,
+            http_match=http_match,
+            interval=interval,
+            probe_timeout=probe_timeout,
+            failtime=failtime,
+            recoverytime=recoverytime,
+            probe_count=probe_count,
+            security_mode=security_mode,
+            password=password,
+            packet_size=packet_size,
+            ha_priority=ha_priority,
+            fail_weight=fail_weight,
+            update_cascade_interface=update_cascade_interface,
+            update_static_route=update_static_route,
+            update_policy_route=update_policy_route,
+            status=status,
+            diffservcode=diffservcode,
+            class_id=class_id,
+            service_detection=service_detection,
+            server_list=server_list,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

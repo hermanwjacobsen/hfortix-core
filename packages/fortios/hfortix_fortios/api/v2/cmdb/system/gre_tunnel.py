@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_gre_tunnel.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_gre_tunnel.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class GreTunnel(MetadataMixin):
+class GreTunnel(CRUDEndpoint, MetadataMixin):
     """GreTunnel Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class GreTunnel(MetadataMixin):
         """Initialize GreTunnel endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class GreTunnel(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/gre_tunnel configuration.
 
@@ -99,6 +118,7 @@ class GreTunnel(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class GreTunnel(MetadataMixin):
         
         if name:
             endpoint = "/system/gre-tunnel/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/gre-tunnel"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class GreTunnel(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -224,8 +251,9 @@ class GreTunnel(MetadataMixin):
         keepalive_failtimes: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/gre_tunnel object.
 
@@ -238,8 +266,22 @@ class GreTunnel(MetadataMixin):
             ip_version: IP version to use for VPN interface.
             remote_gw6: IPv6 address of the remote gateway.
             local_gw6: IPv6 address of the local gateway.
+            remote_gw: IP address of the remote gateway.
+            local_gw: IP address of the local gateway.
+            use_sdwan: Enable/disable use of SD-WAN to reach remote gateway.
+            sequence_number_transmission: Enable/disable including of sequence numbers in transmitted GRE packets.
+            sequence_number_reception: Enable/disable validating sequence numbers in received GRE packets.
+            checksum_transmission: Enable/disable including checksums in transmitted GRE packets.
+            checksum_reception: Enable/disable validating checksums in received GRE packets.
+            key_outbound: Include this key in transmitted GRE packets (0 - 4294967295).
+            key_inbound: Require received GRE packets contain this key (0 - 4294967295).
+            dscp_copying: Enable/disable DSCP copying.
+            diffservcode: DiffServ setting to be applied to GRE tunnel outer IP header.
+            keepalive_interval: Keepalive message interval (0 - 32767, 0 = disabled).
+            keepalive_failtimes: Number of consecutive unreturned keepalive messages before a GRE connection is considered down (1 - 255).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -266,9 +308,10 @@ class GreTunnel(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             ip_version=ip_version,
@@ -306,9 +349,14 @@ class GreTunnel(MetadataMixin):
         endpoint = "/system/gre-tunnel/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -332,8 +380,9 @@ class GreTunnel(MetadataMixin):
         keepalive_failtimes: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/gre_tunnel object.
 
@@ -346,8 +395,22 @@ class GreTunnel(MetadataMixin):
             ip_version: IP version to use for VPN interface.
             remote_gw6: IPv6 address of the remote gateway.
             local_gw6: IPv6 address of the local gateway.
+            remote_gw: IP address of the remote gateway.
+            local_gw: IP address of the local gateway.
+            use_sdwan: Enable/disable use of SD-WAN to reach remote gateway.
+            sequence_number_transmission: Enable/disable including of sequence numbers in transmitted GRE packets.
+            sequence_number_reception: Enable/disable validating sequence numbers in received GRE packets.
+            checksum_transmission: Enable/disable including checksums in transmitted GRE packets.
+            checksum_reception: Enable/disable validating checksums in received GRE packets.
+            key_outbound: Include this key in transmitted GRE packets (0 - 4294967295).
+            key_inbound: Require received GRE packets contain this key (0 - 4294967295).
+            dscp_copying: Enable/disable DSCP copying.
+            diffservcode: DiffServ setting to be applied to GRE tunnel outer IP header.
+            keepalive_interval: Keepalive message interval (0 - 32767, 0 = disabled).
+            keepalive_failtimes: Number of consecutive unreturned keepalive messages before a GRE connection is considered down (1 - 255).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -376,9 +439,10 @@ class GreTunnel(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             ip_version=ip_version,
@@ -412,16 +476,22 @@ class GreTunnel(MetadataMixin):
 
         endpoint = "/system/gre-tunnel"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/gre_tunnel object.
 
@@ -431,6 +501,7 @@ class GreTunnel(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -456,7 +527,7 @@ class GreTunnel(MetadataMixin):
         endpoint = "/system/gre-tunnel/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -520,7 +591,27 @@ class GreTunnel(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        interface: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
+        remote_gw6: str | None = None,
+        local_gw6: str | None = None,
+        remote_gw: str | None = None,
+        local_gw: str | None = None,
+        use_sdwan: Literal["disable", "enable"] | None = None,
+        sequence_number_transmission: Literal["disable", "enable"] | None = None,
+        sequence_number_reception: Literal["disable", "enable"] | None = None,
+        checksum_transmission: Literal["disable", "enable"] | None = None,
+        checksum_reception: Literal["disable", "enable"] | None = None,
+        key_outbound: int | None = None,
+        key_inbound: int | None = None,
+        dscp_copying: Literal["disable", "enable"] | None = None,
+        diffservcode: str | None = None,
+        keepalive_interval: int | None = None,
+        keepalive_failtimes: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -531,7 +622,27 @@ class GreTunnel(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            interface: Field interface
+            ip_version: Field ip-version
+            remote_gw6: Field remote-gw6
+            local_gw6: Field local-gw6
+            remote_gw: Field remote-gw
+            local_gw: Field local-gw
+            use_sdwan: Field use-sdwan
+            sequence_number_transmission: Field sequence-number-transmission
+            sequence_number_reception: Field sequence-number-reception
+            checksum_transmission: Field checksum-transmission
+            checksum_reception: Field checksum-reception
+            key_outbound: Field key-outbound
+            key_inbound: Field key-inbound
+            dscp_copying: Field dscp-copying
+            diffservcode: Field diffservcode
+            keepalive_interval: Field keepalive-interval
+            keepalive_failtimes: Field keepalive-failtimes
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -541,7 +652,13 @@ class GreTunnel(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_gre_tunnel.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -564,20 +681,40 @@ class GreTunnel(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            interface=interface,
+            ip_version=ip_version,
+            remote_gw6=remote_gw6,
+            local_gw6=local_gw6,
+            remote_gw=remote_gw,
+            local_gw=local_gw,
+            use_sdwan=use_sdwan,
+            sequence_number_transmission=sequence_number_transmission,
+            sequence_number_reception=sequence_number_reception,
+            checksum_transmission=checksum_transmission,
+            checksum_reception=checksum_reception,
+            key_outbound=key_outbound,
+            key_inbound=key_inbound,
+            dscp_copying=dscp_copying,
+            diffservcode=diffservcode,
+            keepalive_interval=keepalive_interval,
+            keepalive_failtimes=keepalive_failtimes,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

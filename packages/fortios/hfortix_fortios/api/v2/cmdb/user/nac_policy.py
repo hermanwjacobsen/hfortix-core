@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_nac_policy.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_nac_policy.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class NacPolicy(MetadataMixin):
+class NacPolicy(CRUDEndpoint, MetadataMixin):
     """NacPolicy Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "nac_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "severity": {
+            "mkey": "severity-num",
+            "required_fields": ['severity-num'],
+            "example": "[{'severity-num': 1}]",
+        },
+        "switch_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class NacPolicy(MetadataMixin):
         """Initialize NacPolicy endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class NacPolicy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/nac_policy configuration.
 
@@ -99,6 +136,7 @@ class NacPolicy(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class NacPolicy(MetadataMixin):
         
         if name:
             endpoint = "/user/nac-policy/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/nac-policy"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class NacPolicy(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -224,16 +269,17 @@ class NacPolicy(MetadataMixin):
         user_group: str | None = None,
         ems_tag: str | None = None,
         fortivoice_tag: str | None = None,
-        severity: str | list | None = None,
+        severity: str | list[str] | list[dict[str, Any]] | None = None,
         switch_fortilink: str | None = None,
-        switch_group: str | list | None = None,
+        switch_group: str | list[str] | list[dict[str, Any]] | None = None,
         switch_mac_policy: str | None = None,
         firewall_address: str | None = None,
         ssid_policy: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/nac_policy object.
 
@@ -246,8 +292,40 @@ class NacPolicy(MetadataMixin):
             category: Category of NAC policy.
             status: Enable/disable NAC policy.
             match_type: Match and retain the devices based on the type.
+            match_period: Number of days the matched devices will be retained (0 - always retain)
+            match_remove: Options to remove the matched override devices.
+            mac: NAC policy matching MAC address.
+            hw_vendor: NAC policy matching hardware vendor.
+            type: NAC policy matching type.
+            family: NAC policy matching family.
+            os: NAC policy matching operating system.
+            hw_version: NAC policy matching hardware version.
+            sw_version: NAC policy matching software version.
+            host: NAC policy matching host.
+            user: NAC policy matching user.
+            src: NAC policy matching source.
+            user_group: NAC policy matching user group.
+            ems_tag: NAC policy matching EMS tag.
+            fortivoice_tag: NAC policy matching FortiVoice tag.
+            severity: NAC policy matching devices vulnerability severity lists.
+                Default format: [{'severity-num': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'severity-num': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'severity-num': 'val1'}, ...]
+                  - List of dicts: [{'severity-num': 1}] (recommended)
+            switch_fortilink: FortiLink interface for which this NAC policy belongs to.
+            switch_group: List of managed FortiSwitch groups on which NAC policy can be applied.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            switch_mac_policy: Switch MAC policy action to be applied on the matched NAC policy.
+            firewall_address: Dynamic firewall address to associate MAC which match this policy.
+            ssid_policy: SSID policy to be applied on the matched NAC policy.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -274,9 +352,28 @@ class NacPolicy(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if severity is not None:
+            severity = normalize_table_field(
+                severity,
+                mkey="severity-num",
+                required_fields=['severity-num'],
+                field_name="severity",
+                example="[{'severity-num': 1}]",
+            )
+        if switch_group is not None:
+            switch_group = normalize_table_field(
+                switch_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="switch_group",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             category=category,
@@ -322,9 +419,14 @@ class NacPolicy(MetadataMixin):
         endpoint = "/user/nac-policy/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -348,16 +450,17 @@ class NacPolicy(MetadataMixin):
         user_group: str | None = None,
         ems_tag: str | None = None,
         fortivoice_tag: str | None = None,
-        severity: str | list | None = None,
+        severity: str | list[str] | list[dict[str, Any]] | None = None,
         switch_fortilink: str | None = None,
-        switch_group: str | list | None = None,
+        switch_group: str | list[str] | list[dict[str, Any]] | None = None,
         switch_mac_policy: str | None = None,
         firewall_address: str | None = None,
         ssid_policy: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/nac_policy object.
 
@@ -370,8 +473,40 @@ class NacPolicy(MetadataMixin):
             category: Category of NAC policy.
             status: Enable/disable NAC policy.
             match_type: Match and retain the devices based on the type.
+            match_period: Number of days the matched devices will be retained (0 - always retain)
+            match_remove: Options to remove the matched override devices.
+            mac: NAC policy matching MAC address.
+            hw_vendor: NAC policy matching hardware vendor.
+            type: NAC policy matching type.
+            family: NAC policy matching family.
+            os: NAC policy matching operating system.
+            hw_version: NAC policy matching hardware version.
+            sw_version: NAC policy matching software version.
+            host: NAC policy matching host.
+            user: NAC policy matching user.
+            src: NAC policy matching source.
+            user_group: NAC policy matching user group.
+            ems_tag: NAC policy matching EMS tag.
+            fortivoice_tag: NAC policy matching FortiVoice tag.
+            severity: NAC policy matching devices vulnerability severity lists.
+                Default format: [{'severity-num': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'severity-num': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'severity-num': 'val1'}, ...]
+                  - List of dicts: [{'severity-num': 1}] (recommended)
+            switch_fortilink: FortiLink interface for which this NAC policy belongs to.
+            switch_group: List of managed FortiSwitch groups on which NAC policy can be applied.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            switch_mac_policy: Switch MAC policy action to be applied on the matched NAC policy.
+            firewall_address: Dynamic firewall address to associate MAC which match this policy.
+            ssid_policy: SSID policy to be applied on the matched NAC policy.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -400,9 +535,28 @@ class NacPolicy(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if severity is not None:
+            severity = normalize_table_field(
+                severity,
+                mkey="severity-num",
+                required_fields=['severity-num'],
+                field_name="severity",
+                example="[{'severity-num': 1}]",
+            )
+        if switch_group is not None:
+            switch_group = normalize_table_field(
+                switch_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="switch_group",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             category=category,
@@ -444,16 +598,22 @@ class NacPolicy(MetadataMixin):
 
         endpoint = "/user/nac-policy"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/nac_policy object.
 
@@ -463,6 +623,7 @@ class NacPolicy(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -488,7 +649,7 @@ class NacPolicy(MetadataMixin):
         endpoint = "/user/nac-policy/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -552,7 +713,35 @@ class NacPolicy(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        description: str | None = None,
+        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        match_type: Literal["dynamic", "override"] | None = None,
+        match_period: int | None = None,
+        match_remove: Literal["default", "link-down"] | None = None,
+        mac: str | None = None,
+        hw_vendor: str | None = None,
+        type: str | None = None,
+        family: str | None = None,
+        os: str | None = None,
+        hw_version: str | None = None,
+        sw_version: str | None = None,
+        host: str | None = None,
+        user: str | None = None,
+        src: str | None = None,
+        user_group: str | None = None,
+        ems_tag: str | None = None,
+        fortivoice_tag: str | None = None,
+        severity: str | list[str] | list[dict[str, Any]] | None = None,
+        switch_fortilink: str | None = None,
+        switch_group: str | list[str] | list[dict[str, Any]] | None = None,
+        switch_mac_policy: str | None = None,
+        firewall_address: str | None = None,
+        ssid_policy: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -563,7 +752,35 @@ class NacPolicy(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            description: Field description
+            category: Field category
+            status: Field status
+            match_type: Field match-type
+            match_period: Field match-period
+            match_remove: Field match-remove
+            mac: Field mac
+            hw_vendor: Field hw-vendor
+            type: Field type
+            family: Field family
+            os: Field os
+            hw_version: Field hw-version
+            sw_version: Field sw-version
+            host: Field host
+            user: Field user
+            src: Field src
+            user_group: Field user-group
+            ems_tag: Field ems-tag
+            fortivoice_tag: Field fortivoice-tag
+            severity: Field severity
+            switch_fortilink: Field switch-fortilink
+            switch_group: Field switch-group
+            switch_mac_policy: Field switch-mac-policy
+            firewall_address: Field firewall-address
+            ssid_policy: Field ssid-policy
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -573,7 +790,13 @@ class NacPolicy(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_nac_policy.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -596,20 +819,48 @@ class NacPolicy(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            description=description,
+            category=category,
+            status=status,
+            match_type=match_type,
+            match_period=match_period,
+            match_remove=match_remove,
+            mac=mac,
+            hw_vendor=hw_vendor,
+            type=type,
+            family=family,
+            os=os,
+            hw_version=hw_version,
+            sw_version=sw_version,
+            host=host,
+            user=user,
+            src=src,
+            user_group=user_group,
+            ems_tag=ems_tag,
+            fortivoice_tag=fortivoice_tag,
+            severity=severity,
+            switch_fortilink=switch_fortilink,
+            switch_group=switch_group,
+            switch_mac_policy=switch_mac_policy,
+            firewall_address=firewall_address,
+            ssid_policy=ssid_policy,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

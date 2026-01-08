@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.vpn_ipsec_manualkey_interface.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.vpn_ipsec_manualkey_interface.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ManualkeyInterface(MetadataMixin):
+class ManualkeyInterface(CRUDEndpoint, MetadataMixin):
     """ManualkeyInterface Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class ManualkeyInterface(MetadataMixin):
         """Initialize ManualkeyInterface endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class ManualkeyInterface(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve vpn/ipsec/manualkey_interface configuration.
 
@@ -99,6 +118,7 @@ class ManualkeyInterface(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class ManualkeyInterface(MetadataMixin):
         
         if name:
             endpoint = "/vpn.ipsec/manualkey-interface/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/vpn.ipsec/manualkey-interface"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class ManualkeyInterface(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -221,8 +248,9 @@ class ManualkeyInterface(MetadataMixin):
         npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing vpn/ipsec/manualkey_interface object.
 
@@ -235,8 +263,19 @@ class ManualkeyInterface(MetadataMixin):
             ip_version: IP version to use for VPN interface.
             addr_type: IP version to use for IP packets.
             remote_gw: IPv4 address of the remote gateway's external interface.
+            remote_gw6: Remote IPv6 address of VPN gateway.
+            local_gw: IPv4 address of the local gateway's external interface.
+            local_gw6: Local IPv6 address of VPN gateway.
+            auth_alg: Authentication algorithm. Must be the same for both ends of the tunnel.
+            enc_alg: Encryption algorithm. Must be the same for both ends of the tunnel.
+            auth_key: Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.
+            enc_key: Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.
+            local_spi: Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.
+            remote_spi: Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.
+            npu_offload: Enable/disable offloading IPsec VPN manual key sessions to NPUs.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -263,9 +302,10 @@ class ManualkeyInterface(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             ip_version=ip_version,
@@ -300,9 +340,14 @@ class ManualkeyInterface(MetadataMixin):
         endpoint = "/vpn.ipsec/manualkey-interface/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -323,8 +368,9 @@ class ManualkeyInterface(MetadataMixin):
         npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new vpn/ipsec/manualkey_interface object.
 
@@ -337,8 +383,19 @@ class ManualkeyInterface(MetadataMixin):
             ip_version: IP version to use for VPN interface.
             addr_type: IP version to use for IP packets.
             remote_gw: IPv4 address of the remote gateway's external interface.
+            remote_gw6: Remote IPv6 address of VPN gateway.
+            local_gw: IPv4 address of the local gateway's external interface.
+            local_gw6: Local IPv6 address of VPN gateway.
+            auth_alg: Authentication algorithm. Must be the same for both ends of the tunnel.
+            enc_alg: Encryption algorithm. Must be the same for both ends of the tunnel.
+            auth_key: Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.
+            enc_key: Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.
+            local_spi: Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.
+            remote_spi: Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.
+            npu_offload: Enable/disable offloading IPsec VPN manual key sessions to NPUs.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -367,9 +424,10 @@ class ManualkeyInterface(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             ip_version=ip_version,
@@ -400,16 +458,22 @@ class ManualkeyInterface(MetadataMixin):
 
         endpoint = "/vpn.ipsec/manualkey-interface"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete vpn/ipsec/manualkey_interface object.
 
@@ -419,6 +483,7 @@ class ManualkeyInterface(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -444,7 +509,7 @@ class ManualkeyInterface(MetadataMixin):
         endpoint = "/vpn.ipsec/manualkey-interface/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -508,7 +573,24 @@ class ManualkeyInterface(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        interface: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
+        addr_type: Literal["4", "6"] | None = None,
+        remote_gw: str | None = None,
+        remote_gw6: str | None = None,
+        local_gw: str | None = None,
+        local_gw6: str | None = None,
+        auth_alg: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = None,
+        enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = None,
+        auth_key: str | None = None,
+        enc_key: str | None = None,
+        local_spi: str | None = None,
+        remote_spi: str | None = None,
+        npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -519,7 +601,24 @@ class ManualkeyInterface(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            interface: Field interface
+            ip_version: Field ip-version
+            addr_type: Field addr-type
+            remote_gw: Field remote-gw
+            remote_gw6: Field remote-gw6
+            local_gw: Field local-gw
+            local_gw6: Field local-gw6
+            auth_alg: Field auth-alg
+            enc_alg: Field enc-alg
+            auth_key: Field auth-key
+            enc_key: Field enc-key
+            local_spi: Field local-spi
+            remote_spi: Field remote-spi
+            npu_offload: Field npu-offload
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -529,7 +628,13 @@ class ManualkeyInterface(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.vpn_ipsec_manualkey_interface.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -552,20 +657,37 @@ class ManualkeyInterface(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            interface=interface,
+            ip_version=ip_version,
+            addr_type=addr_type,
+            remote_gw=remote_gw,
+            remote_gw6=remote_gw6,
+            local_gw=local_gw,
+            local_gw6=local_gw6,
+            auth_alg=auth_alg,
+            enc_alg=enc_alg,
+            auth_key=auth_key,
+            enc_key=enc_key,
+            local_spi=local_spi,
+            remote_spi=remote_spi,
+            npu_offload=npu_offload,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

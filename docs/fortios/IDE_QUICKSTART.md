@@ -33,6 +33,11 @@ policy.action     # "accept"
 policy.status     # "enable"
 policy.srcaddr    # ["addr1", "addr2"] - auto-flattened!
 
+# ✅ NEW in v0.5.17: Access raw JSON with .json property
+policy.json       # Complete dict: {'name': 'Allow-Web', 'policyid': 1, ...}
+delete_result = fgt.api.cmdb.firewall.policy.delete(policyid=1, response_mode="object")
+delete_result.json  # {'http_method': 'DELETE', 'status': 'success', 'http_status': 200, ...}
+
 # Access any field dynamically - works for ALL endpoints
 address = fgt.api.cmdb.firewall.address.get(name="web-server")
 address.name      # "web-server"
@@ -141,6 +146,66 @@ try:
 except ResourceNotFoundError as e:
     error: FortiOSErrorResponse = e.response  # type: ignore
     print(f"Error {error['error']}: {error.get('message')}")
+```
+
+### Pattern 4: Custom Aliases with Autocomplete (NEW in v0.5.17)
+```python
+from hfortix_fortios import FortiOS
+
+fgt = FortiOS(..., response_mode="object")
+
+# Create shortcuts - autocomplete still works!
+fgt.createFirewallPolicy = fgt.api.cmdb.firewall.policy.post
+fgt.getFirewallPolicies = fgt.api.cmdb.firewall.policy.get
+fgt.deleteFirewallPolicy = fgt.api.cmdb.firewall.policy.delete
+
+# Use shortcuts with full autocomplete
+policies = fgt.getFirewallPolicies()  # ✅ All params autocomplete
+
+new_policy = fgt.createFirewallPolicy(  # ✅ All params autocomplete
+    name="test",
+    srcaddr="all",
+    dstaddr="all",
+    service="ALL",
+    schedule="always"
+)
+
+# Access raw JSON
+delete_result = fgt.deleteFirewallPolicy(policyid=123)
+print(delete_result.json)  # {'status': 'success', 'http_status': 200, ...}
+```
+
+### Pattern 5: Custom Helper Class (Advanced)
+```python
+from typing import overload, Literal, Any
+from hfortix_fortios import FortiOS
+from hfortix_fortios.api.v2.cmdb.firewall.policy import PolicyObject
+
+class MyFortiGate:
+    """Custom FortiGate client with shortcuts and autocomplete"""
+    
+    def __init__(self, host: str, token: str, **kwargs):
+        self.fgt = FortiOS(host=host, token=token, **kwargs)
+        self.api = self.fgt.api  # Full API still available
+    
+    @overload
+    def createFirewallPolicy(
+        self, *, name: str, srcaddr: str = "all",
+        dstaddr: str = "all", service: str = "ALL",
+        response_mode: Literal["object"] = ..., **kwargs
+    ) -> PolicyObject: ...
+    
+    def createFirewallPolicy(self, **kwargs):
+        """Create policy with sensible defaults"""
+        return self.fgt.api.cmdb.firewall.policy.post(**kwargs)
+    
+    def getFirewallPolicies(self) -> list[PolicyObject]:
+        """Get all firewall policies"""
+        return self.fgt.api.cmdb.firewall.policy.get()
+
+# Perfect autocomplete on custom methods!
+fgt = MyFortiGate(host="...", token="...")
+policies = fgt.getFirewallPolicies()  # ✅ Autocompletes
 ```
 
 ---
@@ -266,6 +331,15 @@ A: Install mypy (`pip install mypy`) and configure `mypy.ini`
 
 **Q: Can I mix dict and object modes?**  
 A: Yes! Set globally or override per-call with `response_mode` parameter.
+
+**Q: How do I access raw JSON when using object mode?**  
+A: Use the `.json` property: `obj.json` returns the complete dict.
+
+**Q: Do custom aliases keep autocomplete?**  
+A: Yes! `fgt.myShortcut = fgt.api.some.method` preserves all type hints and autocomplete.
+
+**Q: Can I create my own autocomplete?**  
+A: Yes! Create a custom class with type hints, or use TypedDict for configurations. See Pattern 4 & 5 above.
 
 ---
 

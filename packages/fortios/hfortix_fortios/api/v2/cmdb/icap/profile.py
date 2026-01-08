@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.icap_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.icap_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Profile(MetadataMixin):
+class Profile(CRUDEndpoint, MetadataMixin):
     """Profile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "icap_headers": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "respmod_forward_rules": {
+            "mkey": "name",
+            "required_fields": ['host'],
+            "example": "[{'host': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Profile(MetadataMixin):
         """Initialize Profile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve icap/profile configuration.
 
@@ -99,6 +136,7 @@ class Profile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class Profile(MetadataMixin):
         
         if name:
             endpoint = "/icap/profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/icap/profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class Profile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -209,7 +254,7 @@ class Profile(MetadataMixin):
         comment: str | None = None,
         request: Literal["disable", "enable"] | None = None,
         response: Literal["disable", "enable"] | None = None,
-        file_transfer: Literal["ssh", "ftp"] | list | None = None,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = None,
         streaming_content_bypass: Literal["disable", "enable"] | None = None,
         ocr_only: Literal["disable", "enable"] | None = None,
         size_limit_204: int | None = None,
@@ -225,20 +270,21 @@ class Profile(MetadataMixin):
         request_path: str | None = None,
         response_path: str | None = None,
         file_transfer_path: str | None = None,
-        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list | None = None,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = None,
         response_req_hdr: Literal["disable", "enable"] | None = None,
         respmod_default_action: Literal["forward", "bypass"] | None = None,
         icap_block_log: Literal["disable", "enable"] | None = None,
         chunk_encap: Literal["disable", "enable"] | None = None,
-        extension_feature: Literal["scan-progress"] | list | None = None,
+        extension_feature: Literal["scan-progress"] | list[str] | None = None,
         scan_progress_interval: int | None = None,
         timeout: int | None = None,
-        icap_headers: str | list | None = None,
-        respmod_forward_rules: str | list | None = None,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing icap/profile object.
 
@@ -251,8 +297,45 @@ class Profile(MetadataMixin):
             comment: Comment.
             request: Enable/disable whether an HTTP request is passed to an ICAP server.
             response: Enable/disable whether an HTTP response is passed to an ICAP server.
+            file_transfer: Configure the file transfer protocols to pass transferred files to an ICAP server as REQMOD.
+            streaming_content_bypass: Enable/disable bypassing of ICAP server for streaming content.
+            ocr_only: Enable/disable this FortiGate unit to submit only OCR interested content to the ICAP server.
+            size_limit_204: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
+            response_204: Enable/disable allowance of 204 response from ICAP server.
+            preview: Enable/disable preview of data to ICAP server.
+            preview_data_length: Preview data length to be sent to ICAP server.
+            request_server: ICAP server to use for an HTTP request.
+            response_server: ICAP server to use for an HTTP response.
+            file_transfer_server: ICAP server to use for a file transfer.
+            request_failure: Action to take if the ICAP server cannot be contacted when processing an HTTP request.
+            response_failure: Action to take if the ICAP server cannot be contacted when processing an HTTP response.
+            file_transfer_failure: Action to take if the ICAP server cannot be contacted when processing a file transfer.
+            request_path: Path component of the ICAP URI that identifies the HTTP request processing service.
+            response_path: Path component of the ICAP URI that identifies the HTTP response processing service.
+            file_transfer_path: Path component of the ICAP URI that identifies the file transfer processing service.
+            methods: The allowed HTTP methods that will be sent to ICAP server for further processing.
+            response_req_hdr: Enable/disable addition of req-hdr for ICAP response modification (respmod) processing.
+            respmod_default_action: Default action to ICAP response modification (respmod) processing.
+            icap_block_log: Enable/disable UTM log when infection found (default = disable).
+            chunk_encap: Enable/disable chunked encapsulation (default = disable).
+            extension_feature: Enable/disable ICAP extension features.
+            scan_progress_interval: Scan progress interval value.
+            timeout: Time (in seconds) that ICAP client waits for the response from ICAP server.
+            icap_headers: Configure ICAP forwarded request headers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            respmod_forward_rules: ICAP response mode forward rules.
+                Default format: [{'host': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'host': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -279,9 +362,28 @@ class Profile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if icap_headers is not None:
+            icap_headers = normalize_table_field(
+                icap_headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="icap_headers",
+                example="[{'id': 1}]",
+            )
+        if respmod_forward_rules is not None:
+            respmod_forward_rules = normalize_table_field(
+                respmod_forward_rules,
+                mkey="name",
+                required_fields=['host'],
+                field_name="respmod_forward_rules",
+                example="[{'host': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             replacemsg_group=replacemsg_group,
             name=name,
             comment=comment,
@@ -332,9 +434,14 @@ class Profile(MetadataMixin):
         endpoint = "/icap/profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -343,7 +450,7 @@ class Profile(MetadataMixin):
         comment: str | None = None,
         request: Literal["disable", "enable"] | None = None,
         response: Literal["disable", "enable"] | None = None,
-        file_transfer: Literal["ssh", "ftp"] | list | None = None,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = None,
         streaming_content_bypass: Literal["disable", "enable"] | None = None,
         ocr_only: Literal["disable", "enable"] | None = None,
         size_limit_204: int | None = None,
@@ -359,20 +466,21 @@ class Profile(MetadataMixin):
         request_path: str | None = None,
         response_path: str | None = None,
         file_transfer_path: str | None = None,
-        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list | None = None,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = None,
         response_req_hdr: Literal["disable", "enable"] | None = None,
         respmod_default_action: Literal["forward", "bypass"] | None = None,
         icap_block_log: Literal["disable", "enable"] | None = None,
         chunk_encap: Literal["disable", "enable"] | None = None,
-        extension_feature: Literal["scan-progress"] | list | None = None,
+        extension_feature: Literal["scan-progress"] | list[str] | None = None,
         scan_progress_interval: int | None = None,
         timeout: int | None = None,
-        icap_headers: str | list | None = None,
-        respmod_forward_rules: str | list | None = None,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new icap/profile object.
 
@@ -385,8 +493,45 @@ class Profile(MetadataMixin):
             comment: Comment.
             request: Enable/disable whether an HTTP request is passed to an ICAP server.
             response: Enable/disable whether an HTTP response is passed to an ICAP server.
+            file_transfer: Configure the file transfer protocols to pass transferred files to an ICAP server as REQMOD.
+            streaming_content_bypass: Enable/disable bypassing of ICAP server for streaming content.
+            ocr_only: Enable/disable this FortiGate unit to submit only OCR interested content to the ICAP server.
+            size_limit_204: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
+            response_204: Enable/disable allowance of 204 response from ICAP server.
+            preview: Enable/disable preview of data to ICAP server.
+            preview_data_length: Preview data length to be sent to ICAP server.
+            request_server: ICAP server to use for an HTTP request.
+            response_server: ICAP server to use for an HTTP response.
+            file_transfer_server: ICAP server to use for a file transfer.
+            request_failure: Action to take if the ICAP server cannot be contacted when processing an HTTP request.
+            response_failure: Action to take if the ICAP server cannot be contacted when processing an HTTP response.
+            file_transfer_failure: Action to take if the ICAP server cannot be contacted when processing a file transfer.
+            request_path: Path component of the ICAP URI that identifies the HTTP request processing service.
+            response_path: Path component of the ICAP URI that identifies the HTTP response processing service.
+            file_transfer_path: Path component of the ICAP URI that identifies the file transfer processing service.
+            methods: The allowed HTTP methods that will be sent to ICAP server for further processing.
+            response_req_hdr: Enable/disable addition of req-hdr for ICAP response modification (respmod) processing.
+            respmod_default_action: Default action to ICAP response modification (respmod) processing.
+            icap_block_log: Enable/disable UTM log when infection found (default = disable).
+            chunk_encap: Enable/disable chunked encapsulation (default = disable).
+            extension_feature: Enable/disable ICAP extension features.
+            scan_progress_interval: Scan progress interval value.
+            timeout: Time (in seconds) that ICAP client waits for the response from ICAP server.
+            icap_headers: Configure ICAP forwarded request headers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            respmod_forward_rules: ICAP response mode forward rules.
+                Default format: [{'host': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'host': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -415,9 +560,28 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if icap_headers is not None:
+            icap_headers = normalize_table_field(
+                icap_headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="icap_headers",
+                example="[{'id': 1}]",
+            )
+        if respmod_forward_rules is not None:
+            respmod_forward_rules = normalize_table_field(
+                respmod_forward_rules,
+                mkey="name",
+                required_fields=['host'],
+                field_name="respmod_forward_rules",
+                example="[{'host': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             replacemsg_group=replacemsg_group,
             name=name,
             comment=comment,
@@ -464,16 +628,22 @@ class Profile(MetadataMixin):
 
         endpoint = "/icap/profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete icap/profile object.
 
@@ -483,6 +653,7 @@ class Profile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -508,7 +679,7 @@ class Profile(MetadataMixin):
         endpoint = "/icap/profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -572,7 +743,40 @@ class Profile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        replacemsg_group: str | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        request: Literal["disable", "enable"] | None = None,
+        response: Literal["disable", "enable"] | None = None,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | list[dict[str, Any]] | None = None,
+        streaming_content_bypass: Literal["disable", "enable"] | None = None,
+        ocr_only: Literal["disable", "enable"] | None = None,
+        size_limit_204: int | None = None,
+        response_204: Literal["disable", "enable"] | None = None,
+        preview: Literal["disable", "enable"] | None = None,
+        preview_data_length: int | None = None,
+        request_server: str | None = None,
+        response_server: str | None = None,
+        file_transfer_server: str | None = None,
+        request_failure: Literal["error", "bypass"] | None = None,
+        response_failure: Literal["error", "bypass"] | None = None,
+        file_transfer_failure: Literal["error", "bypass"] | None = None,
+        request_path: str | None = None,
+        response_path: str | None = None,
+        file_transfer_path: str | None = None,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | list[dict[str, Any]] | None = None,
+        response_req_hdr: Literal["disable", "enable"] | None = None,
+        respmod_default_action: Literal["forward", "bypass"] | None = None,
+        icap_block_log: Literal["disable", "enable"] | None = None,
+        chunk_encap: Literal["disable", "enable"] | None = None,
+        extension_feature: Literal["scan-progress"] | list[str] | list[dict[str, Any]] | None = None,
+        scan_progress_interval: int | None = None,
+        timeout: int | None = None,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -583,7 +787,40 @@ class Profile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            replacemsg_group: Field replacemsg-group
+            name: Field name
+            comment: Field comment
+            request: Field request
+            response: Field response
+            file_transfer: Field file-transfer
+            streaming_content_bypass: Field streaming-content-bypass
+            ocr_only: Field ocr-only
+            size_limit_204: Field 204-size-limit
+            response_204: Field 204-response
+            preview: Field preview
+            preview_data_length: Field preview-data-length
+            request_server: Field request-server
+            response_server: Field response-server
+            file_transfer_server: Field file-transfer-server
+            request_failure: Field request-failure
+            response_failure: Field response-failure
+            file_transfer_failure: Field file-transfer-failure
+            request_path: Field request-path
+            response_path: Field response-path
+            file_transfer_path: Field file-transfer-path
+            methods: Field methods
+            response_req_hdr: Field response-req-hdr
+            respmod_default_action: Field respmod-default-action
+            icap_block_log: Field icap-block-log
+            chunk_encap: Field chunk-encap
+            extension_feature: Field extension-feature
+            scan_progress_interval: Field scan-progress-interval
+            timeout: Field timeout
+            icap_headers: Field icap-headers
+            respmod_forward_rules: Field respmod-forward-rules
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -593,7 +830,13 @@ class Profile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.icap_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -616,20 +859,53 @@ class Profile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            replacemsg_group=replacemsg_group,
+            name=name,
+            comment=comment,
+            request=request,
+            response=response,
+            file_transfer=file_transfer,
+            streaming_content_bypass=streaming_content_bypass,
+            ocr_only=ocr_only,
+            size_limit_204=size_limit_204,
+            response_204=response_204,
+            preview=preview,
+            preview_data_length=preview_data_length,
+            request_server=request_server,
+            response_server=response_server,
+            file_transfer_server=file_transfer_server,
+            request_failure=request_failure,
+            response_failure=response_failure,
+            file_transfer_failure=file_transfer_failure,
+            request_path=request_path,
+            response_path=response_path,
+            file_transfer_path=file_transfer_path,
+            methods=methods,
+            response_req_hdr=response_req_hdr,
+            respmod_default_action=respmod_default_action,
+            icap_block_log=icap_block_log,
+            chunk_encap=chunk_encap,
+            extension_feature=extension_feature,
+            scan_progress_interval=scan_progress_interval,
+            timeout=timeout,
+            icap_headers=icap_headers,
+            respmod_forward_rules=respmod_forward_rules,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

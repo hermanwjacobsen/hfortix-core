@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_fabric_vpn.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_fabric_vpn.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class FabricVpn(MetadataMixin):
+class FabricVpn(CRUDEndpoint, MetadataMixin):
     """FabricVpn Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "fabric_vpn"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "overlays": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "advertised_subnets": {
+            "mkey": "id",
+            "required_fields": ['prefix', 'access'],
+            "example": "[{'prefix': 'value', 'access': 'inbound'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class FabricVpn(MetadataMixin):
         """Initialize FabricVpn endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class FabricVpn(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/fabric_vpn configuration.
 
@@ -98,6 +135,7 @@ class FabricVpn(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class FabricVpn(MetadataMixin):
         
         if name:
             endpoint = f"/system/fabric-vpn/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/fabric-vpn"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +236,11 @@ class FabricVpn(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -204,19 +249,20 @@ class FabricVpn(MetadataMixin):
         branch_name: str | None = None,
         policy_rule: Literal["health-check", "manual", "auto"] | None = None,
         vpn_role: Literal["hub", "spoke"] | None = None,
-        overlays: str | list | None = None,
-        advertised_subnets: str | list | None = None,
+        overlays: str | list[str] | list[dict[str, Any]] | None = None,
+        advertised_subnets: str | list[str] | list[dict[str, Any]] | None = None,
         loopback_address_block: Any | None = None,
         loopback_interface: str | None = None,
         loopback_advertised_subnet: int | None = None,
         psksecret: Any | None = None,
         bgp_as: str | None = None,
         sdwan_zone: str | None = None,
-        health_checks: str | list | None = None,
+        health_checks: str | list[str] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/fabric_vpn object.
 
@@ -229,8 +275,26 @@ class FabricVpn(MetadataMixin):
             branch_name: Branch name.
             policy_rule: Policy creation rule.
             vpn_role: Fabric VPN role.
+            overlays: Local overlay interfaces table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            advertised_subnets: Local advertised subnets.
+                Default format: [{'prefix': 'value', 'access': 'inbound'}]
+                Required format: List of dicts with keys: prefix, access
+                  (String format not allowed due to multiple required fields)
+            loopback_address_block: IPv4 address and subnet mask for hub's loopback address, syntax: X.X.X.X/24.
+            loopback_interface: Loopback interface.
+            loopback_advertised_subnet: Loopback advertised subnet reference.
+            psksecret: Pre-shared secret for ADVPN.
+            bgp_as: BGP Router AS number, asplain/asdot/asdot+ format.
+            sdwan_zone: Reference to created SD-WAN zone.
+            health_checks: Underlying health checks.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -257,9 +321,28 @@ class FabricVpn(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if overlays is not None:
+            overlays = normalize_table_field(
+                overlays,
+                mkey="name",
+                required_fields=['name'],
+                field_name="overlays",
+                example="[{'name': 'value'}]",
+            )
+        if advertised_subnets is not None:
+            advertised_subnets = normalize_table_field(
+                advertised_subnets,
+                mkey="id",
+                required_fields=['prefix', 'access'],
+                field_name="advertised_subnets",
+                example="[{'prefix': 'value', 'access': 'inbound'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             sync_mode=sync_mode,
             branch_name=branch_name,
@@ -287,13 +370,11 @@ class FabricVpn(MetadataMixin):
                 endpoint="cmdb/system/fabric_vpn",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/fabric-vpn/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/fabric-vpn"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

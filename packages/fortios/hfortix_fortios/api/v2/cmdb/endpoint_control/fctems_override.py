@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.endpoint_control_fctems_override.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.endpoint_control_fctems_override.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class FctemsOverride(MetadataMixin):
+class FctemsOverride(CRUDEndpoint, MetadataMixin):
     """FctemsOverride Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class FctemsOverride(MetadataMixin):
         """Initialize FctemsOverride endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         ems_id: int | None = None,
@@ -72,8 +90,9 @@ class FctemsOverride(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve endpoint_control/fctems_override configuration.
 
@@ -99,6 +118,7 @@ class FctemsOverride(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class FctemsOverride(MetadataMixin):
         
         if ems_id:
             endpoint = "/endpoint-control/fctems-override/" + str(ems_id)
+            unwrap_single = True
         else:
             endpoint = "/endpoint-control/fctems-override"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class FctemsOverride(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -219,7 +246,7 @@ class FctemsOverride(MetadataMixin):
         pull_vulnerabilities: Literal["enable", "disable"] | None = None,
         pull_tags: Literal["enable", "disable"] | None = None,
         pull_malware_hash: Literal["enable", "disable"] | None = None,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list | None = None,
+        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = None,
         call_timeout: int | None = None,
         out_of_sync_threshold: int | None = None,
         send_tags_to_all_vdoms: Literal["enable", "disable"] | None = None,
@@ -230,8 +257,9 @@ class FctemsOverride(MetadataMixin):
         verifying_ca: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing endpoint_control/fctems_override object.
 
@@ -244,8 +272,28 @@ class FctemsOverride(MetadataMixin):
             name: FortiClient Enterprise Management Server (EMS) name.
             dirty_reason: Dirty Reason for FortiClient EMS.
             fortinetone_cloud_authentication: Enable/disable authentication of FortiClient EMS Cloud through FortiCloud account.
+            cloud_authentication_access_key: FortiClient EMS Cloud multitenancy access key
+            server: FortiClient EMS FQDN or IPv4 address.
+            https_port: FortiClient EMS HTTPS access port number. (1 - 65535, default: 443).
+            serial_number: EMS Serial Number.
+            tenant_id: EMS Tenant ID.
+            source_ip: REST API call source IP.
+            pull_sysinfo: Enable/disable pulling SysInfo from EMS.
+            pull_vulnerabilities: Enable/disable pulling vulnerabilities from EMS.
+            pull_tags: Enable/disable pulling FortiClient user tags from EMS.
+            pull_malware_hash: Enable/disable pulling FortiClient malware hash from EMS.
+            capabilities: List of EMS capabilities.
+            call_timeout: FortiClient EMS call timeout in seconds (1 - 180 seconds, default = 30).
+            out_of_sync_threshold: Outdated resource threshold in seconds (10 - 3600, default = 180).
+            send_tags_to_all_vdoms: Relax restrictions on tags to send all EMS tags to all VDOMs
+            websocket_override: Enable/disable override behavior for how this FortiGate unit connects to EMS using a WebSocket connection.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            trust_ca_cn: Enable/disable trust of the EMS certificate issuer(CA) and common name(CN) for certificate auto-renewal.
+            verifying_ca: Lowest CA cert on Fortigate in verified EMS cert chain.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +320,10 @@ class FctemsOverride(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ems_id=ems_id,
             status=status,
             name=name,
@@ -318,9 +367,14 @@ class FctemsOverride(MetadataMixin):
         endpoint = "/endpoint-control/fctems-override/" + str(ems_id_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -339,7 +393,7 @@ class FctemsOverride(MetadataMixin):
         pull_vulnerabilities: Literal["enable", "disable"] | None = None,
         pull_tags: Literal["enable", "disable"] | None = None,
         pull_malware_hash: Literal["enable", "disable"] | None = None,
-        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list | None = None,
+        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | None = None,
         call_timeout: int | None = None,
         out_of_sync_threshold: int | None = None,
         send_tags_to_all_vdoms: Literal["enable", "disable"] | None = None,
@@ -350,8 +404,9 @@ class FctemsOverride(MetadataMixin):
         verifying_ca: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new endpoint_control/fctems_override object.
 
@@ -364,8 +419,28 @@ class FctemsOverride(MetadataMixin):
             name: FortiClient Enterprise Management Server (EMS) name.
             dirty_reason: Dirty Reason for FortiClient EMS.
             fortinetone_cloud_authentication: Enable/disable authentication of FortiClient EMS Cloud through FortiCloud account.
+            cloud_authentication_access_key: FortiClient EMS Cloud multitenancy access key
+            server: FortiClient EMS FQDN or IPv4 address.
+            https_port: FortiClient EMS HTTPS access port number. (1 - 65535, default: 443).
+            serial_number: EMS Serial Number.
+            tenant_id: EMS Tenant ID.
+            source_ip: REST API call source IP.
+            pull_sysinfo: Enable/disable pulling SysInfo from EMS.
+            pull_vulnerabilities: Enable/disable pulling vulnerabilities from EMS.
+            pull_tags: Enable/disable pulling FortiClient user tags from EMS.
+            pull_malware_hash: Enable/disable pulling FortiClient malware hash from EMS.
+            capabilities: List of EMS capabilities.
+            call_timeout: FortiClient EMS call timeout in seconds (1 - 180 seconds, default = 30).
+            out_of_sync_threshold: Outdated resource threshold in seconds (10 - 3600, default = 180).
+            send_tags_to_all_vdoms: Relax restrictions on tags to send all EMS tags to all VDOMs
+            websocket_override: Enable/disable override behavior for how this FortiGate unit connects to EMS using a WebSocket connection.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            trust_ca_cn: Enable/disable trust of the EMS certificate issuer(CA) and common name(CN) for certificate auto-renewal.
+            verifying_ca: Lowest CA cert on Fortigate in verified EMS cert chain.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -394,9 +469,10 @@ class FctemsOverride(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ems_id=ems_id,
             status=status,
             name=name,
@@ -436,16 +512,22 @@ class FctemsOverride(MetadataMixin):
 
         endpoint = "/endpoint-control/fctems-override"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         ems_id: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete endpoint_control/fctems_override object.
 
@@ -455,6 +537,7 @@ class FctemsOverride(MetadataMixin):
             ems_id: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -480,7 +563,7 @@ class FctemsOverride(MetadataMixin):
         endpoint = "/endpoint-control/fctems-override/" + str(ems_id)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -544,7 +627,33 @@ class FctemsOverride(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        ems_id: int | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        name: str | None = None,
+        dirty_reason: Literal["none", "mismatched-ems-sn"] | None = None,
+        fortinetone_cloud_authentication: Literal["enable", "disable"] | None = None,
+        cloud_authentication_access_key: Any | None = None,
+        server: str | None = None,
+        https_port: int | None = None,
+        serial_number: str | None = None,
+        tenant_id: str | None = None,
+        source_ip: str | None = None,
+        pull_sysinfo: Literal["enable", "disable"] | None = None,
+        pull_vulnerabilities: Literal["enable", "disable"] | None = None,
+        pull_tags: Literal["enable", "disable"] | None = None,
+        pull_malware_hash: Literal["enable", "disable"] | None = None,
+        capabilities: Literal["fabric-auth", "silent-approval", "websocket", "websocket-malware", "push-ca-certs", "common-tags-api", "tenant-id", "client-avatars", "single-vdom-connector", "fgt-sysinfo-api", "ztna-server-info", "used-tags"] | list[str] | list[dict[str, Any]] | None = None,
+        call_timeout: int | None = None,
+        out_of_sync_threshold: int | None = None,
+        send_tags_to_all_vdoms: Literal["enable", "disable"] | None = None,
+        websocket_override: Literal["enable", "disable"] | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
+        interface: str | None = None,
+        trust_ca_cn: Literal["enable", "disable"] | None = None,
+        verifying_ca: str | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -555,7 +664,33 @@ class FctemsOverride(MetadataMixin):
 
         Args:
             payload_dict: Resource data including ems-id (primary key)
+            ems_id: Field ems-id
+            status: Field status
+            name: Field name
+            dirty_reason: Field dirty-reason
+            fortinetone_cloud_authentication: Field fortinetone-cloud-authentication
+            cloud_authentication_access_key: Field cloud-authentication-access-key
+            server: Field server
+            https_port: Field https-port
+            serial_number: Field serial-number
+            tenant_id: Field tenant-id
+            source_ip: Field source-ip
+            pull_sysinfo: Field pull-sysinfo
+            pull_vulnerabilities: Field pull-vulnerabilities
+            pull_tags: Field pull-tags
+            pull_malware_hash: Field pull-malware-hash
+            capabilities: Field capabilities
+            call_timeout: Field call-timeout
+            out_of_sync_threshold: Field out-of-sync-threshold
+            send_tags_to_all_vdoms: Field send-tags-to-all-vdoms
+            websocket_override: Field websocket-override
+            interface_select_method: Field interface-select-method
+            interface: Field interface
+            trust_ca_cn: Field trust-ca-cn
+            verifying_ca: Field verifying-ca
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -565,7 +700,13 @@ class FctemsOverride(MetadataMixin):
             ValueError: If ems-id is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.endpoint_control_fctems_override.set(
+            ...     ems_id=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "ems-id": 1,
             ...     "field1": "value1",
@@ -588,20 +729,46 @@ class FctemsOverride(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            ems_id=ems_id,
+            status=status,
+            name=name,
+            dirty_reason=dirty_reason,
+            fortinetone_cloud_authentication=fortinetone_cloud_authentication,
+            cloud_authentication_access_key=cloud_authentication_access_key,
+            server=server,
+            https_port=https_port,
+            serial_number=serial_number,
+            tenant_id=tenant_id,
+            source_ip=source_ip,
+            pull_sysinfo=pull_sysinfo,
+            pull_vulnerabilities=pull_vulnerabilities,
+            pull_tags=pull_tags,
+            pull_malware_hash=pull_malware_hash,
+            capabilities=capabilities,
+            call_timeout=call_timeout,
+            out_of_sync_threshold=out_of_sync_threshold,
+            send_tags_to_all_vdoms=send_tags_to_all_vdoms,
+            websocket_override=websocket_override,
+            interface_select_method=interface_select_method,
+            interface=interface,
+            trust_ca_cn=trust_ca_cn,
+            verifying_ca=verifying_ca,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("ems-id")
+        mkey_value = payload_data.get("ems-id")
         if not mkey_value:
-            raise ValueError("ems-id is required in payload_dict for set()")
+            raise ValueError("ems-id is required for set()")
         
         # Check if resource exists
         if self.exists(ems_id=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

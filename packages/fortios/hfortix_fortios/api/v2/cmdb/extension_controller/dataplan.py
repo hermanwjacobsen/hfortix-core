@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.extension_controller_dataplan.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.extension_controller_dataplan.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Dataplan(MetadataMixin):
+class Dataplan(CRUDEndpoint, MetadataMixin):
     """Dataplan Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Dataplan(MetadataMixin):
         """Initialize Dataplan endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Dataplan(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve extension_controller/dataplan configuration.
 
@@ -99,6 +118,7 @@ class Dataplan(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Dataplan(MetadataMixin):
         
         if name:
             endpoint = "/extension-controller/dataplan/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/extension-controller/dataplan"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Dataplan(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -225,8 +252,9 @@ class Dataplan(MetadataMixin):
         private_network: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing extension_controller/dataplan object.
 
@@ -239,8 +267,23 @@ class Dataplan(MetadataMixin):
             type: Type preferences configuration.
             slot: SIM slot configuration.
             iccid: ICCID configuration.
+            carrier: Carrier configuration.
+            apn: APN configuration.
+            auth_type: Authentication type.
+            username: Username.
+            password: Password.
+            pdn: PDN type.
+            signal_threshold: Signal threshold. Specify the range between 50 - 100, where 50/100 means -50/-100 dBm.
+            signal_period: Signal period (600 to 18000 seconds).
+            capacity: Capacity in MB (0 - 102400000).
+            monthly_fee: Monthly fee of dataplan (0 - 100000, in local currency).
+            billing_date: Billing day of the month (1 - 31).
+            overage: Enable/disable dataplan overage detection.
+            preferred_subnet: Preferred subnet mask (0 - 32).
+            private_network: Enable/disable dataplan private network support.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -267,9 +310,10 @@ class Dataplan(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             modem_id=modem_id,
             type=type,
@@ -308,9 +352,14 @@ class Dataplan(MetadataMixin):
         endpoint = "/extension-controller/dataplan/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -335,8 +384,9 @@ class Dataplan(MetadataMixin):
         private_network: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new extension_controller/dataplan object.
 
@@ -349,8 +399,23 @@ class Dataplan(MetadataMixin):
             type: Type preferences configuration.
             slot: SIM slot configuration.
             iccid: ICCID configuration.
+            carrier: Carrier configuration.
+            apn: APN configuration.
+            auth_type: Authentication type.
+            username: Username.
+            password: Password.
+            pdn: PDN type.
+            signal_threshold: Signal threshold. Specify the range between 50 - 100, where 50/100 means -50/-100 dBm.
+            signal_period: Signal period (600 to 18000 seconds).
+            capacity: Capacity in MB (0 - 102400000).
+            monthly_fee: Monthly fee of dataplan (0 - 100000, in local currency).
+            billing_date: Billing day of the month (1 - 31).
+            overage: Enable/disable dataplan overage detection.
+            preferred_subnet: Preferred subnet mask (0 - 32).
+            private_network: Enable/disable dataplan private network support.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -379,9 +444,10 @@ class Dataplan(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             modem_id=modem_id,
             type=type,
@@ -416,16 +482,22 @@ class Dataplan(MetadataMixin):
 
         endpoint = "/extension-controller/dataplan"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete extension_controller/dataplan object.
 
@@ -435,6 +507,7 @@ class Dataplan(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -460,7 +533,7 @@ class Dataplan(MetadataMixin):
         endpoint = "/extension-controller/dataplan/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -524,7 +597,28 @@ class Dataplan(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        modem_id: Literal["modem1", "modem2", "all"] | None = None,
+        type: Literal["carrier", "slot", "iccid", "generic"] | None = None,
+        slot: Literal["sim1", "sim2"] | None = None,
+        iccid: str | None = None,
+        carrier: str | None = None,
+        apn: str | None = None,
+        auth_type: Literal["none", "pap", "chap"] | None = None,
+        username: str | None = None,
+        password: Any | None = None,
+        pdn: Literal["ipv4-only", "ipv6-only", "ipv4-ipv6"] | None = None,
+        signal_threshold: int | None = None,
+        signal_period: int | None = None,
+        capacity: int | None = None,
+        monthly_fee: int | None = None,
+        billing_date: int | None = None,
+        overage: Literal["disable", "enable"] | None = None,
+        preferred_subnet: int | None = None,
+        private_network: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -535,7 +629,28 @@ class Dataplan(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            modem_id: Field modem-id
+            type: Field type
+            slot: Field slot
+            iccid: Field iccid
+            carrier: Field carrier
+            apn: Field apn
+            auth_type: Field auth-type
+            username: Field username
+            password: Field password
+            pdn: Field pdn
+            signal_threshold: Field signal-threshold
+            signal_period: Field signal-period
+            capacity: Field capacity
+            monthly_fee: Field monthly-fee
+            billing_date: Field billing-date
+            overage: Field overage
+            preferred_subnet: Field preferred-subnet
+            private_network: Field private-network
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -545,7 +660,13 @@ class Dataplan(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.extension_controller_dataplan.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -568,20 +689,41 @@ class Dataplan(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            modem_id=modem_id,
+            type=type,
+            slot=slot,
+            iccid=iccid,
+            carrier=carrier,
+            apn=apn,
+            auth_type=auth_type,
+            username=username,
+            password=password,
+            pdn=pdn,
+            signal_threshold=signal_threshold,
+            signal_period=signal_period,
+            capacity=capacity,
+            monthly_fee=monthly_fee,
+            billing_date=billing_date,
+            overage=overage,
+            preferred_subnet=preferred_subnet,
+            private_network=private_network,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

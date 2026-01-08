@@ -22,6 +22,7 @@ Import from this module for consistency across the codebase:
 
 # Payload builders
 from hfortix_fortios._helpers.builders import (
+    build_api_payload,
     build_cmdb_payload,
     build_cmdb_payload_normalized,
 )
@@ -35,6 +36,7 @@ from hfortix_fortios._helpers.converters import (
 # List normalizers
 from hfortix_fortios._helpers.normalizers import (
     normalize_member_list,
+    normalize_table_field,
     normalize_to_name_list,
 )
 
@@ -61,6 +63,15 @@ from hfortix_fortios._helpers.metadata import (
 
 # Metadata mixin for endpoint classes
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
+
+# Central validation functions (used by all endpoint validators)
+from hfortix_fortios._helpers.validation import (
+    validate_required_fields as _validate_required_fields_central,
+    validate_enum_field,
+    validate_query_parameter,
+    validate_multiple_enums,
+    validate_multiple_query_params,
+)
 
 # Validators - SSH/SSL proxy-specific
 # Validators - Firewall-specific
@@ -94,6 +105,7 @@ from hfortix_fortios._helpers.validators import (
 
 __all__ = [
     # Payload building
+    "build_api_payload",
     "build_cmdb_payload",
     "build_cmdb_payload_normalized",
     # List normalization
@@ -119,6 +131,12 @@ __all__ = [
     "validate_field_value",
     # Metadata mixin
     "MetadataMixin",
+    # Central validation functions
+    "_validate_required_fields_central",
+    "validate_enum_field",
+    "validate_query_parameter",
+    "validate_multiple_enums",
+    "validate_multiple_query_params",
     # Validation - Generic
     "validate_required_fields",
     "validate_color",

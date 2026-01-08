@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_setting.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_setting.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Setting(MetadataMixin):
+class Setting(CRUDEndpoint, MetadataMixin):
     """Setting Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "auth_ports": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "cors_allowed_origins": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Setting(MetadataMixin):
         """Initialize Setting endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Setting(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/setting configuration.
 
@@ -98,6 +135,7 @@ class Setting(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Setting(MetadataMixin):
         
         if name:
             endpoint = f"/user/setting/{name}"
+            unwrap_single = True
         else:
             endpoint = "/user/setting"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,10 +236,15 @@ class Setting(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        auth_type: Literal["http", "https", "ftp", "telnet"] | list | None = None,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = None,
         auth_cert: str | None = None,
         auth_ca_cert: str | None = None,
         auth_secure_http: Literal["enable", "disable"] | None = None,
@@ -216,17 +261,18 @@ class Setting(MetadataMixin):
         auth_lockout_threshold: int | None = None,
         auth_lockout_duration: int | None = None,
         per_policy_disclaimer: Literal["enable", "disable"] | None = None,
-        auth_ports: str | list | None = None,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = None,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = None,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = None,
         default_user_password_policy: str | None = None,
         cors: Literal["disable", "enable"] | None = None,
-        cors_allowed_origins: str | list | None = None,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/setting object.
 
@@ -239,8 +285,38 @@ class Setting(MetadataMixin):
             auth_ca_cert: HTTPS CA certificate for policy authentication.
             auth_secure_http: Enable/disable redirecting HTTP user authentication to more secure HTTPS.
             auth_http_basic: Enable/disable use of HTTP basic authentication for identity-based firewall policies.
+            auth_ssl_allow_renegotiation: Allow/forbid SSL re-negotiation for HTTPS authentication.
+            auth_src_mac: Enable/disable source MAC for user identity.
+            auth_on_demand: Always/implicitly trigger firewall authentication on demand.
+            auth_timeout: Time in minutes before the firewall user authentication timeout requires the user to re-authenticate.
+            auth_timeout_type: Control if authenticated users have to login again after a hard timeout, after an idle timeout, or after a session timeout.
+            auth_portal_timeout: Time in minutes before captive portal user have to re-authenticate (1 - 30 min, default 3 min).
+            radius_ses_timeout_act: Set the RADIUS session timeout to a hard timeout or to ignore RADIUS server session timeouts.
+            auth_blackout_time: Time in seconds an IP address is denied access after failing to authenticate five times within one minute.
+            auth_invalid_max: Maximum number of failed authentication attempts before the user is blocked.
+            auth_lockout_threshold: Maximum number of failed login attempts before login lockout is triggered.
+            auth_lockout_duration: Lockout period in seconds after too many login failures.
+            per_policy_disclaimer: Enable/disable per policy disclaimer.
+            auth_ports: Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            auth_ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
+            auth_ssl_max_proto_version: Maximum supported protocol version for SSL/TLS connections (default is no limit).
+            auth_ssl_sigalgs: Set signature algorithms related to HTTPS authentication (affects TLS version <= 1.2 only, default is to enable all).
+            default_user_password_policy: Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.
+            cors: Enable/disable allowed origins white list for CORS.
+            cors_allowed_origins: Allowed origins white list for CORS.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -267,9 +343,28 @@ class Setting(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if auth_ports is not None:
+            auth_ports = normalize_table_field(
+                auth_ports,
+                mkey="id",
+                required_fields=['id'],
+                field_name="auth_ports",
+                example="[{'id': 1}]",
+            )
+        if cors_allowed_origins is not None:
+            cors_allowed_origins = normalize_table_field(
+                cors_allowed_origins,
+                mkey="name",
+                required_fields=['name'],
+                field_name="cors_allowed_origins",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             auth_type=auth_type,
             auth_cert=auth_cert,
             auth_ca_cert=auth_ca_cert,
@@ -307,13 +402,11 @@ class Setting(MetadataMixin):
                 endpoint="cmdb/user/setting",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/user/setting/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/user/setting"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

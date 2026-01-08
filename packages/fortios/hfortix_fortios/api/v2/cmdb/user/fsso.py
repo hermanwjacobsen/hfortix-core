@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_fsso.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_fsso.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Fsso(MetadataMixin):
+class Fsso(CRUDEndpoint, MetadataMixin):
     """Fsso Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Fsso(MetadataMixin):
         """Initialize Fsso endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Fsso(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/fsso configuration.
 
@@ -99,6 +118,7 @@ class Fsso(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Fsso(MetadataMixin):
         
         if name:
             endpoint = "/user/fsso/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/fsso"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Fsso(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -239,8 +266,9 @@ class Fsso(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/fsso object.
 
@@ -253,8 +281,37 @@ class Fsso(MetadataMixin):
             server: Domain name or IP address of the first FSSO collector agent.
             port: Port of the first FSSO collector agent.
             password: Password of the first FSSO collector agent.
+            server2: Domain name or IP address of the second FSSO collector agent.
+            port2: Port of the second FSSO collector agent.
+            password2: Password of the second FSSO collector agent.
+            server3: Domain name or IP address of the third FSSO collector agent.
+            port3: Port of the third FSSO collector agent.
+            password3: Password of the third FSSO collector agent.
+            server4: Domain name or IP address of the fourth FSSO collector agent.
+            port4: Port of the fourth FSSO collector agent.
+            password4: Password of the fourth FSSO collector agent.
+            server5: Domain name or IP address of the fifth FSSO collector agent.
+            port5: Port of the fifth FSSO collector agent.
+            password5: Password of the fifth FSSO collector agent.
+            logon_timeout: Interval in minutes to keep logons after FSSO server down.
+            ldap_server: LDAP server to get group information.
+            group_poll_interval: Interval in minutes within to fetch groups from FSSO server, or unset to disable.
+            ldap_poll: Enable/disable automatic fetching of groups from LDAP server.
+            ldap_poll_interval: Interval in minutes within to fetch groups from LDAP server.
+            ldap_poll_filter: Filter used to fetch groups.
+            user_info_server: LDAP server to get user information.
+            ssl: Enable/disable use of SSL.
+            sni: Server Name Indication.
+            ssl_server_host_ip_check: Enable/disable server host/IP verification.
+            ssl_trusted_cert: Trusted server certificate or CA certificate.
+            source_ip: Source IP for communications to FSSO agent.
+            source_ip6: IPv6 source for communications to FSSO agent.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -281,9 +338,10 @@ class Fsso(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             server=server,
@@ -336,9 +394,14 @@ class Fsso(MetadataMixin):
         endpoint = "/user/fsso/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -377,8 +440,9 @@ class Fsso(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/fsso object.
 
@@ -391,8 +455,37 @@ class Fsso(MetadataMixin):
             server: Domain name or IP address of the first FSSO collector agent.
             port: Port of the first FSSO collector agent.
             password: Password of the first FSSO collector agent.
+            server2: Domain name or IP address of the second FSSO collector agent.
+            port2: Port of the second FSSO collector agent.
+            password2: Password of the second FSSO collector agent.
+            server3: Domain name or IP address of the third FSSO collector agent.
+            port3: Port of the third FSSO collector agent.
+            password3: Password of the third FSSO collector agent.
+            server4: Domain name or IP address of the fourth FSSO collector agent.
+            port4: Port of the fourth FSSO collector agent.
+            password4: Password of the fourth FSSO collector agent.
+            server5: Domain name or IP address of the fifth FSSO collector agent.
+            port5: Port of the fifth FSSO collector agent.
+            password5: Password of the fifth FSSO collector agent.
+            logon_timeout: Interval in minutes to keep logons after FSSO server down.
+            ldap_server: LDAP server to get group information.
+            group_poll_interval: Interval in minutes within to fetch groups from FSSO server, or unset to disable.
+            ldap_poll: Enable/disable automatic fetching of groups from LDAP server.
+            ldap_poll_interval: Interval in minutes within to fetch groups from LDAP server.
+            ldap_poll_filter: Filter used to fetch groups.
+            user_info_server: LDAP server to get user information.
+            ssl: Enable/disable use of SSL.
+            sni: Server Name Indication.
+            ssl_server_host_ip_check: Enable/disable server host/IP verification.
+            ssl_trusted_cert: Trusted server certificate or CA certificate.
+            source_ip: Source IP for communications to FSSO agent.
+            source_ip6: IPv6 source for communications to FSSO agent.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -421,9 +514,10 @@ class Fsso(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             type=type,
             server=server,
@@ -472,16 +566,22 @@ class Fsso(MetadataMixin):
 
         endpoint = "/user/fsso"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/fsso object.
 
@@ -491,6 +591,7 @@ class Fsso(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -516,7 +617,7 @@ class Fsso(MetadataMixin):
         endpoint = "/user/fsso/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -580,7 +681,42 @@ class Fsso(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        type: Literal["default", "fortinac"] | None = None,
+        server: str | None = None,
+        port: int | None = None,
+        password: Any | None = None,
+        server2: str | None = None,
+        port2: int | None = None,
+        password2: Any | None = None,
+        server3: str | None = None,
+        port3: int | None = None,
+        password3: Any | None = None,
+        server4: str | None = None,
+        port4: int | None = None,
+        password4: Any | None = None,
+        server5: str | None = None,
+        port5: int | None = None,
+        password5: Any | None = None,
+        logon_timeout: int | None = None,
+        ldap_server: str | None = None,
+        group_poll_interval: int | None = None,
+        ldap_poll: Literal["enable", "disable"] | None = None,
+        ldap_poll_interval: int | None = None,
+        ldap_poll_filter: str | None = None,
+        user_info_server: str | None = None,
+        ssl: Literal["enable", "disable"] | None = None,
+        sni: str | None = None,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = None,
+        ssl_trusted_cert: str | None = None,
+        source_ip: str | None = None,
+        source_ip6: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
+        interface: str | None = None,
+        vrf_select: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -591,7 +727,42 @@ class Fsso(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            type: Field type
+            server: Field server
+            port: Field port
+            password: Field password
+            server2: Field server2
+            port2: Field port2
+            password2: Field password2
+            server3: Field server3
+            port3: Field port3
+            password3: Field password3
+            server4: Field server4
+            port4: Field port4
+            password4: Field password4
+            server5: Field server5
+            port5: Field port5
+            password5: Field password5
+            logon_timeout: Field logon-timeout
+            ldap_server: Field ldap-server
+            group_poll_interval: Field group-poll-interval
+            ldap_poll: Field ldap-poll
+            ldap_poll_interval: Field ldap-poll-interval
+            ldap_poll_filter: Field ldap-poll-filter
+            user_info_server: Field user-info-server
+            ssl: Field ssl
+            sni: Field sni
+            ssl_server_host_ip_check: Field ssl-server-host-ip-check
+            ssl_trusted_cert: Field ssl-trusted-cert
+            source_ip: Field source-ip
+            source_ip6: Field source-ip6
+            interface_select_method: Field interface-select-method
+            interface: Field interface
+            vrf_select: Field vrf-select
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -601,7 +772,13 @@ class Fsso(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_fsso.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -624,20 +801,55 @@ class Fsso(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            type=type,
+            server=server,
+            port=port,
+            password=password,
+            server2=server2,
+            port2=port2,
+            password2=password2,
+            server3=server3,
+            port3=port3,
+            password3=password3,
+            server4=server4,
+            port4=port4,
+            password4=password4,
+            server5=server5,
+            port5=port5,
+            password5=password5,
+            logon_timeout=logon_timeout,
+            ldap_server=ldap_server,
+            group_poll_interval=group_poll_interval,
+            ldap_poll=ldap_poll,
+            ldap_poll_interval=ldap_poll_interval,
+            ldap_poll_filter=ldap_poll_filter,
+            user_info_server=user_info_server,
+            ssl=ssl,
+            sni=sni,
+            ssl_server_host_ip_check=ssl_server_host_ip_check,
+            ssl_trusted_cert=ssl_trusted_cert,
+            source_ip=source_ip,
+            source_ip6=source_ip6,
+            interface_select_method=interface_select_method,
+            interface=interface,
+            vrf_select=vrf_select,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

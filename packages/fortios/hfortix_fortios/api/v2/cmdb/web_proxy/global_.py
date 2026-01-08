@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.web_proxy_global_.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.web_proxy_global_.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Global(MetadataMixin):
+class Global(CRUDEndpoint, MetadataMixin):
     """Global Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "learn_client_ip_srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "learn_client_ip_srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Global(MetadataMixin):
         """Initialize Global endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Global(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve web_proxy/global_ configuration.
 
@@ -98,6 +135,7 @@ class Global(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Global(MetadataMixin):
         
         if name:
             endpoint = f"/web-proxy/global/{name}"
+            unwrap_single = True
         else:
             endpoint = "/web-proxy/global"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +236,11 @@ class Global(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -216,11 +261,11 @@ class Global(MetadataMixin):
         webproxy_profile: str | None = None,
         learn_client_ip: Literal["enable", "disable"] | None = None,
         always_learn_client_ip: Literal["enable", "disable"] | None = None,
-        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list | None = None,
-        learn_client_ip_srcaddr: str | list | None = None,
-        learn_client_ip_srcaddr6: str | list | None = None,
-        src_affinity_exempt_addr: str | list | None = None,
-        src_affinity_exempt_addr6: str | list | None = None,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = None,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = None,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = None,
+        src_affinity_exempt_addr: str | list[str] | None = None,
+        src_affinity_exempt_addr6: str | list[str] | None = None,
         policy_partial_match: Literal["enable", "disable"] | None = None,
         log_policy_pending: Literal["enable", "disable"] | None = None,
         log_forward_server: Literal["enable", "disable"] | None = None,
@@ -229,8 +274,9 @@ class Global(MetadataMixin):
         request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing web_proxy/global_ object.
 
@@ -243,8 +289,42 @@ class Global(MetadataMixin):
             fast_policy_match: Enable/disable fast matching algorithm for explicit and transparent proxy policy.
             ldap_user_cache: Enable/disable LDAP user cache for explicit and transparent proxy user.
             proxy_fqdn: Fully Qualified Domain Name of the explicit web proxy (default = default.fqdn) that clients connect to.
+            max_request_length: Maximum length of HTTP request line (2 - 64 Kbytes, default = 8).
+            max_message_length: Maximum length of HTTP message, not including body (16 - 256 Kbytes, default = 32).
+            http2_client_window_size: HTTP/2 client initial window size in bytes (65535 - 2147483647, default = 1048576 (1MB)).
+            http2_server_window_size: HTTP/2 server initial window size in bytes (65535 - 2147483647, default = 1048576 (1MB)).
+            auth_sign_timeout: Proxy auth query sign timeout in seconds (30 - 3600, default = 120).
+            strict_web_check: Enable/disable strict web checking to block web sites that send incorrect headers that don't conform to HTTP.
+            forward_proxy_auth: Enable/disable forwarding proxy authentication headers.
+            forward_server_affinity_timeout: Period of time before the source IP's traffic is no longer assigned to the forwarding server (6 - 60 min, default = 30).
+            max_waf_body_cache_length: Maximum length of HTTP messages processed by Web Application Firewall (WAF) (1 - 1024 Kbytes, default = 1).
+            webproxy_profile: Name of the web proxy profile to apply when explicit proxy traffic is allowed by default and traffic is accepted that does not match an explicit proxy policy.
+            learn_client_ip: Enable/disable learning the client's IP address from headers.
+            always_learn_client_ip: Enable/disable learning the client's IP address from headers for every request.
+            learn_client_ip_from_header: Learn client IP address from the specified headers.
+            learn_client_ip_srcaddr: Source address name (srcaddr or srcaddr6 must be set).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            learn_client_ip_srcaddr6: IPv6 Source address name (srcaddr or srcaddr6 must be set).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            src_affinity_exempt_addr: IPv4 source addresses to exempt proxy affinity.
+            src_affinity_exempt_addr6: IPv6 source addresses to exempt proxy affinity.
+            policy_partial_match: Enable/disable policy partial matching.
+            log_policy_pending: Enable/disable logging sessions that are pending on policy matching.
+            log_forward_server: Enable/disable forward server name logging in forward traffic log.
+            log_app_id: Enable/disable always log application type in traffic log.
+            proxy_transparent_cert_inspection: Enable/disable transparent proxy certificate inspection.
+            request_obs_fold: Action when HTTP/1.x request header contains obs-fold (default = keep).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -271,9 +351,28 @@ class Global(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if learn_client_ip_srcaddr is not None:
+            learn_client_ip_srcaddr = normalize_table_field(
+                learn_client_ip_srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="learn_client_ip_srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if learn_client_ip_srcaddr6 is not None:
+            learn_client_ip_srcaddr6 = normalize_table_field(
+                learn_client_ip_srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="learn_client_ip_srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             ssl_cert=ssl_cert,
             ssl_ca_cert=ssl_ca_cert,
             fast_policy_match=fast_policy_match,
@@ -315,13 +414,11 @@ class Global(MetadataMixin):
                 endpoint="cmdb/web_proxy/global_",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/web-proxy/global/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/web-proxy/global"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

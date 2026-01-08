@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_automation_action.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_automation_action.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,53 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class AutomationAction(MetadataMixin):
+class AutomationAction(CRUDEndpoint, MetadataMixin):
     """AutomationAction Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "automation_action"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "email_to": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "http_headers": {
+            "mkey": "id",
+            "required_fields": ['key', 'value'],
+            "example": "[{'key': 'value', 'value': 'value'}]",
+        },
+        "form_data": {
+            "mkey": "id",
+            "required_fields": ['key', 'value'],
+            "example": "[{'key': 'value', 'value': 'value'}]",
+        },
+        "sdn_connector": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +104,11 @@ class AutomationAction(MetadataMixin):
         """Initialize AutomationAction endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +118,9 @@ class AutomationAction(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/automation_action configuration.
 
@@ -99,6 +146,7 @@ class AutomationAction(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +203,14 @@ class AutomationAction(MetadataMixin):
         
         if name:
             endpoint = "/system/automation-action/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/automation-action"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +251,11 @@ class AutomationAction(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -210,7 +265,7 @@ class AutomationAction(MetadataMixin):
         system_action: Literal["reboot", "shutdown", "backup-config"] | None = None,
         tls_certificate: str | None = None,
         forticare_email: Literal["enable", "disable"] | None = None,
-        email_to: str | list | None = None,
+        email_to: str | list[str] | list[dict[str, Any]] | None = None,
         email_from: str | None = None,
         email_subject: str | None = None,
         minimum_interval: int | None = None,
@@ -229,8 +284,8 @@ class AutomationAction(MetadataMixin):
         uri: str | None = None,
         http_body: str | None = None,
         port: int | None = None,
-        http_headers: str | list | None = None,
-        form_data: str | list | None = None,
+        http_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        form_data: str | list[str] | list[dict[str, Any]] | None = None,
         verify_host_cert: Literal["enable", "disable"] | None = None,
         script: str | None = None,
         output_size: int | None = None,
@@ -243,11 +298,12 @@ class AutomationAction(MetadataMixin):
         regular_expression: str | None = None,
         log_debug_print: Literal["enable", "disable"] | None = None,
         security_tag: str | None = None,
-        sdn_connector: str | list | None = None,
+        sdn_connector: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/automation_action object.
 
@@ -260,8 +316,60 @@ class AutomationAction(MetadataMixin):
             action_type: Action type.
             system_action: System action type.
             tls_certificate: Custom TLS certificate for API request.
+            forticare_email: Enable/disable use of your FortiCare email address as the email-to address.
+            email_to: Email addresses.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            email_from: Email sender name.
+            email_subject: Email subject.
+            minimum_interval: Limit execution to no more than once in this interval (in seconds).
+            aws_api_key: AWS API Gateway API key.
+            azure_function_authorization: Azure function authorization level.
+            azure_api_key: Azure function API key.
+            alicloud_function_authorization: AliCloud function authorization type.
+            alicloud_access_key_id: AliCloud AccessKey ID.
+            alicloud_access_key_secret: AliCloud AccessKey secret.
+            message_type: Message type.
+            message: Message content.
+            replacement_message: Enable/disable replacement message.
+            replacemsg_group: Replacement message group.
+            protocol: Request protocol.
+            method: Request method (POST, PUT, GET, PATCH or DELETE).
+            uri: Request API URI.
+            http_body: Request body (if necessary). Should be serialized json string.
+            port: Protocol port.
+            http_headers: Request headers.
+                Default format: [{'key': 'value', 'value': 'value'}]
+                Required format: List of dicts with keys: key, value
+                  (String format not allowed due to multiple required fields)
+            form_data: Form data parts for content type multipart/form-data.
+                Default format: [{'key': 'value', 'value': 'value'}]
+                Required format: List of dicts with keys: key, value
+                  (String format not allowed due to multiple required fields)
+            verify_host_cert: Enable/disable verification of the remote host certificate.
+            script: CLI script.
+            output_size: Number of megabytes to limit script output to (1 - 1024, default = 10).
+            timeout: Maximum running time for this script in seconds (0 = no timeout).
+            duration: Maximum running time for this script in seconds.
+            output_interval: Collect the outputs for each output-interval in seconds (0 = no intermediate output).
+            file_only: Enable/disable the output in files only.
+            execute_security_fabric: Enable/disable execution of CLI script on all or only one FortiGate unit in the Security Fabric.
+            accprofile: Access profile for CLI script action to access FortiGate features.
+            regular_expression: Regular expression string.
+            log_debug_print: Enable/disable logging debug print output from diagnose action.
+            security_tag: NSX security tag.
+            sdn_connector: NSX SDN connector names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -288,9 +396,44 @@ class AutomationAction(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if email_to is not None:
+            email_to = normalize_table_field(
+                email_to,
+                mkey="name",
+                required_fields=['name'],
+                field_name="email_to",
+                example="[{'name': 'value'}]",
+            )
+        if http_headers is not None:
+            http_headers = normalize_table_field(
+                http_headers,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="http_headers",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if form_data is not None:
+            form_data = normalize_table_field(
+                form_data,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="form_data",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if sdn_connector is not None:
+            sdn_connector = normalize_table_field(
+                sdn_connector,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sdn_connector",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             action_type=action_type,
@@ -350,9 +493,14 @@ class AutomationAction(MetadataMixin):
         endpoint = "/system/automation-action/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -362,7 +510,7 @@ class AutomationAction(MetadataMixin):
         system_action: Literal["reboot", "shutdown", "backup-config"] | None = None,
         tls_certificate: str | None = None,
         forticare_email: Literal["enable", "disable"] | None = None,
-        email_to: str | list | None = None,
+        email_to: str | list[str] | list[dict[str, Any]] | None = None,
         email_from: str | None = None,
         email_subject: str | None = None,
         minimum_interval: int | None = None,
@@ -381,8 +529,8 @@ class AutomationAction(MetadataMixin):
         uri: str | None = None,
         http_body: str | None = None,
         port: int | None = None,
-        http_headers: str | list | None = None,
-        form_data: str | list | None = None,
+        http_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        form_data: str | list[str] | list[dict[str, Any]] | None = None,
         verify_host_cert: Literal["enable", "disable"] | None = None,
         script: str | None = None,
         output_size: int | None = None,
@@ -395,11 +543,12 @@ class AutomationAction(MetadataMixin):
         regular_expression: str | None = None,
         log_debug_print: Literal["enable", "disable"] | None = None,
         security_tag: str | None = None,
-        sdn_connector: str | list | None = None,
+        sdn_connector: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/automation_action object.
 
@@ -412,8 +561,60 @@ class AutomationAction(MetadataMixin):
             action_type: Action type.
             system_action: System action type.
             tls_certificate: Custom TLS certificate for API request.
+            forticare_email: Enable/disable use of your FortiCare email address as the email-to address.
+            email_to: Email addresses.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            email_from: Email sender name.
+            email_subject: Email subject.
+            minimum_interval: Limit execution to no more than once in this interval (in seconds).
+            aws_api_key: AWS API Gateway API key.
+            azure_function_authorization: Azure function authorization level.
+            azure_api_key: Azure function API key.
+            alicloud_function_authorization: AliCloud function authorization type.
+            alicloud_access_key_id: AliCloud AccessKey ID.
+            alicloud_access_key_secret: AliCloud AccessKey secret.
+            message_type: Message type.
+            message: Message content.
+            replacement_message: Enable/disable replacement message.
+            replacemsg_group: Replacement message group.
+            protocol: Request protocol.
+            method: Request method (POST, PUT, GET, PATCH or DELETE).
+            uri: Request API URI.
+            http_body: Request body (if necessary). Should be serialized json string.
+            port: Protocol port.
+            http_headers: Request headers.
+                Default format: [{'key': 'value', 'value': 'value'}]
+                Required format: List of dicts with keys: key, value
+                  (String format not allowed due to multiple required fields)
+            form_data: Form data parts for content type multipart/form-data.
+                Default format: [{'key': 'value', 'value': 'value'}]
+                Required format: List of dicts with keys: key, value
+                  (String format not allowed due to multiple required fields)
+            verify_host_cert: Enable/disable verification of the remote host certificate.
+            script: CLI script.
+            output_size: Number of megabytes to limit script output to (1 - 1024, default = 10).
+            timeout: Maximum running time for this script in seconds (0 = no timeout).
+            duration: Maximum running time for this script in seconds.
+            output_interval: Collect the outputs for each output-interval in seconds (0 = no intermediate output).
+            file_only: Enable/disable the output in files only.
+            execute_security_fabric: Enable/disable execution of CLI script on all or only one FortiGate unit in the Security Fabric.
+            accprofile: Access profile for CLI script action to access FortiGate features.
+            regular_expression: Regular expression string.
+            log_debug_print: Enable/disable logging debug print output from diagnose action.
+            security_tag: NSX security tag.
+            sdn_connector: NSX SDN connector names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -442,9 +643,44 @@ class AutomationAction(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if email_to is not None:
+            email_to = normalize_table_field(
+                email_to,
+                mkey="name",
+                required_fields=['name'],
+                field_name="email_to",
+                example="[{'name': 'value'}]",
+            )
+        if http_headers is not None:
+            http_headers = normalize_table_field(
+                http_headers,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="http_headers",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if form_data is not None:
+            form_data = normalize_table_field(
+                form_data,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="form_data",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if sdn_connector is not None:
+            sdn_connector = normalize_table_field(
+                sdn_connector,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sdn_connector",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             description=description,
             action_type=action_type,
@@ -500,16 +736,22 @@ class AutomationAction(MetadataMixin):
 
         endpoint = "/system/automation-action"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/automation_action object.
 
@@ -519,6 +761,7 @@ class AutomationAction(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -544,7 +787,7 @@ class AutomationAction(MetadataMixin):
         endpoint = "/system/automation-action/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -608,7 +851,49 @@ class AutomationAction(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        description: str | None = None,
+        action_type: Literal["email", "fortiexplorer-notification", "alert", "disable-ssid", "system-actions", "quarantine", "quarantine-forticlient", "quarantine-nsx", "quarantine-fortinac", "ban-ip", "aws-lambda", "azure-function", "google-cloud-function", "alicloud-function", "webhook", "cli-script", "diagnose-script", "regular-expression", "slack-notification", "microsoft-teams-notification"] | None = None,
+        system_action: Literal["reboot", "shutdown", "backup-config"] | None = None,
+        tls_certificate: str | None = None,
+        forticare_email: Literal["enable", "disable"] | None = None,
+        email_to: str | list[str] | list[dict[str, Any]] | None = None,
+        email_from: str | None = None,
+        email_subject: str | None = None,
+        minimum_interval: int | None = None,
+        aws_api_key: Any | None = None,
+        azure_function_authorization: Literal["anonymous", "function", "admin"] | None = None,
+        azure_api_key: Any | None = None,
+        alicloud_function_authorization: Literal["anonymous", "function"] | None = None,
+        alicloud_access_key_id: str | None = None,
+        alicloud_access_key_secret: Any | None = None,
+        message_type: Literal["text", "json", "form-data"] | None = None,
+        message: str | None = None,
+        replacement_message: Literal["enable", "disable"] | None = None,
+        replacemsg_group: str | None = None,
+        protocol: Literal["http", "https"] | None = None,
+        method: Literal["post", "put", "get", "patch", "delete"] | None = None,
+        uri: str | None = None,
+        http_body: str | None = None,
+        port: int | None = None,
+        http_headers: str | list[str] | list[dict[str, Any]] | None = None,
+        form_data: str | list[str] | list[dict[str, Any]] | None = None,
+        verify_host_cert: Literal["enable", "disable"] | None = None,
+        script: str | None = None,
+        output_size: int | None = None,
+        timeout: int | None = None,
+        duration: int | None = None,
+        output_interval: int | None = None,
+        file_only: Literal["enable", "disable"] | None = None,
+        execute_security_fabric: Literal["enable", "disable"] | None = None,
+        accprofile: str | None = None,
+        regular_expression: str | None = None,
+        log_debug_print: Literal["enable", "disable"] | None = None,
+        security_tag: str | None = None,
+        sdn_connector: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -619,7 +904,49 @@ class AutomationAction(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            description: Field description
+            action_type: Field action-type
+            system_action: Field system-action
+            tls_certificate: Field tls-certificate
+            forticare_email: Field forticare-email
+            email_to: Field email-to
+            email_from: Field email-from
+            email_subject: Field email-subject
+            minimum_interval: Field minimum-interval
+            aws_api_key: Field aws-api-key
+            azure_function_authorization: Field azure-function-authorization
+            azure_api_key: Field azure-api-key
+            alicloud_function_authorization: Field alicloud-function-authorization
+            alicloud_access_key_id: Field alicloud-access-key-id
+            alicloud_access_key_secret: Field alicloud-access-key-secret
+            message_type: Field message-type
+            message: Field message
+            replacement_message: Field replacement-message
+            replacemsg_group: Field replacemsg-group
+            protocol: Field protocol
+            method: Field method
+            uri: Field uri
+            http_body: Field http-body
+            port: Field port
+            http_headers: Field http-headers
+            form_data: Field form-data
+            verify_host_cert: Field verify-host-cert
+            script: Field script
+            output_size: Field output-size
+            timeout: Field timeout
+            duration: Field duration
+            output_interval: Field output-interval
+            file_only: Field file-only
+            execute_security_fabric: Field execute-security-fabric
+            accprofile: Field accprofile
+            regular_expression: Field regular-expression
+            log_debug_print: Field log-debug-print
+            security_tag: Field security-tag
+            sdn_connector: Field sdn-connector
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -629,7 +956,13 @@ class AutomationAction(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_automation_action.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -652,20 +985,62 @@ class AutomationAction(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            description=description,
+            action_type=action_type,
+            system_action=system_action,
+            tls_certificate=tls_certificate,
+            forticare_email=forticare_email,
+            email_to=email_to,
+            email_from=email_from,
+            email_subject=email_subject,
+            minimum_interval=minimum_interval,
+            aws_api_key=aws_api_key,
+            azure_function_authorization=azure_function_authorization,
+            azure_api_key=azure_api_key,
+            alicloud_function_authorization=alicloud_function_authorization,
+            alicloud_access_key_id=alicloud_access_key_id,
+            alicloud_access_key_secret=alicloud_access_key_secret,
+            message_type=message_type,
+            message=message,
+            replacement_message=replacement_message,
+            replacemsg_group=replacemsg_group,
+            protocol=protocol,
+            method=method,
+            uri=uri,
+            http_body=http_body,
+            port=port,
+            http_headers=http_headers,
+            form_data=form_data,
+            verify_host_cert=verify_host_cert,
+            script=script,
+            output_size=output_size,
+            timeout=timeout,
+            duration=duration,
+            output_interval=output_interval,
+            file_only=file_only,
+            execute_security_fabric=execute_security_fabric,
+            accprofile=accprofile,
+            regular_expression=regular_expression,
+            log_debug_print=log_debug_print,
+            security_tag=security_tag,
+            sdn_connector=sdn_connector,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_saml.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_saml.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Saml(MetadataMixin):
+class Saml(CRUDEndpoint, MetadataMixin):
     """Saml Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "saml"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "service_providers": {
+            "mkey": "name",
+            "required_fields": ['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
+            "example": "[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Saml(MetadataMixin):
         """Initialize Saml endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Saml(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/saml configuration.
 
@@ -98,6 +130,7 @@ class Saml(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class Saml(MetadataMixin):
         
         if name:
             endpoint = f"/system/saml/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/saml"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class Saml(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -217,11 +257,12 @@ class Saml(MetadataMixin):
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = None,
         tolerance: int | None = None,
         life: int | None = None,
-        service_providers: str | list | None = None,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/saml object.
 
@@ -234,8 +275,26 @@ class Saml(MetadataMixin):
             default_login_page: Choose default login page.
             default_profile: Default profile for new SSO admin.
             cert: Certificate to sign SAML messages.
+            binding_protocol: IdP Binding protocol.
+            portal_url: SP portal URL.
+            entity_id: SP entity ID.
+            single_sign_on_url: SP single sign-on URL.
+            single_logout_url: SP single logout URL.
+            idp_entity_id: IDP entity ID.
+            idp_single_sign_on_url: IDP single sign-on URL.
+            idp_single_logout_url: IDP single logout URL.
+            idp_cert: IDP certificate name.
+            server_address: Server address.
+            require_signed_resp_and_asrt: Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).
+            tolerance: Tolerance to the range of time when the assertion is valid (in minutes).
+            life: Length of the range of time when the assertion is valid (in minutes).
+            service_providers: Authorized service providers.
+                Default format: [{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]
+                Required format: List of dicts with keys: name, prefix, sp-entity-id, sp-single-sign-on-url
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -262,9 +321,20 @@ class Saml(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if service_providers is not None:
+            service_providers = normalize_table_field(
+                service_providers,
+                mkey="name",
+                required_fields=['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
+                field_name="service_providers",
+                example="[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             role=role,
             default_login_page=default_login_page,
@@ -297,13 +367,11 @@ class Saml(MetadataMixin):
                 endpoint="cmdb/system/saml",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/saml/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/saml"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

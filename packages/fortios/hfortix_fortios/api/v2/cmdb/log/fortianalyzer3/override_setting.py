@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.log_fortianalyzer3_override_setting.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.log_fortianalyzer3_override_setting.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class OverrideSetting(MetadataMixin):
+class OverrideSetting(CRUDEndpoint, MetadataMixin):
     """OverrideSetting Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "override_setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "serial": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class OverrideSetting(MetadataMixin):
         """Initialize OverrideSetting endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class OverrideSetting(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve log/fortianalyzer3/override_setting configuration.
 
@@ -98,6 +130,7 @@ class OverrideSetting(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class OverrideSetting(MetadataMixin):
         
         if name:
             endpoint = f"/log.fortianalyzer3/override-setting/{name}"
+            unwrap_single = True
         else:
             endpoint = "/log.fortianalyzer3/override-setting"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class OverrideSetting(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -206,7 +246,7 @@ class OverrideSetting(MetadataMixin):
         alt_server: str | None = None,
         fallback_to_primary: Literal["enable", "disable"] | None = None,
         certificate_verification: Literal["enable", "disable"] | None = None,
-        serial: str | list | None = None,
+        serial: str | list[str] | list[dict[str, Any]] | None = None,
         server_cert_ca: str | None = None,
         preshared_key: str | None = None,
         access_config: Literal["enable", "disable"] | None = None,
@@ -230,8 +270,9 @@ class OverrideSetting(MetadataMixin):
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing log/fortianalyzer3/override_setting object.
 
@@ -244,8 +285,38 @@ class OverrideSetting(MetadataMixin):
             ips_archive: Enable/disable IPS packet archive logging.
             server: The remote FortiAnalyzer.
             alt_server: Alternate FortiAnalyzer.
+            fallback_to_primary: Enable/disable this FortiGate unit to fallback to the primary FortiAnalyzer when it is available.
+            certificate_verification: Enable/disable identity verification of FortiAnalyzer by use of certificate.
+            serial: Serial numbers of the FortiAnalyzer.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            server_cert_ca: Mandatory CA on FortiGate in certificate chain of server.
+            preshared_key: Preshared-key used for auto-authorization on FortiAnalyzer.
+            access_config: Enable/disable FortiAnalyzer access to configuration and data.
+            hmac_algorithm: OFTP login hash algorithm.
+            enc_algorithm: Configure the level of SSL protection for secure communication with FortiAnalyzer.
+            ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
+            conn_timeout: FortiAnalyzer connection time-out in seconds (for status and log buffer).
+            monitor_keepalive_period: Time between OFTP keepalives in seconds (for status and log buffer).
+            monitor_failure_retry_period: Time between FortiAnalyzer connection retries in seconds (for status and log buffer).
+            certificate: Certificate used to communicate with FortiAnalyzer.
+            source_ip: Source IPv4 or IPv6 address used to communicate with FortiAnalyzer.
+            upload_option: Enable/disable logging to hard disk and then uploading to FortiAnalyzer.
+            upload_interval: Frequency to upload log files to FortiAnalyzer.
+            upload_day: Day of week (month) to upload logs.
+            upload_time: Time to upload logs (hh:mm).
+            reliable: Enable/disable reliable logging to FortiAnalyzer.
+            priority: Set log transmission priority.
+            max_log_rate: FortiAnalyzer maximum log rate in MBps (0 = unlimited).
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +343,20 @@ class OverrideSetting(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if serial is not None:
+            serial = normalize_table_field(
+                serial,
+                mkey="name",
+                required_fields=['name'],
+                field_name="serial",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             use_management_vdom=use_management_vdom,
             status=status,
             ips_archive=ips_archive,
@@ -317,13 +399,11 @@ class OverrideSetting(MetadataMixin):
                 endpoint="cmdb/log/fortianalyzer3/override_setting",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/log.fortianalyzer3/override-setting/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/log.fortianalyzer3/override-setting"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

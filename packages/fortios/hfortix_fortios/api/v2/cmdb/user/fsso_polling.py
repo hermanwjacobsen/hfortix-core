@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_fsso_polling.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_fsso_polling.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class FssoPolling(MetadataMixin):
+class FssoPolling(CRUDEndpoint, MetadataMixin):
     """FssoPolling Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "fsso_polling"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "adgrp": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class FssoPolling(MetadataMixin):
         """Initialize FssoPolling endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         id: int | None = None,
@@ -72,8 +103,9 @@ class FssoPolling(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/fsso_polling configuration.
 
@@ -99,6 +131,7 @@ class FssoPolling(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class FssoPolling(MetadataMixin):
         
         if id:
             endpoint = "/user/fsso-polling/" + str(id)
+            unwrap_single = True
         else:
             endpoint = "/user/fsso-polling"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class FssoPolling(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -214,13 +254,14 @@ class FssoPolling(MetadataMixin):
         ldap_server: str | None = None,
         logon_history: int | None = None,
         polling_frequency: int | None = None,
-        adgrp: str | list | None = None,
+        adgrp: str | list[str] | list[dict[str, Any]] | None = None,
         smbv1: Literal["enable", "disable"] | None = None,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/fsso_polling object.
 
@@ -233,8 +274,22 @@ class FssoPolling(MetadataMixin):
             server: Host name or IP address of the Active Directory server.
             default_domain: Default domain managed by this Active Directory server.
             port: Port to communicate with this Active Directory server.
+            user: User name required to log into this Active Directory server.
+            password: Password required to log into this Active Directory server.
+            ldap_server: LDAP server name used in LDAP connection strings.
+            logon_history: Number of hours of logon history to keep, 0 means keep all history.
+            polling_frequency: Polling frequency (every 1 to 30 seconds).
+            adgrp: LDAP Group Info.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            smbv1: Enable/disable support of SMBv1 for Samba.
+            smb_ntlmv1_auth: Enable/disable support of NTLMv1 for Samba authentication.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -261,9 +316,20 @@ class FssoPolling(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if adgrp is not None:
+            adgrp = normalize_table_field(
+                adgrp,
+                mkey="name",
+                required_fields=['name'],
+                field_name="adgrp",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             status=status,
             server=server,
@@ -296,9 +362,14 @@ class FssoPolling(MetadataMixin):
         endpoint = "/user/fsso-polling/" + str(id_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -312,13 +383,14 @@ class FssoPolling(MetadataMixin):
         ldap_server: str | None = None,
         logon_history: int | None = None,
         polling_frequency: int | None = None,
-        adgrp: str | list | None = None,
+        adgrp: str | list[str] | list[dict[str, Any]] | None = None,
         smbv1: Literal["enable", "disable"] | None = None,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/fsso_polling object.
 
@@ -331,8 +403,22 @@ class FssoPolling(MetadataMixin):
             server: Host name or IP address of the Active Directory server.
             default_domain: Default domain managed by this Active Directory server.
             port: Port to communicate with this Active Directory server.
+            user: User name required to log into this Active Directory server.
+            password: Password required to log into this Active Directory server.
+            ldap_server: LDAP server name used in LDAP connection strings.
+            logon_history: Number of hours of logon history to keep, 0 means keep all history.
+            polling_frequency: Polling frequency (every 1 to 30 seconds).
+            adgrp: LDAP Group Info.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            smbv1: Enable/disable support of SMBv1 for Samba.
+            smb_ntlmv1_auth: Enable/disable support of NTLMv1 for Samba authentication.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -361,9 +447,20 @@ class FssoPolling(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if adgrp is not None:
+            adgrp = normalize_table_field(
+                adgrp,
+                mkey="name",
+                required_fields=['name'],
+                field_name="adgrp",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             id=id,
             status=status,
             server=server,
@@ -392,16 +489,22 @@ class FssoPolling(MetadataMixin):
 
         endpoint = "/user/fsso-polling"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         id: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/fsso_polling object.
 
@@ -411,6 +514,7 @@ class FssoPolling(MetadataMixin):
             id: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -436,7 +540,7 @@ class FssoPolling(MetadataMixin):
         endpoint = "/user/fsso-polling/" + str(id)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -500,7 +604,22 @@ class FssoPolling(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        server: str | None = None,
+        default_domain: str | None = None,
+        port: int | None = None,
+        user: str | None = None,
+        password: Any | None = None,
+        ldap_server: str | None = None,
+        logon_history: int | None = None,
+        polling_frequency: int | None = None,
+        adgrp: str | list[str] | list[dict[str, Any]] | None = None,
+        smbv1: Literal["enable", "disable"] | None = None,
+        smb_ntlmv1_auth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -511,7 +630,22 @@ class FssoPolling(MetadataMixin):
 
         Args:
             payload_dict: Resource data including id (primary key)
+            id: Field id
+            status: Field status
+            server: Field server
+            default_domain: Field default-domain
+            port: Field port
+            user: Field user
+            password: Field password
+            ldap_server: Field ldap-server
+            logon_history: Field logon-history
+            polling_frequency: Field polling-frequency
+            adgrp: Field adgrp
+            smbv1: Field smbv1
+            smb_ntlmv1_auth: Field smb-ntlmv1-auth
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -521,7 +655,13 @@ class FssoPolling(MetadataMixin):
             ValueError: If id is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_fsso_polling.set(
+            ...     id=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "id": 1,
             ...     "field1": "value1",
@@ -544,20 +684,35 @@ class FssoPolling(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            id=id,
+            status=status,
+            server=server,
+            default_domain=default_domain,
+            port=port,
+            user=user,
+            password=password,
+            ldap_server=ldap_server,
+            logon_history=logon_history,
+            polling_frequency=polling_frequency,
+            adgrp=adgrp,
+            smbv1=smbv1,
+            smb_ntlmv1_auth=smb_ntlmv1_auth,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("id")
+        mkey_value = payload_data.get("id")
         if not mkey_value:
-            raise ValueError("id is required in payload_dict for set()")
+            raise ValueError("id is required for set()")
         
         # Check if resource exists
         if self.exists(id=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

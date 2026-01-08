@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.router_bgp.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.router_bgp.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,103 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Bgp(MetadataMixin):
+class Bgp(CRUDEndpoint, MetadataMixin):
     """Bgp Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "bgp"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "confederation_peers": {
+            "mkey": "peer",
+            "required_fields": ['peer'],
+            "example": "[{'peer': 'value'}]",
+        },
+        "aggregate_address": {
+            "mkey": "id",
+            "required_fields": ['id', 'prefix'],
+            "example": "[{'id': 1, 'prefix': 'value'}]",
+        },
+        "aggregate_address6": {
+            "mkey": "id",
+            "required_fields": ['id', 'prefix6'],
+            "example": "[{'id': 1, 'prefix6': 'value'}]",
+        },
+        "neighbor": {
+            "mkey": "ip",
+            "required_fields": ['ip', 'remote-as'],
+            "example": "[{'ip': '192.168.1.10', 'remote-as': 'value'}]",
+        },
+        "neighbor_group": {
+            "mkey": "name",
+            "required_fields": ['name', 'remote-as', 'remote-as-filter'],
+            "example": "[{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]",
+        },
+        "neighbor_range": {
+            "mkey": "id",
+            "required_fields": ['prefix', 'neighbor-group'],
+            "example": "[{'prefix': 'value', 'neighbor-group': 'value'}]",
+        },
+        "neighbor_range6": {
+            "mkey": "id",
+            "required_fields": ['prefix6', 'neighbor-group'],
+            "example": "[{'prefix6': 'value', 'neighbor-group': 'value'}]",
+        },
+        "network": {
+            "mkey": "id",
+            "required_fields": ['id', 'prefix'],
+            "example": "[{'id': 1, 'prefix': 'value'}]",
+        },
+        "network6": {
+            "mkey": "id",
+            "required_fields": ['id', 'prefix6'],
+            "example": "[{'id': 1, 'prefix6': 'value'}]",
+        },
+        "redistribute": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "redistribute6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "admin_distance": {
+            "mkey": "id",
+            "required_fields": ['id', 'neighbour-prefix', 'distance'],
+            "example": "[{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]",
+        },
+        "vrf": {
+            "mkey": "vrf",
+            "required_fields": ['vrf'],
+            "example": "[{'vrf': 'value'}]",
+        },
+        "vrf6": {
+            "mkey": "vrf",
+            "required_fields": ['vrf'],
+            "example": "[{'vrf': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +154,11 @@ class Bgp(MetadataMixin):
         """Initialize Bgp endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +168,9 @@ class Bgp(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve router/bgp configuration.
 
@@ -98,6 +195,7 @@ class Bgp(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +248,14 @@ class Bgp(MetadataMixin):
         
         if name:
             endpoint = f"/router/bgp/{name}"
+            unwrap_single = True
         else:
             endpoint = "/router/bgp"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +296,11 @@ class Bgp(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -229,7 +334,7 @@ class Bgp(MetadataMixin):
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = None,
         cluster_id: str | None = None,
         confederation_identifier: int | None = None,
-        confederation_peers: str | list | None = None,
+        confederation_peers: str | list[str] | list[dict[str, Any]] | None = None,
         dampening_route_map: str | None = None,
         dampening_reachability_half_life: int | None = None,
         dampening_reuse: int | None = None,
@@ -252,23 +357,24 @@ class Bgp(MetadataMixin):
         additional_path_select_vpnv4: int | None = None,
         additional_path_select_vpnv6: int | None = None,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = None,
-        aggregate_address: str | list | None = None,
-        aggregate_address6: str | list | None = None,
-        neighbor: str | list | None = None,
-        neighbor_group: str | list | None = None,
-        neighbor_range: str | list | None = None,
-        neighbor_range6: str | list | None = None,
-        network: str | list | None = None,
-        network6: str | list | None = None,
-        redistribute: str | list | None = None,
-        redistribute6: str | list | None = None,
-        admin_distance: str | list | None = None,
-        vrf: str | list | None = None,
-        vrf6: str | list | None = None,
+        aggregate_address: str | list[str] | list[dict[str, Any]] | None = None,
+        aggregate_address6: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor_group: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor_range: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor_range6: str | list[str] | list[dict[str, Any]] | None = None,
+        network: str | list[str] | list[dict[str, Any]] | None = None,
+        network6: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = None,
+        redistribute6: str | list[str] | list[dict[str, Any]] | None = None,
+        admin_distance: str | list[str] | list[dict[str, Any]] | None = None,
+        vrf: str | list[str] | list[dict[str, Any]] | None = None,
+        vrf6: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing router/bgp object.
 
@@ -281,8 +387,122 @@ class Bgp(MetadataMixin):
             keepalive_timer: Frequency to send keep alive requests.
             holdtime_timer: Number of seconds to mark peer as dead.
             always_compare_med: Enable/disable always compare MED.
+            bestpath_as_path_ignore: Enable/disable ignore AS path.
+            bestpath_cmp_confed_aspath: Enable/disable compare federation AS path length.
+            bestpath_cmp_routerid: Enable/disable compare router ID for identical EBGP paths.
+            bestpath_med_confed: Enable/disable compare MED among confederation paths.
+            bestpath_med_missing_as_worst: Enable/disable treat missing MED as least preferred.
+            client_to_client_reflection: Enable/disable client-to-client route reflection.
+            dampening: Enable/disable route-flap dampening.
+            deterministic_med: Enable/disable enforce deterministic comparison of MED.
+            ebgp_multipath: Enable/disable EBGP multi-path.
+            ibgp_multipath: Enable/disable IBGP multi-path.
+            enforce_first_as: Enable/disable enforce first AS for EBGP routes.
+            fast_external_failover: Enable/disable reset peer BGP session if link goes down.
+            log_neighbour_changes: Log BGP neighbor changes.
+            network_import_check: Enable/disable ensure BGP network route exists in IGP.
+            ignore_optional_capability: Do not send unknown optional capability notification message.
+            additional_path: Enable/disable selection of BGP IPv4 additional paths.
+            additional_path6: Enable/disable selection of BGP IPv6 additional paths.
+            additional_path_vpnv4: Enable/disable selection of BGP VPNv4 additional paths.
+            additional_path_vpnv6: Enable/disable selection of BGP VPNv6 additional paths.
+            multipath_recursive_distance: Enable/disable use of recursive distance to select multipath.
+            recursive_next_hop: Enable/disable recursive resolution of next-hop using BGP route.
+            recursive_inherit_priority: Enable/disable priority inheritance for recursive resolution.
+            tag_resolve_mode: Configure tag-match mode. Resolves BGP routes with other routes containing the same tag.
+            cluster_id: Route reflector cluster ID.
+            confederation_identifier: Confederation identifier.
+            confederation_peers: Confederation peers.
+                Default format: [{'peer': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'peer': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'peer': 'val1'}, ...]
+                  - List of dicts: [{'peer': 'value'}] (recommended)
+            dampening_route_map: Criteria for dampening.
+            dampening_reachability_half_life: Reachability half-life time for penalty (min).
+            dampening_reuse: Threshold to reuse routes.
+            dampening_suppress: Threshold to suppress routes.
+            dampening_max_suppress_time: Maximum minutes a route can be suppressed.
+            dampening_unreachability_half_life: Unreachability half-life time for penalty (min).
+            default_local_preference: Default local preference.
+            scan_time: Background scanner interval (sec), 0 to disable it.
+            distance_external: Distance for routes external to the AS.
+            distance_internal: Distance for routes internal to the AS.
+            distance_local: Distance for routes local to the AS.
+            synchronization: Enable/disable only advertise routes from iBGP if routes present in an IGP.
+            graceful_restart: Enable/disable BGP graceful restart capabilities.
+            graceful_restart_time: Time needed for neighbors to restart (sec).
+            graceful_stalepath_time: Time to hold stale paths of restarting neighbor (sec).
+            graceful_update_delay: Route advertisement/selection delay after restart (sec).
+            graceful_end_on_timer: Enable/disable to exit graceful restart on timer only.
+            additional_path_select: Number of additional paths to be selected for each IPv4 NLRI.
+            additional_path_select6: Number of additional paths to be selected for each IPv6 NLRI.
+            additional_path_select_vpnv4: Number of additional paths to be selected for each VPNv4 NLRI.
+            additional_path_select_vpnv6: Number of additional paths to be selected for each VPNv6 NLRI.
+            cross_family_conditional_adv: Enable/disable cross address family conditional advertisement.
+            aggregate_address: BGP aggregate address table.
+                Default format: [{'id': 1, 'prefix': 'value'}]
+                Required format: List of dicts with keys: id, prefix
+                  (String format not allowed due to multiple required fields)
+            aggregate_address6: BGP IPv6 aggregate address table.
+                Default format: [{'id': 1, 'prefix6': 'value'}]
+                Required format: List of dicts with keys: id, prefix6
+                  (String format not allowed due to multiple required fields)
+            neighbor: BGP neighbor table.
+                Default format: [{'ip': '192.168.1.10', 'remote-as': 'value'}]
+                Required format: List of dicts with keys: ip, remote-as
+                  (String format not allowed due to multiple required fields)
+            neighbor_group: BGP neighbor group table.
+                Default format: [{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]
+                Required format: List of dicts with keys: name, remote-as, remote-as-filter
+                  (String format not allowed due to multiple required fields)
+            neighbor_range: BGP neighbor range table.
+                Default format: [{'prefix': 'value', 'neighbor-group': 'value'}]
+                Required format: List of dicts with keys: prefix, neighbor-group
+                  (String format not allowed due to multiple required fields)
+            neighbor_range6: BGP IPv6 neighbor range table.
+                Default format: [{'prefix6': 'value', 'neighbor-group': 'value'}]
+                Required format: List of dicts with keys: prefix6, neighbor-group
+                  (String format not allowed due to multiple required fields)
+            network: BGP network table.
+                Default format: [{'id': 1, 'prefix': 'value'}]
+                Required format: List of dicts with keys: id, prefix
+                  (String format not allowed due to multiple required fields)
+            network6: BGP IPv6 network table.
+                Default format: [{'id': 1, 'prefix6': 'value'}]
+                Required format: List of dicts with keys: id, prefix6
+                  (String format not allowed due to multiple required fields)
+            redistribute: BGP IPv4 redistribute table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            redistribute6: BGP IPv6 redistribute table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            admin_distance: Administrative distance modifications.
+                Default format: [{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]
+                Required format: List of dicts with keys: id, neighbour-prefix, distance
+                  (String format not allowed due to multiple required fields)
+            vrf: BGP VRF leaking table.
+                Default format: [{'vrf': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'vrf': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vrf': 'val1'}, ...]
+                  - List of dicts: [{'vrf': 'value'}] (recommended)
+            vrf6: BGP IPv6 VRF leaking table.
+                Default format: [{'vrf': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'vrf': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vrf': 'val1'}, ...]
+                  - List of dicts: [{'vrf': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -309,9 +529,124 @@ class Bgp(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if confederation_peers is not None:
+            confederation_peers = normalize_table_field(
+                confederation_peers,
+                mkey="peer",
+                required_fields=['peer'],
+                field_name="confederation_peers",
+                example="[{'peer': 'value'}]",
+            )
+        if aggregate_address is not None:
+            aggregate_address = normalize_table_field(
+                aggregate_address,
+                mkey="id",
+                required_fields=['id', 'prefix'],
+                field_name="aggregate_address",
+                example="[{'id': 1, 'prefix': 'value'}]",
+            )
+        if aggregate_address6 is not None:
+            aggregate_address6 = normalize_table_field(
+                aggregate_address6,
+                mkey="id",
+                required_fields=['id', 'prefix6'],
+                field_name="aggregate_address6",
+                example="[{'id': 1, 'prefix6': 'value'}]",
+            )
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="ip",
+                required_fields=['ip', 'remote-as'],
+                field_name="neighbor",
+                example="[{'ip': '192.168.1.10', 'remote-as': 'value'}]",
+            )
+        if neighbor_group is not None:
+            neighbor_group = normalize_table_field(
+                neighbor_group,
+                mkey="name",
+                required_fields=['name', 'remote-as', 'remote-as-filter'],
+                field_name="neighbor_group",
+                example="[{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]",
+            )
+        if neighbor_range is not None:
+            neighbor_range = normalize_table_field(
+                neighbor_range,
+                mkey="id",
+                required_fields=['prefix', 'neighbor-group'],
+                field_name="neighbor_range",
+                example="[{'prefix': 'value', 'neighbor-group': 'value'}]",
+            )
+        if neighbor_range6 is not None:
+            neighbor_range6 = normalize_table_field(
+                neighbor_range6,
+                mkey="id",
+                required_fields=['prefix6', 'neighbor-group'],
+                field_name="neighbor_range6",
+                example="[{'prefix6': 'value', 'neighbor-group': 'value'}]",
+            )
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['id', 'prefix'],
+                field_name="network",
+                example="[{'id': 1, 'prefix': 'value'}]",
+            )
+        if network6 is not None:
+            network6 = normalize_table_field(
+                network6,
+                mkey="id",
+                required_fields=['id', 'prefix6'],
+                field_name="network6",
+                example="[{'id': 1, 'prefix6': 'value'}]",
+            )
+        if redistribute is not None:
+            redistribute = normalize_table_field(
+                redistribute,
+                mkey="name",
+                required_fields=['name'],
+                field_name="redistribute",
+                example="[{'name': 'value'}]",
+            )
+        if redistribute6 is not None:
+            redistribute6 = normalize_table_field(
+                redistribute6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="redistribute6",
+                example="[{'name': 'value'}]",
+            )
+        if admin_distance is not None:
+            admin_distance = normalize_table_field(
+                admin_distance,
+                mkey="id",
+                required_fields=['id', 'neighbour-prefix', 'distance'],
+                field_name="admin_distance",
+                example="[{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]",
+            )
+        if vrf is not None:
+            vrf = normalize_table_field(
+                vrf,
+                mkey="vrf",
+                required_fields=['vrf'],
+                field_name="vrf",
+                example="[{'vrf': 'value'}]",
+            )
+        if vrf6 is not None:
+            vrf6 = normalize_table_field(
+                vrf6,
+                mkey="vrf",
+                required_fields=['vrf'],
+                field_name="vrf6",
+                example="[{'vrf': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             asn=asn,
             router_id=router_id,
             keepalive_timer=keepalive_timer,
@@ -391,13 +726,11 @@ class Bgp(MetadataMixin):
                 endpoint="cmdb/router/bgp",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/router/bgp/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/router/bgp"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

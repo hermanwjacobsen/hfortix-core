@@ -537,8 +537,9 @@ for addr in addresses:
     # Get full structure when needed
     full_data = addr.get_full('associated_interface')  # [{'name': 'port1'}, ...]
     
-    # Convert back to dict
-    addr_dict = addr.to_dict()
+    # Convert back to dict (two ways)
+    addr_dict = addr.to_dict()  # Full method
+    addr_dict = addr.json       # Shortcut property (v0.5.17+)
     
 # Override response_mode per request
 fgt = FortiOS(host="...", token="...", response_mode="dict")  # Default dict

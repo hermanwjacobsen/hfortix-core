@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.switch_controller_flow_tracking.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.switch_controller_flow_tracking.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class FlowTracking(MetadataMixin):
+class FlowTracking(CRUDEndpoint, MetadataMixin):
     """FlowTracking Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "flow_tracking"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "collectors": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "aggregates": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class FlowTracking(MetadataMixin):
         """Initialize FlowTracking endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class FlowTracking(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve switch_controller/flow_tracking configuration.
 
@@ -98,6 +135,7 @@ class FlowTracking(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class FlowTracking(MetadataMixin):
         
         if name:
             endpoint = f"/switch-controller/flow-tracking/{name}"
+            unwrap_single = True
         else:
             endpoint = "/switch-controller/flow-tracking"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,13 +236,18 @@ class FlowTracking(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = None,
         sample_rate: int | None = None,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = None,
-        collectors: str | list | None = None,
+        collectors: str | list[str] | list[dict[str, Any]] | None = None,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = None,
         max_export_pkt_size: int | None = None,
         template_export_period: int | None = None,
@@ -213,11 +258,12 @@ class FlowTracking(MetadataMixin):
         timeout_tcp_fin: int | None = None,
         timeout_tcp_rst: int | None = None,
         timeout_udp: int | None = None,
-        aggregates: str | list | None = None,
+        aggregates: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing switch_controller/flow_tracking object.
 
@@ -229,9 +275,30 @@ class FlowTracking(MetadataMixin):
             sample_rate: Configure sample rate for the perimeter and device-ingress sampling(0 - 99999).
             format: Configure flow tracking protocol.
             collectors: Configure collectors for the flow.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             level: Configure flow tracking level.
+            max_export_pkt_size: Configure flow max export packet size (512-9216, default=512 bytes).
+            template_export_period: Configure template export period (1-60, default=5 minutes).
+            timeout_general: Configure flow session general timeout (60-604800, default=3600 seconds).
+            timeout_icmp: Configure flow session ICMP timeout (60-604800, default=300 seconds).
+            timeout_max: Configure flow session max timeout (60-604800, default=604800 seconds).
+            timeout_tcp: Configure flow session TCP timeout (60-604800, default=3600 seconds).
+            timeout_tcp_fin: Configure flow session TCP FIN timeout (60-604800, default=300 seconds).
+            timeout_tcp_rst: Configure flow session TCP RST timeout (60-604800, default=120 seconds).
+            timeout_udp: Configure flow session UDP timeout (60-604800, default=300 seconds).
+            aggregates: Configure aggregates in which all traffic sessions matching the IP Address will be grouped into the same flow.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -258,9 +325,28 @@ class FlowTracking(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if collectors is not None:
+            collectors = normalize_table_field(
+                collectors,
+                mkey="name",
+                required_fields=['name'],
+                field_name="collectors",
+                example="[{'name': 'value'}]",
+            )
+        if aggregates is not None:
+            aggregates = normalize_table_field(
+                aggregates,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="aggregates",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             sample_mode=sample_mode,
             sample_rate=sample_rate,
             format=format,
@@ -289,13 +375,11 @@ class FlowTracking(MetadataMixin):
                 endpoint="cmdb/switch_controller/flow_tracking",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/switch-controller/flow-tracking/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/switch-controller/flow-tracking"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

@@ -1,0 +1,508 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
+from hfortix_fortios.models import FortiObject
+
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+class DictionaryPayload(TypedDict, total=False):
+    """
+    Type hints for dlp/dictionary payload fields.
+    
+    Configure dictionaries used by DLP blocking.
+    
+    **Usage:**
+        payload: DictionaryPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    uuid: NotRequired[str]  # Universally Unique Identifier
+    name: str  # Name of table containing the dictionary.
+    match_type: Literal["match-all", "match-any"]  # Logical relation between entries (default = match-any).
+    match_around: NotRequired[Literal["enable", "disable"]]  # Enable/disable match-around support.
+    comment: NotRequired[str]  # Optional comments.
+    entries: list[dict[str, Any]]  # DLP dictionary entries.
+
+# Nested classes for table field children
+
+@final
+class DictionaryEntriesObject:
+    """Typed object for entries table items.
+    
+    Provides IDE autocomplete for nested table field attributes.
+    At runtime, this is a FortiObject instance.
+    """
+    
+    # ID.
+    id: int
+    # Pattern type to match.
+    type: str
+    # Pattern to match.
+    pattern: str
+    # Enable/disable ignore case.
+    ignore_case: Literal["enable", "disable"]
+    # Enable/disable repeat match.
+    repeat: Literal["enable", "disable"]
+    # Enable/disable this pattern.
+    status: Literal["enable", "disable"]
+    # Optional comments.
+    comment: str
+    
+    # Methods from FortiObject
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> dict[str, Any]: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+    def __getitem__(self, key: str) -> Any: ...
+
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class DictionaryResponse(TypedDict):
+    """
+    Type hints for dlp/dictionary API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    uuid: str
+    name: str
+    match_type: Literal["match-all", "match-any"]
+    match_around: Literal["enable", "disable"]
+    comment: str
+    entries: list[dict[str, Any]]
+
+
+@final
+class DictionaryObject:
+    """Typed FortiObject for dlp/dictionary with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # Universally Unique Identifier
+    uuid: str
+    # Name of table containing the dictionary.
+    name: str
+    # Logical relation between entries (default = match-any).
+    match_type: Literal["match-all", "match-any"]
+    # Enable/disable match-around support.
+    match_around: Literal["enable", "disable"]
+    # Optional comments.
+    comment: str
+    # DLP dictionary entries.
+    entries: list[DictionaryEntriesObject]  # Table field - list of typed objects
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> DictionaryPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+    def __getitem__(self, key: str) -> Any: ...
+
+
+class Dictionary:
+    """
+    Configure dictionaries used by DLP blocking.
+    
+    Path: dlp/dictionary
+    Category: cmdb
+    Primary Key: name
+    """
+    
+    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
+    # Single object (mkey/name provided as positional arg)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject: ...
+    
+    # Single object (mkey/name provided as keyword arg)
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject: ...
+    
+    # List of objects (no mkey/name provided) - keyword-only signature
+    @overload
+    def get(
+        self,
+        *,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> list[DictionaryObject]: ...
+    
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[True] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    # Dict mode with mkey provided as positional arg (single dict)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryResponse: ...
+    
+    # Dict mode with mkey provided as keyword arg (single dict)
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryResponse: ...
+    
+    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
+    @overload
+    def get(
+        self,
+        *,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] = ...,
+        **kwargs: Any,
+    ) -> list[DictionaryResponse]: ...
+    
+    # Default overload for dict mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: str | None = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject | list[DictionaryObject] | dict[str, Any] | list[dict[str, Any]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> dict[str, Any]: ...
+    
+    # POST overloads
+    @overload
+    def post(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject: ...
+    
+    @overload
+    def post(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    @overload
+    def post(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[True] = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    def post(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    # PUT overloads
+    @overload
+    def put(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject: ...
+    
+    @overload
+    def put(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    @overload
+    def put(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[True] = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    def put(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    # DELETE overloads
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> DictionaryObject: ...
+    
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[True] = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: DictionaryPayload | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        match_type: Literal["match-all", "match-any"] | None = ...,
+        match_around: Literal["enable", "disable"] | None = ...,
+        comment: str | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Dictionary",
+    "DictionaryPayload",
+    "DictionaryObject",
+]

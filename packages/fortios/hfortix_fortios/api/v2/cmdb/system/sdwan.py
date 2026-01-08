@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_sdwan.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_sdwan.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,68 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Sdwan(MetadataMixin):
+class Sdwan(CRUDEndpoint, MetadataMixin):
     """Sdwan Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "sdwan"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "fail_alert_interfaces": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "zone": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "members": {
+            "mkey": "seq-num",
+            "required_fields": ['seq-num'],
+            "example": "[{'seq-num': 1}]",
+        },
+        "health_check": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "neighbor": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "duplication": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +119,11 @@ class Sdwan(MetadataMixin):
         """Initialize Sdwan endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +133,9 @@ class Sdwan(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/sdwan configuration.
 
@@ -98,6 +160,7 @@ class Sdwan(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +213,14 @@ class Sdwan(MetadataMixin):
         
         if name:
             endpoint = f"/system/sdwan/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/sdwan"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +261,11 @@ class Sdwan(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -209,17 +279,18 @@ class Sdwan(MetadataMixin):
         app_perf_log_period: int | None = None,
         neighbor_hold_boot_time: int | None = None,
         fail_detect: Literal["enable", "disable"] | None = None,
-        fail_alert_interfaces: str | list | None = None,
-        zone: str | list | None = None,
-        members: str | list | None = None,
-        health_check: str | list | None = None,
-        service: str | list | None = None,
-        neighbor: str | list | None = None,
-        duplication: str | list | None = None,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = None,
+        zone: str | list[str] | list[dict[str, Any]] | None = None,
+        members: str | list[str] | list[dict[str, Any]] | None = None,
+        health_check: str | list[str] | list[dict[str, Any]] | None = None,
+        service: str | list[str] | list[dict[str, Any]] | None = None,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = None,
+        duplication: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/sdwan object.
 
@@ -232,8 +303,56 @@ class Sdwan(MetadataMixin):
             speedtest_bypass_routing: Enable/disable bypass routing when speedtest on a SD-WAN member.
             duplication_max_num: Maximum number of interface members a packet is duplicated in the SD-WAN zone (2 - 4, default = 2; if set to 3, the original packet plus 2 more copies are created).
             duplication_max_discrepancy: Maximum discrepancy between two packets for deduplication in milliseconds (250 - 1000, default = 250).
+            neighbor_hold_down: Enable/disable hold switching from the secondary neighbor to the primary neighbor.
+            neighbor_hold_down_time: Waiting period in seconds when switching from the secondary neighbor to the primary neighbor when hold-down is disabled. (0 - 10000000, default = 0).
+            app_perf_log_period: Time interval in seconds that application performance logs are generated (0 - 3600, default = 0).
+            neighbor_hold_boot_time: Waiting period in seconds when switching from the primary neighbor to the secondary neighbor from the neighbor start. (0 - 10000000, default = 0).
+            fail_detect: Enable/disable SD-WAN Internet connection status checking (failure detection).
+            fail_alert_interfaces: Physical interfaces that will be alerted.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            zone: Configure SD-WAN zones.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            members: FortiGate interfaces added to the SD-WAN.
+                Default format: [{'seq-num': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'seq-num': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'seq-num': 'val1'}, ...]
+                  - List of dicts: [{'seq-num': 1}] (recommended)
+            health_check: SD-WAN status checking or health checking. Identify a server on the Internet and determine how SD-WAN verifies that the FortiGate can communicate with it.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            service: Create SD-WAN rules (also called services) to control how sessions are distributed to interfaces in the SD-WAN.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            neighbor: Create SD-WAN neighbor from BGP neighbor table to control route advertisements according to SLA status.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            duplication: Create SD-WAN duplication rule.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -260,9 +379,68 @@ class Sdwan(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if fail_alert_interfaces is not None:
+            fail_alert_interfaces = normalize_table_field(
+                fail_alert_interfaces,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fail_alert_interfaces",
+                example="[{'name': 'value'}]",
+            )
+        if zone is not None:
+            zone = normalize_table_field(
+                zone,
+                mkey="name",
+                required_fields=['name'],
+                field_name="zone",
+                example="[{'name': 'value'}]",
+            )
+        if members is not None:
+            members = normalize_table_field(
+                members,
+                mkey="seq-num",
+                required_fields=['seq-num'],
+                field_name="members",
+                example="[{'seq-num': 1}]",
+            )
+        if health_check is not None:
+            health_check = normalize_table_field(
+                health_check,
+                mkey="name",
+                required_fields=['name'],
+                field_name="health_check",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="id",
+                required_fields=['id'],
+                field_name="service",
+                example="[{'id': 1}]",
+            )
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="neighbor",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if duplication is not None:
+            duplication = normalize_table_field(
+                duplication,
+                mkey="id",
+                required_fields=['id'],
+                field_name="duplication",
+                example="[{'id': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             load_balance_mode=load_balance_mode,
             speedtest_bypass_routing=speedtest_bypass_routing,
@@ -293,13 +471,11 @@ class Sdwan(MetadataMixin):
                 endpoint="cmdb/system/sdwan",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/sdwan/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/sdwan"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.vpn_certificate_local.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.vpn_certificate_local.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Local(MetadataMixin):
+class Local(CRUDEndpoint, MetadataMixin):
     """Local Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Local(MetadataMixin):
         """Initialize Local endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Local(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve vpn/certificate/local configuration.
 
@@ -99,6 +118,7 @@ class Local(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Local(MetadataMixin):
         
         if name:
             endpoint = "/vpn.certificate/local/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/vpn.certificate/local"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Local(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -247,8 +274,9 @@ class Local(MetadataMixin):
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing vpn/certificate/local object.
 
@@ -261,8 +289,45 @@ class Local(MetadataMixin):
             comments: Comment.
             private_key: PEM format key encrypted with a password.
             certificate: PEM format certificate.
+            csr: Certificate Signing Request.
+            state: Certificate Signing Request State.
+            scep_url: SCEP server URL.
+            range: Either a global or VDOM IP address range for the certificate.
+            source: Certificate source type.
+            auto_regenerate_days: Number of days to wait before expiry of an updated local certificate is requested (0 = disabled).
+            auto_regenerate_days_warning: Number of days to wait before an expiry warning message is generated (0 = disabled).
+            scep_password: SCEP server challenge password for auto-regeneration.
+            ca_identifier: CA identifier of the CA server for signing via SCEP.
+            name_encoding: Name encoding method for auto-regeneration.
+            source_ip: Source IP address for communications to the SCEP server.
+            ike_localid: Local ID the FortiGate uses for authentication as a VPN client.
+            ike_localid_type: IKE local ID type.
+            enroll_protocol: Certificate enrollment protocol.
+            private_key_retain: Enable/disable retention of private key during SCEP renewal (default = disable).
+            cmp_server: Address and port for CMP server (format = address:port).
+            cmp_path: Path location inside CMP server.
+            cmp_server_cert: CMP server certificate.
+            cmp_regeneration_method: CMP auto-regeneration method.
+            acme_ca_url: The URL for the ACME CA server (Let's Encrypt is the default provider).
+            acme_domain: A valid domain that resolves to this FortiGate unit.
+            acme_email: Contact email address that is required by some CAs like LetsEncrypt.
+            acme_eab_key_id: External Account Binding Key ID (optional setting).
+            acme_eab_key_hmac: External Account Binding HMAC Key (URL-encoded base64).
+            acme_rsa_key_size: Length of the RSA private key of the generated cert (Minimum 2048 bits).
+            acme_renew_window: Beginning of the renewal window (in days before certificate expiration, 30 by default).
+            est_server: Address and port for EST server (e.g. https://example.com:1234).
+            est_ca_id: CA identifier of the CA server for signing via EST.
+            est_http_username: HTTP Authentication username for signing via EST.
+            est_http_password: HTTP Authentication password for signing via EST.
+            est_client_cert: Certificate used to authenticate this FortiGate to EST server.
+            est_server_cert: EST server's certificate must be verifiable by this certificate to be authenticated.
+            est_srp_username: EST SRP authentication username.
+            est_srp_password: EST SRP authentication password.
+            est_regeneration_method: EST behavioral options during re-enrollment.
+            details: Print local certificate detailed information.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -289,9 +354,10 @@ class Local(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             password=password,
             comments=comments,
@@ -352,9 +418,14 @@ class Local(MetadataMixin):
         endpoint = "/vpn.certificate/local/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -401,8 +472,9 @@ class Local(MetadataMixin):
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new vpn/certificate/local object.
 
@@ -415,8 +487,45 @@ class Local(MetadataMixin):
             comments: Comment.
             private_key: PEM format key encrypted with a password.
             certificate: PEM format certificate.
+            csr: Certificate Signing Request.
+            state: Certificate Signing Request State.
+            scep_url: SCEP server URL.
+            range: Either a global or VDOM IP address range for the certificate.
+            source: Certificate source type.
+            auto_regenerate_days: Number of days to wait before expiry of an updated local certificate is requested (0 = disabled).
+            auto_regenerate_days_warning: Number of days to wait before an expiry warning message is generated (0 = disabled).
+            scep_password: SCEP server challenge password for auto-regeneration.
+            ca_identifier: CA identifier of the CA server for signing via SCEP.
+            name_encoding: Name encoding method for auto-regeneration.
+            source_ip: Source IP address for communications to the SCEP server.
+            ike_localid: Local ID the FortiGate uses for authentication as a VPN client.
+            ike_localid_type: IKE local ID type.
+            enroll_protocol: Certificate enrollment protocol.
+            private_key_retain: Enable/disable retention of private key during SCEP renewal (default = disable).
+            cmp_server: Address and port for CMP server (format = address:port).
+            cmp_path: Path location inside CMP server.
+            cmp_server_cert: CMP server certificate.
+            cmp_regeneration_method: CMP auto-regeneration method.
+            acme_ca_url: The URL for the ACME CA server (Let's Encrypt is the default provider).
+            acme_domain: A valid domain that resolves to this FortiGate unit.
+            acme_email: Contact email address that is required by some CAs like LetsEncrypt.
+            acme_eab_key_id: External Account Binding Key ID (optional setting).
+            acme_eab_key_hmac: External Account Binding HMAC Key (URL-encoded base64).
+            acme_rsa_key_size: Length of the RSA private key of the generated cert (Minimum 2048 bits).
+            acme_renew_window: Beginning of the renewal window (in days before certificate expiration, 30 by default).
+            est_server: Address and port for EST server (e.g. https://example.com:1234).
+            est_ca_id: CA identifier of the CA server for signing via EST.
+            est_http_username: HTTP Authentication username for signing via EST.
+            est_http_password: HTTP Authentication password for signing via EST.
+            est_client_cert: Certificate used to authenticate this FortiGate to EST server.
+            est_server_cert: EST server's certificate must be verifiable by this certificate to be authenticated.
+            est_srp_username: EST SRP authentication username.
+            est_srp_password: EST SRP authentication password.
+            est_regeneration_method: EST behavioral options during re-enrollment.
+            details: Print local certificate detailed information.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -445,9 +554,10 @@ class Local(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             password=password,
             comments=comments,
@@ -504,16 +614,22 @@ class Local(MetadataMixin):
 
         endpoint = "/vpn.certificate/local"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete vpn/certificate/local object.
 
@@ -523,6 +639,7 @@ class Local(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -548,7 +665,7 @@ class Local(MetadataMixin):
         endpoint = "/vpn.certificate/local/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -612,7 +729,50 @@ class Local(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        password: Any | None = None,
+        comments: str | None = None,
+        private_key: str | None = None,
+        certificate: str | None = None,
+        csr: str | None = None,
+        state: str | None = None,
+        scep_url: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
+        auto_regenerate_days: int | None = None,
+        auto_regenerate_days_warning: int | None = None,
+        scep_password: Any | None = None,
+        ca_identifier: str | None = None,
+        name_encoding: Literal["printable", "utf8"] | None = None,
+        source_ip: str | None = None,
+        ike_localid: str | None = None,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = None,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = None,
+        private_key_retain: Literal["enable", "disable"] | None = None,
+        cmp_server: str | None = None,
+        cmp_path: str | None = None,
+        cmp_server_cert: str | None = None,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = None,
+        acme_ca_url: str | None = None,
+        acme_domain: str | None = None,
+        acme_email: str | None = None,
+        acme_eab_key_id: str | None = None,
+        acme_eab_key_hmac: Any | None = None,
+        acme_rsa_key_size: int | None = None,
+        acme_renew_window: int | None = None,
+        est_server: str | None = None,
+        est_ca_id: str | None = None,
+        est_http_username: str | None = None,
+        est_http_password: Any | None = None,
+        est_client_cert: str | None = None,
+        est_server_cert: str | None = None,
+        est_srp_username: str | None = None,
+        est_srp_password: Any | None = None,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = None,
+        details: Any | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -623,7 +783,50 @@ class Local(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            password: Field password
+            comments: Field comments
+            private_key: Field private-key
+            certificate: Field certificate
+            csr: Field csr
+            state: Field state
+            scep_url: Field scep-url
+            range: Field range
+            source: Field source
+            auto_regenerate_days: Field auto-regenerate-days
+            auto_regenerate_days_warning: Field auto-regenerate-days-warning
+            scep_password: Field scep-password
+            ca_identifier: Field ca-identifier
+            name_encoding: Field name-encoding
+            source_ip: Field source-ip
+            ike_localid: Field ike-localid
+            ike_localid_type: Field ike-localid-type
+            enroll_protocol: Field enroll-protocol
+            private_key_retain: Field private-key-retain
+            cmp_server: Field cmp-server
+            cmp_path: Field cmp-path
+            cmp_server_cert: Field cmp-server-cert
+            cmp_regeneration_method: Field cmp-regeneration-method
+            acme_ca_url: Field acme-ca-url
+            acme_domain: Field acme-domain
+            acme_email: Field acme-email
+            acme_eab_key_id: Field acme-eab-key-id
+            acme_eab_key_hmac: Field acme-eab-key-hmac
+            acme_rsa_key_size: Field acme-rsa-key-size
+            acme_renew_window: Field acme-renew-window
+            est_server: Field est-server
+            est_ca_id: Field est-ca-id
+            est_http_username: Field est-http-username
+            est_http_password: Field est-http-password
+            est_client_cert: Field est-client-cert
+            est_server_cert: Field est-server-cert
+            est_srp_username: Field est-srp-username
+            est_srp_password: Field est-srp-password
+            est_regeneration_method: Field est-regeneration-method
+            details: Field details
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -633,7 +836,13 @@ class Local(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.vpn_certificate_local.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -656,20 +865,63 @@ class Local(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            password=password,
+            comments=comments,
+            private_key=private_key,
+            certificate=certificate,
+            csr=csr,
+            state=state,
+            scep_url=scep_url,
+            range=range,
+            source=source,
+            auto_regenerate_days=auto_regenerate_days,
+            auto_regenerate_days_warning=auto_regenerate_days_warning,
+            scep_password=scep_password,
+            ca_identifier=ca_identifier,
+            name_encoding=name_encoding,
+            source_ip=source_ip,
+            ike_localid=ike_localid,
+            ike_localid_type=ike_localid_type,
+            enroll_protocol=enroll_protocol,
+            private_key_retain=private_key_retain,
+            cmp_server=cmp_server,
+            cmp_path=cmp_path,
+            cmp_server_cert=cmp_server_cert,
+            cmp_regeneration_method=cmp_regeneration_method,
+            acme_ca_url=acme_ca_url,
+            acme_domain=acme_domain,
+            acme_email=acme_email,
+            acme_eab_key_id=acme_eab_key_id,
+            acme_eab_key_hmac=acme_eab_key_hmac,
+            acme_rsa_key_size=acme_rsa_key_size,
+            acme_renew_window=acme_renew_window,
+            est_server=est_server,
+            est_ca_id=est_ca_id,
+            est_http_username=est_http_username,
+            est_http_password=est_http_password,
+            est_client_cert=est_client_cert,
+            est_server_cert=est_server_cert,
+            est_srp_username=est_srp_username,
+            est_srp_password=est_srp_password,
+            est_regeneration_method=est_regeneration_method,
+            details=details,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

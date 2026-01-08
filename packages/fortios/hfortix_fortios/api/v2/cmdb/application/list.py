@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.application_list.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.application_list.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class List(MetadataMixin):
+class List(CRUDEndpoint, MetadataMixin):
     """List Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "list"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "entries": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "default_network_services": {
+            "mkey": "id",
+            "required_fields": ['id', 'port'],
+            "example": "[{'id': 1, 'port': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class List(MetadataMixin):
         """Initialize List endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class List(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve application/list configuration.
 
@@ -99,6 +136,7 @@ class List(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class List(MetadataMixin):
         
         if name:
             endpoint = "/application/list/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/application/list"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class List(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -215,16 +260,17 @@ class List(MetadataMixin):
         force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = None,
         unknown_application_action: Literal["pass", "block"] | None = None,
         unknown_application_log: Literal["disable", "enable"] | None = None,
-        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list | None = None,
+        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = None,
         deep_app_inspection: Literal["disable", "enable"] | None = None,
-        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list | None = None,
-        entries: str | list | None = None,
+        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = None,
+        entries: str | list[str] | list[dict[str, Any]] | None = None,
         control_default_network_services: Literal["disable", "enable"] | None = None,
-        default_network_services: str | list | None = None,
+        default_network_services: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing application/list object.
 
@@ -237,8 +283,29 @@ class List(MetadataMixin):
             replacemsg_group: Replacement message group.
             extended_log: Enable/disable extended logging.
             other_application_action: Action for other applications.
+            app_replacemsg: Enable/disable replacement messages for blocked applications.
+            other_application_log: Enable/disable logging for other applications.
+            enforce_default_app_port: Enable/disable default application port enforcement for allowed applications.
+            force_inclusion_ssl_di_sigs: Enable/disable forced inclusion of SSL deep inspection signatures.
+            unknown_application_action: Pass or block traffic from unknown applications.
+            unknown_application_log: Enable/disable logging for unknown applications.
+            p2p_block_list: P2P applications to be block listed.
+            deep_app_inspection: Enable/disable deep application inspection.
+            options: Basic application protocol signatures allowed by default.
+            entries: Application list entries.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            control_default_network_services: Enable/disable enforcement of protocols over selected ports.
+            default_network_services: Default network service entries.
+                Default format: [{'id': 1, 'port': 1}]
+                Required format: List of dicts with keys: id, port
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -265,9 +332,28 @@ class List(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entries",
+                example="[{'id': 1}]",
+            )
+        if default_network_services is not None:
+            default_network_services = normalize_table_field(
+                default_network_services,
+                mkey="id",
+                required_fields=['id', 'port'],
+                field_name="default_network_services",
+                example="[{'id': 1, 'port': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -304,9 +390,14 @@ class List(MetadataMixin):
         endpoint = "/application/list/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -321,16 +412,17 @@ class List(MetadataMixin):
         force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = None,
         unknown_application_action: Literal["pass", "block"] | None = None,
         unknown_application_log: Literal["disable", "enable"] | None = None,
-        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list | None = None,
+        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = None,
         deep_app_inspection: Literal["disable", "enable"] | None = None,
-        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list | None = None,
-        entries: str | list | None = None,
+        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = None,
+        entries: str | list[str] | list[dict[str, Any]] | None = None,
         control_default_network_services: Literal["disable", "enable"] | None = None,
-        default_network_services: str | list | None = None,
+        default_network_services: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new application/list object.
 
@@ -343,8 +435,29 @@ class List(MetadataMixin):
             replacemsg_group: Replacement message group.
             extended_log: Enable/disable extended logging.
             other_application_action: Action for other applications.
+            app_replacemsg: Enable/disable replacement messages for blocked applications.
+            other_application_log: Enable/disable logging for other applications.
+            enforce_default_app_port: Enable/disable default application port enforcement for allowed applications.
+            force_inclusion_ssl_di_sigs: Enable/disable forced inclusion of SSL deep inspection signatures.
+            unknown_application_action: Pass or block traffic from unknown applications.
+            unknown_application_log: Enable/disable logging for unknown applications.
+            p2p_block_list: P2P applications to be block listed.
+            deep_app_inspection: Enable/disable deep application inspection.
+            options: Basic application protocol signatures allowed by default.
+            entries: Application list entries.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
+            control_default_network_services: Enable/disable enforcement of protocols over selected ports.
+            default_network_services: Default network service entries.
+                Default format: [{'id': 1, 'port': 1}]
+                Required format: List of dicts with keys: id, port
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -373,9 +486,28 @@ class List(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entries",
+                example="[{'id': 1}]",
+            )
+        if default_network_services is not None:
+            default_network_services = normalize_table_field(
+                default_network_services,
+                mkey="id",
+                required_fields=['id', 'port'],
+                field_name="default_network_services",
+                example="[{'id': 1, 'port': 1}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             replacemsg_group=replacemsg_group,
@@ -408,16 +540,22 @@ class List(MetadataMixin):
 
         endpoint = "/application/list"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete application/list object.
 
@@ -427,6 +565,7 @@ class List(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -452,7 +591,7 @@ class List(MetadataMixin):
         endpoint = "/application/list/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -516,7 +655,26 @@ class List(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        replacemsg_group: str | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
+        other_application_action: Literal["pass", "block"] | None = None,
+        app_replacemsg: Literal["disable", "enable"] | None = None,
+        other_application_log: Literal["disable", "enable"] | None = None,
+        enforce_default_app_port: Literal["disable", "enable"] | None = None,
+        force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = None,
+        unknown_application_action: Literal["pass", "block"] | None = None,
+        unknown_application_log: Literal["disable", "enable"] | None = None,
+        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | list[dict[str, Any]] | None = None,
+        deep_app_inspection: Literal["disable", "enable"] | None = None,
+        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | list[dict[str, Any]] | None = None,
+        entries: str | list[str] | list[dict[str, Any]] | None = None,
+        control_default_network_services: Literal["disable", "enable"] | None = None,
+        default_network_services: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -527,7 +685,26 @@ class List(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            replacemsg_group: Field replacemsg-group
+            extended_log: Field extended-log
+            other_application_action: Field other-application-action
+            app_replacemsg: Field app-replacemsg
+            other_application_log: Field other-application-log
+            enforce_default_app_port: Field enforce-default-app-port
+            force_inclusion_ssl_di_sigs: Field force-inclusion-ssl-di-sigs
+            unknown_application_action: Field unknown-application-action
+            unknown_application_log: Field unknown-application-log
+            p2p_block_list: Field p2p-block-list
+            deep_app_inspection: Field deep-app-inspection
+            options: Field options
+            entries: Field entries
+            control_default_network_services: Field control-default-network-services
+            default_network_services: Field default-network-services
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -537,7 +714,13 @@ class List(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.application_list.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -560,20 +743,39 @@ class List(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            replacemsg_group=replacemsg_group,
+            extended_log=extended_log,
+            other_application_action=other_application_action,
+            app_replacemsg=app_replacemsg,
+            other_application_log=other_application_log,
+            enforce_default_app_port=enforce_default_app_port,
+            force_inclusion_ssl_di_sigs=force_inclusion_ssl_di_sigs,
+            unknown_application_action=unknown_application_action,
+            unknown_application_log=unknown_application_log,
+            p2p_block_list=p2p_block_list,
+            deep_app_inspection=deep_app_inspection,
+            options=options,
+            entries=entries,
+            control_default_network_services=control_default_network_services,
+            default_network_services=default_network_services,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

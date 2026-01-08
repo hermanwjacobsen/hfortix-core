@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_domain_controller.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_domain_controller.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class DomainController(MetadataMixin):
+class DomainController(CRUDEndpoint, MetadataMixin):
     """DomainController Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "domain_controller"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "extra_server": {
+            "mkey": "id",
+            "required_fields": ['id', 'ip-address', 'source-ip-address'],
+            "example": "[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+        },
+        "ldap_server": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class DomainController(MetadataMixin):
         """Initialize DomainController endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class DomainController(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/domain_controller configuration.
 
@@ -99,6 +136,7 @@ class DomainController(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class DomainController(MetadataMixin):
         
         if name:
             endpoint = "/user/domain-controller/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/domain-controller"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class DomainController(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -217,10 +262,10 @@ class DomainController(MetadataMixin):
         source_port: int | None = None,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
-        extra_server: str | list | None = None,
+        extra_server: str | list[str] | list[dict[str, Any]] | None = None,
         domain_name: str | None = None,
         replication_port: int | None = None,
-        ldap_server: str | list | None = None,
+        ldap_server: str | list[str] | list[dict[str, Any]] | None = None,
         change_detection: Literal["enable", "disable"] | None = None,
         change_detection_period: int | None = None,
         dns_srv_lookup: Literal["enable", "disable"] | None = None,
@@ -230,8 +275,9 @@ class DomainController(MetadataMixin):
         adlds_port: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/domain_controller object.
 
@@ -244,8 +290,36 @@ class DomainController(MetadataMixin):
             hostname: Hostname of the server to connect to.
             username: User name to sign in with. Must have proper permissions for service.
             password: Password for specified username.
+            ip_address: Domain controller IPv4 address.
+            ip6: Domain controller IPv6 address.
+            port: Port to be used for communication with the domain controller (default = 445).
+            source_ip_address: FortiGate IPv4 address to be used for communication with the domain controller.
+            source_ip6: FortiGate IPv6 address to be used for communication with the domain controller.
+            source_port: Source port to be used for communication with the domain controller.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            extra_server: Extra servers.
+                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, ip-address, source-ip-address
+                  (String format not allowed due to multiple required fields)
+            domain_name: Domain DNS name.
+            replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
+            ldap_server: LDAP server name(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            change_detection: Enable/disable detection of a configuration change in the Active Directory server.
+            change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
+            dns_srv_lookup: Enable/disable DNS service lookup.
+            adlds_dn: AD LDS distinguished name.
+            adlds_ip_address: AD LDS IPv4 address.
+            adlds_ip6: AD LDS IPv6 address.
+            adlds_port: Port number of AD LDS service (default = 389).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +346,28 @@ class DomainController(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if extra_server is not None:
+            extra_server = normalize_table_field(
+                extra_server,
+                mkey="id",
+                required_fields=['id', 'ip-address', 'source-ip-address'],
+                field_name="extra_server",
+                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+            )
+        if ldap_server is not None:
+            ldap_server = normalize_table_field(
+                ldap_server,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ldap_server",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             ad_mode=ad_mode,
             hostname=hostname,
@@ -318,9 +411,14 @@ class DomainController(MetadataMixin):
         endpoint = "/user/domain-controller/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -337,10 +435,10 @@ class DomainController(MetadataMixin):
         source_port: int | None = None,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
-        extra_server: str | list | None = None,
+        extra_server: str | list[str] | list[dict[str, Any]] | None = None,
         domain_name: str | None = None,
         replication_port: int | None = None,
-        ldap_server: str | list | None = None,
+        ldap_server: str | list[str] | list[dict[str, Any]] | None = None,
         change_detection: Literal["enable", "disable"] | None = None,
         change_detection_period: int | None = None,
         dns_srv_lookup: Literal["enable", "disable"] | None = None,
@@ -350,8 +448,9 @@ class DomainController(MetadataMixin):
         adlds_port: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/domain_controller object.
 
@@ -364,8 +463,36 @@ class DomainController(MetadataMixin):
             hostname: Hostname of the server to connect to.
             username: User name to sign in with. Must have proper permissions for service.
             password: Password for specified username.
+            ip_address: Domain controller IPv4 address.
+            ip6: Domain controller IPv6 address.
+            port: Port to be used for communication with the domain controller (default = 445).
+            source_ip_address: FortiGate IPv4 address to be used for communication with the domain controller.
+            source_ip6: FortiGate IPv6 address to be used for communication with the domain controller.
+            source_port: Source port to be used for communication with the domain controller.
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            extra_server: Extra servers.
+                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, ip-address, source-ip-address
+                  (String format not allowed due to multiple required fields)
+            domain_name: Domain DNS name.
+            replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
+            ldap_server: LDAP server name(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            change_detection: Enable/disable detection of a configuration change in the Active Directory server.
+            change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
+            dns_srv_lookup: Enable/disable DNS service lookup.
+            adlds_dn: AD LDS distinguished name.
+            adlds_ip_address: AD LDS IPv4 address.
+            adlds_ip6: AD LDS IPv6 address.
+            adlds_port: Port number of AD LDS service (default = 389).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -394,9 +521,28 @@ class DomainController(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if extra_server is not None:
+            extra_server = normalize_table_field(
+                extra_server,
+                mkey="id",
+                required_fields=['id', 'ip-address', 'source-ip-address'],
+                field_name="extra_server",
+                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+            )
+        if ldap_server is not None:
+            ldap_server = normalize_table_field(
+                ldap_server,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ldap_server",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             ad_mode=ad_mode,
             hostname=hostname,
@@ -436,16 +582,22 @@ class DomainController(MetadataMixin):
 
         endpoint = "/user/domain-controller"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/domain_controller object.
 
@@ -455,6 +607,7 @@ class DomainController(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -480,7 +633,7 @@ class DomainController(MetadataMixin):
         endpoint = "/user/domain-controller/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -544,7 +697,33 @@ class DomainController(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        ad_mode: Literal["none", "ds", "lds"] | None = None,
+        hostname: str | None = None,
+        username: str | None = None,
+        password: Any | None = None,
+        ip_address: str | None = None,
+        ip6: str | None = None,
+        port: int | None = None,
+        source_ip_address: str | None = None,
+        source_ip6: str | None = None,
+        source_port: int | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
+        interface: str | None = None,
+        extra_server: str | list[str] | list[dict[str, Any]] | None = None,
+        domain_name: str | None = None,
+        replication_port: int | None = None,
+        ldap_server: str | list[str] | list[dict[str, Any]] | None = None,
+        change_detection: Literal["enable", "disable"] | None = None,
+        change_detection_period: int | None = None,
+        dns_srv_lookup: Literal["enable", "disable"] | None = None,
+        adlds_dn: str | None = None,
+        adlds_ip_address: str | None = None,
+        adlds_ip6: str | None = None,
+        adlds_port: int | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -555,7 +734,33 @@ class DomainController(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            ad_mode: Field ad-mode
+            hostname: Field hostname
+            username: Field username
+            password: Field password
+            ip_address: Field ip-address
+            ip6: Field ip6
+            port: Field port
+            source_ip_address: Field source-ip-address
+            source_ip6: Field source-ip6
+            source_port: Field source-port
+            interface_select_method: Field interface-select-method
+            interface: Field interface
+            extra_server: Field extra-server
+            domain_name: Field domain-name
+            replication_port: Field replication-port
+            ldap_server: Field ldap-server
+            change_detection: Field change-detection
+            change_detection_period: Field change-detection-period
+            dns_srv_lookup: Field dns-srv-lookup
+            adlds_dn: Field adlds-dn
+            adlds_ip_address: Field adlds-ip-address
+            adlds_ip6: Field adlds-ip6
+            adlds_port: Field adlds-port
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -565,7 +770,13 @@ class DomainController(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_domain_controller.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -588,20 +799,46 @@ class DomainController(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            ad_mode=ad_mode,
+            hostname=hostname,
+            username=username,
+            password=password,
+            ip_address=ip_address,
+            ip6=ip6,
+            port=port,
+            source_ip_address=source_ip_address,
+            source_ip6=source_ip6,
+            source_port=source_port,
+            interface_select_method=interface_select_method,
+            interface=interface,
+            extra_server=extra_server,
+            domain_name=domain_name,
+            replication_port=replication_port,
+            ldap_server=ldap_server,
+            change_detection=change_detection,
+            change_detection_period=change_detection_period,
+            dns_srv_lookup=dns_srv_lookup,
+            adlds_dn=adlds_dn,
+            adlds_ip_address=adlds_ip_address,
+            adlds_ip6=adlds_ip6,
+            adlds_port=adlds_port,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

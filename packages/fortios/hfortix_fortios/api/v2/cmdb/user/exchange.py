@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_exchange.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_exchange.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Exchange(MetadataMixin):
+class Exchange(CRUDEndpoint, MetadataMixin):
     """Exchange Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "exchange"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "kdc_ip": {
+            "mkey": "ipv4",
+            "required_fields": ['ipv4'],
+            "example": "[{'ipv4': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Exchange(MetadataMixin):
         """Initialize Exchange endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Exchange(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/exchange configuration.
 
@@ -99,6 +131,7 @@ class Exchange(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class Exchange(MetadataMixin):
         
         if name:
             endpoint = "/user/exchange/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/exchange"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class Exchange(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -217,11 +257,12 @@ class Exchange(MetadataMixin):
         http_auth_type: Literal["basic", "ntlm"] | None = None,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         auto_discover_kdc: Literal["enable", "disable"] | None = None,
-        kdc_ip: str | list | None = None,
+        kdc_ip: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/exchange object.
 
@@ -234,8 +275,23 @@ class Exchange(MetadataMixin):
             domain_name: MS Exchange server fully qualified domain name.
             username: User name used to sign in to the server. Must have proper permissions for service.
             password: Password for the specified username.
+            ip: Server IPv4 address.
+            connect_protocol: Connection protocol used to connect to MS Exchange service.
+            validate_server_certificate: Enable/disable exchange server certificate validation.
+            auth_type: Authentication security type used for the RPC protocol layer.
+            auth_level: Authentication security level used for the RPC protocol layer.
+            http_auth_type: Authentication security type used for the HTTP transport.
+            ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
+            auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
+            kdc_ip: KDC IPv4 addresses for Kerberos authentication.
+                Default format: [{'ipv4': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'ipv4': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
+                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -262,9 +318,20 @@ class Exchange(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if kdc_ip is not None:
+            kdc_ip = normalize_table_field(
+                kdc_ip,
+                mkey="ipv4",
+                required_fields=['ipv4'],
+                field_name="kdc_ip",
+                example="[{'ipv4': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             server_name=server_name,
             domain_name=domain_name,
@@ -298,9 +365,14 @@ class Exchange(MetadataMixin):
         endpoint = "/user/exchange/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -317,11 +389,12 @@ class Exchange(MetadataMixin):
         http_auth_type: Literal["basic", "ntlm"] | None = None,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         auto_discover_kdc: Literal["enable", "disable"] | None = None,
-        kdc_ip: str | list | None = None,
+        kdc_ip: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/exchange object.
 
@@ -334,8 +407,23 @@ class Exchange(MetadataMixin):
             domain_name: MS Exchange server fully qualified domain name.
             username: User name used to sign in to the server. Must have proper permissions for service.
             password: Password for the specified username.
+            ip: Server IPv4 address.
+            connect_protocol: Connection protocol used to connect to MS Exchange service.
+            validate_server_certificate: Enable/disable exchange server certificate validation.
+            auth_type: Authentication security type used for the RPC protocol layer.
+            auth_level: Authentication security level used for the RPC protocol layer.
+            http_auth_type: Authentication security type used for the HTTP transport.
+            ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
+            auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
+            kdc_ip: KDC IPv4 addresses for Kerberos authentication.
+                Default format: [{'ipv4': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'ipv4': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
+                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -364,9 +452,20 @@ class Exchange(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if kdc_ip is not None:
+            kdc_ip = normalize_table_field(
+                kdc_ip,
+                mkey="ipv4",
+                required_fields=['ipv4'],
+                field_name="kdc_ip",
+                example="[{'ipv4': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             server_name=server_name,
             domain_name=domain_name,
@@ -396,16 +495,22 @@ class Exchange(MetadataMixin):
 
         endpoint = "/user/exchange"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/exchange object.
 
@@ -415,6 +520,7 @@ class Exchange(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -440,7 +546,7 @@ class Exchange(MetadataMixin):
         endpoint = "/user/exchange/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -504,7 +610,23 @@ class Exchange(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        server_name: str | None = None,
+        domain_name: str | None = None,
+        username: str | None = None,
+        password: Any | None = None,
+        ip: str | None = None,
+        connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = None,
+        validate_server_certificate: Literal["disable", "enable"] | None = None,
+        auth_type: Literal["spnego", "ntlm", "kerberos"] | None = None,
+        auth_level: Literal["connect", "call", "packet", "integrity", "privacy"] | None = None,
+        http_auth_type: Literal["basic", "ntlm"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        auto_discover_kdc: Literal["enable", "disable"] | None = None,
+        kdc_ip: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -515,7 +637,23 @@ class Exchange(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            server_name: Field server-name
+            domain_name: Field domain-name
+            username: Field username
+            password: Field password
+            ip: Field ip
+            connect_protocol: Field connect-protocol
+            validate_server_certificate: Field validate-server-certificate
+            auth_type: Field auth-type
+            auth_level: Field auth-level
+            http_auth_type: Field http-auth-type
+            ssl_min_proto_version: Field ssl-min-proto-version
+            auto_discover_kdc: Field auto-discover-kdc
+            kdc_ip: Field kdc-ip
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -525,7 +663,13 @@ class Exchange(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_exchange.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -548,20 +692,36 @@ class Exchange(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            server_name=server_name,
+            domain_name=domain_name,
+            username=username,
+            password=password,
+            ip=ip,
+            connect_protocol=connect_protocol,
+            validate_server_certificate=validate_server_certificate,
+            auth_type=auth_type,
+            auth_level=auth_level,
+            http_auth_type=http_auth_type,
+            ssl_min_proto_version=ssl_min_proto_version,
+            auto_discover_kdc=auto_discover_kdc,
+            kdc_ip=kdc_ip,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

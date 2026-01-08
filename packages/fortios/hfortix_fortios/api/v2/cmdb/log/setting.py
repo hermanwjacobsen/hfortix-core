@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.log_setting.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.log_setting.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Setting(MetadataMixin):
+class Setting(CRUDEndpoint, MetadataMixin):
     """Setting Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "custom_log_fields": {
+            "mkey": "field-id",
+            "required_fields": ['field-id'],
+            "example": "[{'field-id': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class Setting(MetadataMixin):
         """Initialize Setting endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class Setting(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve log/setting configuration.
 
@@ -98,6 +130,7 @@ class Setting(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class Setting(MetadataMixin):
         
         if name:
             endpoint = f"/log/setting/{name}"
+            unwrap_single = True
         else:
             endpoint = "/log/setting"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class Setting(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -226,12 +266,13 @@ class Setting(MetadataMixin):
         extended_utm_log: Literal["enable", "disable"] | None = None,
         zone_name: Literal["enable", "disable"] | None = None,
         web_svc_perf: Literal["enable", "disable"] | None = None,
-        custom_log_fields: str | list | None = None,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = None,
         anonymization_hash: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing log/setting object.
 
@@ -244,8 +285,38 @@ class Setting(MetadataMixin):
             log_user_in_upper: Enable/disable logs with user-in-upper.
             fwpolicy_implicit_log: Enable/disable implicit firewall policy logging.
             fwpolicy6_implicit_log: Enable/disable implicit firewall policy6 logging.
+            extended_log: Enable/disable extended traffic logging.
+            local_in_allow: Enable/disable local-in-allow logging.
+            local_in_deny_unicast: Enable/disable local-in-deny-unicast logging.
+            local_in_deny_broadcast: Enable/disable local-in-deny-broadcast logging.
+            local_in_policy_log: Enable/disable local-in-policy logging.
+            local_out: Enable/disable local-out logging.
+            local_out_ioc_detection: Enable/disable local-out traffic IoC detection. Requires local-out to be enabled.
+            daemon_log: Enable/disable daemon logging.
+            neighbor_event: Enable/disable neighbor event logging.
+            brief_traffic_format: Enable/disable brief format traffic logging.
+            user_anonymize: Enable/disable anonymizing user names in log messages.
+            expolicy_implicit_log: Enable/disable proxy firewall implicit policy logging.
+            log_policy_comment: Enable/disable inserting policy comments into traffic logs.
+            faz_override: Enable/disable override FortiAnalyzer settings.
+            syslog_override: Enable/disable override Syslog settings.
+            rest_api_set: Enable/disable REST API POST/PUT/DELETE request logging.
+            rest_api_get: Enable/disable REST API GET request logging.
+            rest_api_performance: Enable/disable REST API memory and performance stats in rest-api-get/set logs.
+            long_live_session_stat: Enable/disable long-live-session statistics logging.
+            extended_utm_log: Enable/disable extended UTM logging.
+            zone_name: Enable/disable zone name logging.
+            web_svc_perf: Enable/disable web-svc performance logging.
+            custom_log_fields: Custom fields to append to all log messages.
+                Default format: [{'field-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'field-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'field-id': 'val1'}, ...]
+                  - List of dicts: [{'field-id': 'value'}] (recommended)
+            anonymization_hash: User name anonymization hash salt.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -272,9 +343,20 @@ class Setting(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if custom_log_fields is not None:
+            custom_log_fields = normalize_table_field(
+                custom_log_fields,
+                mkey="field-id",
+                required_fields=['field-id'],
+                field_name="custom_log_fields",
+                example="[{'field-id': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             resolve_ip=resolve_ip,
             resolve_port=resolve_port,
             log_user_in_upper=log_user_in_upper,
@@ -317,13 +399,11 @@ class Setting(MetadataMixin):
                 endpoint="cmdb/log/setting",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/log/setting/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/log/setting"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.switch_controller_lldp_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.switch_controller_lldp_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,48 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class LldpProfile(MetadataMixin):
+class LldpProfile(CRUDEndpoint, MetadataMixin):
     """LldpProfile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "lldp_profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "med_network_policy": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "med_location_service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "custom_tlvs": {
+            "mkey": "name",
+            "required_fields": ['oui'],
+            "example": "[{'oui': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +99,11 @@ class LldpProfile(MetadataMixin):
         """Initialize LldpProfile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +113,9 @@ class LldpProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve switch_controller/lldp_profile configuration.
 
@@ -99,6 +141,7 @@ class LldpProfile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +198,14 @@ class LldpProfile(MetadataMixin):
         
         if name:
             endpoint = "/switch-controller/lldp-profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/switch-controller/lldp-profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,13 +246,18 @@ class LldpProfile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list | None = None,
-        x802_1_tlvs: Literal["port-vlan-id"] | list | None = None,
-        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list | None = None,
+        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list[str] | None = None,
+        x802_1_tlvs: Literal["port-vlan-id"] | list[str] | None = None,
+        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list[str] | None = None,
         auto_isl: Literal["disable", "enable"] | None = None,
         auto_isl_hello_timer: int | None = None,
         auto_isl_receive_timeout: int | None = None,
@@ -219,13 +269,14 @@ class LldpProfile(MetadataMixin):
         auto_isl_auth_reauth: int | None = None,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = None,
         auto_isl_auth_macsec_profile: str | None = None,
-        med_network_policy: str | list | None = None,
-        med_location_service: str | list | None = None,
-        custom_tlvs: str | list | None = None,
+        med_network_policy: str | list[str] | list[dict[str, Any]] | None = None,
+        med_location_service: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing switch_controller/lldp_profile object.
 
@@ -238,8 +289,37 @@ class LldpProfile(MetadataMixin):
             x802_1_tlvs: Transmitted IEEE 802.1 TLVs.
             x802_3_tlvs: Transmitted IEEE 802.3 TLVs.
             auto_isl: Enable/disable auto inter-switch LAG.
+            auto_isl_hello_timer: Auto inter-switch LAG hello timer duration (1 - 30 sec, default = 3).
+            auto_isl_receive_timeout: Auto inter-switch LAG timeout if no response is received (3 - 90 sec, default = 9).
+            auto_isl_port_group: Auto inter-switch LAG port group ID (0 - 9).
+            auto_mclag_icl: Enable/disable MCLAG inter chassis link.
+            auto_isl_auth: Auto inter-switch LAG authentication mode.
+            auto_isl_auth_user: Auto inter-switch LAG authentication user certificate.
+            auto_isl_auth_identity: Auto inter-switch LAG authentication identity.
+            auto_isl_auth_reauth: Auto inter-switch LAG authentication reauth period in seconds(10 - 3600, default = 3600).
+            auto_isl_auth_encrypt: Auto inter-switch LAG encryption mode.
+            auto_isl_auth_macsec_profile: Auto inter-switch LAG macsec profile for encryption.
+            med_network_policy: Configuration method to edit Media Endpoint Discovery (MED) network policy type-length-value (TLV) categories.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            med_location_service: Configuration method to edit Media Endpoint Discovery (MED) location service type-length-value (TLV) categories.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            custom_tlvs: Configuration method to edit custom TLV entries.
+                Default format: [{'oui': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'oui': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -266,9 +346,36 @@ class LldpProfile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if med_network_policy is not None:
+            med_network_policy = normalize_table_field(
+                med_network_policy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_network_policy",
+                example="[{'name': 'value'}]",
+            )
+        if med_location_service is not None:
+            med_location_service = normalize_table_field(
+                med_location_service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_location_service",
+                example="[{'name': 'value'}]",
+            )
+        if custom_tlvs is not None:
+            custom_tlvs = normalize_table_field(
+                custom_tlvs,
+                mkey="name",
+                required_fields=['oui'],
+                field_name="custom_tlvs",
+                example="[{'oui': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             med_tlvs=med_tlvs,
             x802_1_tlvs=x802_1_tlvs,
@@ -306,16 +413,21 @@ class LldpProfile(MetadataMixin):
         endpoint = "/switch-controller/lldp-profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list | None = None,
-        x802_1_tlvs: Literal["port-vlan-id"] | list | None = None,
-        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list | None = None,
+        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list[str] | None = None,
+        x802_1_tlvs: Literal["port-vlan-id"] | list[str] | None = None,
+        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list[str] | None = None,
         auto_isl: Literal["disable", "enable"] | None = None,
         auto_isl_hello_timer: int | None = None,
         auto_isl_receive_timeout: int | None = None,
@@ -327,13 +439,14 @@ class LldpProfile(MetadataMixin):
         auto_isl_auth_reauth: int | None = None,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = None,
         auto_isl_auth_macsec_profile: str | None = None,
-        med_network_policy: str | list | None = None,
-        med_location_service: str | list | None = None,
-        custom_tlvs: str | list | None = None,
+        med_network_policy: str | list[str] | list[dict[str, Any]] | None = None,
+        med_location_service: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new switch_controller/lldp_profile object.
 
@@ -346,8 +459,37 @@ class LldpProfile(MetadataMixin):
             x802_1_tlvs: Transmitted IEEE 802.1 TLVs.
             x802_3_tlvs: Transmitted IEEE 802.3 TLVs.
             auto_isl: Enable/disable auto inter-switch LAG.
+            auto_isl_hello_timer: Auto inter-switch LAG hello timer duration (1 - 30 sec, default = 3).
+            auto_isl_receive_timeout: Auto inter-switch LAG timeout if no response is received (3 - 90 sec, default = 9).
+            auto_isl_port_group: Auto inter-switch LAG port group ID (0 - 9).
+            auto_mclag_icl: Enable/disable MCLAG inter chassis link.
+            auto_isl_auth: Auto inter-switch LAG authentication mode.
+            auto_isl_auth_user: Auto inter-switch LAG authentication user certificate.
+            auto_isl_auth_identity: Auto inter-switch LAG authentication identity.
+            auto_isl_auth_reauth: Auto inter-switch LAG authentication reauth period in seconds(10 - 3600, default = 3600).
+            auto_isl_auth_encrypt: Auto inter-switch LAG encryption mode.
+            auto_isl_auth_macsec_profile: Auto inter-switch LAG macsec profile for encryption.
+            med_network_policy: Configuration method to edit Media Endpoint Discovery (MED) network policy type-length-value (TLV) categories.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            med_location_service: Configuration method to edit Media Endpoint Discovery (MED) location service type-length-value (TLV) categories.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            custom_tlvs: Configuration method to edit custom TLV entries.
+                Default format: [{'oui': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'oui': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -376,9 +518,36 @@ class LldpProfile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if med_network_policy is not None:
+            med_network_policy = normalize_table_field(
+                med_network_policy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_network_policy",
+                example="[{'name': 'value'}]",
+            )
+        if med_location_service is not None:
+            med_location_service = normalize_table_field(
+                med_location_service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_location_service",
+                example="[{'name': 'value'}]",
+            )
+        if custom_tlvs is not None:
+            custom_tlvs = normalize_table_field(
+                custom_tlvs,
+                mkey="name",
+                required_fields=['oui'],
+                field_name="custom_tlvs",
+                example="[{'oui': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             med_tlvs=med_tlvs,
             x802_1_tlvs=x802_1_tlvs,
@@ -412,16 +581,22 @@ class LldpProfile(MetadataMixin):
 
         endpoint = "/switch-controller/lldp-profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete switch_controller/lldp_profile object.
 
@@ -431,6 +606,7 @@ class LldpProfile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -456,7 +632,7 @@ class LldpProfile(MetadataMixin):
         endpoint = "/switch-controller/lldp-profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -520,7 +696,27 @@ class LldpProfile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list[str] | list[dict[str, Any]] | None = None,
+        x802_1_tlvs: Literal["port-vlan-id"] | list[str] | list[dict[str, Any]] | None = None,
+        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list[str] | list[dict[str, Any]] | None = None,
+        auto_isl: Literal["disable", "enable"] | None = None,
+        auto_isl_hello_timer: int | None = None,
+        auto_isl_receive_timeout: int | None = None,
+        auto_isl_port_group: int | None = None,
+        auto_mclag_icl: Literal["disable", "enable"] | None = None,
+        auto_isl_auth: Literal["legacy", "strict", "relax"] | None = None,
+        auto_isl_auth_user: str | None = None,
+        auto_isl_auth_identity: str | None = None,
+        auto_isl_auth_reauth: int | None = None,
+        auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = None,
+        auto_isl_auth_macsec_profile: str | None = None,
+        med_network_policy: str | list[str] | list[dict[str, Any]] | None = None,
+        med_location_service: str | list[str] | list[dict[str, Any]] | None = None,
+        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -531,7 +727,27 @@ class LldpProfile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            med_tlvs: Field med-tlvs
+            x802_1_tlvs: Field 802.1-tlvs
+            x802_3_tlvs: Field 802.3-tlvs
+            auto_isl: Field auto-isl
+            auto_isl_hello_timer: Field auto-isl-hello-timer
+            auto_isl_receive_timeout: Field auto-isl-receive-timeout
+            auto_isl_port_group: Field auto-isl-port-group
+            auto_mclag_icl: Field auto-mclag-icl
+            auto_isl_auth: Field auto-isl-auth
+            auto_isl_auth_user: Field auto-isl-auth-user
+            auto_isl_auth_identity: Field auto-isl-auth-identity
+            auto_isl_auth_reauth: Field auto-isl-auth-reauth
+            auto_isl_auth_encrypt: Field auto-isl-auth-encrypt
+            auto_isl_auth_macsec_profile: Field auto-isl-auth-macsec-profile
+            med_network_policy: Field med-network-policy
+            med_location_service: Field med-location-service
+            custom_tlvs: Field custom-tlvs
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -541,7 +757,13 @@ class LldpProfile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.switch_controller_lldp_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -564,20 +786,40 @@ class LldpProfile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            med_tlvs=med_tlvs,
+            x802_1_tlvs=x802_1_tlvs,
+            x802_3_tlvs=x802_3_tlvs,
+            auto_isl=auto_isl,
+            auto_isl_hello_timer=auto_isl_hello_timer,
+            auto_isl_receive_timeout=auto_isl_receive_timeout,
+            auto_isl_port_group=auto_isl_port_group,
+            auto_mclag_icl=auto_mclag_icl,
+            auto_isl_auth=auto_isl_auth,
+            auto_isl_auth_user=auto_isl_auth_user,
+            auto_isl_auth_identity=auto_isl_auth_identity,
+            auto_isl_auth_reauth=auto_isl_auth_reauth,
+            auto_isl_auth_encrypt=auto_isl_auth_encrypt,
+            auto_isl_auth_macsec_profile=auto_isl_auth_macsec_profile,
+            med_network_policy=med_network_policy,
+            med_location_service=med_location_service,
+            custom_tlvs=custom_tlvs,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

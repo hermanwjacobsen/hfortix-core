@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.user_saml.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.user_saml.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,17 +38,21 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Saml(MetadataMixin):
+class Saml(CRUDEndpoint, MetadataMixin):
     """Saml Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
@@ -63,6 +76,11 @@ class Saml(MetadataMixin):
         """Initialize Saml endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +90,9 @@ class Saml(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve user/saml configuration.
 
@@ -99,6 +118,7 @@ class Saml(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +175,14 @@ class Saml(MetadataMixin):
         
         if name:
             endpoint = "/user/saml/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/user/saml"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +223,11 @@ class Saml(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -228,8 +255,9 @@ class Saml(MetadataMixin):
         reauth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing user/saml object.
 
@@ -242,8 +270,26 @@ class Saml(MetadataMixin):
             entity_id: SP entity ID.
             single_sign_on_url: SP single sign-on URL.
             single_logout_url: SP single logout URL.
+            idp_entity_id: IDP entity ID.
+            idp_single_sign_on_url: IDP single sign-on URL.
+            idp_single_logout_url: IDP single logout url.
+            idp_cert: IDP Certificate name.
+            scim_client: SCIM client name.
+            scim_user_attr_type: User attribute type used to match SCIM users (default = user-name).
+            scim_group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
+            user_name: User name in assertion statement.
+            group_name: Group name in assertion statement.
+            digest_method: Digest method algorithm.
+            require_signed_resp_and_asrt: Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).
+            limit_relaystate: Enable/disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).
+            clock_tolerance: Clock skew tolerance in seconds (0 - 300, default = 15, 0 = no tolerance).
+            adfs_claim: Enable/disable ADFS Claim for user/group attribute in assertion statement (default = disable).
+            user_claim_type: User name claim in assertion statement.
+            group_claim_type: Group claim in assertion statement.
+            reauth: Enable/disable signalling of IDP to force user re-authentication (default = disable).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -270,9 +316,10 @@ class Saml(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             cert=cert,
             entity_id=entity_id,
@@ -314,9 +361,14 @@ class Saml(MetadataMixin):
         endpoint = "/user/saml/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -344,8 +396,9 @@ class Saml(MetadataMixin):
         reauth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new user/saml object.
 
@@ -358,8 +411,26 @@ class Saml(MetadataMixin):
             entity_id: SP entity ID.
             single_sign_on_url: SP single sign-on URL.
             single_logout_url: SP single logout URL.
+            idp_entity_id: IDP entity ID.
+            idp_single_sign_on_url: IDP single sign-on URL.
+            idp_single_logout_url: IDP single logout url.
+            idp_cert: IDP Certificate name.
+            scim_client: SCIM client name.
+            scim_user_attr_type: User attribute type used to match SCIM users (default = user-name).
+            scim_group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
+            user_name: User name in assertion statement.
+            group_name: Group name in assertion statement.
+            digest_method: Digest method algorithm.
+            require_signed_resp_and_asrt: Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).
+            limit_relaystate: Enable/disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).
+            clock_tolerance: Clock skew tolerance in seconds (0 - 300, default = 15, 0 = no tolerance).
+            adfs_claim: Enable/disable ADFS Claim for user/group attribute in assertion statement (default = disable).
+            user_claim_type: User name claim in assertion statement.
+            group_claim_type: Group claim in assertion statement.
+            reauth: Enable/disable signalling of IDP to force user re-authentication (default = disable).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -388,9 +459,10 @@ class Saml(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             cert=cert,
             entity_id=entity_id,
@@ -428,16 +500,22 @@ class Saml(MetadataMixin):
 
         endpoint = "/user/saml"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete user/saml object.
 
@@ -447,6 +525,7 @@ class Saml(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -472,7 +551,7 @@ class Saml(MetadataMixin):
         endpoint = "/user/saml/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -536,7 +615,31 @@ class Saml(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        cert: str | None = None,
+        entity_id: str | None = None,
+        single_sign_on_url: str | None = None,
+        single_logout_url: str | None = None,
+        idp_entity_id: str | None = None,
+        idp_single_sign_on_url: str | None = None,
+        idp_single_logout_url: str | None = None,
+        idp_cert: str | None = None,
+        scim_client: str | None = None,
+        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = None,
+        scim_group_attr_type: Literal["display-name", "external-id"] | None = None,
+        user_name: str | None = None,
+        group_name: str | None = None,
+        digest_method: Literal["sha1", "sha256"] | None = None,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = None,
+        limit_relaystate: Literal["enable", "disable"] | None = None,
+        clock_tolerance: int | None = None,
+        adfs_claim: Literal["enable", "disable"] | None = None,
+        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = None,
+        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = None,
+        reauth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -547,7 +650,31 @@ class Saml(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            cert: Field cert
+            entity_id: Field entity-id
+            single_sign_on_url: Field single-sign-on-url
+            single_logout_url: Field single-logout-url
+            idp_entity_id: Field idp-entity-id
+            idp_single_sign_on_url: Field idp-single-sign-on-url
+            idp_single_logout_url: Field idp-single-logout-url
+            idp_cert: Field idp-cert
+            scim_client: Field scim-client
+            scim_user_attr_type: Field scim-user-attr-type
+            scim_group_attr_type: Field scim-group-attr-type
+            user_name: Field user-name
+            group_name: Field group-name
+            digest_method: Field digest-method
+            require_signed_resp_and_asrt: Field require-signed-resp-and-asrt
+            limit_relaystate: Field limit-relaystate
+            clock_tolerance: Field clock-tolerance
+            adfs_claim: Field adfs-claim
+            user_claim_type: Field user-claim-type
+            group_claim_type: Field group-claim-type
+            reauth: Field reauth
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -557,7 +684,13 @@ class Saml(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.user_saml.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -580,20 +713,44 @@ class Saml(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            cert=cert,
+            entity_id=entity_id,
+            single_sign_on_url=single_sign_on_url,
+            single_logout_url=single_logout_url,
+            idp_entity_id=idp_entity_id,
+            idp_single_sign_on_url=idp_single_sign_on_url,
+            idp_single_logout_url=idp_single_logout_url,
+            idp_cert=idp_cert,
+            scim_client=scim_client,
+            scim_user_attr_type=scim_user_attr_type,
+            scim_group_attr_type=scim_group_attr_type,
+            user_name=user_name,
+            group_name=group_name,
+            digest_method=digest_method,
+            require_signed_resp_and_asrt=require_signed_resp_and_asrt,
+            limit_relaystate=limit_relaystate,
+            clock_tolerance=clock_tolerance,
+            adfs_claim=adfs_claim,
+            user_claim_type=user_claim_type,
+            group_claim_type=group_claim_type,
+            reauth=reauth,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

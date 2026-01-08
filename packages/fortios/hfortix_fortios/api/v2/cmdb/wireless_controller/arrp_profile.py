@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.wireless_controller_arrp_profile.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.wireless_controller_arrp_profile.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class ArrpProfile(MetadataMixin):
+class ArrpProfile(CRUDEndpoint, MetadataMixin):
     """ArrpProfile Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "arrp_profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "darrp_optimize_schedules": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class ArrpProfile(MetadataMixin):
         """Initialize ArrpProfile endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class ArrpProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve wireless_controller/arrp_profile configuration.
 
@@ -99,6 +131,7 @@ class ArrpProfile(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +188,14 @@ class ArrpProfile(MetadataMixin):
         
         if name:
             endpoint = "/wireless-controller/arrp-profile/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/wireless-controller/arrp-profile"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +236,11 @@ class ArrpProfile(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -225,11 +265,12 @@ class ArrpProfile(MetadataMixin):
         include_dfs_channel: Literal["enable", "disable"] | None = None,
         override_darrp_optimize: Literal["enable", "disable"] | None = None,
         darrp_optimize: int | None = None,
-        darrp_optimize_schedules: str | list | None = None,
+        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing wireless_controller/arrp_profile object.
 
@@ -242,8 +283,31 @@ class ArrpProfile(MetadataMixin):
             selection_period: Period in seconds to measure average channel load, noise floor, spectral RSSI (default = 3600).
             monitor_period: Period in seconds to measure average transmit retries and receive errors (default = 300).
             weight_managed_ap: Weight in DARRP channel score calculation for managed APs (0 - 2000, default = 50).
+            weight_rogue_ap: Weight in DARRP channel score calculation for rogue APs (0 - 2000, default = 10).
+            weight_noise_floor: Weight in DARRP channel score calculation for noise floor (0 - 2000, default = 40).
+            weight_channel_load: Weight in DARRP channel score calculation for channel load (0 - 2000, default = 20).
+            weight_spectral_rssi: Weight in DARRP channel score calculation for spectral RSSI (0 - 2000, default = 40).
+            weight_weather_channel: Weight in DARRP channel score calculation for weather channel (0 - 2000, default = 0).
+            weight_dfs_channel: Weight in DARRP channel score calculation for DFS channel (0 - 2000, default = 0).
+            threshold_ap: Threshold to reject channel in DARRP channel selection phase 1 due to surrounding APs (0 - 500, default = 250).
+            threshold_noise_floor: Threshold in dBm to reject channel in DARRP channel selection phase 1 due to noise floor (-95 to -20, default = -85).
+            threshold_channel_load: Threshold in percentage to reject channel in DARRP channel selection phase 1 due to channel load (0 - 100, default = 60).
+            threshold_spectral_rssi: Threshold in dBm to reject channel in DARRP channel selection phase 1 due to spectral RSSI (-95 to -20, default = -65).
+            threshold_tx_retries: Threshold in percentage for transmit retries to trigger channel reselection in DARRP monitor stage (0 - 1000, default = 300).
+            threshold_rx_errors: Threshold in percentage for receive errors to trigger channel reselection in DARRP monitor stage (0 - 100, default = 50).
+            include_weather_channel: Enable/disable use of weather channel in DARRP channel selection phase 1 (default = enable).
+            include_dfs_channel: Enable/disable use of DFS channel in DARRP channel selection phase 1 (default = enable).
+            override_darrp_optimize: Enable to override setting darrp-optimize and darrp-optimize-schedules (default = disable).
+            darrp_optimize: Time for running Distributed Automatic Radio Resource Provisioning (DARRP) optimizations (0 - 86400 sec, default = 86400, 0 = disable).
+            darrp_optimize_schedules: Firewall schedules for DARRP running time. DARRP will run periodically based on darrp-optimize within the schedules. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -270,9 +334,20 @@ class ArrpProfile(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if darrp_optimize_schedules is not None:
+            darrp_optimize_schedules = normalize_table_field(
+                darrp_optimize_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="darrp_optimize_schedules",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             selection_period=selection_period,
@@ -314,9 +389,14 @@ class ArrpProfile(MetadataMixin):
         endpoint = "/wireless-controller/arrp-profile/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -341,11 +421,12 @@ class ArrpProfile(MetadataMixin):
         include_dfs_channel: Literal["enable", "disable"] | None = None,
         override_darrp_optimize: Literal["enable", "disable"] | None = None,
         darrp_optimize: int | None = None,
-        darrp_optimize_schedules: str | list | None = None,
+        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new wireless_controller/arrp_profile object.
 
@@ -358,8 +439,31 @@ class ArrpProfile(MetadataMixin):
             selection_period: Period in seconds to measure average channel load, noise floor, spectral RSSI (default = 3600).
             monitor_period: Period in seconds to measure average transmit retries and receive errors (default = 300).
             weight_managed_ap: Weight in DARRP channel score calculation for managed APs (0 - 2000, default = 50).
+            weight_rogue_ap: Weight in DARRP channel score calculation for rogue APs (0 - 2000, default = 10).
+            weight_noise_floor: Weight in DARRP channel score calculation for noise floor (0 - 2000, default = 40).
+            weight_channel_load: Weight in DARRP channel score calculation for channel load (0 - 2000, default = 20).
+            weight_spectral_rssi: Weight in DARRP channel score calculation for spectral RSSI (0 - 2000, default = 40).
+            weight_weather_channel: Weight in DARRP channel score calculation for weather channel (0 - 2000, default = 0).
+            weight_dfs_channel: Weight in DARRP channel score calculation for DFS channel (0 - 2000, default = 0).
+            threshold_ap: Threshold to reject channel in DARRP channel selection phase 1 due to surrounding APs (0 - 500, default = 250).
+            threshold_noise_floor: Threshold in dBm to reject channel in DARRP channel selection phase 1 due to noise floor (-95 to -20, default = -85).
+            threshold_channel_load: Threshold in percentage to reject channel in DARRP channel selection phase 1 due to channel load (0 - 100, default = 60).
+            threshold_spectral_rssi: Threshold in dBm to reject channel in DARRP channel selection phase 1 due to spectral RSSI (-95 to -20, default = -65).
+            threshold_tx_retries: Threshold in percentage for transmit retries to trigger channel reselection in DARRP monitor stage (0 - 1000, default = 300).
+            threshold_rx_errors: Threshold in percentage for receive errors to trigger channel reselection in DARRP monitor stage (0 - 100, default = 50).
+            include_weather_channel: Enable/disable use of weather channel in DARRP channel selection phase 1 (default = enable).
+            include_dfs_channel: Enable/disable use of DFS channel in DARRP channel selection phase 1 (default = enable).
+            override_darrp_optimize: Enable to override setting darrp-optimize and darrp-optimize-schedules (default = disable).
+            darrp_optimize: Time for running Distributed Automatic Radio Resource Provisioning (DARRP) optimizations (0 - 86400 sec, default = 86400, 0 = disable).
+            darrp_optimize_schedules: Firewall schedules for DARRP running time. DARRP will run periodically based on darrp-optimize within the schedules. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -388,9 +492,20 @@ class ArrpProfile(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if darrp_optimize_schedules is not None:
+            darrp_optimize_schedules = normalize_table_field(
+                darrp_optimize_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="darrp_optimize_schedules",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             comment=comment,
             selection_period=selection_period,
@@ -428,16 +543,22 @@ class ArrpProfile(MetadataMixin):
 
         endpoint = "/wireless-controller/arrp-profile"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete wireless_controller/arrp_profile object.
 
@@ -447,6 +568,7 @@ class ArrpProfile(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -472,7 +594,7 @@ class ArrpProfile(MetadataMixin):
         endpoint = "/wireless-controller/arrp-profile/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -536,7 +658,31 @@ class ArrpProfile(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        selection_period: int | None = None,
+        monitor_period: int | None = None,
+        weight_managed_ap: int | None = None,
+        weight_rogue_ap: int | None = None,
+        weight_noise_floor: int | None = None,
+        weight_channel_load: int | None = None,
+        weight_spectral_rssi: int | None = None,
+        weight_weather_channel: int | None = None,
+        weight_dfs_channel: int | None = None,
+        threshold_ap: int | None = None,
+        threshold_noise_floor: str | None = None,
+        threshold_channel_load: int | None = None,
+        threshold_spectral_rssi: str | None = None,
+        threshold_tx_retries: int | None = None,
+        threshold_rx_errors: int | None = None,
+        include_weather_channel: Literal["enable", "disable"] | None = None,
+        include_dfs_channel: Literal["enable", "disable"] | None = None,
+        override_darrp_optimize: Literal["enable", "disable"] | None = None,
+        darrp_optimize: int | None = None,
+        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -547,7 +693,31 @@ class ArrpProfile(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            comment: Field comment
+            selection_period: Field selection-period
+            monitor_period: Field monitor-period
+            weight_managed_ap: Field weight-managed-ap
+            weight_rogue_ap: Field weight-rogue-ap
+            weight_noise_floor: Field weight-noise-floor
+            weight_channel_load: Field weight-channel-load
+            weight_spectral_rssi: Field weight-spectral-rssi
+            weight_weather_channel: Field weight-weather-channel
+            weight_dfs_channel: Field weight-dfs-channel
+            threshold_ap: Field threshold-ap
+            threshold_noise_floor: Field threshold-noise-floor
+            threshold_channel_load: Field threshold-channel-load
+            threshold_spectral_rssi: Field threshold-spectral-rssi
+            threshold_tx_retries: Field threshold-tx-retries
+            threshold_rx_errors: Field threshold-rx-errors
+            include_weather_channel: Field include-weather-channel
+            include_dfs_channel: Field include-dfs-channel
+            override_darrp_optimize: Field override-darrp-optimize
+            darrp_optimize: Field darrp-optimize
+            darrp_optimize_schedules: Field darrp-optimize-schedules
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -557,7 +727,13 @@ class ArrpProfile(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.wireless_controller_arrp_profile.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -580,20 +756,44 @@ class ArrpProfile(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            comment=comment,
+            selection_period=selection_period,
+            monitor_period=monitor_period,
+            weight_managed_ap=weight_managed_ap,
+            weight_rogue_ap=weight_rogue_ap,
+            weight_noise_floor=weight_noise_floor,
+            weight_channel_load=weight_channel_load,
+            weight_spectral_rssi=weight_spectral_rssi,
+            weight_weather_channel=weight_weather_channel,
+            weight_dfs_channel=weight_dfs_channel,
+            threshold_ap=threshold_ap,
+            threshold_noise_floor=threshold_noise_floor,
+            threshold_channel_load=threshold_channel_load,
+            threshold_spectral_rssi=threshold_spectral_rssi,
+            threshold_tx_retries=threshold_tx_retries,
+            threshold_rx_errors=threshold_rx_errors,
+            include_weather_channel=include_weather_channel,
+            include_dfs_channel=include_dfs_channel,
+            override_darrp_optimize=override_darrp_optimize,
+            darrp_optimize=darrp_optimize,
+            darrp_optimize_schedules=darrp_optimize_schedules,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move

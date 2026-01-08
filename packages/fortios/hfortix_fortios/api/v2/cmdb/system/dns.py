@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_dns.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_dns.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Dns(MetadataMixin):
+class Dns(CRUDEndpoint, MetadataMixin):
     """Dns Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "dns"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_hostname": {
+            "mkey": "hostname",
+            "required_fields": ['hostname'],
+            "example": "[{'hostname': 'value'}]",
+        },
+        "domain": {
+            "mkey": "domain",
+            "required_fields": ['domain'],
+            "example": "[{'domain': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Dns(MetadataMixin):
         """Initialize Dns endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Dns(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/dns configuration.
 
@@ -98,6 +135,7 @@ class Dns(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +188,14 @@ class Dns(MetadataMixin):
         
         if name:
             endpoint = f"/system/dns/{name}"
+            unwrap_single = True
         else:
             endpoint = "/system/dns"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,15 +236,20 @@ class Dns(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         primary: str | None = None,
         secondary: str | None = None,
-        protocol: Literal["cleartext", "dot", "doh"] | list | None = None,
+        protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = None,
         ssl_certificate: str | None = None,
-        server_hostname: str | list | None = None,
-        domain: str | list | None = None,
+        server_hostname: str | list[str] | list[dict[str, Any]] | None = None,
+        domain: str | list[str] | list[dict[str, Any]] | None = None,
         ip6_primary: str | None = None,
         ip6_secondary: str | None = None,
         timeout: int | None = None,
@@ -214,7 +259,7 @@ class Dns(MetadataMixin):
         cache_notfound_responses: Literal["disable", "enable"] | None = None,
         source_ip: str | None = None,
         source_ip_interface: str | None = None,
-        root_servers: str | list | None = None,
+        root_servers: str | list[str] | None = None,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
@@ -229,8 +274,9 @@ class Dns(MetadataMixin):
         hostname_limit: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/dns object.
 
@@ -243,8 +289,42 @@ class Dns(MetadataMixin):
             protocol: DNS transport protocols.
             ssl_certificate: Name of local certificate for SSL connections.
             server_hostname: DNS server host name list.
+                Default format: [{'hostname': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'hostname': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'hostname': 'val1'}, ...]
+                  - List of dicts: [{'hostname': 'value'}] (recommended)
+            domain: Search suffix list for hostname lookup.
+                Default format: [{'domain': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
+                  - List of dicts: [{'domain': 'value'}] (recommended)
+            ip6_primary: Primary DNS server IPv6 address.
+            ip6_secondary: Secondary DNS server IPv6 address.
+            timeout: DNS query timeout interval in seconds (1 - 10).
+            retry: Number of times to retry (0 - 5).
+            dns_cache_limit: Maximum number of records in the DNS cache.
+            dns_cache_ttl: Duration in seconds that the DNS cache retains information.
+            cache_notfound_responses: Enable/disable response from the DNS server when a record is not in cache.
+            source_ip: IP address used by the DNS server as its source IP.
+            source_ip_interface: IP address of the specified interface as the source IP address.
+            root_servers: Configure up to two preferred servers that serve the DNS root zone (default uses all 13 root servers).
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
+            server_select_method: Specify how configured servers are prioritized.
+            alt_primary: Alternate primary DNS server. This is not used as a failover DNS server.
+            alt_secondary: Alternate secondary DNS server. This is not used as a failover DNS server.
+            log: Local DNS log setting.
+            fqdn_cache_ttl: FQDN cache time to live in seconds (0 - 86400, default = 0).
+            fqdn_max_refresh: FQDN cache maximum refresh time in seconds (3600 - 86400, default = 3600).
+            fqdn_min_refresh: FQDN cache minimum refresh time in seconds (10 - 3600, default = 60).
+            hostname_ttl: TTL of hostname table entries (60 - 86400).
+            hostname_limit: Limit of the number of hostname table entries (0 - 50000).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -271,9 +351,28 @@ class Dns(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_hostname is not None:
+            server_hostname = normalize_table_field(
+                server_hostname,
+                mkey="hostname",
+                required_fields=['hostname'],
+                field_name="server_hostname",
+                example="[{'hostname': 'value'}]",
+            )
+        if domain is not None:
+            domain = normalize_table_field(
+                domain,
+                mkey="domain",
+                required_fields=['domain'],
+                field_name="domain",
+                example="[{'domain': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             primary=primary,
             secondary=secondary,
             protocol=protocol,
@@ -315,13 +414,11 @@ class Dns(MetadataMixin):
                 endpoint="cmdb/system/dns",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/system/dns/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/system/dns"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

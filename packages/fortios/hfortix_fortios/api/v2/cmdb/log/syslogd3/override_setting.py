@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.log_syslogd3_override_setting.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.log_syslogd3_override_setting.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,38 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class OverrideSetting(MetadataMixin):
+class OverrideSetting(CRUDEndpoint, MetadataMixin):
     """OverrideSetting Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "override_setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "custom_field_name": {
+            "mkey": "id",
+            "required_fields": ['name', 'custom'],
+            "example": "[{'name': 'value', 'custom': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +89,11 @@ class OverrideSetting(MetadataMixin):
         """Initialize OverrideSetting endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +103,9 @@ class OverrideSetting(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve log/syslogd3/override_setting configuration.
 
@@ -98,6 +130,7 @@ class OverrideSetting(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -150,12 +183,14 @@ class OverrideSetting(MetadataMixin):
         
         if name:
             endpoint = f"/log.syslogd3/override-setting/{name}"
+            unwrap_single = True
         else:
             endpoint = "/log.syslogd3/override-setting"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -196,6 +231,11 @@ class OverrideSetting(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -213,14 +253,15 @@ class OverrideSetting(MetadataMixin):
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = None,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         certificate: str | None = None,
-        custom_field_name: str | list | None = None,
+        custom_field_name: str | list[str] | list[dict[str, Any]] | None = None,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing log/syslogd3/override_setting object.
 
@@ -233,8 +274,25 @@ class OverrideSetting(MetadataMixin):
             mode: Remote syslog logging over UDP/Reliable TCP.
             use_management_vdom: Enable/disable use of management VDOM as source VDOM for logs sent to syslog server.
             port: Server listen port.
+            facility: Remote syslog facility.
+            source_ip_interface: Source interface of syslog.
+            source_ip: Source IP address of syslog.
+            format: Log format.
+            priority: Set log transmission priority.
+            max_log_rate: Syslog maximum log rate in MBps (0 = unlimited).
+            enc_algorithm: Enable/disable reliable syslogging with TLS encryption.
+            ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
+            certificate: Certificate used to communicate with Syslog server.
+            custom_field_name: Custom field name for CEF format logging.
+                Default format: [{'name': 'value', 'custom': 'value'}]
+                Required format: List of dicts with keys: name, custom
+                  (String format not allowed due to multiple required fields)
+            interface_select_method: Specify how to select outgoing interface to reach server.
+            interface: Specify outgoing interface to reach server.
+            vrf_select: VRF ID used for connection to server.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -261,9 +319,20 @@ class OverrideSetting(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if custom_field_name is not None:
+            custom_field_name = normalize_table_field(
+                custom_field_name,
+                mkey="id",
+                required_fields=['name', 'custom'],
+                field_name="custom_field_name",
+                example="[{'name': 'value', 'custom': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             status=status,
             server=server,
             mode=mode,
@@ -295,13 +364,11 @@ class OverrideSetting(MetadataMixin):
                 endpoint="cmdb/log/syslogd3/override_setting",
             )
         
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/log.syslogd3/override-setting/{name_value}"
+        # Singleton endpoint - no identifier needed
+        endpoint = "/log.syslogd3/override-setting"
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
 

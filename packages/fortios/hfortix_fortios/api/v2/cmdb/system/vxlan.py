@@ -15,12 +15,21 @@ Example Usage:
     >>>
     >>> # List all items
     >>> items = fgt.api.cmdb.system_vxlan.get()
+    >>>
+    >>> # Create with auto-normalization (strings/lists converted automatically)
+    >>> result = fgt.api.cmdb.system_vxlan.post(
+    ...     name="example",
+    ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
+    ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
+    ... )
 
 Important:
     - Use **POST** to create new objects
     - Use **PUT** to update existing objects
     - Use **GET** to retrieve configuration
     - Use **DELETE** to remove objects
+    - **Auto-normalization**: List fields accept strings or lists, automatically
+      converted to FortiOS format [{'name': '...'}]
 """
 
 from __future__ import annotations
@@ -29,21 +38,43 @@ from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
-    build_cmdb_payload,
+    build_api_payload,
+    build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
+# Import Protocol-based type hints (eliminates need for local @overload decorators)
+from hfortix_fortios._protocols import CRUDEndpoint
 
-class Vxlan(MetadataMixin):
+class Vxlan(CRUDEndpoint, MetadataMixin):
     """Vxlan Operations."""
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vxlan"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "remote_ip": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "remote_ip6": {
+            "mkey": "ip6",
+            "required_fields": ['ip6'],
+            "example": "[{'ip6': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -63,6 +94,11 @@ class Vxlan(MetadataMixin):
         """Initialize Vxlan endpoint."""
         self._client = client
 
+    # ========================================================================
+    # GET Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def get(
         self,
         name: str | None = None,
@@ -72,8 +108,9 @@ class Vxlan(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Retrieve system/vxlan configuration.
 
@@ -99,6 +136,7 @@ class Vxlan(MetadataMixin):
                 See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional query parameters passed directly to API.
 
         Returns:
@@ -155,12 +193,14 @@ class Vxlan(MetadataMixin):
         
         if name:
             endpoint = "/system/vxlan/" + str(name)
+            unwrap_single = True
         else:
             endpoint = "/system/vxlan"
+            unwrap_single = False
         
         params.update(kwargs)
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json, response_mode=response_mode, unwrap_single=unwrap_single
         )
 
     def get_schema(
@@ -201,6 +241,11 @@ class Vxlan(MetadataMixin):
         return self.get(action=format, vdom=vdom)
 
 
+    # ========================================================================
+    # PUT Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -208,9 +253,9 @@ class Vxlan(MetadataMixin):
         interface: str | None = None,
         vni: int | None = None,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = None,
-        remote_ip: str | list | None = None,
+        remote_ip: str | list[str] | list[dict[str, Any]] | None = None,
         local_ip: str | None = None,
-        remote_ip6: str | list | None = None,
+        remote_ip6: str | list[str] | list[dict[str, Any]] | None = None,
         local_ip6: str | None = None,
         dstport: int | None = None,
         multicast_ttl: int | None = None,
@@ -218,8 +263,9 @@ class Vxlan(MetadataMixin):
         learn_from_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Update existing system/vxlan object.
 
@@ -232,8 +278,26 @@ class Vxlan(MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            local_ip: IPv4 address to use as the source address for egress VXLAN packets.
+            remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
+                Default format: [{'ip6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
+                  - List of dicts: [{'ip6': 'value'}] (recommended)
+            local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
+            dstport: VXLAN destination port (1 - 65535, default = 4789).
+            multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
+            evpn_id: EVPN instance.
+            learn_from_traffic: Enable/disable VXLAN MAC learning from traffic.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -260,9 +324,28 @@ class Vxlan(MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if remote_ip is not None:
+            remote_ip = normalize_table_field(
+                remote_ip,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="remote_ip",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if remote_ip6 is not None:
+            remote_ip6 = normalize_table_field(
+                remote_ip6,
+                mkey="ip6",
+                required_fields=['ip6'],
+                field_name="remote_ip6",
+                example="[{'ip6': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             vni=vni,
@@ -294,9 +377,14 @@ class Vxlan(MetadataMixin):
         endpoint = "/system/vxlan/" + str(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # POST Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -304,9 +392,9 @@ class Vxlan(MetadataMixin):
         interface: str | None = None,
         vni: int | None = None,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = None,
-        remote_ip: str | list | None = None,
+        remote_ip: str | list[str] | list[dict[str, Any]] | None = None,
         local_ip: str | None = None,
-        remote_ip6: str | list | None = None,
+        remote_ip6: str | list[str] | list[dict[str, Any]] | None = None,
         local_ip6: str | None = None,
         dstport: int | None = None,
         multicast_ttl: int | None = None,
@@ -314,8 +402,9 @@ class Vxlan(MetadataMixin):
         learn_from_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Create new system/vxlan object.
 
@@ -328,8 +417,26 @@ class Vxlan(MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
+            local_ip: IPv4 address to use as the source address for egress VXLAN packets.
+            remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
+                Default format: [{'ip6': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip6': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
+                  - List of dicts: [{'ip6': 'value'}] (recommended)
+            local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
+            dstport: VXLAN destination port (1 - 65535, default = 4789).
+            multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
+            evpn_id: EVPN instance.
+            learn_from_traffic: Enable/disable VXLAN MAC learning from traffic.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -358,9 +465,28 @@ class Vxlan(MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
+        # Apply normalization for table fields (supports flexible input formats)
+        if remote_ip is not None:
+            remote_ip = normalize_table_field(
+                remote_ip,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="remote_ip",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if remote_ip6 is not None:
+            remote_ip6 = normalize_table_field(
+                remote_ip6,
+                mkey="ip6",
+                required_fields=['ip6'],
+                field_name="remote_ip6",
+                example="[{'ip6': 'value'}]",
+            )
+        
+        # Build payload using helper function with auto-normalization
+        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
+        # To disable auto-normalization, use build_cmdb_payload directly
+        payload_data = build_api_payload(
             name=name,
             interface=interface,
             vni=vni,
@@ -388,16 +514,22 @@ class Vxlan(MetadataMixin):
 
         endpoint = "/system/vxlan"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
+    # ========================================================================
+    # DELETE Method
+    # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # ========================================================================
+    
     def delete(
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ):  # type: ignore[no-untyped-def]
         """
         Delete system/vxlan object.
 
@@ -407,6 +539,7 @@ class Vxlan(MetadataMixin):
             name: Primary key identifier
             vdom: Virtual domain name
             raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode. "dict" returns dict, "object" returns FortiObject.
             **kwargs: Additional parameters
 
         Returns:
@@ -432,7 +565,7 @@ class Vxlan(MetadataMixin):
         endpoint = "/system/vxlan/" + str(name)
 
         return self._client.delete(
-            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json, response_mode=response_mode
         )
 
     def exists(
@@ -496,7 +629,21 @@ class Vxlan(MetadataMixin):
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        interface: str | None = None,
+        vni: int | None = None,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = None,
+        remote_ip: str | list[str] | list[dict[str, Any]] | None = None,
+        local_ip: str | None = None,
+        remote_ip6: str | list[str] | list[dict[str, Any]] | None = None,
+        local_ip6: str | None = None,
+        dstport: int | None = None,
+        multicast_ttl: int | None = None,
+        evpn_id: int | None = None,
+        learn_from_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
+        raw_json: bool = False,
+        response_mode: Literal["dict", "object"] | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -507,7 +654,21 @@ class Vxlan(MetadataMixin):
 
         Args:
             payload_dict: Resource data including name (primary key)
+            name: Field name
+            interface: Field interface
+            vni: Field vni
+            ip_version: Field ip-version
+            remote_ip: Field remote-ip
+            local_ip: Field local-ip
+            remote_ip6: Field remote-ip6
+            local_ip6: Field local-ip6
+            dstport: Field dstport
+            multicast_ttl: Field multicast-ttl
+            evpn_id: Field evpn-id
+            learn_from_traffic: Field learn-from-traffic
             vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            response_mode: Override client-level response_mode
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -517,7 +678,13 @@ class Vxlan(MetadataMixin):
             ValueError: If name is missing from payload
 
         Examples:
-            >>> # Intelligent create or update - no need to check exists()
+            >>> # Intelligent create or update using field parameters
+            >>> result = fgt.api.cmdb.system_vxlan.set(
+            ...     name=1,
+            ...     # ... other fields
+            ... )
+            
+            >>> # Or using payload dict
             >>> payload = {
             ...     "name": 1,
             ...     "field1": "value1",
@@ -540,20 +707,34 @@ class Vxlan(MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        if payload_dict is None:
-            payload_dict = {}
+        # Build payload using helper function with auto-normalization
+        payload_data = build_api_payload(
+            name=name,
+            interface=interface,
+            vni=vni,
+            ip_version=ip_version,
+            remote_ip=remote_ip,
+            local_ip=local_ip,
+            remote_ip6=remote_ip6,
+            local_ip6=local_ip6,
+            dstport=dstport,
+            multicast_ttl=multicast_ttl,
+            evpn_id=evpn_id,
+            learn_from_traffic=learn_from_traffic,
+            data=payload_dict,
+        )
         
-        mkey_value = payload_dict.get("name")
+        mkey_value = payload_data.get("name")
         if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
+            raise ValueError("name is required for set()")
         
         # Check if resource exists
         if self.exists(name=mkey_value, vdom=vdom):
             # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, vdom=vdom, raw_json=raw_json, response_mode=response_mode, **kwargs)
 
     # ========================================================================
     # Action: Move
