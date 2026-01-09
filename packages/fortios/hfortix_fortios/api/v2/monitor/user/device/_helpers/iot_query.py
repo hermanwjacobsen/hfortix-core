@@ -137,63 +137,35 @@ def validate_user_device_iot_query_put(
 # ============================================================================
 # Metadata Access Functions
 # Imported from central module to avoid duplication across 1,062 files
+# Bound to this endpoint's data using functools.partial (saves ~7KB per file)
 # ============================================================================
 
+from functools import partial
 from hfortix_fortios._helpers.metadata import (
-    get_field_description as _get_field_description,
-    get_field_type as _get_field_type,
-    get_field_constraints as _get_field_constraints,
-    get_field_default as _get_field_default,
-    get_field_options as _get_field_options,
-    get_nested_schema as _get_nested_schema,
-    get_all_fields as _get_all_fields,
-    get_field_metadata as _get_field_metadata,
-    validate_field_value as _validate_field_value,
+    get_field_description,
+    get_field_type,
+    get_field_constraints,
+    get_field_default,
+    get_field_options,
+    get_nested_schema,
+    get_all_fields,
+    get_field_metadata,
+    validate_field_value,
 )
 
-# Wrapper functions that bind module-specific data to central functions
-def get_field_description(field_name: str) -> str | None:
-    """Get description/help text for a field."""
-    return _get_field_description(FIELD_DESCRIPTIONS, field_name)
-
-def get_field_type(field_name: str) -> str | None:
-    """Get the type of a field."""
-    return _get_field_type(FIELD_TYPES, field_name)
-
-def get_field_constraints(field_name: str) -> dict[str, Any] | None:
-    """Get constraints for a field (min/max values, string length)."""
-    return _get_field_constraints(FIELD_CONSTRAINTS, field_name)
-
-def get_field_default(field_name: str) -> Any | None:
-    """Get default value for a field."""
-    return _get_field_default(FIELDS_WITH_DEFAULTS, field_name)
-
-def get_field_options(field_name: str) -> list[str] | None:
-    """Get valid enum options for a field."""
-    return _get_field_options(globals(), field_name)
-
-def get_nested_schema(field_name: str) -> dict[str, Any] | None:
-    """Get schema for nested table/list fields."""
-    return _get_nested_schema(NESTED_SCHEMAS, field_name)
-
-def get_all_fields() -> list[str]:
-    """Get list of all field names."""
-    return _get_all_fields(FIELD_TYPES)
-
-def get_field_metadata(field_name: str) -> dict[str, Any] | None:
-    """Get complete metadata for a field (type, description, constraints, defaults, options)."""
-    return _get_field_metadata(
-        FIELD_TYPES, FIELD_DESCRIPTIONS, FIELD_CONSTRAINTS,
-        FIELDS_WITH_DEFAULTS, REQUIRED_FIELDS, NESTED_SCHEMAS,
-        globals(), field_name
-    )
-
-def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
-    """Validate a single field value against its constraints."""
-    return _validate_field_value(
-        FIELD_TYPES, FIELD_DESCRIPTIONS, FIELD_CONSTRAINTS,
-        globals(), field_name, value
-    )
+# Bind module-specific data to central functions using partial application
+get_field_description = partial(get_field_description, FIELD_DESCRIPTIONS)
+get_field_type = partial(get_field_type, FIELD_TYPES)
+get_field_constraints = partial(get_field_constraints, FIELD_CONSTRAINTS)
+get_field_default = partial(get_field_default, FIELDS_WITH_DEFAULTS)
+get_field_options = partial(get_field_options, globals())
+get_nested_schema = partial(get_nested_schema, NESTED_SCHEMAS)
+get_all_fields = partial(get_all_fields, FIELD_TYPES)
+get_field_metadata = partial(get_field_metadata, FIELD_TYPES, FIELD_DESCRIPTIONS, 
+                             FIELD_CONSTRAINTS, FIELDS_WITH_DEFAULTS, REQUIRED_FIELDS,
+                             NESTED_SCHEMAS, globals())
+validate_field_value = partial(validate_field_value, FIELD_TYPES, FIELD_DESCRIPTIONS,
+                               FIELD_CONSTRAINTS, globals())
 
 
 # ============================================================================

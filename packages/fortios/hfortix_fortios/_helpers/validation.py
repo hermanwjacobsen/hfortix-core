@@ -30,16 +30,6 @@ def validate_required_fields(
         Tuple of (is_valid, error_message)
         - (True, None) if all required fields present
         - (False, error_msg) with detailed error if fields missing
-        
-    Example:
-        >>> is_valid, error = validate_required_fields(
-        ...     payload={"name": "test"},
-        ...     required_fields=["name", "hash"],
-        ...     field_descriptions={"name": "Entry name", "hash": "Hash value"}
-        ... )
-        >>> print(error)
-        Missing required field(s): hash
-          • hash: Hash value
     """
     missing_fields = []
     for field in required_fields:

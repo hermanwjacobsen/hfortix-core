@@ -4,22 +4,6 @@ Data formatting utilities for FortiOS objects and data structures.
 Provides simple, type-agnostic conversion functions that handle any input gracefully.
 Never raises exceptions - returns sensible defaults for edge cases.
 
-Example usage:
-    >>> from hfortix_fortios import to_json, to_csv, to_dict
-    >>> 
-    >>> # Format list data
-    >>> interfaces = ['port1', 'port2', 'port3']
-    >>> print(to_csv(interfaces))
-    port1, port2, port3
-    >>> 
-    >>> # Format objects
-    >>> policy = fgt.cmdb.firewall.policy.get(policyid=1)
-    >>> print(to_json(policy))
-    {
-      "policyid": 1,
-      "name": "Allow-Internet",
-      ...
-    }
 """
 
 from __future__ import annotations
@@ -43,21 +27,6 @@ def to_json(data: Any, indent: int = 2, **kwargs: Any) -> str:
     Returns:
         Formatted JSON string
     
-    Examples:
-        >>> to_json(['a', 'b', 'c'])
-        '[\n  "a",\n  "b",\n  "c"\n]'
-        
-        >>> to_json({'name': 'policy1', 'action': 'accept'})
-        '{\n  "name": "policy1",\n  "action": "accept"\n}'
-        
-        >>> to_json(None)
-        'null'
-        
-        >>> class Policy:
-        ...     def __init__(self):
-        ...         self.name = "Allow-All"
-        >>> to_json(Policy())
-        '{\n  "name": "Allow-All"\n}'
     """
     def default_handler(obj: Any) -> Any:
         """Handle non-serializable objects."""

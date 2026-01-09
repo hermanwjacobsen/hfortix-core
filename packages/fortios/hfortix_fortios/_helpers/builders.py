@@ -14,12 +14,10 @@ from hfortix_fortios._helpers.normalizers import normalize_to_name_list
 
 def build_cmdb_payload(**params: Any) -> dict[str, Any]:
     """
-    Build a CMDB payload dictionary from keyword arguments (API layer - no
-    normalization).
+    Build a CMDB payload dictionary from keyword arguments (API layer - no normalization).
 
     Converts Python snake_case parameter names to FortiOS kebab-case API keys
-    and filters out None values. This is the base helper used by all CMDB API
-    endpoints.
+    and filters out None values. This is the base helper used by all CMDB API endpoints.
 
     Does NOT normalize list fields - caller is responsible for providing data
     in the correct FortiOS format (unless using a wrapper with normalization).
@@ -29,29 +27,6 @@ def build_cmdb_payload(**params: Any) -> dict[str, Any]:
 
     Returns:
         Dictionary with FortiOS API-compatible keys and non-None values
-
-    Example:
-        >>> build_cmdb_payload(
-        ...     name='my_address',
-        ...     subnet='10.0.0.0 255.255.255.0',
-        ...     associated_interface='port1'
-        ... )
-        {
-            'name': 'my_address',
-            'subnet': '10.0.0.0 255.255.255.0',
-            'associated-interface': 'port1'
-        }
-
-        >>> build_cmdb_payload(
-        ...     member=[{'name': 'addr1'}, {'name': 'addr2'}],
-        ...     color=5,
-        ...     comment='Test group'
-        ... )
-        {
-            'member': [{'name': 'addr1'}, {'name': 'addr2'}],
-            'color': 5,
-            'comment': 'Test group'
-        }
     """
     payload: dict[str, Any] = {}
 
@@ -78,53 +53,22 @@ def build_cmdb_payload_normalized(
     normalize_fields: set[str] | None = None, **params: Any
 ) -> dict[str, Any]:
     """
-    Build a CMDB payload with automatic normalization (convenience wrapper
-    layer).
+    Build a CMDB payload with automatic normalization (convenience wrapper layer).
 
     Converts Python snake_case parameter names to FortiOS kebab-case API keys,
-    filters out None values, AND normalizes specified list fields to FortiOS
-    format.
+    filters out None values, AND normalizes specified list fields to FortiOS format.
 
     This is used by convenience wrappers to accept flexible inputs like strings
-    or lists and automatically convert them to FortiOS [{'name': '...'}]
-    format.
+    or lists and automatically convert them to FortiOS [{'name': '...'}] format.
 
     Args:
-        normalize_fields: Set of field names (snake_case) that should be
-        normalized
-                         to [{'name': '...'}] format. If None, common fields
-                         like
+        normalize_fields: Set of field names (snake_case) that should be normalized
+                         to [{'name': '...'}] format. If None, common fields like
                          'member', 'interface', 'allowaccess' are normalized.
         **params: All resource parameters
 
     Returns:
         Dictionary with FortiOS API-compatible keys and normalized values
-
-    Example:
-        >>> # Address group with member normalization
-        >>> build_cmdb_payload_normalized(
-        ...     normalize_fields={'member'},
-        ...     name='my_group',
-        ...     member=['addr1', 'addr2'],  # Gets normalized
-        ...     comment='Test'
-        ... )
-        {
-            'name': 'my_group',
-            'member': [{'name': 'addr1'}, {'name': 'addr2'}],
-            'comment': 'Test'
-        }
-
-        >>> # System interface with default normalization
-        >>> build_cmdb_payload_normalized(
-        ...     name='port1.100',
-        ...     allowaccess=['ping', 'https'],  # Auto-normalized
-        ...     ip='10.0.0.1 255.255.255.0'
-        ... )
-        {
-            'name': 'port1.100',
-            'allowaccess': [{'name': 'ping'}, {'name': 'https'}],
-            'ip': '10.0.0.1 255.255.255.0'
-        }
     """
     # Default fields that commonly need normalization across CMDB endpoints
     DEFAULT_NORMALIZE_FIELDS = {
@@ -196,43 +140,6 @@ def build_api_payload(
     
     Returns:
         Dictionary with FortiOS API-compatible keys and normalized values
-    
-    Example:
-        >>> # Auto-normalization (default)
-        >>> build_api_payload(
-        ...     srcintf='port1',  # Auto-normalized to [{'name': 'port1'}]
-        ...     srcaddr=['addr1', 'addr2'],  # Auto-normalized
-        ...     name='my-policy'  # Not normalized (not a list field)
-        ... )
-        {
-            'srcintf': [{'name': 'port1'}],
-            'srcaddr': [{'name': 'addr1'}, {'name': 'addr2'}],
-            'name': 'my-policy'
-        }
-        
-        >>> # Manual field selection
-        >>> build_api_payload(
-        ...     normalize_fields={'member', 'interface'},
-        ...     member='addr1',
-        ...     interface=['port1', 'port2'],
-        ...     comment='test'
-        ... )
-        {
-            'member': [{'name': 'addr1'}],
-            'interface': [{'name': 'port1'}, {'name': 'port2'}],
-            'comment': 'test'
-        }
-        
-        >>> # Disable auto-normalization
-        >>> build_api_payload(
-        ...     auto_normalize=False,
-        ...     srcintf='port1',  # Passed as-is
-        ...     name='test'
-        ... )
-        {
-            'srcintf': 'port1',
-            'name': 'test'
-        }
     """
     # Common list fields across all API types that use [{'name': '...'}] format
     COMMON_LIST_FIELDS = {
