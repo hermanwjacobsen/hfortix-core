@@ -7,13 +7,13 @@ and type checking.
 Auto-generated - DO NOT EDIT
 """
 
-from typing import TypedDict, NotRequired, Literal, Any
+from typing import Any, Literal, NotRequired, TypedDict
 
 
 class FortiOSSuccessResponse(TypedDict):
     """
     Standard successful response from FortiOS API.
-    
+
     Examples:
         >>> result = fgt.api.cmdb.firewall.address.get(name="web-server")
         >>> result["status"]  # IDE autocompletes!
@@ -21,33 +21,34 @@ class FortiOSSuccessResponse(TypedDict):
         >>> result["http_status"]
         200
     """
+
     http_method: str
     """HTTP method used (GET, POST, PUT, DELETE)"""
-    
+
     results: list[dict[str, Any]] | dict[str, Any]
     """Response data - list for collection queries, dict for single items"""
-    
+
     vdom: str
     """Virtual domain name"""
-    
+
     path: str
     """API endpoint path"""
-    
+
     name: NotRequired[str]
     """Object name (only present for single object queries)"""
-    
+
     status: Literal["success"]
     """Response status - always 'success' for this type"""
-    
+
     http_status: int
     """HTTP status code (200 for success)"""
-    
+
     build: int
     """FortiOS build number"""
-    
+
     version: str
     """FortiOS version string (e.g., 'v7.6.5')"""
-    
+
     serial: str
     """Device serial number"""
 
@@ -55,7 +56,7 @@ class FortiOSSuccessResponse(TypedDict):
 class FortiOSErrorResponse(TypedDict):
     """
     Error response from FortiOS API.
-    
+
     Examples:
         >>> try:
         ...     result = fgt.api.cmdb.firewall.address.get(name="nonexistent")
@@ -63,24 +64,25 @@ class FortiOSErrorResponse(TypedDict):
         ...     print(e.response["error"])  # IDE autocompletes!
         ...     404
     """
+
     http_method: str
     """HTTP method used"""
-    
+
     error: int
     """Error code (e.g., -3 for object not found)"""
-    
+
     message: NotRequired[str]
     """Human-readable error message"""
-    
+
     http_status: int
     """HTTP status code (4xx or 5xx)"""
-    
+
     status: NotRequired[Literal["error"]]
     """Response status - 'error' when present"""
-    
+
     vdom: NotRequired[str]
     """Virtual domain name"""
-    
+
     path: NotRequired[str]
     """API endpoint path"""
 
@@ -88,16 +90,17 @@ class FortiOSErrorResponse(TypedDict):
 class FortiOSResponse(TypedDict):
     """
     Generic FortiOS API response (success or error).
-    
+
     Use this when the response could be either success or error.
     For better type safety, use FortiOSSuccessResponse or FortiOSErrorResponse.
-    
+
     Examples:
         >>> result: FortiOSResponse = fgt.api.cmdb.firewall.address.get()
         >>> if result.get("status") == "success":
         ...     # Type narrowed to success response
         ...     items = result["results"]
     """
+
     http_method: str
     results: NotRequired[list[dict[str, Any]] | dict[str, Any]]
     vdom: NotRequired[str]
@@ -119,7 +122,16 @@ ActionType = Literal["accept", "deny", "ipsec"]
 StatusType = Literal["enable", "disable"]
 """Common enable/disable status"""
 
-LogSeverity = Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+LogSeverity = Literal[
+    "emergency",
+    "alert",
+    "critical",
+    "error",
+    "warning",
+    "notification",
+    "information",
+    "debug",
+]
 """Syslog severity levels"""
 
 ScheduleType = Literal["onetime", "recurring"]
@@ -131,7 +143,7 @@ ProtocolType = Literal["tcp", "udp", "icmp", "icmpv6", "ip", "sctp"]
 
 __all__ = [
     "FortiOSSuccessResponse",
-    "FortiOSErrorResponse", 
+    "FortiOSErrorResponse",
     "FortiOSResponse",
     "ActionType",
     "StatusType",

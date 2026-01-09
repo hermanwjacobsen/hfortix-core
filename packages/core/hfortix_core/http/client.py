@@ -1225,7 +1225,7 @@ class HTTPClient(BaseHTTPClient):
                 # Check content type to determine if response is JSON
                 content_type = res.headers.get("content-type", "").lower()
                 is_json_response = "application/json" in content_type
-                
+
                 # Parse JSON response or return raw content for non-JSON responses
                 if is_json_response:
                     try:
@@ -1241,7 +1241,10 @@ class HTTPClient(BaseHTTPClient):
                             ),
                         )
                         # Return text content as fallback
-                        return {"content": res.text, "http_status": res.status_code}
+                        return {
+                            "content": res.text,
+                            "http_status": res.status_code,
+                        }
                 else:
                     # Non-JSON response (e.g., file download, binary data)
                     # Return content with metadata
@@ -1259,6 +1262,7 @@ class HTTPClient(BaseHTTPClient):
                 # Normalize keys: FortiOS returns hyphenated keys (tcp-portrange)
                 # but Python/TypedDict requires underscores (tcp_portrange)
                 from hfortix_core.utils import normalize_keys
+
                 json_response = normalize_keys(json_response)
 
                 # Return full response if raw_json=True, otherwise extract

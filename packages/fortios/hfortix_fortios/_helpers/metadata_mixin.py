@@ -8,7 +8,7 @@ _helpers.<endpoint_name> module for endpoint-specific data.
 
 from __future__ import annotations
 
-from typing import Any, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from types import ModuleType
@@ -17,13 +17,13 @@ if TYPE_CHECKING:
 class MetadataMixin:
     """
     Mixin providing metadata helper methods for FortiOS API endpoint classes.
-    
+
     This mixin provides a standardized interface for accessing schema metadata,
     field information, validation, and other introspection capabilities.
-    
+
     Each endpoint class that inherits this mixin must define a class attribute:
         _helper_module_name: str  # Name of the helper module (e.g., "settings")
-    
+
     The corresponding helper module at `_helpers.<endpoint_name>` must provide:
     - get_schema_info()
     - get_field_metadata(field_name)
@@ -41,18 +41,22 @@ class MetadataMixin:
     def _get_helper_module(cls) -> ModuleType:
         """Get the helper module for this endpoint class."""
         from importlib import import_module
-        
+
         if not cls._helper_module_name:
             raise NotImplementedError(
                 f"{cls.__name__} must define _helper_module_name class attribute"
             )
-        
+
         # Determine the package based on the class's module
-        package = cls.__module__.rsplit('.', 1)[0]
-        return import_module(f"._helpers.{cls._helper_module_name}", package=package)
+        package = cls.__module__.rsplit(".", 1)[0]
+        return import_module(
+            f"._helpers.{cls._helper_module_name}", package=package
+        )
 
     @classmethod
-    def help(cls, field_name: str | None = None, show_fields: bool = False) -> None:
+    def help(
+        cls, field_name: str | None = None, show_fields: bool = False
+    ) -> None:
         """
         Display interactive help for this endpoint or specific field.
 
@@ -63,18 +67,18 @@ class MetadataMixin:
         Examples:
             >>> # Get comprehensive endpoint help
             >>> Address.help()
-            
+
             >>> # Get field information
             >>> Address.help("name")
-            
+
             >>> # Or use as instance method
             >>> fgt.api.cmdb.firewall.address.help()
         """
         if field_name is not None:
             # Show field-specific help
             helper_module = cls._get_helper_module()
-            get_field_metadata = getattr(helper_module, 'get_field_metadata')
-            
+            get_field_metadata = getattr(helper_module, "get_field_metadata")
+
             meta = get_field_metadata(field_name)
             if meta is None:
                 print(f"\n❌ Unknown field: {field_name}\n")
@@ -82,32 +86,37 @@ class MetadataMixin:
 
             print(f"\n{'=' * 80}")
             print(f"FIELD: {meta['name']}")
-            print('=' * 80)
+            print("=" * 80)
             print(f"Type: {meta['type']}")
-            if 'description' in meta:
+            if "description" in meta:
                 print(f"Description: {meta['description']}")
-            print(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
-            if 'default' in meta:
+            print(
+                f"Required: {'Yes' if meta.get('required', False) else 'No'}"
+            )
+            if "default" in meta:
                 print(f"Default: {meta['default']}")
-            if 'options' in meta:
+            if "options" in meta:
                 print(f"Options: {', '.join(meta['options'])}")
-            if 'constraints' in meta:
-                constraints = meta['constraints']
-                if 'min' in constraints or 'max' in constraints:
-                    min_val = constraints.get('min', '?')
-                    max_val = constraints.get('max', '?')
+            if "constraints" in meta:
+                constraints = meta["constraints"]
+                if "min" in constraints or "max" in constraints:
+                    min_val = constraints.get("min", "?")
+                    max_val = constraints.get("max", "?")
                     print(f"Range: {min_val} - {max_val}")
-                if 'max_length' in constraints:
+                if "max_length" in constraints:
                     print(f"Max Length: {constraints['max_length']}")
-            print('=' * 80 + '\n')
+            print("=" * 80 + "\n")
             return
-        
+
         # Show full endpoint help using the interactive help function
         from ..help import help as interactive_help
+
         interactive_help(cls)
 
     @classmethod
-    def fields(cls, detailed: bool = False) -> Union[dict[str, Any], list[str]]:
+    def fields(
+        cls, detailed: bool = False
+    ) -> Union[dict[str, Any], list[str]]:
         """
         Get field information as dict with JSON intent.
 
@@ -122,14 +131,14 @@ class MetadataMixin:
             >>> # Simple list
             >>> fields = Settings.fields()
             >>> print(f"Available fields: {len(fields)}")
-            
+
             >>> # Detailed dict with metadata (JSON intent)
             >>> from hfortix_fortios.formatting import to_json
             >>> print(to_json(Settings.fields(detailed=True)))
         """
         helper_module = cls._get_helper_module()
-        get_all_fields = getattr(helper_module, 'get_all_fields')
-        get_field_metadata = getattr(helper_module, 'get_field_metadata')
+        get_all_fields = getattr(helper_module, "get_all_fields")
+        get_field_metadata = getattr(helper_module, "get_field_metadata")
 
         field_names = get_all_fields()
 
@@ -163,12 +172,14 @@ class MetadataMixin:
             ...     print(f"Options: {info['options']}")
         """
         helper_module = cls._get_helper_module()
-        get_field_metadata = getattr(helper_module, 'get_field_metadata')
+        get_field_metadata = getattr(helper_module, "get_field_metadata")
 
         return get_field_metadata(field_name)
 
     @classmethod
-    def validate_field(cls, field_name: str, value: Any) -> tuple[bool, str | None]:
+    def validate_field(
+        cls, field_name: str, value: Any
+    ) -> tuple[bool, str | None]:
         """
         Validate a field value against its constraints.
 
@@ -185,7 +196,7 @@ class MetadataMixin:
             ...     print(f"Validation error: {error}")
         """
         helper_module = cls._get_helper_module()
-        validate_field_value = getattr(helper_module, 'validate_field_value')
+        validate_field_value = getattr(helper_module, "validate_field_value")
 
         return validate_field_value(field_name, value)
 
@@ -205,7 +216,7 @@ class MetadataMixin:
             >>> print(f"Required fields: {', '.join(required)}")
         """
         helper_module = cls._get_helper_module()
-        REQUIRED_FIELDS = getattr(helper_module, 'REQUIRED_FIELDS')
+        REQUIRED_FIELDS = getattr(helper_module, "REQUIRED_FIELDS")
 
         return REQUIRED_FIELDS.copy()
 
@@ -224,13 +235,13 @@ class MetadataMixin:
             >>> defaults = Settings.defaults()
             >>> payload = defaults.copy()
             >>> payload['name'] = 'my-custom-name'
-            
+
             >>> # Print as formatted JSON
             >>> from hfortix_fortios.formatting import to_json
             >>> print(to_json(Settings.defaults()))
         """
         helper_module = cls._get_helper_module()
-        FIELDS_WITH_DEFAULTS = getattr(helper_module, 'FIELDS_WITH_DEFAULTS')
+        FIELDS_WITH_DEFAULTS = getattr(helper_module, "FIELDS_WITH_DEFAULTS")
 
         return FIELDS_WITH_DEFAULTS.copy()
 
@@ -249,13 +260,12 @@ class MetadataMixin:
             >>> schema = Settings.schema()
             >>> print(f"Endpoint: {schema['endpoint']}")
             >>> print(f"Total fields: {schema['total_fields']}")
-            
+
             >>> # Print as formatted JSON
             >>> from hfortix_fortios.formatting import to_json
             >>> print(to_json(Settings.schema()))
         """
         helper_module = cls._get_helper_module()
-        get_schema_info = getattr(helper_module, 'get_schema_info')
+        get_schema_info = getattr(helper_module, "get_schema_info")
 
         return get_schema_info()
-

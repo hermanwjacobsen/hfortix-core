@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union, cast, overload
+from typing import Any, Literal, Optional, Union, cast, overload
 
 from hfortix_core.audit import AuditHandler
 from hfortix_core.http.client import HTTPClient
@@ -656,44 +656,104 @@ class FortiOS:
 
         # Wrap the client to enable response processing (object mode)
         from hfortix_fortios.models import process_response
-        
+
         class ResponseProcessingClient:
             """Wrapper that processes responses based on response_mode setting."""
-            
-            def __init__(self, client: Any, response_mode: Literal["dict", "object"]):
+
+            def __init__(
+                self, client: Any, response_mode: Literal["dict", "object"]
+            ):
                 self._wrapped_client = client
                 self._response_mode = response_mode
-            
-            def get(self, api_type: str, path: str, params=None, vdom=None, raw_json=False, response_mode=None, unwrap_single=False):
+
+            def get(
+                self,
+                api_type: str,
+                path: str,
+                params=None,
+                vdom=None,
+                raw_json=False,
+                response_mode=None,
+                unwrap_single=False,
+            ):
                 """GET request with response processing."""
-                result = self._wrapped_client.get(api_type, path, params, vdom, raw_json)
-                mode = response_mode if response_mode is not None else self._response_mode
+                result = self._wrapped_client.get(
+                    api_type, path, params, vdom, raw_json
+                )
+                mode = (
+                    response_mode
+                    if response_mode is not None
+                    else self._response_mode
+                )
                 return process_response(result, mode, client=self, unwrap_single=unwrap_single)  # type: ignore
-            
-            def post(self, api_type: str, path: str, data=None, params=None, vdom=None, raw_json=False, response_mode=None):
+
+            def post(
+                self,
+                api_type: str,
+                path: str,
+                data=None,
+                params=None,
+                vdom=None,
+                raw_json=False,
+                response_mode=None,
+            ):
                 """POST request with response processing."""
                 result = self._wrapped_client.post(api_type, path, data, params, vdom, raw_json)  # type: ignore
-                mode = response_mode if response_mode is not None else self._response_mode
+                mode = (
+                    response_mode
+                    if response_mode is not None
+                    else self._response_mode
+                )
                 return process_response(result, mode)  # type: ignore
-            
-            def put(self, api_type: str, path: str, data=None, params=None, vdom=None, raw_json=False, response_mode=None):
+
+            def put(
+                self,
+                api_type: str,
+                path: str,
+                data=None,
+                params=None,
+                vdom=None,
+                raw_json=False,
+                response_mode=None,
+            ):
                 """PUT request with response processing."""
                 result = self._wrapped_client.put(api_type, path, data, params, vdom, raw_json)  # type: ignore
-                mode = response_mode if response_mode is not None else self._response_mode
+                mode = (
+                    response_mode
+                    if response_mode is not None
+                    else self._response_mode
+                )
                 return process_response(result, mode)  # type: ignore
-            
-            def delete(self, api_type: str, path: str, params=None, vdom=None, raw_json=False, response_mode=None):
+
+            def delete(
+                self,
+                api_type: str,
+                path: str,
+                params=None,
+                vdom=None,
+                raw_json=False,
+                response_mode=None,
+            ):
                 """DELETE request with response processing."""
-                result = self._wrapped_client.delete(api_type, path, params, vdom, raw_json)
-                mode = response_mode if response_mode is not None else self._response_mode
+                result = self._wrapped_client.delete(
+                    api_type, path, params, vdom, raw_json
+                )
+                mode = (
+                    response_mode
+                    if response_mode is not None
+                    else self._response_mode
+                )
                 return process_response(result, mode)  # type: ignore
-            
+
             def __getattr__(self, name):
                 """Delegate all other attributes to the wrapped client."""
                 return getattr(self._wrapped_client, name)
-        
+
         # Wrap client for response processing and cast to IHTTPClient for type checking
-        wrapped_client = cast(IHTTPClient, ResponseProcessingClient(self._client, self._response_mode))
+        wrapped_client = cast(
+            IHTTPClient,
+            ResponseProcessingClient(self._client, self._response_mode),
+        )
 
         # Initialize API namespace.
         # Store it privately and expose a property so IDEs treat it as a

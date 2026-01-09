@@ -7,13 +7,12 @@ from typing import Any, Literal, Optional, overload
 from hfortix_core.http.interface import IHTTPClient
 from hfortix_fortios.api import API, APIDictMode, APIObjectMode
 
-
 class FortiOSDictMode:
     """FortiOS client in dict response mode (default).
-    
+
     All endpoint methods return TypedDict types with bracket access (response["field"]).
     """
-    
+
     @property
     def api(self) -> APIDictMode: ...
     @property
@@ -30,20 +29,18 @@ class FortiOSDictMode:
     def connection_stats(self) -> dict[str, Any]: ...
     @property
     def last_request(self) -> dict[str, Any] | None: ...
-    
     def get_connection_stats(self) -> dict[str, Any]: ...
     def get_write_operations(self) -> list[dict[str, Any]]: ...
     def close(self) -> None: ...
     def __enter__(self) -> FortiOSDictMode: ...
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None: ...
 
-
 class FortiOSObjectMode:
     """FortiOS client in object response mode.
-    
+
     All endpoint methods return Object types with attribute access (response.field).
     """
-    
+
     @property
     def api(self) -> APIObjectMode: ...
     @property
@@ -60,13 +57,11 @@ class FortiOSObjectMode:
     def connection_stats(self) -> dict[str, Any]: ...
     @property
     def last_request(self) -> dict[str, Any] | None: ...
-    
     def get_connection_stats(self) -> dict[str, Any]: ...
     def get_write_operations(self) -> list[dict[str, Any]]: ...
     def close(self) -> None: ...
     def __enter__(self) -> FortiOSObjectMode: ...
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None: ...
-
 
 class FortiOS:
     """FortiOS REST API Client.
@@ -74,7 +69,7 @@ class FortiOS:
     The response_mode parameter determines the return type of all endpoint methods:
     - "dict" (default): Returns TypedDict types with bracket access (response["field"])
     - "object": Returns Object types with attribute access (response.field)
-    
+
     You can also override response_mode per-call on individual endpoint methods.
     """
 
@@ -94,7 +89,6 @@ class FortiOS:
         response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiOSObjectMode: ...
-    
     @overload
     def __new__(
         cls,
@@ -128,7 +122,6 @@ class FortiOS:
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
     ) -> FortiOSDictMode: ...
-    
     @overload
     def __new__(
         cls,
@@ -163,7 +156,6 @@ class FortiOS:
     def connection_stats(self) -> dict[str, Any]: ...
     @property
     def last_request(self) -> dict[str, Any] | None: ...
-    
     def get_connection_stats(self) -> dict[str, Any]: ...
     def get_write_operations(self) -> list[dict[str, Any]]: ...
     def close(self) -> None: ...

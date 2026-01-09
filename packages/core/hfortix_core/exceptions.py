@@ -182,9 +182,9 @@ class AuthorizationError(FortinetError):
 class ValidationError(FortinetError):
     """
     Raised when payload validation fails before API call
-    
+
     Provides rich error context to help users fix validation issues.
-    
+
     Attributes:
         field: The field that failed validation
         value: The invalid value provided
@@ -194,7 +194,7 @@ class ValidationError(FortinetError):
         example: Example of a valid value
         suggestion: Helpful hint for fixing the error
     """
-    
+
     def __init__(
         self,
         message: str,
@@ -215,47 +215,55 @@ class ValidationError(FortinetError):
         self.example = example
         self.suggestion = suggestion
         self._original_message = message
-    
+
     def __str__(self) -> str:
         """Format validation error with helpful context"""
         parts = [self._original_message]
-        
+
         # Add field context
         if self.field:
             parts.append(f"  → Field: '{self.field}'")
-        
+
         # Add description from schema
         if self.description:
             parts.append(f"  → Description: {self.description}")
-        
+
         # Add constraint details
         if self.constraint:
             parts.append(f"  → Constraint: {self.constraint}")
-        
+
         # Add provided value
         if self.value is not None:
-            value_str = repr(self.value) if isinstance(self.value, str) else str(self.value)
+            value_str = (
+                repr(self.value)
+                if isinstance(self.value, str)
+                else str(self.value)
+            )
             if len(value_str) > 100:
                 value_str = value_str[:97] + "..."
             parts.append(f"  → You provided: {value_str}")
-        
+
         # Add valid options for enums
         if self.valid_options:
             if len(self.valid_options) <= 10:
-                options_str = ", ".join(f"'{opt}'" for opt in self.valid_options)
+                options_str = ", ".join(
+                    f"'{opt}'" for opt in self.valid_options
+                )
             else:
-                options_str = ", ".join(f"'{opt}'" for opt in self.valid_options[:10])
+                options_str = ", ".join(
+                    f"'{opt}'" for opt in self.valid_options[:10]
+                )
                 options_str += f" ... (+{len(self.valid_options) - 10} more)"
             parts.append(f"  → Valid options: {options_str}")
-        
+
         # Add example
         if self.example:
             parts.append(f"  → Example: {self.example}")
-        
+
         # Add suggestion
         if self.suggestion:
             parts.append(f"  💡 {self.suggestion}")
-        
+
         return "\n".join(parts)
 
 

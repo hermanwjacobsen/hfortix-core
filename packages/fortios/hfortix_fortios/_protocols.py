@@ -15,7 +15,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Literal, Protocol, TypeVar, overload
 
 if TYPE_CHECKING:
-    from collections.abc import Coroutine
     from hfortix_fortios.models import FortiObject
 
 
@@ -26,13 +25,13 @@ MKeyT = TypeVar("MKeyT", bound=str | int)
 class GetProtocol(Protocol):
     """
     Protocol defining type-safe overloads for GET operations.
-    
+
     This protocol defines all possible return types based on:
     - Whether an identifier (mkey) is provided
     - The value of raw_json parameter
     - The value of response_mode parameter
     """
-    
+
     # Overload for response_mode="object" with mkey provided (single object)
     @overload
     def get(
@@ -47,7 +46,7 @@ class GetProtocol(Protocol):
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> FortiObject: ...
-    
+
     # Overload for response_mode="object" without mkey (list of objects)
     @overload
     def get(
@@ -62,7 +61,7 @@ class GetProtocol(Protocol):
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
     ) -> list[FortiObject]: ...
-    
+
     # Overload for response_mode="dict" with mkey provided (single dict)
     @overload
     def get(
@@ -77,7 +76,7 @@ class GetProtocol(Protocol):
         response_mode: Literal["dict"] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="dict" without mkey (list of dicts)
     @overload
     def get(
@@ -92,7 +91,7 @@ class GetProtocol(Protocol):
         response_mode: Literal["dict"] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for default behavior WITH name (returns dict - client default is dict mode)
     @overload
     def get(
@@ -107,7 +106,7 @@ class GetProtocol(Protocol):
         response_mode: None = None,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for default behavior WITHOUT name (returns dict - client default is dict mode)
     @overload
     def get(
@@ -122,7 +121,7 @@ class GetProtocol(Protocol):
         response_mode: None = None,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for raw_json=True
     @overload
     def get(
@@ -142,7 +141,7 @@ class PostProtocol(Protocol):
     """
     Protocol defining type-safe overloads for POST (create) operations.
     """
-    
+
     # Overload for default behavior (no response_mode, no raw_json)
     @overload
     def post(
@@ -151,7 +150,7 @@ class PostProtocol(Protocol):
         vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
-    
+
     # Overload for raw_json=True
     @overload
     def post(
@@ -161,7 +160,7 @@ class PostProtocol(Protocol):
         raw_json: Literal[True] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="dict"
     @overload
     def post(
@@ -172,7 +171,7 @@ class PostProtocol(Protocol):
         response_mode: Literal["dict"] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="object" - MOST SPECIFIC LAST
     @overload
     def post(
@@ -189,7 +188,7 @@ class PutProtocol(Protocol):
     """
     Protocol defining type-safe overloads for PUT (update) operations.
     """
-    
+
     # Overload for default behavior (no response_mode, no raw_json)
     @overload
     def put(
@@ -198,7 +197,7 @@ class PutProtocol(Protocol):
         vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
-    
+
     # Overload for raw_json=True
     @overload
     def put(
@@ -208,7 +207,7 @@ class PutProtocol(Protocol):
         raw_json: Literal[True] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="dict"
     @overload
     def put(
@@ -219,7 +218,7 @@ class PutProtocol(Protocol):
         response_mode: Literal["dict"] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="object" - MOST SPECIFIC LAST
     @overload
     def put(
@@ -236,7 +235,7 @@ class DeleteProtocol(Protocol):
     """
     Protocol defining type-safe overloads for DELETE operations.
     """
-    
+
     # Overload for default behavior (no response_mode, no raw_json)
     @overload
     def delete(
@@ -245,7 +244,7 @@ class DeleteProtocol(Protocol):
         vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> dict[str, Any] | FortiObject: ...
-    
+
     # Overload for raw_json=True
     @overload
     def delete(
@@ -255,7 +254,7 @@ class DeleteProtocol(Protocol):
         raw_json: Literal[True] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="dict" (explicitly set)
     @overload
     def delete(
@@ -266,7 +265,7 @@ class DeleteProtocol(Protocol):
         response_mode: Literal["dict"] = ...,
         **kwargs: Any,
     ) -> dict[str, Any]: ...
-    
+
     # Overload for response_mode="object" (explicitly set) - MOST SPECIFIC LAST
     @overload
     def delete(
@@ -279,11 +278,14 @@ class DeleteProtocol(Protocol):
     ) -> FortiObject: ...
 
 
-class CRUDEndpoint(GetProtocol, PostProtocol, PutProtocol, DeleteProtocol, Protocol):
+class CRUDEndpoint(
+    GetProtocol, PostProtocol, PutProtocol, DeleteProtocol, Protocol
+):
     """
     Combined protocol for full CRUD endpoints.
-    
+
     Endpoint classes can inherit from this to get all CRUD overloads
     without repeating them in each generated file.
     """
+
     pass

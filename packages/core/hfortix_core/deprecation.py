@@ -38,10 +38,10 @@ def warn_deprecated_field(
 
     if reason:
         parts.append(f"Reason: {reason}")
-    
+
     if alternative:
         parts.append(f"Use '{alternative}' instead")
-    
+
     if removal_version:
         parts.append(f"Will be removed in version {removal_version}")
 
