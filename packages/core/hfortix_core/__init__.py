@@ -64,7 +64,8 @@ from .types import (
     RequestInfo,
 )
 
-__version__ = "0.5.46"
+__version__ = "0.5.47"
+
 __all__ = [
     # Cache utilities
     "TTLCache",

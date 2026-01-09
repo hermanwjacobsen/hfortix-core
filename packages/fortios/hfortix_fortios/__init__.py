@@ -63,23 +63,8 @@ from .types import (
     StatusType,
 )
 
-# Import convenience wrappers for easier access
-# NOTE: Commented out old convenience wrappers - using new generated API structure
-# from .firewall import (
-#     FirewallPolicy,
-#     IPMACBindingSetting,
-#     IPMACBindingTable,
-#     ScheduleGroup,
-#     ScheduleOnetime,
-#     ScheduleRecurring,
-#     ServiceCategory,
-#     ServiceCustom,
-#     ServiceGroup,
-#     ShaperPerIp,
-#     TrafficShaper,
-# )
+__version__ = "0.5.47"
 
-__version__ = "0.5.46"
 __all__ = [
     # Main client
     "FortiOS",
