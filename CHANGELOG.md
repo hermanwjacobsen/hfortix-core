@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.46] - 2026-01-09
+
+### Changed
+- **Documentation cleanup and consolidation**
+  - Fixed markdown lint warnings across README.md, QUICKSTART.md, and package docs
+  - Improved table formatting, list indentation, and code block consistency
+  - Synced version numbers across all documentation files
+
 ## [0.5.45] - 2026-01-09
 
 ### Fixed
