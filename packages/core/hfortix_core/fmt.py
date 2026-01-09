@@ -115,9 +115,12 @@ def to_csv(data: Any, separator: str = ', ') -> str:
     return str(data)
 
 
-def to_dict(data: Any) -> dict[str, Any] | dict[int, Any]:
+def to_dict(data: Any) -> dict:
     """
     Convert any data to dictionary.
+    
+    Returns a dict with string keys for most inputs (objects, existing dicts),
+    or integer keys for list/tuple inputs.
     
     Args:
         data: Any Python object to convert

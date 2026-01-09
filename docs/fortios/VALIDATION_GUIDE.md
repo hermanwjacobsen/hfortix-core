@@ -2,11 +2,11 @@
 
 ## Overview
 
-hfortix includes a comprehensive validation framework with **832 auto-generated validators** covering all FortiOS 7.6.5 API endpoints across all API types (CMDB, Monitor, Log, Service).
+hfortix includes a comprehensive validation framework with **1,348 auto-generated validators** covering all FortiOS 7.6.5 API endpoints across all API types (CMDB, Monitor, Log, Service).
 
-**Version:** 0.4.2+  
-**Last Updated:** January 2, 2026  
-**Coverage:** 77 categories, 832 validation modules, 374 with required field validation
+**Version:** 0.5.45  
+**Last Updated:** January 2026  
+**Coverage:** 77 categories, 1,348 validation modules
 
 ---
 
@@ -65,8 +65,8 @@ VALID_QUERY_FILTER = ["used==0", "q_origin_key==value"]
 ### Example 1: Firewall Policy Validation
 
 ```python
-from hfortix import FortiOS
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy as policy_helpers
+from hfortix_fortios import FortiOS
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy as policy_helpers
 
 # Connect to FortiGate
 fgt = FortiOS("192.168.1.1", token="your_token_here")
@@ -78,11 +78,11 @@ print("Valid actions:", policy_helpers.VALID_BODY_ACTION)
 print("Valid log traffic options:", policy_helpers.VALID_BODY_LOGTRAFFIC)
 # Output: ['all', 'utm', 'disable']
 
-print("Valid schedule types:", policy_helpers.VALID_BODY_SCHEDULE_TYPE)
-# Output: ['recurring', 'onetime']
+print("Valid status:", policy_helpers.VALID_BODY_STATUS)
+# Output: ['enable', 'disable']
 
 # Create policy with validated values
-fgt.firewall.policy.create(
+fgt.api.cmdb.firewall.policy.post(
     name="Allow-Web",
     srcintf=["port1"],
     dstintf=["port2"],
@@ -99,7 +99,7 @@ fgt.firewall.policy.create(
 ### Example 2: Address Object Validation
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import address as addr_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import address as addr_helpers
 
 # Check valid address types
 print("Valid address types:", addr_helpers.VALID_BODY_TYPE)
@@ -110,7 +110,7 @@ print("Valid visibility:", addr_helpers.VALID_BODY_VISIBILITY)
 # Output: ['enable', 'disable']
 
 # Create address object with validated type
-fgt.api.cmdb.firewall.address.create(
+fgt.api.cmdb.firewall.address.post(
     name="Office-Network",
     type="ipmask",     # ✅ Valid
     subnet="10.0.0.0/24",
@@ -121,7 +121,7 @@ fgt.api.cmdb.firewall.address.create(
 ### Example 3: Query Parameter Validation
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import address as addr_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import address as addr_helpers
 
 # Check valid query parameters
 print("Valid query actions:", addr_helpers.VALID_QUERY_ACTION)
@@ -131,7 +131,7 @@ print("Valid query formats:", addr_helpers.VALID_QUERY_FORMAT)
 # Output: ['name', 'id', 'syntax', ... ]
 
 # Use validated query parameters
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     format="name|subnet|type",  # ✅ Valid format
     filter="used==0"            # ✅ Valid filter syntax
 )
@@ -155,10 +155,10 @@ addresses = fgt.api.cmdb.firewall.address.list(
 
 **Example Usage:**
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy, address, service_custom
-from hfortix.FortiOS.api.v2.cmdb.system._helpers import interface, admin
-from hfortix.FortiOS.api.v2.cmdb.router._helpers import static, bgp
-from hfortix.FortiOS.api.v2.cmdb.vpn.ipsec._helpers import phase1_interface
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy, address, service_custom
+from hfortix_fortios.api.v2.cmdb.system._helpers import interface, admin
+from hfortix_fortios.api.v2.cmdb.router._helpers import static, bgp
+from hfortix_fortios.api.v2.cmdb.vpn.ipsec._helpers import phase1_interface
 
 # All contain VALID_BODY_* and VALID_QUERY_* constants
 ```
@@ -176,8 +176,8 @@ from hfortix.FortiOS.api.v2.cmdb.vpn.ipsec._helpers import phase1_interface
 
 **Example Usage:**
 ```python
-from hfortix.FortiOS.api.v2.monitor.firewall._helpers import policy, session
-from hfortix.FortiOS.api.v2.monitor.system._helpers import status, interface
+from hfortix_fortios.api.v2.monitor.firewall._helpers import policy, session
+from hfortix_fortios.api.v2.monitor.system._helpers import status, interface
 
 # Monitor endpoints often have query parameter validation
 print(status.VALID_QUERY_SCOPE)  # ['global', 'vdom']
@@ -190,7 +190,7 @@ print(status.VALID_QUERY_SCOPE)  # ['global', 'vdom']
 
 **Example Usage:**
 ```python
-from hfortix.FortiOS.api.v2.log.memory._helpers import setting as log_setting
+from hfortix_fortios.api.v2.log.memory._helpers import setting as log_setting
 
 print(log_setting.VALID_BODY_STATUS)  # ['enable', 'disable']
 ```
@@ -202,7 +202,7 @@ print(log_setting.VALID_BODY_STATUS)  # ['enable', 'disable']
 
 **Example Usage:**
 ```python
-from hfortix.FortiOS.api.v2.service.system._helpers import fortiguard
+from hfortix_fortios.api.v2.service.system._helpers import fortiguard
 
 print(fortiguard.VALID_BODY_PROTOCOL)  # ['udp', 'http', 'https']
 ```
@@ -215,7 +215,7 @@ print(fortiguard.VALID_BODY_PROTOCOL)  # ['udp', 'http', 'https']
 
 ```python
 # Import specific validators
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import (
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import (
     policy,      # Firewall policies
     address,     # Address objects
     addrgrp,     # Address groups
@@ -234,9 +234,9 @@ print(service_custom.VALID_BODY_PROTOCOL)
 
 ```python
 # Full path for any validator
-from hfortix.FortiOS.api.v2.cmdb.system._helpers import interface
-from hfortix.FortiOS.api.v2.cmdb.router._helpers import static
-from hfortix.FortiOS.api.v2.cmdb.user._helpers import local
+from hfortix_fortios.api.v2.cmdb.system._helpers import interface
+from hfortix_fortios.api.v2.cmdb.router._helpers import static
+from hfortix_fortios.api.v2.cmdb.user._helpers import local
 
 print(interface.VALID_BODY_TYPE)
 print(static.VALID_BODY_DEVICE)
@@ -246,7 +246,7 @@ print(local.VALID_BODY_TYPE)
 ### Method 3: Discover Available Constants
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
 
 # List all available constants
 constants = [attr for attr in dir(policy) if attr.startswith('VALID_')]
@@ -283,7 +283,7 @@ Endpoints with required field validation use a two-stage approach:
 
 ```python
 from hfortix import FortiOS
-from hfortix.FortiOS.api.v2.cmdb.application._helpers import custom
+from hfortix_fortios.api.v2.cmdb.application._helpers import custom
 
 fgt = FortiOS("192.168.1.99", token="your_token")
 
@@ -343,7 +343,7 @@ Helpers with required field validation include these constants:
 ### Pattern 1: Pre-Validation Helper Function
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy as policy_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy as policy_helpers
 
 def validate_policy_params(action, status, logtraffic):
     """Validate policy parameters before API call."""
@@ -381,7 +381,7 @@ except ValueError as e:
 
 ```python
 from functools import wraps
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy as policy_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy as policy_helpers
 
 def validate_firewall_action(func):
     """Decorator to validate firewall policy action parameter."""
@@ -400,7 +400,7 @@ def validate_firewall_action(func):
 def create_policy(name, action, **kwargs):
     """Create firewall policy with validated action."""
     # action is already validated by decorator
-    return fgt.firewall.policy.create(name=name, action=action, **kwargs)
+    return fgt.api.cmdb.firewall.policy.post(name=name, action=action, **kwargs)
 
 # Usage
 create_policy("test", action="accept")  # ✅ Valid
@@ -410,7 +410,7 @@ create_policy("test", action="allow")   # ❌ Raises ValueError
 ### Pattern 3: Dynamic Validation Class
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy as policy_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy as policy_helpers
 
 class PolicyValidator:
     """Validator for firewall policy parameters."""
@@ -457,7 +457,7 @@ validator.validate(
 ### Combining Multiple Validators
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import (
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import (
     policy,
     address,
     service_custom
@@ -516,7 +516,7 @@ validator.validate_address(address_data)
 ### Generating User-Friendly Error Messages
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy as policy_helpers
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy as policy_helpers
 
 def create_policy_with_validation(fgt, **kwargs):
     """Create policy with comprehensive validation and helpful error messages."""
@@ -543,7 +543,7 @@ def create_policy_with_validation(fgt, **kwargs):
         )
 
     # All validations passed - create policy
-    return fgt.firewall.policy.create(**kwargs)
+    return fgt.api.cmdb.firewall.policy.post(**kwargs)
 ```
 
 ---
@@ -558,11 +558,11 @@ def create_address_from_user_input(name, addr_type, value):
     if addr_type not in address_helpers.VALID_BODY_TYPE:
         raise ValueError(f"Invalid type. Choose from: {address_helpers.VALID_BODY_TYPE}")
 
-    fgt.api.cmdb.firewall.address.create(name=name, type=addr_type, subnet=value)
+    fgt.api.cmdb.firewall.address.post(name=name, type=addr_type, subnet=value)
 
 # Bad: No validation
 def create_address_from_user_input(name, addr_type, value):
-    fgt.api.cmdb.firewall.address.create(name=name, type=addr_type, subnet=value)
+    fgt.api.cmdb.firewall.address.post(name=name, type=addr_type, subnet=value)
 ```
 
 ### 2. ✅ Provide Helpful Error Messages
@@ -586,7 +586,7 @@ if action not in VALID_BODY_ACTION:
 # Good: Cache validator lookups
 class PolicyManager:
     def __init__(self):
-        from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy
+        from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
         self.valid_actions = policy.VALID_BODY_ACTION
         self.valid_status = policy.VALID_BODY_STATUS
 
@@ -595,7 +595,7 @@ class PolicyManager:
 
 # Bad: Repeated imports
 def validate_action(action):
-    from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy
+    from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
     return action in policy.VALID_BODY_ACTION
 ```
 
@@ -615,7 +615,7 @@ def create_policy(name: str, action: str, **kwargs):
         ValueError: If action is not valid
 
     Valid actions can be found in:
-        hfortix.FortiOS.api.v2.cmdb.firewall._helpers.policy.VALID_BODY_ACTION
+        hfortix_fortios.api.v2.cmdb.firewall._helpers.policy.VALID_BODY_ACTION
     """
     if action not in VALID_BODY_ACTION:
         raise ValueError(f"Invalid action. See docstring for valid values.")
@@ -649,7 +649,7 @@ def create_policy(name: str, action: str, **kwargs):
 📋 **Required Field Validation**
 ```python
 # Planned for next release
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
 
 # Check required fields
 missing = policy.validate_required_fields({
@@ -665,7 +665,7 @@ if missing:
 📋 **Relationship Validation**
 ```python
 # Planned for future release
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
 
 # Validate cross-field dependencies
 errors = policy.validate_relationships({
@@ -678,7 +678,7 @@ errors = policy.validate_relationships({
 ```python
 # Planned for future release
 # Validation happens automatically
-fgt.firewall.policy.create(
+fgt.api.cmdb.firewall.policy.post(
     name="test",
     action="invalid"  # Raises ValidationError automatically
 )
@@ -693,7 +693,7 @@ fgt.firewall.policy.create(
 **Problem:** Import error when trying to access validator
 
 ```python
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import nonexistent
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import nonexistent
 # ImportError: cannot import name 'nonexistent'
 ```
 
@@ -701,9 +701,9 @@ from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import nonexistent
 
 ```python
 # Correct paths:
-from hfortix.FortiOS.api.v2.cmdb.firewall._helpers import policy  # /firewall/policy
-from hfortix.FortiOS.api.v2.cmdb.firewall.service._helpers import custom  # /firewall/service/custom
-from hfortix.FortiOS.api.v2.cmdb.system._helpers import interface  # /system/interface
+from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy  # /firewall/policy
+from hfortix_fortios.api.v2.cmdb.firewall.service._helpers import custom  # /firewall/service/custom
+from hfortix_fortios.api.v2.cmdb.system._helpers import interface  # /system/interface
 ```
 
 ### Issue: Constants are Empty

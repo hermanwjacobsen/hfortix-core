@@ -2,7 +2,7 @@
 
 ## Overview
 
-The convenience wrappers (e.g., `fgt.firewall.policy.create()`) now support configurable error handling with two independent settings:
+The convenience wrappers (e.g., `fgt.api.cmdb.firewall.policy.post()`) now support configurable error handling with two independent settings:
 
 1. **error_mode**: Controls whether the program stops or continues when errors occur
 2. **error_format**: Controls how much detail is included in error messages
@@ -23,7 +23,7 @@ fgt = FortiOS(
 ### Level 2: Per Method Call (overrides instance defaults)
 
 ```python
-result = fgt.firewall.policy.create(
+result = fgt.api.cmdb.firewall.policy.post(
     name="MyPolicy",
     srcintf="port1",
     dstintf="port2",
@@ -49,12 +49,12 @@ result = fgt.firewall.policy.create(
 fgt = FortiOS(host="...", token="...", error_mode="raise")
 
 # ❌ WITHOUT try/except - Program CRASHES
-fgt.firewall.policy.create(name="DuplicatePolicy", ...)
+fgt.api.cmdb.firewall.policy.post(name="DuplicatePolicy", ...)
 print("This never executes")  # DEAD CODE
 
 # ✅ WITH try/except - Program CONTINUES
 try:
-    fgt.firewall.policy.create(name="DuplicatePolicy", ...)
+    fgt.api.cmdb.firewall.policy.post(name="DuplicatePolicy", ...)
 except DuplicateEntryError:
     print("Policy exists, handling...")
 print("This executes")  # RUNS
@@ -72,7 +72,7 @@ print("This executes")  # RUNS
 fgt = FortiOS(host="...", token="...", error_mode="return")
 
 # Program ALWAYS continues
-result = fgt.firewall.policy.create(name="DuplicatePolicy", ...)
+result = fgt.api.cmdb.firewall.policy.post(name="DuplicatePolicy", ...)
 
 # Check if it worked
 if result.get("status") == "error":
@@ -82,7 +82,7 @@ else:
 
 # Try multiple operations - ALL execute
 for i in range(100):
-    result = fgt.firewall.policy.create(name=f"Policy{i}", ...)
+    result = fgt.api.cmdb.firewall.policy.post(name=f"Policy{i}", ...)
     if result.get("status") == "error":
         failures.append(i)
     else:
@@ -103,7 +103,7 @@ print(f"Created {len(successes)}, Failed {len(failures)}")
 fgt = FortiOS(host="...", token="...", error_mode="print")
 
 # Prints error to stderr, returns None
-result = fgt.firewall.policy.create(name="DuplicatePolicy", ...)
+result = fgt.api.cmdb.firewall.policy.post(name="DuplicatePolicy", ...)
 
 if result is None:
     print("Failed - see error above")
@@ -174,7 +174,7 @@ error_dict = {
 fgt = FortiOS(host="...", token="...", error_mode="raise")
 
 try:
-    fgt.firewall.policy.create(
+    fgt.api.cmdb.firewall.policy.post(
         name="CriticalFirewallRule",
         srcintf="wan1",
         dstintf="internal",
@@ -198,7 +198,7 @@ successes = []
 failures = []
 
 for policy in load_policies_from_csv():
-    result = fgt.firewall.policy.create(**policy)
+    result = fgt.api.cmdb.firewall.policy.post(**policy)
 
     if result.get("status") == "error":
         failures.append({
@@ -223,12 +223,12 @@ fgt = FortiOS(host="...", token="...", error_mode="raise")
 
 # Critical rule - uses default "raise"
 try:
-    fgt.firewall.policy.create(name="CriticalRule", ...)
+    fgt.api.cmdb.firewall.policy.post(name="CriticalRule", ...)
 except Exception as e:
     handle_critical_failure(e)
 
 # Optional rule - override to "return" for this call
-optional_result = fgt.firewall.policy.create(
+optional_result = fgt.api.cmdb.firewall.policy.post(
     name="OptionalRule",
     ...,
     error_mode="return"  # Override just for this call
@@ -303,11 +303,8 @@ Use the exception hierarchy to implement smart retry logic:
 
 ```python
 from hfortix import FortiOS
-from hfortix.FortiOS.exceptions import (
-    RetryableError,
-    is_retryable_error,
-    get_retry_delay
-)
+from hfortix_core import RetryableError
+from hfortix_core.exceptions import is_retryable_error, get_retry_delay
 import time
 
 fgt = FortiOS(host="...", token="...")
@@ -353,7 +350,7 @@ except Exception as e:
 Common exceptions now provide recovery guidance:
 
 ```python
-from hfortix.FortiOS.exceptions import DuplicateEntryError, EntryInUseError
+from hfortix_core import DuplicateEntryError, EntryInUseError
 
 try:
     fgt.api.cmdb.firewall.address.post(data={"name": "test-addr"})
@@ -383,7 +380,7 @@ except EntryInUseError as e:
 Check if an error should trigger a retry:
 
 ```python
-from hfortix.FortiOS.exceptions import is_retryable_error
+from hfortix_core.exceptions import is_retryable_error
 
 try:
     result = fgt.api.cmdb.firewall.policy.get()
@@ -402,7 +399,7 @@ except Exception as e:
 Calculate appropriate backoff delay:
 
 ```python
-from hfortix.FortiOS.exceptions import get_retry_delay
+from hfortix_core.exceptions import get_retry_delay
 
 for attempt in range(1, 4):
     try:

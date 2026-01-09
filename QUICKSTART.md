@@ -1,10 +1,10 @@
-# HFortix - Quick Reference (v0.5.32-beta)
+# HFortix - Quick Reference (v0.5.45-beta)
 
 ⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
 
-✨ **New in v0.5.32**: Enhanced object mode with nested table field wrapping and single object returns when querying by mkey!
+✨ **New in v0.5.45**: Core `fmt` module with 13 formatting utilities, automatic key normalization (hyphens → underscores)!
 
-✨ **New in v0.5.11**: Auto-normalization for list fields - `srcintf="port1"` automatically converts to `[{'name': 'port1'}]`!
+✨ **New in v0.5.32+**: Enhanced object mode with nested table field wrapping and single object returns when querying by mkey!
 
 ## Installation
 
@@ -19,7 +19,7 @@ pip install hfortix-fortios  # FortiOS/FortiGate client only
 pip install hfortix-core     # Core exceptions and HTTP framework only
 ```
 
-**Note:** Version 0.5.0 introduces auto-generated endpoints and removes convenience wrappers.
+**Note:** Version 0.5.x introduces auto-generated endpoints with full type stubs and removes convenience wrappers.
 
 ### From Source
 
@@ -132,11 +132,6 @@ get_config = {
     "params": {"vdom": "root"}
 }
 addresses = fgt.request(get_config)
-```
-    }
-}
-
-result = fgt.request(config)
 ```
 
 **Benefits:**
@@ -516,7 +511,7 @@ result = fgt.firewall.policy.create(
 **Error Modes:**
 
 | Mode | Stops Program? | Returns Data? | Need try/except? |
-|------|---------------|---------------|------------------|
+| ------ | --------------- | --------------- | ------------------ |
 | `"raise"` | ❌ YES (without try/except) | ❌ No (raises exception) | ✅ Yes (if you want to continue) |
 | `"return"` | ✅ NEVER | ✅ Yes (error dict) | ❌ No |
 | `"print"` | ✅ NEVER | ⚠️ Prints to stderr, returns None | ❌ No |
