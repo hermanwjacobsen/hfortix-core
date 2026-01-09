@@ -7,6 +7,7 @@ Provides:
 - Shared utilities and type definitions
 """
 
+from . import fmt
 from .cache import (
     TTLCache,
     readonly_cache,
@@ -22,7 +23,6 @@ from .deprecation import (
     check_deprecated_fields,
     warn_deprecated_field,
 )
-from . import fmt
 from .exceptions import (
     APIError,
     AuthenticationError,

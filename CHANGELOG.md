@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `Literal["exponential", "linear"]` type for `retry_strategy` parameter
   - Added `AuditHandler` Protocol type for `audit_handler` parameter (was `Any`)
 
+### Fixed
+- **Linting configuration and code fixes**
+  - Configured flake8, black, and isort to exclude auto-generated `api/` folder
+  - Fixed unused imports: `Literal` in models.py, `Coroutine` in _protocols.py
+  - Fixed f-strings without placeholders in help.py (4 occurrences)
+  - Added `normalize_table_field` to `_helpers/__all__` export list
+  - All manual code now passes flake8, black, and isort checks
+
 ## [0.5.46] - 2026-01-09
 
 ### Changed

@@ -33,6 +33,22 @@ from hfortix_fortios._helpers.converters import (
     filter_empty_values,
 )
 
+# Metadata accessors (shared by all validator modules)
+from hfortix_fortios._helpers.metadata import (
+    get_all_fields,
+    get_field_constraints,
+    get_field_default,
+    get_field_description,
+    get_field_metadata,
+    get_field_options,
+    get_field_type,
+    get_nested_schema,
+    validate_field_value,
+)
+
+# Metadata mixin for endpoint classes
+from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
+
 # List normalizers
 from hfortix_fortios._helpers.normalizers import (
     normalize_member_list,
@@ -48,29 +64,15 @@ from hfortix_fortios._helpers.response import (
     is_success,
 )
 
-# Metadata accessors (shared by all validator modules)
-from hfortix_fortios._helpers.metadata import (
-    get_field_description,
-    get_field_type,
-    get_field_constraints,
-    get_field_default,
-    get_field_options,
-    get_nested_schema,
-    get_all_fields,
-    get_field_metadata,
-    validate_field_value,
-)
-
-# Metadata mixin for endpoint classes
-from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
-
 # Central validation functions (used by all endpoint validators)
 from hfortix_fortios._helpers.validation import (
-    validate_required_fields as _validate_required_fields_central,
     validate_enum_field,
-    validate_query_parameter,
     validate_multiple_enums,
     validate_multiple_query_params,
+    validate_query_parameter,
+)
+from hfortix_fortios._helpers.validation import (
+    validate_required_fields as _validate_required_fields_central,
 )
 
 # Validators - SSH/SSL proxy-specific
@@ -111,6 +113,7 @@ __all__ = [
     # List normalization
     "normalize_to_name_list",
     "normalize_member_list",
+    "normalize_table_field",
     # Data cleaning and conversion
     "filter_empty_values",
     "convert_boolean_to_str",
