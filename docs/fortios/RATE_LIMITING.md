@@ -42,12 +42,12 @@ fgt = FortiOS(
     host="192.168.1.99",
     token="your-token",
     max_retries=5,  # Retry up to 5 times (default: 3)
-    retry_strategy="exponential",  # or "linear", "fibonacci"
+    retry_strategy="exponential",  # or "linear"
     retry_jitter=True,  # Add randomness to prevent thundering herd
 )
 
 # This will automatically retry if rate limited
-result = fgt.cmdb.firewall.address.get()
+result = fgt.api.cmdb.firewall.address.get()
 ```
 
 ### Retry Strategies
@@ -82,24 +82,6 @@ fgt = FortiOS(
     token="your-token",
     retry_strategy="linear",
     max_retries=3,
-)
-```
-
-#### Fibonacci Backoff
-
-Fibonacci sequence delays (1, 1, 2, 3, 5, 8...):
-- Attempt 1: Wait 1s
-- Attempt 2: Wait 1s
-- Attempt 3: Wait 2s
-- Attempt 4: Wait 3s
-- Attempt 5: Wait 5s
-
-```python
-fgt = FortiOS(
-    host="192.168.1.99",
-    token="your-token",
-    retry_strategy="fibonacci",
-    max_retries=5,
 )
 ```
 
@@ -171,7 +153,7 @@ fgt._client.circuit_breaker.reset()
 from hfortix_core import CircuitBreakerOpenError, RateLimitError
 
 try:
-    result = fgt.cmdb.firewall.address.get()
+    result = fgt.api.cmdb.firewall.address.get()
 except CircuitBreakerOpenError:
     print("Circuit breaker open - service unavailable")
     # Wait and retry later
@@ -245,7 +227,7 @@ async def main():
     
     async with fgt:
         # Async API calls
-        result = await fgt.cmdb.firewall.address.get()
+        result = await fgt.api.cmdb.firewall.address.get()
         print(result)
 
 asyncio.run(main())
@@ -261,7 +243,7 @@ from hfortix_fortios import FortiOS
 
 async def get_all_addresses(fgt):
     """Get all firewall addresses concurrently."""
-    result = await fgt.cmdb.firewall.address.get()
+    result = await fgt.api.cmdb.firewall.address.get()
     return result.get('results', [])
 
 async def create_address(fgt, name, subnet):
@@ -271,7 +253,7 @@ async def create_address(fgt, name, subnet):
         "subnet": subnet,
         "type": "ipmask",
     }
-    return await fgt.cmdb.firewall.address.create(data=data)
+    return await fgt.api.cmdb.firewall.address.post(data=data)
 
 async def main():
     fgt = FortiOS(
@@ -325,7 +307,7 @@ async def main():
                 "subnet": subnet,
                 "type": "ipmask",
             }
-            return await fgt.cmdb.firewall.address.create(data=data)
+            return await fgt.api.cmdb.firewall.address.post(data=data)
     
     async with fgt:
         addresses = [(f"NET_{i}", f"10.0.{i}.0/24") for i in range(100)]
@@ -360,7 +342,7 @@ async def main():
     async with fgt:
         try:
             # This will auto-retry if rate limited
-            result = await fgt.cmdb.firewall.address.get()
+            result = await fgt.api.cmdb.firewall.address.get()
         except RateLimitError as e:
             print(f"Still rate limited after retries: {e}")
 
@@ -426,7 +408,7 @@ from hfortix_core import (
 )
 
 try:
-    result = fgt.cmdb.firewall.address.get()
+    result = fgt.api.cmdb.firewall.address.get()
 except RateLimitError:
     # Implement custom backoff
     time.sleep(5)
@@ -488,7 +470,7 @@ fgt = FortiOS(
     token="your-token",
     mode="async",
     max_retries=7,
-    retry_strategy="fibonacci",
+    retry_strategy="exponential",
     retry_jitter=True,
     max_connections=100,
     max_keepalive_connections=20,

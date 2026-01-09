@@ -9,39 +9,39 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.32**
+> **⚠️ BETA STATUS - Version 0.5.45**
 >
-> - **Current Version**: 0.5.32 (Released - January 24, 2025)
-> - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
+> - **Current Version**: 0.5.45 (Released - January 9, 2026)
+> - **Schema Version**: v1.7.0 (1,351 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > **📊 Implementation Status:** **All major features complete!** See details below.
 
-**FortiOS 7.6.5 Coverage (Schema v1.7.0 - January 6, 2026):**
+**FortiOS 7.6.5 Coverage (Schema v1.7.0 - January 2026):**
 
-- **CMDB API**: 562 endpoints (100% coverage) - Full configuration management ✅ Complete
-- **Monitor API**: 491 endpoints (100% coverage) - Complete monitoring capabilities ✅ Complete
+- **CMDB API**: 561 endpoints (100% coverage) - Full configuration management ✅ Complete
+- **Monitor API**: 490 endpoints (100% coverage) - Complete monitoring capabilities ✅ Complete
 - **Log API**: 286 endpoints (100% coverage) - Log query support ✅ Complete  
-- **Service API**: 12 endpoints (100% coverage) - Service operations ✅ Complete
-- **Overall**: **1,351 total endpoints** - All features implemented 🎉
+- **Service API**: 11 endpoints (100% coverage) - Service operations ✅ Complete
+- **Overall**: **1,348 total endpoints** - All features implemented 🎉
 
 **Code Generation Status:**
 
 ✅ **Completed (100%):**
-- ✅ **Schema v1.7.0**: 1,351 endpoints with capabilities, complexity, relationships
-- ✅ **Basic API Classes**: 1,065 endpoint files with full CRUD methods
-- ✅ **Pydantic Models**: 1,065 model files with runtime validation
+- ✅ **Schema v1.7.0**: 1,348 endpoints with capabilities, complexity, relationships
+- ✅ **Basic API Classes**: 2,129 endpoint files with full CRUD methods
+- ✅ **Type Stubs**: 2,129 .pyi files with complete type annotations
+- ✅ **Pydantic Models**: Runtime validation models for all endpoints
 - ✅ **Capabilities Metadata**: All endpoints expose SUPPORTS_* constants
 - ✅ **Action Methods**: move(), clone(), exists() for all endpoints
 - ✅ **Type Hints**: Full type annotations with Literal types for enums
-- ✅ **Validators**: 260+ validation helper modules with field constraints
-- ✅ **Type Stubs**: Complete .pyi files with endpoint relationship docs
-- ✅ **Query Parameters**: Enhanced filter, count, start on all CMDB endpoints (NEW! ✨)
-- ✅ **Schema Introspection**: Runtime get_schema() method (NEW! ✨)
+- ✅ **Validators**: Validation helper modules with field constraints
+- ✅ **Query Parameters**: Enhanced filter, count, start on all CMDB endpoints
+- ✅ **Schema Introspection**: Runtime get_schema() method
 - ✅ **Docstrings**: Comprehensive documentation with examples
-- ✅ **Tests**: 1,065+ auto-generated test files - all passing ✅
+- ✅ **Tests**: Auto-generated test files - all passing ✅
 
 **Overall Progress: 100% Complete** (Production Ready!)
 - Schema & Infrastructure: ✅ 100%
@@ -51,64 +51,49 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.32 - Major improvements in object mode with nested table field wrapping and single object returns
+**Latest Release:** v0.5.45 - Enhanced fmt module in core, improved type annotations, key normalization
 
-**Test Coverage:** **All 1,065 endpoints tested and passing!** ✅
+**Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
-**🔥 Latest Improvement (January 24, 2025):**
+**🔥 Latest Improvements (January 2026):**
 
-**Enhanced Object Response Mode with Smart Behavior:**
-- ✨ **Single Object Returns**: Querying by mkey now returns single `FortiObject` instead of list
-  - `group = fgt.api.cmdb.firewall.service.group.get(name="test")` → returns `FortiObject` (not `list[FortiObject]`)
-  - Cleaner code: `group.name` instead of `group[0].name`
-- 🎯 **Nested Table Field Wrapping**: Table field members now wrapped in `FortiObject` for attribute access
-  - `group.member[0].name` now works (was: `AttributeError: 'str' object has no attribute 'name'`)
-  - Full attribute access on nested objects while maintaining clean string representation
-- 📝 **Clean String Representation**: Simple objects show user-friendly output
-  - `['port3', 'port4']` instead of `[FortiObject(port3), FortiObject(port4)]`
-  - Improved readability when printing lists of members
-- �️ **Better Type Annotations**: Enhanced IDE support with explicit type hints
-  - `self._api: API = API(wrapped_client)` for better autocomplete
-  - Improved Pylance reliability after sys.path manipulation
+**v0.5.45 - Formatting & Type Improvements:**
+- ✨ **fmt module in core**: `from hfortix_core import fmt` - 13 formatting utilities
+- 🎯 **Improved to_dict() types**: Better Pylance compatibility with `.get()` method
+- 🔄 **Automatic key normalization**: API response keys converted from hyphens to underscores
+  - `tcp-portrange` → `tcp_portrange` automatically
+- 📦 **Optimized helper files**: 50-80 lines reduced per file using functools.partial
 
-**🔥 Recent Highlights (January 2025):**
+**v0.5.44 - Core Formatting Module:**
+- � Moved formatting utilities to `hfortix_core.fmt` for easier access
+- 🎯 All 13 functions: `to_list()`, `to_json()`, `to_csv()`, `to_dict()`, `to_table()`, etc.
+- 📋 Auto-split for space-delimited strings: `"80 443"` → `['80', '443']`
 
-- 🚀 **AUTO-NORMALIZATION FOR LIST FIELDS** (v0.5.11): Major usability improvement!
-  - ⚡ **Automatic conversion**: `srcintf="port1"` → `[{'name': 'port1'}]` automatically
-  - 📋 **70+ common fields supported**: srcintf, dstintf, srcaddr, dstaddr, service, poolname, member, etc.
-  - ✨ **Flexible input formats**: Accepts strings, lists of strings, or pre-formatted dicts
-  - 🎯 **Zero learning curve**: Write natural Python code, we handle FortiOS format
-  - Example: `fgt.api.cmdb.firewall.policy.post(name="test", srcintf="any", dstintf="wan1")`
-- 🎨 **INTERACTIVE HELP SYSTEM** (v0.5.22): Discover API capabilities instantly!
-  - 📚 **endpoint.help()**: Shows capabilities, operations, and available methods
-  - 🔍 **endpoint.help("field_name")**: Field-specific help with types, constraints, and options
-  - ✨ **Package-level help**: `from hfortix_fortios import help; help(endpoint)`
-  - Context-aware documentation for CMDB, Monitor, Log, and Service endpoints
-- 🛠️ **FORMATTING UTILITIES** (v0.5.21): Type-agnostic data conversion
-  - 📊 **to_json(data)**: Convert any data to formatted JSON string
-  - 📝 **to_csv(data)**: Convert to comma-separated string
-  - 🔄 **to_dict(data)**: Convert any data to dictionary
-  - 📄 **to_multiline(data)**: Convert to newline-separated string
-  - Available from package root: `from hfortix_fortios import to_csv, to_json`
-  - Available from package root: `from hfortix_fortios import to_csv, to_json`
-- 🔍 **MAJOR IDE IMPROVEMENTS**: Enhanced query parameters & schema introspection! (v0.5.11)
-  - ⚡ **get_schema() method**: Runtime access to endpoint schema metadata
-  - 🔍 **Advanced filtering**: 18+ operators (==, !=, =@, !@, <=, >=, etc.) with type-safe lists
-  - 📊 **Pagination support**: count and start parameters for result limiting
-  - 💡 **Enhanced autocomplete**: Full IDE support with inline documentation
-  - ✅ 561/561 CMDB endpoints updated with new capabilities
--  **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (v0.5.11)
-  - ⚡ See what resources each endpoint depends on (forward dependencies)
-  - 🔍 Field-level mappings: Know which fields reference which endpoints
-  - 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
-  - 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
-  - ✅ All 562 CMDB endpoints include relationship documentation
+**v0.5.43 - Enhanced Formatting:**
+- ✨ `to_dictlist()` / `to_listdict()` for columnar↔row format conversion
+- 📊 `to_table()`, `to_yaml()`, `to_xml()` for various output formats
+- 🔧 `to_markdown_table()` for documentation generation
+
+**🔥 Previous Highlights (v0.5.32-v0.5.42):**
+
+- � **Key Normalization**: Automatic hyphen-to-underscore conversion for API responses
+- 🎯 **Single Object Returns**: Querying by mkey returns single object, not list
+- � **Nested Table Field Wrapping**: Full attribute access on nested objects
+- 🛠️ **Enhanced Type Stubs**: Improved overloads for better Pylance type inference
+- 📊 **MutationResponse TypedDict**: Type-safe POST/PUT/DELETE responses
+- 🔍 **Validation Hints**: Field constraints shown in IDE tooltips
+- 🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (v0.5.11)
+- ⚡ See what resources each endpoint depends on (forward dependencies)
+- 🔍 Field-level mappings: Know which fields reference which endpoints
+- 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
+- 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
+- ✅ All 562 CMDB endpoints include relationship documentation
 - 🎨 **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (v0.5.18)
-  - ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
-  - 🛡️ Type safety: Invalid values caught at type-check time
-  - 📚 Self-documenting: See all valid options in IDE tooltips
-  - ✅ 100% backward compatible - no breaking changes
+- ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
+- 🛡️ Type safety: Invalid values caught at type-check time
+- 📚 Self-documenting: See all valid options in IDE tooltips
+- ✅ 100% backward compatible - no breaking changes
 - 🎉 **METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)! (v0.5.4)
 - ♻️ **CODE DEDUPLICATION**: Eliminated ~160K lines of duplicate metadata methods
 - 📦 **OPTIMIZED PACKAGE**: Two-phase optimization (stub separation + mixin refactoring)

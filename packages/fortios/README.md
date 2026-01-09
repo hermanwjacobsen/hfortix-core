@@ -7,67 +7,41 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 
-> **⚠️ BETA STATUS - Version 0.5.34 (January 8, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
 >
 > **Breaking Changes:** See v0.5.33 and v0.5.32 for important return type changes in dict/object mode.
 > **Status:** Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New:** See below for all recent improvements, fixes, and new features!
+> **What's New:** Core `fmt` module, automatic key normalization, improved type annotations!
 
-**Version:** 0.5.34
+**Version:** 0.5.45
 **Status:** Beta (100% auto-generated, production-ready, optimized for performance)
 
 
-## 🚀 What's New in v0.5.34 (January 2026)
+## 🚀 What's New in v0.5.45 (January 2026)
 
-### Major Improvements and Breaking Changes (v0.5.32–v0.5.34)
+### Latest Improvements (v0.5.43-v0.5.45)
 
-- **Enhanced type stub overloads for better IDE autocomplete**
-    - All 1,000+ endpoints now have specific overloads for default mode (when `response_mode` is not specified)
-    - Pylance now correctly infers types for queries by mkey without explicit type annotations
-    - No longer need to annotate: `rule: RuleResponse = ...` — just use `rule = ...`
-    - Improved overload ordering for better type inference
+- **Core `fmt` module**: 13 formatting utilities now in `hfortix_core.fmt`
+  - `to_list()`, `to_json()`, `to_csv()`, `to_dict()`, `to_table()`, `to_yaml()`, etc.
+  - Auto-split for space-delimited strings: `"80 443"` → `['80', '443']`
+  - `to_dictlist()` / `to_listdict()` for columnar↔row format conversion
+- **Automatic key normalization**: API response keys converted from hyphens to underscores
+  - `tcp-portrange` → `tcp_portrange` automatically in responses
+- **Improved type annotations**: Better `to_dict()` return type for Pylance compatibility
+- **Optimized helper files**: 50-80 lines reduced per file using functools.partial
 
-- **Dict/Object mode query by name returns single item**
-    - When querying by name/mkey with `response_mode="dict"` or `response_mode="object"`, now returns a single dict/object instead of a list
-    - Example: `group = fgt.api.cmdb.firewall.service.group.get(name="test")` returns a `dict` or `FortiObject`, not a list
-    - **Breaking Change:** Tests and code expecting a list for single-item queries must be updated
+### Breaking Changes (v0.5.32-v0.5.34)
 
-- **Nested typed classes for table field children**
-    - Table fields now have their own typed classes (e.g., `GroupMemberObject`)
-    - Enables full IDE autocomplete for nested table attributes like `.name`, `.id`, etc.
+- **Single object returns**: Querying by mkey returns single dict/object, not list
+  - `fgt.api.cmdb.firewall.address.get(name="test")` → returns `dict` (not `list[dict]`)
+- **Nested typed classes**: Table fields have their own typed classes for full autocomplete
+- **Enhanced type stubs**: Better overload ordering for Pylance type inference
 
-- **Keyword argument support for mkey parameters**
-    - Both `get("name")` and `get(name="name")` infer the correct return type
-
-- **IDE autocomplete for table field members in object mode**
-    - Table fields now return typed objects instead of generic `FortiObject`
-    - Full attribute autocomplete for nested objects
-
-- **Universal table field normalization with schema awareness**
-    - Handles custom mkeys: `interface-name`, `id`, `index`, `seq-num`, `priority`, etc.
-    - All string values are automatically stripped of whitespace
-
-- **Enhanced parameter documentation**
-    - All POST/PUT method parameters now show field descriptions from the FortiOS schema in IDE tooltips
-
-- **Type annotations for FortiOS client attributes**
-    - Improved type inference and autocomplete for `fgt.api`, `fgt.api.cmdb`, etc.
-
-- **Other Notable Fixes and Improvements:**
-    - Fixed stub generator comment truncation (no more broken comments in stubs)
-    - Enhanced error messages for duplicate name/unique field conflicts
-    - `set()` now accepts all field parameters (not just payload_dict)
-    - Singleton endpoints now return a single object, not a list
-    - `FortiObject` now supports both attribute and dictionary-style access
-    - Filter parameter now accepts both string and list
-    - Interactive help system for all API endpoints: `endpoint.help()`
-    - Formatting utilities: `to_json()`, `to_csv()`, `to_dict()`, etc.
-
-See the [complete changelog](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) for all details and previous versions.
+See the [complete changelog](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) for all details.
 
 ## Overview
 
-Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage (1,219 endpoints), full type safety, and enterprise features. All code is auto-generated from FortiOS API schemas.
+Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage (1,348 endpoints), full type safety, and enterprise features. All code is auto-generated from FortiOS API schemas.
 
 ## Installation
 
@@ -124,17 +98,20 @@ fgt.api.cmdb.firewall.policy.create(
 
 ## API Coverage
 
-**FortiOS 7.6.5 - 100% Coverage (1,219 Endpoints):**
+**FortiOS 7.6.5 - 100% Coverage (Schema v1.7.0):**
 
-- **CMDB API**: 886 endpoints - Full configuration management (firewall, system, VPN, routing, etc.)
-- **Monitor API**: 295 endpoints - Real-time monitoring (sessions, stats, resources, etc.)
-- **Log API**: 38 endpoints - Log queries (disk, memory, FortiAnalyzer, FortiCloud, search)
+- **CMDB API**: 561 endpoints - Full configuration management (firewall, system, VPN, routing, etc.)
+- **Monitor API**: 490 endpoints - Real-time monitoring (sessions, stats, resources, etc.)
+- **Log API**: 286 endpoints - Log queries (disk, memory, FortiAnalyzer, FortiCloud, search)
+- **Service API**: 11 endpoints - Service operations (sniffer, security rating, system)
+- **Total**: 1,348 endpoints with 2,129 implementation files
 
 All endpoints are **100% auto-generated** with:
-- Complete `.pyi` type stub files
+- Complete `.pyi` type stub files (2,129 files)
 - Schema-based parameter validation
 - Auto-generated basic tests
 - Comprehensive error handling
+- Automatic key normalization (hyphens → underscores)
 
 ## Key Features
 
@@ -214,7 +191,7 @@ for policy in policies:
 - `obj.pretty('field')` - Alias for join() with default separator
 - Auto-flattens member_table fields: `['port1']` instead of `[{'name': 'port1'}]`
 
-**Benefits:** 
+**Benefits:**
 - 📊 Clean console output
 - 🎯 No manual list comprehension needed
 - ✨ Works with all FortiOS list fields

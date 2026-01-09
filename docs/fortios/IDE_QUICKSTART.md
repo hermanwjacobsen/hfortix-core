@@ -54,7 +54,7 @@ def create_policy(
     action: ActionType,   # ✅ IDE shows: "accept" | "deny" | "ipsec"
     status: StatusType = "enable",  # ✅ IDE shows: "enable" | "disable"
 ):
-    fgt.api.cmdb.firewall.policy.create(
+    fgt.api.cmdb.firewall.policy.post(
         name=name,
         action=action,  # ✅ Type checker validates!
         status=status,
@@ -116,7 +116,7 @@ def manage_policy(
     action: ActionType = "accept",
 ) -> FortiOSSuccessResponse:
     """Create policy with full type safety."""
-    result = fgt.api.cmdb.firewall.policy.create(
+    result = fgt.api.cmdb.firewall.policy.post(
         name=name,
         action=action,
     )

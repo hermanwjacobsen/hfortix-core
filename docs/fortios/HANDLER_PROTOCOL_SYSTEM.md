@@ -56,7 +56,7 @@ handler = SlackNotifier("https://hooks.slack.com/services/YOUR/WEBHOOK")
 fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
 
 # Now all firewall policy changes trigger Slack notifications
-fgt.api.cmdb.firewall.policy.create(
+fgt.api.cmdb.firewall.policy.post(
     name="Block-Malware",
     srcintf="internal",
     dstintf="wan1",
@@ -697,7 +697,7 @@ logger = logging.getLogger(__name__)
 
 def create_policy(fgt, data):
     logger.info(f"Creating policy: {data}")
-    result = fgt.api.cmdb.firewall.policy.create(**data)
+    result = fgt.api.cmdb.firewall.policy.post(**data)
     logger.info(f"Policy created: {result}")
     return result
 
@@ -709,7 +709,7 @@ fgt = FortiOS("192.168.1.99", token="token",
               audit_handler=FileHandler("/var/log/audit.jsonl"))
 
 # Just call the API - logging happens automatically
-result = fgt.api.cmdb.firewall.policy.create(**data)
+result = fgt.api.cmdb.firewall.policy.post(**data)
 ```
 
 ## See Also

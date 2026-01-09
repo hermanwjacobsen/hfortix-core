@@ -11,11 +11,11 @@ HFortix is a comprehensive, fully-typed Python SDK for automating Fortinet secur
 ### FortiOS/FortiGate (Available Now)
 
 Complete FortiOS 7.6.5 API client with:
-- ✅ 100% API coverage (750+ endpoints, 77 categories)
-- ✅ CMDB, Monitor, Log, and Service APIs
-- ✅ Convenience wrappers for common operations
+- ✅ 100% API coverage (1,348 endpoints across CMDB, Monitor, Log, Service)
+- ✅ 2,129 endpoint files with type stubs for perfect IDE autocomplete
 - ✅ Full async support
-- ✅ Comprehensive validation
+- ✅ Automatic key normalization (hyphens → underscores)
+- ✅ Comprehensive validation and error handling
 
 **[Get Started with FortiOS →](/fortios/getting-started/quickstart.md)**
 
@@ -45,8 +45,8 @@ HFortix uses a modular architecture:
 
 ```
 hfortix (meta-package)
-├── hfortix-core      # Shared HTTP client, exceptions
-├── hfortix-fortios   # FortiOS API client
+├── hfortix-core          # Shared HTTP client, exceptions, fmt utilities
+├── hfortix-fortios       # FortiOS API client (1,348 endpoints)
 ├── hfortix-fortimanager  # (coming soon)
 └── hfortix-fortianalyzer # (coming soon)
 ```

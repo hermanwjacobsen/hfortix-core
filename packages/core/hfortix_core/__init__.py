@@ -22,6 +22,7 @@ from .deprecation import (
     check_deprecated_fields,
     warn_deprecated_field,
 )
+from . import fmt
 from .exceptions import (
     APIError,
     AuthenticationError,
@@ -63,7 +64,7 @@ from .types import (
     RequestInfo,
 )
 
-__version__ = "0.5.36"
+__version__ = "0.5.45"
 __all__ = [
     # Cache utilities
     "TTLCache",
@@ -71,6 +72,8 @@ __all__ = [
     # Deprecation utilities
     "check_deprecated_fields",
     "warn_deprecated_field",
+    # Formatting utilities
+    "fmt",
     # Exceptions
     "FortinetError",
     "APIError",

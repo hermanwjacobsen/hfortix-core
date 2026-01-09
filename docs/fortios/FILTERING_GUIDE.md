@@ -9,15 +9,15 @@ FortiOS supports powerful filtering capabilities for GET requests, allowing you 
 ## Basic Usage
 
 ```python
-from hfortix import FortiOS
+from hfortix_fortios import FortiOS
 
 fgt = FortiOS("192.0.2.10", token="your_token_here")
 
 # Get specific address by name
-address = fgt.api.cmdb.firewall.address.get("test-host")
+address = fgt.api.cmdb.firewall.address.get(name="test-host")
 
 # Get all addresses matching a filter
-addresses = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.0.0")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.0.0"])
 ```
 
 ## Filter Operators
@@ -31,13 +31,13 @@ Matches objects where the field value equals the pattern (case-insensitive).
 
 ```python
 # Get firewall address with exact name
-addresses = fgt.api.cmdb.firewall.address.list(filter="name==test-host")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["name==test-host"])
 
 # Get policies with specific action
-policies = fgt.api.cmdb.firewall.policy.list(filter="action==accept")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["action==accept"])
 
 # Get interfaces with specific type
-interfaces = fgt.api.cmdb.system.interface.list(filter="type==physical")
+interfaces = fgt.api.cmdb.system.interface.get(filter=["type==physical"])
 ```
 
 #### `!=` - Not Equals
@@ -45,13 +45,13 @@ Matches objects where the field value does NOT equal the pattern.
 
 ```python
 # Get all addresses except a specific one
-addresses = fgt.api.cmdb.firewall.address.list(filter="name!=test-host")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["name!=test-host"])
 
 # Get policies that are not set to deny
-policies = fgt.api.cmdb.firewall.policy.list(filter="action!=deny")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["action!=deny"])
 
 # Get non-VLAN interfaces
-interfaces = fgt.api.cmdb.system.interface.list(filter="type!=vlan")
+interfaces = fgt.api.cmdb.system.interface.get(filter=["type!=vlan"])
 ```
 
 ### 2. Contains Operators
@@ -61,13 +61,13 @@ Matches objects where the field value contains the pattern (substring match).
 
 ```python
 # Get all addresses containing "10.0" in subnet
-addresses = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.0")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.0"])
 
 # Get all policies with "web" in the name
-policies = fgt.api.cmdb.firewall.policy.list(filter="name=@web")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["name=@web"])
 
 # Get all address groups containing "servers"
-groups = fgt.api.cmdb.firewall.addrgrp.list(filter="name=@servers")
+groups = fgt.api.cmdb.firewall.addrgrp.get(filter=["name=@servers"])
 ```
 
 #### `!@` - Not Contains
@@ -75,10 +75,10 @@ Matches objects where the field value does NOT contain the pattern.
 
 ```python
 # Get addresses that don't contain "192.168" in subnet
-addresses = fgt.api.cmdb.firewall.address.list(filter="subnet!@192.168")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["subnet!@192.168"])
 
 # Get policies without "test" in name
-policies = fgt.api.cmdb.firewall.policy.list(filter="name!@test")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["name!@test"])
 ```
 
 ### 3. Comparison Operators
@@ -88,10 +88,10 @@ Matches objects where the field value is less than the pattern.
 
 ```python
 # Get policies with ID less than 100
-policies = fgt.api.cmdb.firewall.policy.list(filter="policyid<100")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["policyid<100"])
 
 # Get routes with distance less than 10
-routes = fgt.api.cmdb.router.static.list(filter="distance<10")
+routes = fgt.api.cmdb.router.static.get(filter=["distance<10"])
 ```
 
 #### `<=` - Less Than or Equal
@@ -99,10 +99,10 @@ Matches objects where the field value is less than or equal to the pattern.
 
 ```python
 # Get policies with ID 100 or less
-policies = fgt.api.cmdb.firewall.policy.list(filter="policyid<=100")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["policyid<=100"])
 
 # Get routes with priority 5 or less
-routes = fgt.api.cmdb.router.static.list(filter="priority<=5")
+routes = fgt.api.cmdb.router.static.get(filter=["priority<=5"])
 ```
 
 #### `>` - Greater Than
@@ -110,10 +110,10 @@ Matches objects where the field value is greater than the pattern.
 
 ```python
 # Get policies with ID greater than 100
-policies = fgt.api.cmdb.firewall.policy.list(filter="policyid>100")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["policyid>100"])
 
 # Get routes with distance greater than 10
-routes = fgt.api.cmdb.router.static.list(filter="distance>10")
+routes = fgt.api.cmdb.router.static.get(filter=["distance>10"])
 ```
 
 #### `>=` - Greater Than or Equal
@@ -121,10 +121,10 @@ Matches objects where the field value is greater than or equal to the pattern.
 
 ```python
 # Get policies with ID 100 or greater
-policies = fgt.api.cmdb.firewall.policy.list(filter="policyid>=100")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["policyid>=100"])
 
 # Get routes with priority 5 or greater
-routes = fgt.api.cmdb.router.static.list(filter="priority>=5")
+routes = fgt.api.cmdb.router.static.get(filter=["priority>=5"])
 ```
 
 ## Multiple Filter Conditions
@@ -133,13 +133,13 @@ Combine multiple filter conditions using `&` (AND logic). All conditions must be
 
 ```python
 # Get policies with ID between 100 and 200
-policies = fgt.api.cmdb.firewall.policy.list(filter="policyid>=100&policyid<=200")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["policyid>=100&policyid<=200"])
 
 # Get addresses in 10.0.0.0/8 range with "server" in name
-addresses = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.&name=@server")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.&name=@server"])
 
 # Get enabled policies with action=accept
-policies = fgt.api.cmdb.firewall.policy.list(filter="status==enable&action==accept")
+policies = fgt.api.cmdb.firewall.policy.get(filter=["status==enable&action==accept"])
 ```
 
 ## Field-Specific Examples
@@ -148,80 +148,80 @@ policies = fgt.api.cmdb.firewall.policy.list(filter="status==enable&action==acce
 
 ```python
 # By name
-fgt.api.cmdb.firewall.address.list(filter="name==test-host")
-fgt.api.cmdb.firewall.address.list(filter="name=@web")
+fgt.api.cmdb.firewall.address.get(filter=["name==test-host"])
+fgt.api.cmdb.firewall.address.get(filter=["name=@web"])
 
 # By subnet
-fgt.api.cmdb.firewall.address.list(filter="subnet=@10.0")
-fgt.api.cmdb.firewall.address.list(filter="subnet==10.0.0.1/32")
+fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.0"])
+fgt.api.cmdb.firewall.address.get(filter=["subnet==10.0.0.1/32"])
 
 # By type
-fgt.api.cmdb.firewall.address.list(filter="type==ipmask")
-fgt.api.cmdb.firewall.address.list(filter="type==iprange")
+fgt.api.cmdb.firewall.address.get(filter=["type==ipmask"])
+fgt.api.cmdb.firewall.address.get(filter=["type==iprange"])
 
 # By comment
-fgt.api.cmdb.firewall.address.list(filter="comment=@production")
+fgt.api.cmdb.firewall.address.get(filter=["comment=@production"])
 ```
 
 ### Firewall Policies
 
 ```python
 # By ID
-fgt.api.cmdb.firewall.policy.list(filter="policyid==10")
-fgt.api.cmdb.firewall.policy.list(filter="policyid>=100")
+fgt.api.cmdb.firewall.policy.get(filter=["policyid==10"])
+fgt.api.cmdb.firewall.policy.get(filter=["policyid>=100"])
 
 # By name
-fgt.api.cmdb.firewall.policy.list(filter="name=@web")
+fgt.api.cmdb.firewall.policy.get(filter=["name=@web"])
 
 # By action
-fgt.api.cmdb.firewall.policy.list(filter="action==accept")
-fgt.api.cmdb.firewall.policy.list(filter="action==deny")
+fgt.api.cmdb.firewall.policy.get(filter=["action==accept"])
+fgt.api.cmdb.firewall.policy.get(filter=["action==deny"])
 
 # By status
-fgt.api.cmdb.firewall.policy.list(filter="status==enable")
-fgt.api.cmdb.firewall.policy.list(filter="status==disable")
+fgt.api.cmdb.firewall.policy.get(filter=["status==enable"])
+fgt.api.cmdb.firewall.policy.get(filter=["status==disable"])
 
 # By source interface
-fgt.api.cmdb.firewall.policy.list(filter="srcintf==port1")
+fgt.api.cmdb.firewall.policy.get(filter=["srcintf==port1"])
 
 # By destination interface
-fgt.api.cmdb.firewall.policy.list(filter="dstintf==port2")
+fgt.api.cmdb.firewall.policy.get(filter=["dstintf==port2"])
 ```
 
 ### System Interfaces
 
 ```python
 # By name
-fgt.api.cmdb.system.interface.list(filter="name==port1")
-fgt.api.cmdb.system.interface.list(filter="name=@wan")
+fgt.api.cmdb.system.interface.get(filter=["name==port1"])
+fgt.api.cmdb.system.interface.get(filter=["name=@wan"])
 
 # By type
-fgt.api.cmdb.system.interface.list(filter="type==physical")
-fgt.api.cmdb.system.interface.list(filter="type==vlan")
-fgt.api.cmdb.system.interface.list(filter="type==tunnel")
+fgt.api.cmdb.system.interface.get(filter=["type==physical"])
+fgt.api.cmdb.system.interface.get(filter=["type==vlan"])
+fgt.api.cmdb.system.interface.get(filter=["type==tunnel"])
 
 # By VDOM
-fgt.api.cmdb.system.interface.list(filter="vdom==root")
+fgt.api.cmdb.system.interface.get(filter=["vdom==root"])
 
 # By IP address
-fgt.api.cmdb.system.interface.list(filter="ip=@192.168")
+fgt.api.cmdb.system.interface.get(filter=["ip=@192.168"])
 ```
 
 ### Router Static Routes
 
 ```python
 # By destination
-fgt.api.cmdb.router.static.list(filter="dst=@0.0.0.0")
+fgt.api.cmdb.router.static.get(filter=["dst=@0.0.0.0"])
 
 # By gateway
-fgt.api.cmdb.router.static.list(filter="gateway=@192.168.1")
+fgt.api.cmdb.router.static.get(filter=["gateway=@192.168.1"])
 
 # By distance
-fgt.api.cmdb.router.static.list(filter="distance==10")
-fgt.api.cmdb.router.static.list(filter="distance<20")
+fgt.api.cmdb.router.static.get(filter=["distance==10"])
+fgt.api.cmdb.router.static.get(filter=["distance<20"])
 
 # By device/interface
-fgt.api.cmdb.router.static.list(filter="device==port1")
+fgt.api.cmdb.router.static.get(filter=["device==port1"])
 ```
 
 ## Advanced Filtering Patterns
@@ -230,12 +230,12 @@ fgt.api.cmdb.router.static.list(filter="device==port1")
 
 ```python
 # Get policies with IDs between 100 and 200
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="policyid>=100&policyid<=200"
 )
 
 # Get routes with distance 5-15
-routes = fgt.api.cmdb.router.static.list(
+routes = fgt.api.cmdb.router.static.get(
     filter="distance>=5&distance<=15"
 )
 ```
@@ -244,12 +244,12 @@ routes = fgt.api.cmdb.router.static.list(
 
 ```python
 # Get all addresses NOT in 192.168.0.0/16 range
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     filter="subnet!@192.168"
 )
 
 # Get policies that are NOT test policies
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="name!@test&name!@temp"
 )
 ```
@@ -258,12 +258,12 @@ policies = fgt.api.cmdb.firewall.policy.list(
 
 ```python
 # Get enabled web server policies
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="status==enable&name=@web&action==accept"
 )
 
 # Get production addresses in 10.0.0.0/8
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     filter="subnet=@10.&comment=@production"
 )
 ```
@@ -274,14 +274,14 @@ Combine filtering with pagination for large datasets:
 
 ```python
 # Get first 100 enabled policies
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="status==enable",
     count=100,
     start=0
 )
 
 # Get next 100
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="status==enable",
     count=100,
     start=100
@@ -293,7 +293,7 @@ policies = fgt.api.cmdb.firewall.policy.list(
 ### 1. Use Specific Filters
 ```python
 # ✅ Good - Specific filter
-addresses = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.0.0")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.0.0"])
 
 # ❌ Bad - Retrieving everything then filtering in Python
 all_addresses = fgt.api.cmdb.firewall.address.get()
@@ -303,32 +303,32 @@ filtered = [a for a in all_addresses if '10.0.0' in a.get('subnet', '')]
 ### 2. Combine Multiple Conditions
 ```python
 # ✅ Good - Filter on FortiGate
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter="status==enable&action==accept"
 )
 
 # ❌ Bad - Multiple API calls
-enabled = fgt.api.cmdb.firewall.policy.list(filter="status==enable")
+enabled = fgt.api.cmdb.firewall.policy.get(filter=["status==enable"])
 result = [p for p in enabled if p.get('action') == 'accept']
 ```
 
 ### 3. Test Filters First
 ```python
 # Test your filter with a small dataset first
-test_result = fgt.api.cmdb.firewall.address.list(
+test_result = fgt.api.cmdb.firewall.address.get(
     filter="subnet=@10.0",
     count=5
 )
 print(f"Found {len(test_result)} addresses")
 
 # If results look good, get all
-all_results = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.0")
+all_results = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10.0"])
 ```
 
 ### 4. Handle Empty Results
 ```python
 # Filters may return empty list
-addresses = fgt.api.cmdb.firewall.address.list(filter="name==nonexistent")
+addresses = fgt.api.cmdb.firewall.address.get(filter=["name==nonexistent"])
 if not addresses:
     print("No addresses found matching filter")
 ```
@@ -336,10 +336,10 @@ if not addresses:
 ### 5. Case Sensitivity
 ```python
 # Operators are case-sensitive
-addresses = fgt.api.cmdb.firewall.address.list(filter="name==TEST")  # Matches "TEST", "test", "Test"
+addresses = fgt.api.cmdb.firewall.address.get(filter=["name==TEST"])  # Matches "TEST", "test", "Test"
 
 # Pattern matching is case-insensitive for ==
-policies = fgt.api.cmdb.firewall.policy.list(filter="action==ACCEPT")  # Matches "accept"
+policies = fgt.api.cmdb.firewall.policy.get(filter=["action==ACCEPT"])  # Matches "accept"
 ```
 
 ## Filter Operator Reference Table
@@ -362,36 +362,36 @@ policies = fgt.api.cmdb.firewall.policy.list(filter="action==ACCEPT")  # Matches
 
 ```python
 # Find all accept policies
-accept_policies = fgt.api.cmdb.firewall.policy.list(filter="action==accept")
+accept_policies = fgt.api.cmdb.firewall.policy.get(filter=["action==accept"])
 
 # Find disabled policies
-disabled = fgt.api.cmdb.firewall.policy.list(filter="status==disable")
+disabled = fgt.api.cmdb.firewall.policy.get(filter=["status==disable"])
 
 # Find policies without logging
-no_log = fgt.api.cmdb.firewall.policy.list(filter="logtraffic==disable")
+no_log = fgt.api.cmdb.firewall.policy.get(filter=["logtraffic==disable"])
 ```
 
 ### Network Planning
 
 ```python
 # Find all RFC1918 addresses
-rfc1918_10 = fgt.api.cmdb.firewall.address.list(filter="subnet=@10.")
-rfc1918_172 = fgt.api.cmdb.firewall.address.list(filter="subnet=@172.")
-rfc1918_192 = fgt.api.cmdb.firewall.address.list(filter="subnet=@192.168")
+rfc1918_10 = fgt.api.cmdb.firewall.address.get(filter=["subnet=@10."])
+rfc1918_172 = fgt.api.cmdb.firewall.address.get(filter=["subnet=@172."])
+rfc1918_192 = fgt.api.cmdb.firewall.address.get(filter=["subnet=@192.168"])
 
 # Find VLAN interfaces
-vlans = fgt.api.cmdb.system.interface.list(filter="type==vlan")
+vlans = fgt.api.cmdb.system.interface.get(filter=["type==vlan"])
 
 # Find default routes
-defaults = fgt.api.cmdb.router.static.list(filter="dst==0.0.0.0/0")
+defaults = fgt.api.cmdb.router.static.get(filter=["dst==0.0.0.0/0"])
 ```
 
 ### Cleanup Operations
 
 ```python
 # Find test/temporary objects
-test_addresses = fgt.api.cmdb.firewall.address.list(filter="name=@test")
-temp_policies = fgt.api.cmdb.firewall.policy.list(filter="name=@temp")
+test_addresses = fgt.api.cmdb.firewall.address.get(filter=["name=@test"])
+temp_policies = fgt.api.cmdb.firewall.policy.get(filter=["name=@temp"])
 
 # Find unused objects (requires additional logic)
 # Note: Finding truly unused objects requires checking references

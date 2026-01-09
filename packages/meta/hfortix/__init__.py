@@ -34,17 +34,20 @@ from hfortix_core import (
     ServiceUnavailableError,
     TimeoutError,
     VDOMError,
+    fmt,
 )
 
 # Re-export from fortios
 from hfortix_fortios import FortiOS
 
-__version__ = "0.5.36"
+__version__ = "0.5.45"
 __author__ = "Herman W. Jacobsen"
 
 __all__ = [
     # FortiOS
     "FortiOS",
+    # Formatting utilities
+    "fmt",
     # Exceptions
     "FortinetError",
     "APIError",

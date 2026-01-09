@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.45] - 2026-01-09
+
+### Fixed
+- **Improved type annotations for `fmt.to_dict()` function**
+  - Changed return type from `dict[str, Any] | dict[int, Any]` to `dict`
+  - Removes false Pylance errors when using `.get()` with string keys
+  - Function behavior unchanged - still supports polymorphic dict conversions
+  - Better reflects the dynamic nature of the function's return type
+
+## [0.5.44] - 2026-01-09
+
+### Added
+- **Moved formatting utilities to core package as `fmt` module**
+  - Renamed `hfortix_fortios.formatting` to `hfortix_core.fmt` for better accessibility
+  - Simpler import: `from hfortix_core import fmt` instead of `from hfortix_fortios.formatting import ...`
+  - Shorter module name: `fmt` instead of `formatting` (follows Python conventions)
+  - All 13 formatting functions now available in core package
+  - Usage: `fmt.to_list("80 443")`, `fmt.to_json(data)`, etc.
+  - Original `formatting` module in hfortix_fortios still available for backward compatibility
+
+## [0.5.43] - 2026-01-09
+
+### Added
+- **Enhanced formatting utilities module with 13 comprehensive functions**
+  - Added `to_list()` with auto-split for space-delimited strings like `tcp_portrange`
+    - Handles `"80 443 8080"` → `['80', '443', '8080']`
+    - Preserves range notation: `"7000-7009"` → `['7000-7009']`
+    - Supports custom delimiters: `to_list("a,b,c", delimiter=',')`
+  - Added `to_dictlist()` for columnar to row format transformation
+    - Converts `{'name': ['p1', 'p2'], 'action': ['accept', 'deny']}`
+    - To `[{'name': 'p1', 'action': 'accept'}, {'name': 'p2', 'action': 'deny'}]`
+  - Added `to_listdict()` for row to columnar format transformation
+    - Inverse of `to_dictlist()` for data reshaping
+  - Added `to_table()` for ASCII table formatting
+  - Added `to_yaml()` for YAML-like output (no external dependencies)
+  - Added `to_xml()` for simple XML formatting (no external dependencies)
+  - Added `to_key_value()` for config file format output
+  - Added `to_markdown_table()` for Markdown table generation
+  - All functions are zero-dependency and handle edge cases gracefully
+  - Perfect for handling FortiOS `tcp_portrange`, `udp_portrange` fields
+  - Module location: `hfortix_fortios.formatting`
+
+### Fixed
+- **Fixed `tcp_portrange` display in test_autocomplete.py**
+  - Removed incorrect iteration over `tcp_portrange` field
+  - Field is a string (e.g., `"80 443"` or `"7000-7009"`), not a list
+  - Now displays correctly without attempting to loop over characters
+  - Use `to_list(service.tcp_portrange)` to split into individual ports
+
 ## [0.5.42] - 2026-01-09
 
 ### Fixed

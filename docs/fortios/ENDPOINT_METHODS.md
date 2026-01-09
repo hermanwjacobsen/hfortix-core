@@ -4,12 +4,12 @@ This document lists all available methods for every endpoint in the hfortix libr
 
 ## Summary
 
-- **Total Endpoints**: 857
+- **Total Endpoints**: 1,348
   - **CMDB**: 561 endpoints
-  - **LOG**: 19 endpoints
-  - **MONITOR**: 274 endpoints
-  - **SERVICE**: 3 endpoints
-- **Endpoints with `.exists()`**: 288
+  - **LOG**: 286 endpoints
+  - **MONITOR**: 490 endpoints
+  - **SERVICE**: 11 endpoints
+- **Endpoints with `.exists()`**: 561 (all CMDB endpoints)
 
 ## Available Methods
 

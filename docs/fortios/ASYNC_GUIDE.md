@@ -6,7 +6,7 @@ HFortix provides full async/await support for all FortiOS API operations, allowi
 
 - **Single Class**: Same `FortiOS` class works in both sync and async modes
 - **Mode Parameter**: Simply set `mode="async"` to enable async operations
-- **Full Coverage**: All 750+ API methods support async
+- **Full Coverage**: All 1,348 API endpoints support async
 - **Helper Methods**: All `.exists()` and other helpers work transparently
 - **Type Safety**: Full type hints with IDE autocomplete support
 - **Zero Breaking Changes**: Existing sync code continues to work unchanged
@@ -152,7 +152,7 @@ async def create_addresses(names_and_ips):
     async with FortiOS(..., mode="async") as fgt:
         tasks = []
         for name, ip in names_and_ips:
-            task = fgt.api.cmdb.firewall.address.create(
+            task = fgt.api.cmdb.firewall.address.post(
                 name=name,
                 subnet=f"{ip}/32"
             )
@@ -189,14 +189,14 @@ async def update_or_create(name, config):
 
         if exists:
             # Update existing
-            result = await fgt.api.cmdb.firewall.address.update(
+            result = await fgt.api.cmdb.firewall.address.put(
                 name=name,
                 **config
             )
             print(f"Updated {name}")
         else:
             # Create new
-            result = await fgt.api.cmdb.firewall.address.create(
+            result = await fgt.api.cmdb.firewall.address.post(
                 name=name,
                 **config
             )
@@ -212,31 +212,31 @@ asyncio.run(update_or_create("web-server", {"subnet": "10.0.1.50/32"}))
 Handle errors in async operations:
 
 ```python
-from hfortix.FortiOS.exceptions_forti import (
+from hfortix_core import (
     ResourceNotFoundError,
-    ResourceAlreadyExistsError,
-    FortiOSAPIError
+    DuplicateEntryError,
+    APIError
 )
 
 async def safe_create(name, subnet):
     async with FortiOS(..., mode="async") as fgt:
         try:
-            result = await fgt.api.cmdb.firewall.address.create(
+            result = await fgt.api.cmdb.firewall.address.post(
                 name=name,
                 subnet=subnet
             )
             print(f"✓ Created {name}")
             return result
 
-        except ResourceAlreadyExistsError:
+        except DuplicateEntryError:
             print(f"⚠ {name} already exists")
             # Update instead
-            return await fgt.api.cmdb.firewall.address.update(
+            return await fgt.api.cmdb.firewall.address.put(
                 name=name,
                 subnet=subnet
             )
 
-        except FortiOSAPIError as e:
+        except APIError as e:
             print(f"✗ Failed: {e}")
             return None
 
@@ -283,7 +283,7 @@ def manage_addresses():
 
     # Create address
     if not fgt.api.cmdb.firewall.address.exists("server1"):
-        fgt.api.cmdb.firewall.address.create(
+        fgt.api.cmdb.firewall.address.post(
             name="server1",
             subnet="10.0.1.10/32"
         )
@@ -306,7 +306,7 @@ async def manage_addresses():
 
         # Create address (add await)
         if not await fgt.api.cmdb.firewall.address.exists("server1"):
-            await fgt.api.cmdb.firewall.address.create(
+            await fgt.api.cmdb.firewall.address.post(
                 name="server1",
                 subnet="10.0.1.10/32"
             )
@@ -385,7 +385,7 @@ async def rate_limited_operations(items, max_concurrent=5):
 
         async def limited_create(name, subnet):
             async with semaphore:
-                return await fgt.api.cmdb.firewall.address.create(
+                return await fgt.api.cmdb.firewall.address.post(
                     name=name,
                     subnet=subnet
                 )
@@ -449,10 +449,9 @@ asyncio.run(manage_multiple_fortigates(fortigates))
 Every API method works in async mode:
 
 **CRUD Methods:**
-- `list()` → `await list()`
 - `get()` → `await get()`
-- `create()` → `await create()`
-- `update()` → `await update()`
+- `post()` → `await post()`
+- `put()` → `await put()`
 - `delete()` → `await delete()`
 
 **Helper Methods:**
@@ -462,28 +461,28 @@ Every API method works in async mode:
 
 ```python
 async with FortiOS(..., mode="async") as fgt:
-    # List
+    # Get all items
     items = await fgt.api.cmdb.firewall.address.get()
 
-    # Get
-    item = await fgt.api.cmdb.firewall.address.get("web-server")
+    # Get specific item
+    item = await fgt.api.cmdb.firewall.address.get(name="web-server")
 
-    # Create
-    result = await fgt.api.cmdb.firewall.address.create(
+    # Create new item
+    result = await fgt.api.cmdb.firewall.address.post(
         name="new-server",
         subnet="10.0.1.100/32"
     )
 
-    # Update
-    result = await fgt.api.cmdb.firewall.address.update(
+    # Update existing item
+    result = await fgt.api.cmdb.firewall.address.put(
         name="web-server",
         subnet="10.0.1.50/32"
     )
 
-    # Delete
-    result = await fgt.api.cmdb.firewall.address.delete("old-server")
+    # Delete item
+    result = await fgt.api.cmdb.firewall.address.delete(name="old-server")
 
-    # Exists
+    # Check if exists
     exists = await fgt.api.cmdb.firewall.address.exists("web-server")
 ```
 

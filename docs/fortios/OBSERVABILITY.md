@@ -188,7 +188,7 @@ def create_address():
     # - FortiGate API call (hfortix)
     # - Database queries
     # - External service calls
-    result = fgt.api.cmdb.firewall.address.create(
+    result = fgt.api.cmdb.firewall.address.post(
         name="test-host",
         subnet="10.0.0.1/32"
     )
@@ -808,7 +808,7 @@ def create_firewall_address(name: str, subnet: str, username: str, ticket: str):
     })
     
     # Execute operation - automatically logged with full context
-    result = fgt.api.cmdb.firewall.address.create(
+    result = fgt.api.cmdb.firewall.address.post(
         name=name,
         subnet=subnet,
         comment=f"Created via ticket {ticket}"

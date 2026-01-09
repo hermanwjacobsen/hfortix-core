@@ -51,7 +51,7 @@ fgt = FortiOS(
 
 ```python
 # Make some API calls
-fgt.cmdb.firewall.address.get()
+fgt.api.cmdb.firewall.address.get()
 
 # Inspect last request
 info = fgt.last_request
@@ -185,7 +185,7 @@ Get detailed information about the most recent API call:
 
 ```python
 # Make API call
-result = fgt.cmdb.firewall.address.get()
+result = fgt.api.cmdb.firewall.address.get()
 
 # Inspect last request
 info = fgt.last_request
@@ -222,7 +222,7 @@ Status Code: 200
 requests = []
 
 for i in range(10):
-    fgt.cmdb.firewall.address.get(filter=f"name=@NET_{i}")
+    fgt.api.cmdb.firewall.address.get(filter=f"name=@NET_{i}")
     requests.append(fgt.last_request.copy())
 
 # Analyze performance
@@ -249,8 +249,8 @@ fgt = FortiOS(host="192.168.1.99", token="your-token")
 # Monitor entire session
 with DebugSession(fgt) as session:
     # Make API calls
-    fgt.cmdb.firewall.address.get()
-    fgt.cmdb.firewall.policy.get()
+    fgt.api.cmdb.firewall.address.get()
+    fgt.api.cmdb.firewall.policy.get()
     
     # Auto-prints summary on exit
 ```
@@ -284,7 +284,7 @@ Capture full API responses for analysis:
 
 ```python
 with DebugSession(fgt, capture_response_data=True) as session:
-    result = fgt.cmdb.firewall.address.get()
+    result = fgt.api.cmdb.firewall.address.get()
     
     # Don't auto-print
     session.print_on_exit = False
@@ -298,8 +298,8 @@ session.print_requests(verbose=True)
 ```python
 # Don't auto-print summary
 with DebugSession(fgt, print_on_exit=False) as session:
-    fgt.cmdb.firewall.address.get()
-    fgt.cmdb.firewall.policy.get()
+    fgt.api.cmdb.firewall.address.get()
+    fgt.api.cmdb.firewall.policy.get()
     
     # Print custom summary
     summary = session.get_summary()
@@ -316,7 +316,7 @@ with DebugSession(fgt, print_on_exit=False) as session:
 with DebugSession(fgt) as session:
     # Run operations
     for i in range(100):
-        fgt.cmdb.firewall.address.get(filter=f"name=@NET_{i}")
+        fgt.api.cmdb.firewall.address.get(filter=f"name=@NET_{i}")
     
     summary = session.get_summary()
     
@@ -420,7 +420,7 @@ Time individual operations:
 from hfortix_fortios import debug_timer
 
 with debug_timer("Get firewall addresses") as timing:
-    result = fgt.cmdb.firewall.address.get()
+    result = fgt.api.cmdb.firewall.address.get()
 
 print(f"Took {timing['duration_ms']:.1f}ms")
 ```
@@ -438,7 +438,7 @@ from hfortix_fortios import debug_timer, DebugSession
 with DebugSession(fgt) as session:
     with debug_timer("Create 100 addresses"):
         for i in range(100):
-            fgt.cmdb.firewall.address.create(data={
+            fgt.api.cmdb.firewall.address.post(data={
                 "name": f"NET_{i}",
                 "subnet": f"10.0.{i}.0/24",
             })
@@ -465,7 +465,7 @@ for config in configs:
     
     with debug_timer(f"Config: {config['label']}"):
         for i in range(50):
-            fgt.cmdb.firewall.address.get()
+            fgt.api.cmdb.firewall.address.get()
 ```
 
 ## Common Debugging Scenarios
@@ -477,7 +477,7 @@ for config in configs:
 fgt = FortiOS(host="192.168.1.99", token="your-token", debug=True)
 
 # Monitor request performance
-result = fgt.cmdb.firewall.address.get()
+result = fgt.api.cmdb.firewall.address.get()
 info = fgt.last_request
 
 if info['response_time_ms'] > 1000:
@@ -503,7 +503,7 @@ fgt = FortiOS(
 
 # Make many concurrent requests
 for i in range(20):
-    fgt.cmdb.firewall.address.get()
+    fgt.api.cmdb.firewall.address.get()
 
 # Check for exhaustion
 print_debug_info(fgt)
@@ -530,7 +530,7 @@ from hfortix_core import APIError
 fgt = FortiOS(host="192.168.1.99", token="your-token", debug=True)
 
 try:
-    fgt.cmdb.firewall.address.create(data={"invalid": "data"})
+    fgt.api.cmdb.firewall.address.post(data={"invalid": "data"})
 except APIError as e:
     print(f"API Error: {e}")
     
@@ -550,14 +550,14 @@ fgt = FortiOS(host="192.168.1.99", token="your-token")
 
 with DebugSession(fgt) as session:
     for i in range(100):
-        fgt.cmdb.firewall.address.get()
+        fgt.api.cmdb.firewall.address.get()
     
     baseline = session.get_summary()
 
 # After code changes, compare
 with DebugSession(fgt) as session:
     for i in range(100):
-        fgt.cmdb.firewall.address.get()
+        fgt.api.cmdb.firewall.address.get()
     
     current = session.get_summary()
 
@@ -586,7 +586,7 @@ rate_limited = 0
 with DebugSession(fgt) as session:
     for i in range(100):
         try:
-            fgt.cmdb.firewall.address.get()
+            fgt.api.cmdb.firewall.address.get()
         except RateLimitError:
             rate_limited += 1
 
@@ -688,7 +688,7 @@ configure_logging(
 5. **Inspect Failed Requests**
    ```python
    try:
-       fgt.cmdb.firewall.address.create(data=...)
+       fgt.api.cmdb.firewall.address.post(data=...)
    except APIError:
        print(format_request_info(fgt.last_request))
    ```
