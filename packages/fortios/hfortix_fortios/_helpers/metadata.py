@@ -115,7 +115,8 @@ def get_field_options(
     # Construct the constant name from field name
     # Replace all non-alphanumeric characters with underscores for valid Python identifiers
     import re
-    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
+
+    safe_name = re.sub(r"[^a-zA-Z0-9]", "_", field_name)
     constant_name = f"VALID_BODY_{safe_name.upper()}"
     return globals_dict.get(constant_name)
 
@@ -271,7 +272,10 @@ def validate_field_value(
     # Get field metadata
     field_type = get_field_type(field_types, field_name)
     if field_type is None:
-        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+        return (
+            False,
+            f"Unknown field: '{field_name}' (not defined in schema)",
+        )
 
     # Get field description for better error context
     description = get_field_description(field_descriptions, field_name)
@@ -282,7 +286,9 @@ def validate_field_value(
         error_msg = f"Invalid value for '{field_name}': {repr(value)}"
         if description:
             error_msg += f"\n  → Description: {description}"
-        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        error_msg += (
+            f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        )
         if options:
             error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
         return (False, error_msg)

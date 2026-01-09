@@ -1,9 +1,6 @@
 [flake8]
-max-line-length = 79
+max-line-length = 120
 extend-ignore = E203, W503, B009, B036
-# Exclude auto-generated API code from line-length checks (E501)
-per-file-ignores =
-    packages/fortios/hfortix_fortios/api/v2/*:E501
 exclude =
     .git,
     __pycache__,
@@ -13,4 +10,6 @@ exclude =
     venv,
     *.egg-info,
     .dev/,
-    docs/
+    docs/,
+    # Auto-generated code - don't lint
+    packages/fortios/hfortix_fortios/api/

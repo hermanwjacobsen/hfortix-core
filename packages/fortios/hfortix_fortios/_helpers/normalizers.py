@@ -30,7 +30,7 @@ def normalize_to_name_list(
             - Dict: {'name': 'port1'} → [{'name': 'port1'}]
             - List of dicts: [{'name': 'port1'}, {'name': 'port2'}] → unchanged
             - None: []
-        
+
         Note: Leading and trailing whitespace is automatically stripped from strings.
 
     Returns:
@@ -98,12 +98,12 @@ def normalize_table_field(
 ) -> List[Dict[str, Any]]:
     """
     Normalize table fields with schema-aware validation.
-    
+
     This is the universal normalizer for all FortiOS table fields. It supports:
     - Any mkey (name, interface-name, id, value, etc.)
     - Single-field objects (flexible: string, list, or dict)
     - Multi-field objects (strict: dict only with validation)
-    
+
     Args:
         value: Input value in any supported format
         mkey: The primary key field name from schema (default: "name")
@@ -112,19 +112,19 @@ def normalize_table_field(
         field_name: Field name for error messages
         example: Optional example string from schema to show in error messages.
                 If None, will auto-generate from required_fields.
-    
+
     Returns:
         List of dicts in FortiOS API format
-    
+
     Raises:
         ValueError: If multi-field object receives string/list of strings
     """
     if value is None:
         return []
-    
+
     # Determine if this is a multi-field object (requires dict format only)
     dict_only_mode = required_fields and len(required_fields) > 1
-    
+
     # Generate example if not provided
     if not example and required_fields:
         # Build example from required fields
@@ -143,17 +143,17 @@ def normalize_table_field(
                 # Generic example
                 example_parts.append(f"'{field}': '...'")
         example = f"[{{{', '.join(example_parts)}}}]"
-    
+
     # Handle list input
     if isinstance(value, list):
         if not value:
             return []
-        
+
         # Check first item to determine type
         if isinstance(value[0], dict):
             # Already in dict format - pass through with filtering
             return [item for item in value if isinstance(item, dict) and item]
-        
+
         # List of strings/primitives
         if dict_only_mode:
             req_fields = required_fields or []
@@ -163,14 +163,14 @@ def normalize_table_field(
                 f"Example: {field_name}={example or '[{...}]'}"
             )
             raise ValueError(error_msg)
-        
+
         # Single required field - convert strings to dicts, strip whitespace
         return [{mkey: str(item).strip()} for item in value]
-    
+
     # Single dict - wrap in list
     if isinstance(value, dict):
         return [value] if value else []
-    
+
     # Single string/primitive
     if dict_only_mode:
         req_fields = required_fields or []
@@ -180,6 +180,6 @@ def normalize_table_field(
             f"Example: {field_name}={example or '[{...}]'}"
         )
         raise ValueError(error_msg)
-    
+
     # Single required field - convert to dict, strip whitespace
     return [{mkey: str(value).strip()}]

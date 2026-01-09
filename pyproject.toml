@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.5.45"
+version = "0.5.47"
 description = "Meta-package for HFortix - Python SDK for Fortinet Products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -71,6 +71,7 @@ extend-exclude = '''
   | dist
   | X
   | Tests
+  | packages/fortios/hfortix_fortios/api
 )/
 '''
 
@@ -198,7 +199,7 @@ skips = ["B101", "B104", "B106", "B110", "B601"]
 profile = "black"
 line_length = 79
 skip_gitignore = true
-extend_skip = ["X", "Tests", ".venv", "venv"]
+extend_skip = ["X", "Tests", ".venv", "venv", "packages/fortios/hfortix_fortios/api"]
 
 [tool.setuptools.packages.find]
 exclude = ["*"]

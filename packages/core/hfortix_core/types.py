@@ -47,18 +47,18 @@ class APIResponse(TypedDict, total=False):
 class RawAPIResponse(TypedDict):
     """
     Raw FortiOS API response envelope returned when raw_json=True.
-    
+
     This is the complete response from the FortiOS API before any unwrapping.
     Use this for type checking raw_json=True calls.
-    
+
     All fields are marked as required to provide autocomplete without warnings.
     The primary purpose is to catch typos - accessing undefined fields will
     show an error.
-    
+
     Note: Not all fields are present in every response. GET responses include
     results, serial, version, build. Mutation responses include mkey, revision.
     Use .get() for fields that may not be present.
-    
+
     Example GET response:
         {
             "http_method": "GET",
@@ -71,7 +71,7 @@ class RawAPIResponse(TypedDict):
             "version": "v7.4.8",
             "build": 3636
         }
-    
+
     Example POST/PUT/DELETE response:
         {
             "http_method": "POST",
@@ -82,13 +82,13 @@ class RawAPIResponse(TypedDict):
             "vdom": "root"
         }
     """
-    
+
     # Common to all responses
     http_method: str
     http_status: int
     status: str
     vdom: str
-    
+
     # GET responses
     results: Any  # list[dict] for collection, dict for single item
     path: str
@@ -96,7 +96,7 @@ class RawAPIResponse(TypedDict):
     serial: str
     version: str
     build: int
-    
+
     # Mutation responses (POST/PUT/DELETE)
     mkey: str  # Key of created/modified/deleted object
     revision: str
@@ -107,11 +107,11 @@ class RawAPIResponse(TypedDict):
 class MutationResponse(TypedDict):
     """
     Response structure from POST/PUT/DELETE operations.
-    
+
     This TypedDict validates that only known API response fields are accessed.
     These fields are always present in FortiOS API mutation responses.
     """
-    
+
     http_status: int
     status: str
 
@@ -119,10 +119,10 @@ class MutationResponse(TypedDict):
 class MutationResponseFull(TypedDict, total=False):
     """
     Extended response structure from POST/PUT/DELETE operations.
-    
+
     Includes optional fields that may be present in some responses.
     """
-    
+
     http_status: int
     status: str
     vdom: str
