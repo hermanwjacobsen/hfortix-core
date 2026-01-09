@@ -1,8 +1,10 @@
-# HFortix - Quick Reference (v0.5.6-beta)
+# HFortix - Quick Reference (v0.5.32-beta)
 
 ⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
 
-✨ **New in v0.5.6**: Enhanced query parameters and runtime schema introspection for all CMDB endpoints!
+✨ **New in v0.5.32**: Enhanced object mode with nested table field wrapping and single object returns when querying by mkey!
+
+✨ **New in v0.5.11**: Auto-normalization for list fields - `srcintf="port1"` automatically converts to `[{'name': 'port1'}]`!
 
 ## Installation
 

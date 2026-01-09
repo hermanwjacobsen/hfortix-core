@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class GlobalPayload(TypedDict, total=False):
     """
     Type hints for wireless_controller/global_ payload fields.
@@ -13,41 +17,43 @@ class GlobalPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Name of the wireless controller.
-    location: NotRequired[str]  # Description of the location of the wireless controller.
-    acd_process_count: NotRequired[int]  # Configure the number cw_acd daemons for multi-core CPU suppo
-    wpad_process_count: NotRequired[int]  # Wpad daemon process count for multi-core CPU support.
-    image_download: NotRequired[Literal["enable", "disable"]]  # Enable/disable WTP image download at join time.
-    rolling_wtp_upgrade: NotRequired[Literal["enable", "disable"]]  # Enable/disable rolling WTP upgrade (default = disable).
-    rolling_wtp_upgrade_threshold: NotRequired[str]  # Minimum signal level/threshold in dBm required for the manag
-    max_retransmit: NotRequired[int]  # Maximum number of tunnel packet retransmissions
-    control_message_offload: NotRequired[Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]]  # Configure CAPWAP control message data channel offload.
-    data_ethernet_II: NotRequired[Literal["enable", "disable"]]  # Configure the wireless controller to use Ethernet II or 802.
-    link_aggregation: NotRequired[Literal["enable", "disable"]]  # Enable/disable calculating the CAPWAP transmit hash to load
-    mesh_eth_type: NotRequired[int]  # Mesh Ethernet identifier included in backhaul packets
-    fiapp_eth_type: NotRequired[int]  # Ethernet type for Fortinet Inter-Access Point Protocol
-    discovery_mc_addr: NotRequired[str]  # Multicast IP address for AP discovery
-    discovery_mc_addr6: NotRequired[str]  # Multicast IPv6 address for AP discovery
-    max_clients: NotRequired[int]  # Maximum number of clients that can connect simultaneously
-    rogue_scan_mac_adjacency: NotRequired[int]  # Maximum numerical difference between an AP's Ethernet and wi
-    ipsec_base_ip: NotRequired[str]  # Base IP address for IPsec VPN tunnels between the access poi
-    wtp_share: NotRequired[Literal["enable", "disable"]]  # Enable/disable sharing of WTPs between VDOMs.
-    tunnel_mode: NotRequired[Literal["compatible", "strict"]]  # Compatible/strict tunnel mode.
-    nac_interval: NotRequired[int]  # Interval in seconds between two WiFi network access control
-    ap_log_server: NotRequired[Literal["enable", "disable"]]  # Enable/disable configuring FortiGate to redirect wireless ev
-    ap_log_server_ip: NotRequired[str]  # IP address that FortiGate or FortiAPs send log messages to.
-    ap_log_server_port: NotRequired[int]  # Port that FortiGate or FortiAPs send log messages to.
-    max_sta_offline: NotRequired[int]  # Maximum number of station offline stored on the controller
-    max_sta_offline_ip2mac: NotRequired[int]  # Maximum number of station offline ip2mac stored on the contr
-    max_sta_cap: NotRequired[int]  # Maximum number of station cap stored on the controller
-    max_sta_cap_wtp: NotRequired[int]  # Maximum number of station cap's wtp info stored on the contr
-    max_rogue_ap: NotRequired[int]  # Maximum number of rogue APs stored on the controller
-    max_rogue_ap_wtp: NotRequired[int]  # Maximum number of rogue AP's wtp info stored on the controll
-    max_rogue_sta: NotRequired[int]  # Maximum number of rogue stations stored on the controller
-    max_wids_entry: NotRequired[int]  # Maximum number of wids entries stored on the controller
-    max_ble_device: NotRequired[int]  # Maximum number of BLE devices stored on the controller
+    name: str  # Name of the wireless controller. | MaxLen: 35
+    location: str  # Description of the location of the wireless contro | MaxLen: 35
+    acd_process_count: int  # Configure the number cw_acd daemons for multi-core | Default: 0 | Min: 0 | Max: 255
+    wpad_process_count: int  # Wpad daemon process count for multi-core CPU suppo | Default: 0 | Min: 0 | Max: 255
+    image_download: Literal["enable", "disable"]  # Enable/disable WTP image download at join time. | Default: enable
+    rolling_wtp_upgrade: Literal["enable", "disable"]  # Enable/disable rolling WTP upgrade | Default: disable
+    rolling_wtp_upgrade_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -80 | MaxLen: 7
+    max_retransmit: int  # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    data_ethernet_II: Literal["enable", "disable"]  # Configure the wireless controller to use Ethernet | Default: enable
+    link_aggregation: Literal["enable", "disable"]  # Enable/disable calculating the CAPWAP transmit has | Default: disable
+    mesh_eth_type: int  # Mesh Ethernet identifier included in backhaul pack | Default: 8755 | Min: 0 | Max: 65535
+    fiapp_eth_type: int  # Ethernet type for Fortinet Inter-Access Point Prot | Default: 5252 | Min: 0 | Max: 65535
+    discovery_mc_addr: str  # Multicast IP address for AP discovery | Default: 224.0.1.140
+    discovery_mc_addr6: str  # Multicast IPv6 address for AP discovery | Default: ff02::18c
+    max_clients: int  # Maximum number of clients that can connect simulta | Default: 0 | Min: 0 | Max: 4294967295
+    rogue_scan_mac_adjacency: int  # Maximum numerical difference between an AP's Ether | Default: 7 | Min: 0 | Max: 31
+    ipsec_base_ip: str  # Base IP address for IPsec VPN tunnels between the | Default: 169.254.0.1
+    wtp_share: Literal["enable", "disable"]  # Enable/disable sharing of WTPs between VDOMs. | Default: disable
+    tunnel_mode: Literal["compatible", "strict"]  # Compatible/strict tunnel mode. | Default: compatible
+    nac_interval: int  # Interval in seconds between two WiFi network acces | Default: 120 | Min: 10 | Max: 600
+    ap_log_server: Literal["enable", "disable"]  # Enable/disable configuring FortiGate to redirect w | Default: disable
+    ap_log_server_ip: str  # IP address that FortiGate or FortiAPs send log mes | Default: 0.0.0.0
+    ap_log_server_port: int  # Port that FortiGate or FortiAPs send log messages | Default: 0 | Min: 0 | Max: 65535
+    max_sta_offline: int  # Maximum number of station offline stored on the co | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_offline_ip2mac: int  # Maximum number of station offline ip2mac stored on | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_cap: int  # Maximum number of station cap stored on the contro | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_cap_wtp: int  # Maximum number of station cap's wtp info stored on | Default: 8 | Min: 1 | Max: 8
+    max_rogue_ap: int  # Maximum number of rogue APs stored on the controll | Default: 0 | Min: 0 | Max: 4294967295
+    max_rogue_ap_wtp: int  # Maximum number of rogue AP's wtp info stored on th | Default: 16 | Min: 1 | Max: 16
+    max_rogue_sta: int  # Maximum number of rogue stations stored on the con | Default: 0 | Min: 0 | Max: 4294967295
+    max_wids_entry: int  # Maximum number of wids entries stored on the contr | Default: 0 | Min: 0 | Max: 4294967295
+    max_ble_device: int  # Maximum number of BLE devices stored on the contro | Default: 0 | Min: 0 | Max: 4294967295
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -57,39 +63,39 @@ class GlobalResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    location: str
-    acd_process_count: int
-    wpad_process_count: int
-    image_download: Literal["enable", "disable"]
-    rolling_wtp_upgrade: Literal["enable", "disable"]
-    rolling_wtp_upgrade_threshold: str
-    max_retransmit: int
-    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]
-    data_ethernet_II: Literal["enable", "disable"]
-    link_aggregation: Literal["enable", "disable"]
-    mesh_eth_type: int
-    fiapp_eth_type: int
-    discovery_mc_addr: str
-    discovery_mc_addr6: str
-    max_clients: int
-    rogue_scan_mac_adjacency: int
-    ipsec_base_ip: str
-    wtp_share: Literal["enable", "disable"]
-    tunnel_mode: Literal["compatible", "strict"]
-    nac_interval: int
-    ap_log_server: Literal["enable", "disable"]
-    ap_log_server_ip: str
-    ap_log_server_port: int
-    max_sta_offline: int
-    max_sta_offline_ip2mac: int
-    max_sta_cap: int
-    max_sta_cap_wtp: int
-    max_rogue_ap: int
-    max_rogue_ap_wtp: int
-    max_rogue_sta: int
-    max_wids_entry: int
-    max_ble_device: int
+    name: str  # Name of the wireless controller. | MaxLen: 35
+    location: str  # Description of the location of the wireless contro | MaxLen: 35
+    acd_process_count: int  # Configure the number cw_acd daemons for multi-core | Default: 0 | Min: 0 | Max: 255
+    wpad_process_count: int  # Wpad daemon process count for multi-core CPU suppo | Default: 0 | Min: 0 | Max: 255
+    image_download: Literal["enable", "disable"]  # Enable/disable WTP image download at join time. | Default: enable
+    rolling_wtp_upgrade: Literal["enable", "disable"]  # Enable/disable rolling WTP upgrade | Default: disable
+    rolling_wtp_upgrade_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -80 | MaxLen: 7
+    max_retransmit: int  # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
+    control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]  # Configure CAPWAP control message data channel offl | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
+    data_ethernet_II: Literal["enable", "disable"]  # Configure the wireless controller to use Ethernet | Default: enable
+    link_aggregation: Literal["enable", "disable"]  # Enable/disable calculating the CAPWAP transmit has | Default: disable
+    mesh_eth_type: int  # Mesh Ethernet identifier included in backhaul pack | Default: 8755 | Min: 0 | Max: 65535
+    fiapp_eth_type: int  # Ethernet type for Fortinet Inter-Access Point Prot | Default: 5252 | Min: 0 | Max: 65535
+    discovery_mc_addr: str  # Multicast IP address for AP discovery | Default: 224.0.1.140
+    discovery_mc_addr6: str  # Multicast IPv6 address for AP discovery | Default: ff02::18c
+    max_clients: int  # Maximum number of clients that can connect simulta | Default: 0 | Min: 0 | Max: 4294967295
+    rogue_scan_mac_adjacency: int  # Maximum numerical difference between an AP's Ether | Default: 7 | Min: 0 | Max: 31
+    ipsec_base_ip: str  # Base IP address for IPsec VPN tunnels between the | Default: 169.254.0.1
+    wtp_share: Literal["enable", "disable"]  # Enable/disable sharing of WTPs between VDOMs. | Default: disable
+    tunnel_mode: Literal["compatible", "strict"]  # Compatible/strict tunnel mode. | Default: compatible
+    nac_interval: int  # Interval in seconds between two WiFi network acces | Default: 120 | Min: 10 | Max: 600
+    ap_log_server: Literal["enable", "disable"]  # Enable/disable configuring FortiGate to redirect w | Default: disable
+    ap_log_server_ip: str  # IP address that FortiGate or FortiAPs send log mes | Default: 0.0.0.0
+    ap_log_server_port: int  # Port that FortiGate or FortiAPs send log messages | Default: 0 | Min: 0 | Max: 65535
+    max_sta_offline: int  # Maximum number of station offline stored on the co | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_offline_ip2mac: int  # Maximum number of station offline ip2mac stored on | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_cap: int  # Maximum number of station cap stored on the contro | Default: 0 | Min: 0 | Max: 4294967295
+    max_sta_cap_wtp: int  # Maximum number of station cap's wtp info stored on | Default: 8 | Min: 1 | Max: 8
+    max_rogue_ap: int  # Maximum number of rogue APs stored on the controll | Default: 0 | Min: 0 | Max: 4294967295
+    max_rogue_ap_wtp: int  # Maximum number of rogue AP's wtp info stored on th | Default: 16 | Min: 1 | Max: 16
+    max_rogue_sta: int  # Maximum number of rogue stations stored on the con | Default: 0 | Min: 0 | Max: 4294967295
+    max_wids_entry: int  # Maximum number of wids entries stored on the contr | Default: 0 | Min: 0 | Max: 4294967295
+    max_ble_device: int  # Maximum number of BLE devices stored on the contro | Default: 0 | Min: 0 | Max: 4294967295
 
 
 @final
@@ -100,71 +106,71 @@ class GlobalObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name of the wireless controller.
+    # Name of the wireless controller. | MaxLen: 35
     name: str
-    # Description of the location of the wireless controller.
+    # Description of the location of the wireless controller. | MaxLen: 35
     location: str
-    # Configure the number cw_acd daemons for multi-core CPU support (default = 0).
+    # Configure the number cw_acd daemons for multi-core CPU suppo | Default: 0 | Min: 0 | Max: 255
     acd_process_count: int
-    # Wpad daemon process count for multi-core CPU support.
+    # Wpad daemon process count for multi-core CPU support. | Default: 0 | Min: 0 | Max: 255
     wpad_process_count: int
-    # Enable/disable WTP image download at join time.
+    # Enable/disable WTP image download at join time. | Default: enable
     image_download: Literal["enable", "disable"]
-    # Enable/disable rolling WTP upgrade (default = disable).
+    # Enable/disable rolling WTP upgrade (default = disable). | Default: disable
     rolling_wtp_upgrade: Literal["enable", "disable"]
-    # Minimum signal level/threshold in dBm required for the managed WTP to be include
+    # Minimum signal level/threshold in dBm required for the manag | Default: -80 | MaxLen: 7
     rolling_wtp_upgrade_threshold: str
-    # Maximum number of tunnel packet retransmissions (0 - 64, default = 3).
+    # Maximum number of tunnel packet retransmissions | Default: 3 | Min: 0 | Max: 64
     max_retransmit: int
-    # Configure CAPWAP control message data channel offload.
+    # Configure CAPWAP control message data channel offload. | Default: ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis
     control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"]
-    # Configure the wireless controller to use Ethernet II or 802.3 frames with 802.3
+    # Configure the wireless controller to use Ethernet II or 802. | Default: enable
     data_ethernet_II: Literal["enable", "disable"]
-    # Enable/disable calculating the CAPWAP transmit hash to load balance sessions to
+    # Enable/disable calculating the CAPWAP transmit hash to load | Default: disable
     link_aggregation: Literal["enable", "disable"]
-    # Mesh Ethernet identifier included in backhaul packets
+    # Mesh Ethernet identifier included in backhaul packets | Default: 8755 | Min: 0 | Max: 65535
     mesh_eth_type: int
-    # Ethernet type for Fortinet Inter-Access Point Protocol (IAPP), or IEEE 802.11f,
+    # Ethernet type for Fortinet Inter-Access Point Protocol | Default: 5252 | Min: 0 | Max: 65535
     fiapp_eth_type: int
-    # Multicast IP address for AP discovery (default = 244.0.1.140).
+    # Multicast IP address for AP discovery | Default: 224.0.1.140
     discovery_mc_addr: str
-    # Multicast IPv6 address for AP discovery (default = FF02::18C).
+    # Multicast IPv6 address for AP discovery | Default: ff02::18c
     discovery_mc_addr6: str
-    # Maximum number of clients that can connect simultaneously
+    # Maximum number of clients that can connect simultaneously | Default: 0 | Min: 0 | Max: 4294967295
     max_clients: int
-    # Maximum numerical difference between an AP's Ethernet and wireless MAC values to
+    # Maximum numerical difference between an AP's Ethernet and wi | Default: 7 | Min: 0 | Max: 31
     rogue_scan_mac_adjacency: int
-    # Base IP address for IPsec VPN tunnels between the access points and the wireless
+    # Base IP address for IPsec VPN tunnels between the access poi | Default: 169.254.0.1
     ipsec_base_ip: str
-    # Enable/disable sharing of WTPs between VDOMs.
+    # Enable/disable sharing of WTPs between VDOMs. | Default: disable
     wtp_share: Literal["enable", "disable"]
-    # Compatible/strict tunnel mode.
+    # Compatible/strict tunnel mode. | Default: compatible
     tunnel_mode: Literal["compatible", "strict"]
-    # Interval in seconds between two WiFi network access control (NAC) checks
+    # Interval in seconds between two WiFi network access control | Default: 120 | Min: 10 | Max: 600
     nac_interval: int
-    # Enable/disable configuring FortiGate to redirect wireless event log messages or
+    # Enable/disable configuring FortiGate to redirect wireless ev | Default: disable
     ap_log_server: Literal["enable", "disable"]
-    # IP address that FortiGate or FortiAPs send log messages to.
+    # IP address that FortiGate or FortiAPs send log messages to. | Default: 0.0.0.0
     ap_log_server_ip: str
-    # Port that FortiGate or FortiAPs send log messages to.
+    # Port that FortiGate or FortiAPs send log messages to. | Default: 0 | Min: 0 | Max: 65535
     ap_log_server_port: int
-    # Maximum number of station offline stored on the controller (default = 0).
+    # Maximum number of station offline stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_sta_offline: int
-    # Maximum number of station offline ip2mac stored on the controller (default = 0).
+    # Maximum number of station offline ip2mac stored on the contr | Default: 0 | Min: 0 | Max: 4294967295
     max_sta_offline_ip2mac: int
-    # Maximum number of station cap stored on the controller (default = 0).
+    # Maximum number of station cap stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_sta_cap: int
-    # Maximum number of station cap's wtp info stored on the controller
+    # Maximum number of station cap's wtp info stored on the contr | Default: 8 | Min: 1 | Max: 8
     max_sta_cap_wtp: int
-    # Maximum number of rogue APs stored on the controller (default = 0).
+    # Maximum number of rogue APs stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_rogue_ap: int
-    # Maximum number of rogue AP's wtp info stored on the controller
+    # Maximum number of rogue AP's wtp info stored on the controll | Default: 16 | Min: 1 | Max: 16
     max_rogue_ap_wtp: int
-    # Maximum number of rogue stations stored on the controller (default = 0).
+    # Maximum number of rogue stations stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_rogue_sta: int
-    # Maximum number of wids entries stored on the controller (default = 0).
+    # Maximum number of wids entries stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_wids_entry: int
-    # Maximum number of BLE devices stored on the controller (default = 0).
+    # Maximum number of BLE devices stored on the controller | Default: 0 | Min: 0 | Max: 4294967295
     max_ble_device: int
     
     # Common API response fields
@@ -190,8 +196,66 @@ class Global:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -206,11 +270,12 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -226,11 +291,11 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -245,10 +310,11 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -265,7 +331,7 @@ class Global:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -325,7 +391,7 @@ class Global:
         **kwargs: Any,
     ) -> GlobalResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -340,9 +406,9 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -407,7 +473,7 @@ class Global:
         max_ble_device: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -452,8 +518,9 @@ class Global:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -494,7 +561,49 @@ class Global:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -536,7 +645,7 @@ class Global:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -584,7 +693,7 @@ class Global:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -609,8 +718,754 @@ class Global:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class GlobalDictMode:
+    """Global endpoint for dict response mode (default for this client).
+    
+    By default returns GlobalResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return GlobalObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class GlobalObjectMode:
+    """Global endpoint for object response mode (default for this client).
+    
+    By default returns GlobalObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        name: str | None = ...,
+        location: str | None = ...,
+        acd_process_count: int | None = ...,
+        wpad_process_count: int | None = ...,
+        image_download: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
+        rolling_wtp_upgrade_threshold: str | None = ...,
+        max_retransmit: int | None = ...,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list[str] | None = ...,
+        data_ethernet_II: Literal["enable", "disable"] | None = ...,
+        link_aggregation: Literal["enable", "disable"] | None = ...,
+        mesh_eth_type: int | None = ...,
+        fiapp_eth_type: int | None = ...,
+        discovery_mc_addr: str | None = ...,
+        discovery_mc_addr6: str | None = ...,
+        max_clients: int | None = ...,
+        rogue_scan_mac_adjacency: int | None = ...,
+        ipsec_base_ip: str | None = ...,
+        wtp_share: Literal["enable", "disable"] | None = ...,
+        tunnel_mode: Literal["compatible", "strict"] | None = ...,
+        nac_interval: int | None = ...,
+        ap_log_server: Literal["enable", "disable"] | None = ...,
+        ap_log_server_ip: str | None = ...,
+        ap_log_server_port: int | None = ...,
+        max_sta_offline: int | None = ...,
+        max_sta_offline_ip2mac: int | None = ...,
+        max_sta_cap: int | None = ...,
+        max_sta_cap_wtp: int | None = ...,
+        max_rogue_ap: int | None = ...,
+        max_rogue_ap_wtp: int | None = ...,
+        max_rogue_sta: int | None = ...,
+        max_wids_entry: int | None = ...,
+        max_ble_device: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Global",
+    "GlobalDictMode",
+    "GlobalObjectMode",
     "GlobalPayload",
     "GlobalObject",
 ]

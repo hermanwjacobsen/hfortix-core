@@ -6,16 +6,58 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .download import Download
-    from .dump import Dump
-    from .update import Update
+    from .download import Download, DownloadDictMode, DownloadObjectMode
+    from .dump import Dump, DumpDictMode, DumpObjectMode
+    from .update import Update, UpdateDictMode, UpdateObjectMode
+
+__all__ = [
+    "Download",
+    "Dump",
+    "Update",
+    "ComlogDictMode",
+    "ComlogObjectMode",
+]
+
+class ComlogDictMode:
+    """COM_LOG API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    download: DownloadDictMode
+    dump: DumpDictMode
+    update: UpdateDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize com_log category with HTTP client."""
+        ...
 
 
-class ComLog:
-    """Type stub for ComLog."""
+class ComlogObjectMode:
+    """COM_LOG API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    download: DownloadObjectMode
+    dump: DumpObjectMode
+    update: UpdateObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize com_log category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Comlog:
+    """COM_LOG API category."""
+    
     download: Download
     dump: Dump
     update: Update
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize com_log category with HTTP client."""
+        ...

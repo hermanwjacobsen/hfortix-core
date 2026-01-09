@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class OspfPayload(TypedDict, total=False):
     """
     Type hints for router/ospf payload fields.
@@ -20,41 +24,177 @@ class OspfPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    abr_type: NotRequired[Literal["cisco", "ibm", "shortcut", "standard"]]  # Area border router type.
-    auto_cost_ref_bandwidth: NotRequired[int]  # Reference bandwidth in terms of megabits per second.
-    distance_external: NotRequired[int]  # Administrative external distance.
-    distance_inter_area: NotRequired[int]  # Administrative inter-area distance.
-    distance_intra_area: NotRequired[int]  # Administrative intra-area distance.
-    database_overflow: NotRequired[Literal["enable", "disable"]]  # Enable/disable database overflow.
-    database_overflow_max_lsas: NotRequired[int]  # Database overflow maximum LSAs.
-    database_overflow_time_to_recover: NotRequired[int]  # Database overflow time to recover (sec).
-    default_information_originate: NotRequired[Literal["enable", "always", "disable"]]  # Enable/disable generation of default route.
-    default_information_metric: NotRequired[int]  # Default information metric.
-    default_information_metric_type: NotRequired[Literal["1", "2"]]  # Default information metric type.
-    default_information_route_map: NotRequired[str]  # Default information route map.
-    default_metric: NotRequired[int]  # Default metric of redistribute routes.
-    distance: NotRequired[int]  # Distance of the route.
-    lsa_refresh_interval: NotRequired[int]  # The minimal OSPF LSA update time interval
-    rfc1583_compatible: NotRequired[Literal["enable", "disable"]]  # Enable/disable RFC1583 compatibility.
-    router_id: str  # Router ID.
-    spf_timers: NotRequired[str]  # SPF calculation frequency.
-    bfd: NotRequired[Literal["enable", "disable"]]  # Bidirectional Forwarding Detection (BFD).
-    log_neighbour_changes: NotRequired[Literal["enable", "disable"]]  # Log of OSPF neighbor changes.
-    distribute_list_in: NotRequired[str]  # Filter incoming routes.
-    distribute_route_map_in: NotRequired[str]  # Filter incoming external routes by route-map.
-    restart_mode: NotRequired[Literal["none", "lls", "graceful-restart"]]  # OSPF restart mode (graceful or LLS).
-    restart_period: NotRequired[int]  # Graceful restart period.
-    restart_on_topology_change: NotRequired[Literal["enable", "disable"]]  # Enable/disable continuing graceful restart upon topology cha
-    area: NotRequired[list[dict[str, Any]]]  # OSPF area configuration.
-    ospf_interface: NotRequired[list[dict[str, Any]]]  # OSPF interface configuration.
-    network: NotRequired[list[dict[str, Any]]]  # OSPF network configuration.
-    neighbor: NotRequired[list[dict[str, Any]]]  # OSPF neighbor configuration are used when OSPF runs on non-b
-    passive_interface: NotRequired[list[dict[str, Any]]]  # Passive interface configuration.
-    summary_address: NotRequired[list[dict[str, Any]]]  # IP address summary configuration.
-    distribute_list: NotRequired[list[dict[str, Any]]]  # Distribute list configuration.
-    redistribute: NotRequired[list[dict[str, Any]]]  # Redistribute configuration.
+    abr_type: Literal["cisco", "ibm", "shortcut", "standard"]  # Area border router type. | Default: standard
+    auto_cost_ref_bandwidth: int  # Reference bandwidth in terms of megabits per secon | Default: 1000 | Min: 1 | Max: 1000000
+    distance_external: int  # Administrative external distance. | Default: 110 | Min: 1 | Max: 255
+    distance_inter_area: int  # Administrative inter-area distance. | Default: 110 | Min: 1 | Max: 255
+    distance_intra_area: int  # Administrative intra-area distance. | Default: 110 | Min: 1 | Max: 255
+    database_overflow: Literal["enable", "disable"]  # Enable/disable database overflow. | Default: disable
+    database_overflow_max_lsas: int  # Database overflow maximum LSAs. | Default: 10000 | Min: 0 | Max: 4294967295
+    database_overflow_time_to_recover: int  # Database overflow time to recover (sec). | Default: 300 | Min: 0 | Max: 65535
+    default_information_originate: Literal["enable", "always", "disable"]  # Enable/disable generation of default route. | Default: disable
+    default_information_metric: int  # Default information metric. | Default: 10 | Min: 1 | Max: 16777214
+    default_information_metric_type: Literal["1", "2"]  # Default information metric type. | Default: 2
+    default_information_route_map: str  # Default information route map. | MaxLen: 35
+    default_metric: int  # Default metric of redistribute routes. | Default: 10 | Min: 1 | Max: 16777214
+    distance: int  # Distance of the route. | Default: 110 | Min: 1 | Max: 255
+    lsa_refresh_interval: int  # The minimal OSPF LSA update time interval | Default: 5 | Min: 0 | Max: 5
+    rfc1583_compatible: Literal["enable", "disable"]  # Enable/disable RFC1583 compatibility. | Default: disable
+    router_id: str  # Router ID. | Default: 0.0.0.0
+    spf_timers: str  # SPF calculation frequency.
+    bfd: Literal["enable", "disable"]  # Bidirectional Forwarding Detection (BFD). | Default: disable
+    log_neighbour_changes: Literal["enable", "disable"]  # Log of OSPF neighbor changes. | Default: enable
+    distribute_list_in: str  # Filter incoming routes. | MaxLen: 35
+    distribute_route_map_in: str  # Filter incoming external routes by route-map. | MaxLen: 35
+    restart_mode: Literal["none", "lls", "graceful-restart"]  # OSPF restart mode (graceful or LLS). | Default: none
+    restart_period: int  # Graceful restart period. | Default: 120 | Min: 1 | Max: 3600
+    restart_on_topology_change: Literal["enable", "disable"]  # Enable/disable continuing graceful restart upon to | Default: disable
+    area: list[dict[str, Any]]  # OSPF area configuration.
+    ospf_interface: list[dict[str, Any]]  # OSPF interface configuration.
+    network: list[dict[str, Any]]  # OSPF network configuration.
+    neighbor: list[dict[str, Any]]  # OSPF neighbor configuration are used when OSPF run
+    passive_interface: list[dict[str, Any]]  # Passive interface configuration.
+    summary_address: list[dict[str, Any]]  # IP address summary configuration.
+    distribute_list: list[dict[str, Any]]  # Distribute list configuration.
+    redistribute: list[dict[str, Any]]  # Redistribute configuration.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class OspfAreaItem(TypedDict):
+    """Type hints for area table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: str  # Area entry IP address. | Default: 0.0.0.0
+    shortcut: Literal["disable", "enable", "default"]  # Enable/disable shortcut option. | Default: disable
+    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
+    default_cost: int  # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 4294967295
+    nssa_translator_role: Literal["candidate", "never", "always"]  # NSSA translator role type. | Default: candidate
+    stub_type: Literal["no-summary", "summary"]  # Stub summary setting. | Default: summary
+    type: Literal["regular", "nssa", "stub"]  # Area type setting. | Default: regular
+    nssa_default_information_originate: Literal["enable", "always", "disable"]  # Redistribute, advertise, or do not originate Type- | Default: disable
+    nssa_default_information_originate_metric: int  # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
+    nssa_default_information_originate_metric_type: Literal["1", "2"]  # OSPF metric type for default routes. | Default: 2
+    nssa_redistribution: Literal["enable", "disable"]  # Enable/disable redistribute into NSSA area. | Default: enable
+    comments: str  # Comment. | MaxLen: 255
+    range: str  # OSPF area range configuration.
+    virtual_link: str  # OSPF virtual link configuration.
+    filter_list: str  # OSPF area filter-list configuration.
+
+
+class OspfOspfinterfaceItem(TypedDict):
+    """Type hints for ospf-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Interface entry name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 255
+    interface: str  # Configuration interface name. | MaxLen: 15
+    ip: str  # IP address. | Default: 0.0.0.0
+    linkdown_fast_failover: Literal["enable", "disable"]  # Enable/disable fast link failover. | Default: disable
+    authentication: Literal["none", "text", "message-digest"]  # Authentication type. | Default: none
+    authentication_key: str  # Authentication key. | MaxLen: 8
+    keychain: str  # Message-digest key-chain name. | MaxLen: 35
+    prefix_length: int  # Prefix length. | Default: 0 | Min: 0 | Max: 32
+    retransmit_interval: int  # Retransmit interval. | Default: 5 | Min: 1 | Max: 65535
+    transmit_delay: int  # Transmit delay. | Default: 1 | Min: 1 | Max: 65535
+    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
+    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
+    dead_interval: int  # Dead interval. | Default: 0 | Min: 0 | Max: 65535
+    hello_interval: int  # Hello interval. | Default: 0 | Min: 0 | Max: 65535
+    hello_multiplier: int  # Number of hello packets within dead interval. | Default: 0 | Min: 3 | Max: 10
+    database_filter_out: Literal["enable", "disable"]  # Enable/disable control of flooding out LSAs. | Default: disable
+    mtu: int  # MTU for database description packets. | Default: 0 | Min: 576 | Max: 65535
+    mtu_ignore: Literal["enable", "disable"]  # Enable/disable ignore MTU. | Default: disable
+    network_type: Literal["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"]  # Network type. | Default: broadcast
+    bfd: Literal["global", "enable", "disable"]  # Bidirectional Forwarding Detection (BFD). | Default: global
+    status: Literal["disable", "enable"]  # Enable/disable status. | Default: enable
+    resync_timeout: int  # Graceful restart neighbor resynchronization timeou | Default: 40 | Min: 1 | Max: 3600
+    md5_keys: str  # MD5 key.
+
+
+class OspfNetworkItem(TypedDict):
+    """Type hints for network table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+    area: str  # Attach the network to area. | Default: 0.0.0.0
+    comments: str  # Comment. | MaxLen: 255
+
+
+class OspfNeighborItem(TypedDict):
+    """Type hints for neighbor table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # Interface IP address of the neighbor. | Default: 0.0.0.0
+    poll_interval: int  # Poll interval time in seconds. | Default: 10 | Min: 1 | Max: 65535
+    cost: int  # Cost of the interface, value range from 0 to 65535 | Default: 0 | Min: 0 | Max: 65535
+    priority: int  # Priority. | Default: 1 | Min: 0 | Max: 255
+
+
+class OspfPassiveinterfaceItem(TypedDict):
+    """Type hints for passive-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Passive interface name. | MaxLen: 79
+
+
+class OspfSummaryaddressItem(TypedDict):
+    """Type hints for summary-address table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
+    advertise: Literal["disable", "enable"]  # Enable/disable advertise status. | Default: enable
+
+
+class OspfDistributelistItem(TypedDict):
+    """Type hints for distribute-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Distribute list entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    access_list: str  # Access list name. | MaxLen: 35
+    protocol: Literal["connected", "static", "rip"]  # Protocol type. | Default: connected
+
+
+class OspfRedistributeItem(TypedDict):
+    """Type hints for redistribute table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Redistribute name. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    metric: int  # Redistribute metric setting. | Default: 0 | Min: 0 | Max: 16777214
+    routemap: str  # Route map name. | MaxLen: 35
+    metric_type: Literal["1", "2"]  # Metric type. | Default: 2
+    tag: int  # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class OspfAreaObject:
@@ -64,29 +204,29 @@ class OspfAreaObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Area entry IP address.
+    # Area entry IP address. | Default: 0.0.0.0
     id: str
-    # Enable/disable shortcut option.
+    # Enable/disable shortcut option. | Default: disable
     shortcut: Literal["disable", "enable", "default"]
-    # Authentication type.
+    # Authentication type. | Default: none
     authentication: Literal["none", "text", "message-digest"]
-    # Summary default cost of stub or NSSA area.
+    # Summary default cost of stub or NSSA area. | Default: 10 | Min: 0 | Max: 4294967295
     default_cost: int
-    # NSSA translator role type.
+    # NSSA translator role type. | Default: candidate
     nssa_translator_role: Literal["candidate", "never", "always"]
-    # Stub summary setting.
+    # Stub summary setting. | Default: summary
     stub_type: Literal["no-summary", "summary"]
-    # Area type setting.
+    # Area type setting. | Default: regular
     type: Literal["regular", "nssa", "stub"]
-    # Redistribute, advertise, or do not originate Type-7 default route into NSSA area
+    # Redistribute, advertise, or do not originate Type-7 default | Default: disable
     nssa_default_information_originate: Literal["enable", "always", "disable"]
-    # OSPF default metric.
+    # OSPF default metric. | Default: 10 | Min: 0 | Max: 16777214
     nssa_default_information_originate_metric: int
-    # OSPF metric type for default routes.
+    # OSPF metric type for default routes. | Default: 2
     nssa_default_information_originate_metric_type: Literal["1", "2"]
-    # Enable/disable redistribute into NSSA area.
+    # Enable/disable redistribute into NSSA area. | Default: enable
     nssa_redistribution: Literal["enable", "disable"]
-    # Comment.
+    # Comment. | MaxLen: 255
     comments: str
     # OSPF area range configuration.
     range: str
@@ -113,51 +253,51 @@ class OspfOspfinterfaceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface entry name.
+    # Interface entry name. | MaxLen: 35
     name: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comments: str
-    # Configuration interface name.
+    # Configuration interface name. | MaxLen: 15
     interface: str
-    # IP address.
+    # IP address. | Default: 0.0.0.0
     ip: str
-    # Enable/disable fast link failover.
+    # Enable/disable fast link failover. | Default: disable
     linkdown_fast_failover: Literal["enable", "disable"]
-    # Authentication type.
+    # Authentication type. | Default: none
     authentication: Literal["none", "text", "message-digest"]
-    # Authentication key.
+    # Authentication key. | MaxLen: 8
     authentication_key: str
-    # Message-digest key-chain name.
+    # Message-digest key-chain name. | MaxLen: 35
     keychain: str
-    # Prefix length.
+    # Prefix length. | Default: 0 | Min: 0 | Max: 32
     prefix_length: int
-    # Retransmit interval.
+    # Retransmit interval. | Default: 5 | Min: 1 | Max: 65535
     retransmit_interval: int
-    # Transmit delay.
+    # Transmit delay. | Default: 1 | Min: 1 | Max: 65535
     transmit_delay: int
-    # Cost of the interface, value range from 0 to 65535, 0 means auto-cost.
+    # Cost of the interface, value range from 0 to 65535, 0 means | Default: 0 | Min: 0 | Max: 65535
     cost: int
-    # Priority.
+    # Priority. | Default: 1 | Min: 0 | Max: 255
     priority: int
-    # Dead interval.
+    # Dead interval. | Default: 0 | Min: 0 | Max: 65535
     dead_interval: int
-    # Hello interval.
+    # Hello interval. | Default: 0 | Min: 0 | Max: 65535
     hello_interval: int
-    # Number of hello packets within dead interval.
+    # Number of hello packets within dead interval. | Default: 0 | Min: 3 | Max: 10
     hello_multiplier: int
-    # Enable/disable control of flooding out LSAs.
+    # Enable/disable control of flooding out LSAs. | Default: disable
     database_filter_out: Literal["enable", "disable"]
-    # MTU for database description packets.
+    # MTU for database description packets. | Default: 0 | Min: 576 | Max: 65535
     mtu: int
-    # Enable/disable ignore MTU.
+    # Enable/disable ignore MTU. | Default: disable
     mtu_ignore: Literal["enable", "disable"]
-    # Network type.
+    # Network type. | Default: broadcast
     network_type: Literal["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"]
-    # Bidirectional Forwarding Detection (BFD).
+    # Bidirectional Forwarding Detection (BFD). | Default: global
     bfd: Literal["global", "enable", "disable"]
-    # Enable/disable status.
+    # Enable/disable status. | Default: enable
     status: Literal["disable", "enable"]
-    # Graceful restart neighbor resynchronization timeout.
+    # Graceful restart neighbor resynchronization timeout. | Default: 40 | Min: 1 | Max: 3600
     resync_timeout: int
     # MD5 key.
     md5_keys: str
@@ -180,13 +320,13 @@ class OspfNetworkObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Network entry ID.
+    # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Prefix.
+    # Prefix. | Default: 0.0.0.0 0.0.0.0
     prefix: str
-    # Attach the network to area.
+    # Attach the network to area. | Default: 0.0.0.0
     area: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comments: str
     
     # Methods from FortiObject
@@ -207,15 +347,15 @@ class OspfNeighborObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Neighbor entry ID.
+    # Neighbor entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Interface IP address of the neighbor.
+    # Interface IP address of the neighbor. | Default: 0.0.0.0
     ip: str
-    # Poll interval time in seconds.
+    # Poll interval time in seconds. | Default: 10 | Min: 1 | Max: 65535
     poll_interval: int
-    # Cost of the interface, value range from 0 to 65535, 0 means auto-cost.
+    # Cost of the interface, value range from 0 to 65535, 0 means | Default: 0 | Min: 0 | Max: 65535
     cost: int
-    # Priority.
+    # Priority. | Default: 1 | Min: 0 | Max: 255
     priority: int
     
     # Methods from FortiObject
@@ -236,7 +376,7 @@ class OspfPassiveinterfaceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Passive interface name.
+    # Passive interface name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -257,13 +397,13 @@ class OspfSummaryaddressObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Summary address entry ID.
+    # Summary address entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Prefix.
+    # Prefix. | Default: 0.0.0.0 0.0.0.0
     prefix: str
-    # Tag value.
+    # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
     tag: int
-    # Enable/disable advertise status.
+    # Enable/disable advertise status. | Default: enable
     advertise: Literal["disable", "enable"]
     
     # Methods from FortiObject
@@ -284,11 +424,11 @@ class OspfDistributelistObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Distribute list entry ID.
+    # Distribute list entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Access list name.
+    # Access list name. | MaxLen: 35
     access_list: str
-    # Protocol type.
+    # Protocol type. | Default: connected
     protocol: Literal["connected", "static", "rip"]
     
     # Methods from FortiObject
@@ -309,17 +449,17 @@ class OspfRedistributeObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Redistribute name.
+    # Redistribute name. | MaxLen: 35
     name: str
-    # Status.
+    # Status. | Default: disable
     status: Literal["enable", "disable"]
-    # Redistribute metric setting.
+    # Redistribute metric setting. | Default: 0 | Min: 0 | Max: 16777214
     metric: int
-    # Route map name.
+    # Route map name. | MaxLen: 35
     routemap: str
-    # Metric type.
+    # Metric type. | Default: 2
     metric_type: Literal["1", "2"]
-    # Tag value.
+    # Tag value. | Default: 0 | Min: 0 | Max: 4294967295
     tag: int
     
     # Methods from FortiObject
@@ -340,39 +480,39 @@ class OspfResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    abr_type: Literal["cisco", "ibm", "shortcut", "standard"]
-    auto_cost_ref_bandwidth: int
-    distance_external: int
-    distance_inter_area: int
-    distance_intra_area: int
-    database_overflow: Literal["enable", "disable"]
-    database_overflow_max_lsas: int
-    database_overflow_time_to_recover: int
-    default_information_originate: Literal["enable", "always", "disable"]
-    default_information_metric: int
-    default_information_metric_type: Literal["1", "2"]
-    default_information_route_map: str
-    default_metric: int
-    distance: int
-    lsa_refresh_interval: int
-    rfc1583_compatible: Literal["enable", "disable"]
-    router_id: str
-    spf_timers: str
-    bfd: Literal["enable", "disable"]
-    log_neighbour_changes: Literal["enable", "disable"]
-    distribute_list_in: str
-    distribute_route_map_in: str
-    restart_mode: Literal["none", "lls", "graceful-restart"]
-    restart_period: int
-    restart_on_topology_change: Literal["enable", "disable"]
-    area: list[dict[str, Any]]
-    ospf_interface: list[dict[str, Any]]
-    network: list[dict[str, Any]]
-    neighbor: list[dict[str, Any]]
-    passive_interface: list[dict[str, Any]]
-    summary_address: list[dict[str, Any]]
-    distribute_list: list[dict[str, Any]]
-    redistribute: list[dict[str, Any]]
+    abr_type: Literal["cisco", "ibm", "shortcut", "standard"]  # Area border router type. | Default: standard
+    auto_cost_ref_bandwidth: int  # Reference bandwidth in terms of megabits per secon | Default: 1000 | Min: 1 | Max: 1000000
+    distance_external: int  # Administrative external distance. | Default: 110 | Min: 1 | Max: 255
+    distance_inter_area: int  # Administrative inter-area distance. | Default: 110 | Min: 1 | Max: 255
+    distance_intra_area: int  # Administrative intra-area distance. | Default: 110 | Min: 1 | Max: 255
+    database_overflow: Literal["enable", "disable"]  # Enable/disable database overflow. | Default: disable
+    database_overflow_max_lsas: int  # Database overflow maximum LSAs. | Default: 10000 | Min: 0 | Max: 4294967295
+    database_overflow_time_to_recover: int  # Database overflow time to recover (sec). | Default: 300 | Min: 0 | Max: 65535
+    default_information_originate: Literal["enable", "always", "disable"]  # Enable/disable generation of default route. | Default: disable
+    default_information_metric: int  # Default information metric. | Default: 10 | Min: 1 | Max: 16777214
+    default_information_metric_type: Literal["1", "2"]  # Default information metric type. | Default: 2
+    default_information_route_map: str  # Default information route map. | MaxLen: 35
+    default_metric: int  # Default metric of redistribute routes. | Default: 10 | Min: 1 | Max: 16777214
+    distance: int  # Distance of the route. | Default: 110 | Min: 1 | Max: 255
+    lsa_refresh_interval: int  # The minimal OSPF LSA update time interval | Default: 5 | Min: 0 | Max: 5
+    rfc1583_compatible: Literal["enable", "disable"]  # Enable/disable RFC1583 compatibility. | Default: disable
+    router_id: str  # Router ID. | Default: 0.0.0.0
+    spf_timers: str  # SPF calculation frequency.
+    bfd: Literal["enable", "disable"]  # Bidirectional Forwarding Detection (BFD). | Default: disable
+    log_neighbour_changes: Literal["enable", "disable"]  # Log of OSPF neighbor changes. | Default: enable
+    distribute_list_in: str  # Filter incoming routes. | MaxLen: 35
+    distribute_route_map_in: str  # Filter incoming external routes by route-map. | MaxLen: 35
+    restart_mode: Literal["none", "lls", "graceful-restart"]  # OSPF restart mode (graceful or LLS). | Default: none
+    restart_period: int  # Graceful restart period. | Default: 120 | Min: 1 | Max: 3600
+    restart_on_topology_change: Literal["enable", "disable"]  # Enable/disable continuing graceful restart upon to | Default: disable
+    area: list[OspfAreaItem]  # OSPF area configuration.
+    ospf_interface: list[OspfOspfinterfaceItem]  # OSPF interface configuration.
+    network: list[OspfNetworkItem]  # OSPF network configuration.
+    neighbor: list[OspfNeighborItem]  # OSPF neighbor configuration are used when OSPF run
+    passive_interface: list[OspfPassiveinterfaceItem]  # Passive interface configuration.
+    summary_address: list[OspfSummaryaddressItem]  # IP address summary configuration.
+    distribute_list: list[OspfDistributelistItem]  # Distribute list configuration.
+    redistribute: list[OspfRedistributeItem]  # Redistribute configuration.
 
 
 @final
@@ -383,72 +523,72 @@ class OspfObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Area border router type.
+    # Area border router type. | Default: standard
     abr_type: Literal["cisco", "ibm", "shortcut", "standard"]
-    # Reference bandwidth in terms of megabits per second.
+    # Reference bandwidth in terms of megabits per second. | Default: 1000 | Min: 1 | Max: 1000000
     auto_cost_ref_bandwidth: int
-    # Administrative external distance.
+    # Administrative external distance. | Default: 110 | Min: 1 | Max: 255
     distance_external: int
-    # Administrative inter-area distance.
+    # Administrative inter-area distance. | Default: 110 | Min: 1 | Max: 255
     distance_inter_area: int
-    # Administrative intra-area distance.
+    # Administrative intra-area distance. | Default: 110 | Min: 1 | Max: 255
     distance_intra_area: int
-    # Enable/disable database overflow.
+    # Enable/disable database overflow. | Default: disable
     database_overflow: Literal["enable", "disable"]
-    # Database overflow maximum LSAs.
+    # Database overflow maximum LSAs. | Default: 10000 | Min: 0 | Max: 4294967295
     database_overflow_max_lsas: int
-    # Database overflow time to recover (sec).
+    # Database overflow time to recover (sec). | Default: 300 | Min: 0 | Max: 65535
     database_overflow_time_to_recover: int
-    # Enable/disable generation of default route.
+    # Enable/disable generation of default route. | Default: disable
     default_information_originate: Literal["enable", "always", "disable"]
-    # Default information metric.
+    # Default information metric. | Default: 10 | Min: 1 | Max: 16777214
     default_information_metric: int
-    # Default information metric type.
+    # Default information metric type. | Default: 2
     default_information_metric_type: Literal["1", "2"]
-    # Default information route map.
+    # Default information route map. | MaxLen: 35
     default_information_route_map: str
-    # Default metric of redistribute routes.
+    # Default metric of redistribute routes. | Default: 10 | Min: 1 | Max: 16777214
     default_metric: int
-    # Distance of the route.
+    # Distance of the route. | Default: 110 | Min: 1 | Max: 255
     distance: int
-    # The minimal OSPF LSA update time interval
+    # The minimal OSPF LSA update time interval | Default: 5 | Min: 0 | Max: 5
     lsa_refresh_interval: int
-    # Enable/disable RFC1583 compatibility.
+    # Enable/disable RFC1583 compatibility. | Default: disable
     rfc1583_compatible: Literal["enable", "disable"]
-    # Router ID.
+    # Router ID. | Default: 0.0.0.0
     router_id: str
     # SPF calculation frequency.
     spf_timers: str
-    # Bidirectional Forwarding Detection (BFD).
+    # Bidirectional Forwarding Detection (BFD). | Default: disable
     bfd: Literal["enable", "disable"]
-    # Log of OSPF neighbor changes.
+    # Log of OSPF neighbor changes. | Default: enable
     log_neighbour_changes: Literal["enable", "disable"]
-    # Filter incoming routes.
+    # Filter incoming routes. | MaxLen: 35
     distribute_list_in: str
-    # Filter incoming external routes by route-map.
+    # Filter incoming external routes by route-map. | MaxLen: 35
     distribute_route_map_in: str
-    # OSPF restart mode (graceful or LLS).
+    # OSPF restart mode (graceful or LLS). | Default: none
     restart_mode: Literal["none", "lls", "graceful-restart"]
-    # Graceful restart period.
+    # Graceful restart period. | Default: 120 | Min: 1 | Max: 3600
     restart_period: int
-    # Enable/disable continuing graceful restart upon topology change.
+    # Enable/disable continuing graceful restart upon topology cha | Default: disable
     restart_on_topology_change: Literal["enable", "disable"]
     # OSPF area configuration.
-    area: list[OspfAreaObject]  # Table field - list of typed objects
+    area: list[OspfAreaObject]
     # OSPF interface configuration.
-    ospf_interface: list[OspfOspfinterfaceObject]  # Table field - list of typed objects
+    ospf_interface: list[OspfOspfinterfaceObject]
     # OSPF network configuration.
-    network: list[OspfNetworkObject]  # Table field - list of typed objects
-    # OSPF neighbor configuration are used when OSPF runs on non-broadcast media.
-    neighbor: list[OspfNeighborObject]  # Table field - list of typed objects
+    network: list[OspfNetworkObject]
+    # OSPF neighbor configuration are used when OSPF runs on non-b
+    neighbor: list[OspfNeighborObject]
     # Passive interface configuration.
-    passive_interface: list[OspfPassiveinterfaceObject]  # Table field - list of typed objects
+    passive_interface: list[OspfPassiveinterfaceObject]
     # IP address summary configuration.
-    summary_address: list[OspfSummaryaddressObject]  # Table field - list of typed objects
+    summary_address: list[OspfSummaryaddressObject]
     # Distribute list configuration.
-    distribute_list: list[OspfDistributelistObject]  # Table field - list of typed objects
+    distribute_list: list[OspfDistributelistObject]
     # Redistribute configuration.
-    redistribute: list[OspfRedistributeObject]  # Table field - list of typed objects
+    redistribute: list[OspfRedistributeObject]
     
     # Common API response fields
     status: str
@@ -473,8 +613,66 @@ class Ospf:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OspfResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OspfResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OspfResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -489,11 +687,12 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OspfObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -509,11 +708,11 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OspfObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -528,10 +727,11 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OspfObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -548,7 +748,7 @@ class Ospf:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -608,7 +808,7 @@ class Ospf:
         **kwargs: Any,
     ) -> OspfResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -623,9 +823,9 @@ class Ospf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -690,7 +890,7 @@ class Ospf:
         redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OspfObject: ...
     
@@ -735,8 +935,9 @@ class Ospf:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -777,7 +978,49 @@ class Ospf:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -819,7 +1062,7 @@ class Ospf:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -867,7 +1110,7 @@ class Ospf:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -892,8 +1135,754 @@ class Ospf:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class OspfDictMode:
+    """Ospf endpoint for dict response mode (default for this client).
+    
+    By default returns OspfResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return OspfObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> OspfResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> OspfResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class OspfObjectMode:
+    """Ospf endpoint for object response mode (default for this client).
+    
+    By default returns OspfObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return OspfResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> OspfResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> OspfResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> OspfObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> OspfObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: OspfPayload | None = ...,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        auto_cost_ref_bandwidth: int | None = ...,
+        distance_external: int | None = ...,
+        distance_inter_area: int | None = ...,
+        distance_intra_area: int | None = ...,
+        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow_max_lsas: int | None = ...,
+        database_overflow_time_to_recover: int | None = ...,
+        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_metric: int | None = ...,
+        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_route_map: str | None = ...,
+        default_metric: int | None = ...,
+        distance: int | None = ...,
+        lsa_refresh_interval: int | None = ...,
+        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        router_id: str | None = ...,
+        spf_timers: str | None = ...,
+        bfd: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        distribute_list_in: str | None = ...,
+        distribute_route_map_in: str | None = ...,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_period: int | None = ...,
+        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        area: str | list[str] | list[dict[str, Any]] | None = ...,
+        ospf_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
+        passive_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        summary_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        distribute_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        redistribute: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Ospf",
+    "OspfDictMode",
+    "OspfObjectMode",
     "OspfPayload",
     "OspfObject",
 ]

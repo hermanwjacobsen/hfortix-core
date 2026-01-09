@@ -6,14 +6,53 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .recommendations import Recommendations
-    from .report import Report
+    from .recommendations import Recommendations, RecommendationsDictMode, RecommendationsObjectMode
+    from .report import Report, ReportDictMode, ReportObjectMode
+
+__all__ = [
+    "Recommendations",
+    "Report",
+    "SecurityratingDictMode",
+    "SecurityratingObjectMode",
+]
+
+class SecurityratingDictMode:
+    """SECURITY_RATING API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    recommendations: RecommendationsDictMode
+    report: ReportDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize security_rating category with HTTP client."""
+        ...
 
 
-class SecurityRating:
-    """Type stub for SecurityRating."""
+class SecurityratingObjectMode:
+    """SECURITY_RATING API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    recommendations: RecommendationsObjectMode
+    report: ReportObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize security_rating category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Securityrating:
+    """SECURITY_RATING API category."""
+    
     recommendations: Recommendations
     report: Report
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize security_rating category with HTTP client."""
+        ...

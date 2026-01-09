@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class VipPayload(TypedDict, total=False):
     """
     Type hints for firewall/vip payload fields.
@@ -21,106 +25,237 @@ class VipPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Virtual IP name.
-    id: NotRequired[int]  # Custom defined ID.
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    comment: NotRequired[str]  # Comment.
-    type: NotRequired[Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]]  # Configure a static NAT, load balance, server load balance, a
+    name: str  # Virtual IP name. | MaxLen: 79
+    id: int  # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    comment: str  # Comment. | MaxLen: 255
+    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]  # Protocol to be load balanced by the virtual server
-    dns_mapping_ttl: NotRequired[int]  # DNS mapping TTL
-    ldb_method: NotRequired[Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]]  # Method used to distribute sessions to real servers.
-    src_filter: NotRequired[list[dict[str, Any]]]  # Source address filter. Each address must be either an IP/sub
-    src_vip_filter: NotRequired[Literal["disable", "enable"]]  # Enable/disable use of 'src-filter' to match destinations for
-    service: NotRequired[list[dict[str, Any]]]  # Service name.
-    extip: str  # IP address or address range on the external interface that y
-    extaddr: NotRequired[list[dict[str, Any]]]  # External FQDN address name.
-    h2_support: Literal["enable", "disable"]  # Enable/disable HTTP2 support (default = enable).
-    h3_support: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTP3/QUIC support (default = disable).
-    quic: NotRequired[str]  # QUIC setting.
-    nat44: NotRequired[Literal["disable", "enable"]]  # Enable/disable NAT44.
-    nat46: NotRequired[Literal["disable", "enable"]]  # Enable/disable NAT46.
-    add_nat46_route: NotRequired[Literal["disable", "enable"]]  # Enable/disable adding NAT46 route.
-    mappedip: list[dict[str, Any]]  # IP address or address range on the destination network to wh
-    mapped_addr: NotRequired[str]  # Mapped FQDN address name.
-    extintf: str  # Interface connected to the source network that receives the
-    arp_reply: NotRequired[Literal["disable", "enable"]]  # Enable to respond to ARP requests for this virtual IP addres
-    http_redirect: NotRequired[Literal["enable", "disable"]]  # Enable/disable redirection of HTTP to HTTPS.
-    persistence: NotRequired[Literal["none", "http-cookie", "ssl-session-id"]]  # Configure how to make sure that clients connect to the same
-    nat_source_vip: NotRequired[Literal["disable", "enable"]]  # Enable/disable forcing the source NAT mapped IP to the exter
-    portforward: NotRequired[Literal["disable", "enable"]]  # Enable/disable port forwarding.
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable VIP.
-    protocol: NotRequired[Literal["tcp", "udp", "sctp", "icmp"]]  # Protocol to use when forwarding packets.
-    extport: str  # Incoming port number range that you want to map to a port nu
-    mappedport: NotRequired[str]  # Port number range on the destination network to which the ex
-    gratuitous_arp_interval: NotRequired[int]  # Enable to have the VIP send gratuitous ARPs. 0=disabled. Set
-    srcintf_filter: NotRequired[list[dict[str, Any]]]  # Interfaces to which the VIP applies. Separate the names with
-    portmapping_type: NotRequired[Literal["1-to-1", "m-to-n"]]  # Port mapping type.
-    empty_cert_action: NotRequired[Literal["accept", "block", "accept-unmanageable"]]  # Action for an empty client certificate.
-    user_agent_detect: NotRequired[Literal["disable", "enable"]]  # Enable/disable detecting device type by HTTP user-agent if n
-    client_cert: NotRequired[Literal["disable", "enable"]]  # Enable/disable requesting client certificate.
-    realservers: NotRequired[list[dict[str, Any]]]  # Select the real servers that this server load balancing VIP
-    http_cookie_domain_from_host: NotRequired[Literal["disable", "enable"]]  # Enable/disable use of HTTP cookie domain from host field in
-    http_cookie_domain: NotRequired[str]  # Domain that HTTP cookie persistence should apply to.
-    http_cookie_path: NotRequired[str]  # Limit HTTP cookie persistence to the specified path.
-    http_cookie_generation: NotRequired[int]  # Generation of HTTP cookie to be accepted. Changing invalidat
-    http_cookie_age: NotRequired[int]  # Time in minutes that client web browsers should keep a cooki
-    http_cookie_share: NotRequired[Literal["disable", "same-ip"]]  # Control sharing of cookies across virtual servers. Use of sa
-    https_cookie_secure: NotRequired[Literal["disable", "enable"]]  # Enable/disable verification that inserted HTTPS cookies are
-    http_multiplex: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTP multiplexing.
-    http_multiplex_ttl: NotRequired[int]  # Time-to-live for idle connections to servers.
-    http_multiplex_max_request: NotRequired[int]  # Maximum number of requests that a multiplex server can handl
-    http_multiplex_max_concurrent_request: NotRequired[int]  # Maximum number of concurrent requests that a multiplex serve
-    http_ip_header: NotRequired[Literal["enable", "disable"]]  # For HTTP multiplexing, enable to add the original client IP
-    http_ip_header_name: NotRequired[str]  # For HTTP multiplexing, enter a custom HTTPS header name. The
-    outlook_web_access: NotRequired[Literal["disable", "enable"]]  # Enable to add the Front-End-Https header for Microsoft Outlo
-    weblogic_server: NotRequired[Literal["disable", "enable"]]  # Enable to add an HTTP header to indicate SSL offloading for
-    websphere_server: NotRequired[Literal["disable", "enable"]]  # Enable to add an HTTP header to indicate SSL offloading for
-    ssl_mode: NotRequired[Literal["half", "full"]]  # Apply SSL offloading between the client and the FortiGate
+    dns_mapping_ttl: int  # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
+    ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
+    src_filter: list[dict[str, Any]]  # Source address filter. Each address must be either
+    src_vip_filter: Literal["disable", "enable"]  # Enable/disable use of 'src-filter' to match destin | Default: disable
+    service: list[dict[str, Any]]  # Service name.
+    extip: str  # IP address or address range on the external interf
+    extaddr: list[dict[str, Any]]  # External FQDN address name.
+    h2_support: Literal["enable", "disable"]  # Enable/disable HTTP2 support (default = enable). | Default: enable
+    h3_support: Literal["enable", "disable"]  # Enable/disable HTTP3/QUIC support | Default: disable
+    quic: str  # QUIC setting.
+    nat44: Literal["disable", "enable"]  # Enable/disable NAT44. | Default: enable
+    nat46: Literal["disable", "enable"]  # Enable/disable NAT46. | Default: disable
+    add_nat46_route: Literal["disable", "enable"]  # Enable/disable adding NAT46 route. | Default: enable
+    mappedip: list[dict[str, Any]]  # IP address or address range on the destination net
+    mapped_addr: str  # Mapped FQDN address name. | MaxLen: 79
+    extintf: str  # Interface connected to the source network that rec | MaxLen: 35
+    arp_reply: Literal["disable", "enable"]  # Enable to respond to ARP requests for this virtual | Default: enable
+    http_redirect: Literal["enable", "disable"]  # Enable/disable redirection of HTTP to HTTPS. | Default: disable
+    persistence: Literal["none", "http-cookie", "ssl-session-id"]  # Configure how to make sure that clients connect to | Default: none
+    nat_source_vip: Literal["disable", "enable"]  # Enable/disable forcing the source NAT mapped IP to | Default: disable
+    portforward: Literal["disable", "enable"]  # Enable/disable port forwarding. | Default: disable
+    status: Literal["disable", "enable"]  # Enable/disable VIP. | Default: enable
+    protocol: Literal["tcp", "udp", "sctp", "icmp"]  # Protocol to use when forwarding packets. | Default: tcp
+    extport: str  # Incoming port number range that you want to map to
+    mappedport: str  # Port number range on the destination network to wh
+    gratuitous_arp_interval: int  # Enable to have the VIP send gratuitous ARPs. 0=dis | Default: 0 | Min: 5 | Max: 8640000
+    srcintf_filter: list[dict[str, Any]]  # Interfaces to which the VIP applies. Separate the
+    portmapping_type: Literal["1-to-1", "m-to-n"]  # Port mapping type. | Default: 1-to-1
+    empty_cert_action: Literal["accept", "block", "accept-unmanageable"]  # Action for an empty client certificate. | Default: block
+    user_agent_detect: Literal["disable", "enable"]  # Enable/disable detecting device type by HTTP user- | Default: enable
+    client_cert: Literal["disable", "enable"]  # Enable/disable requesting client certificate. | Default: enable
+    realservers: list[dict[str, Any]]  # Select the real servers that this server load bala
+    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
+    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
+    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
+    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
+    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
+    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across virtual servers. | Default: same-ip
+    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
+    http_multiplex: Literal["enable", "disable"]  # Enable/disable HTTP multiplexing. | Default: disable
+    http_multiplex_ttl: int  # Time-to-live for idle connections to servers. | Default: 15 | Min: 0 | Max: 2147483647
+    http_multiplex_max_request: int  # Maximum number of requests that a multiplex server | Default: 0 | Min: 0 | Max: 2147483647
+    http_multiplex_max_concurrent_request: int  # Maximum number of concurrent requests that a multi | Default: 0 | Min: 0 | Max: 2147483647
+    http_ip_header: Literal["enable", "disable"]  # For HTTP multiplexing, enable to add the original | Default: disable
+    http_ip_header_name: str  # For HTTP multiplexing, enter a custom HTTPS header | MaxLen: 35
+    outlook_web_access: Literal["disable", "enable"]  # Enable to add the Front-End-Https header for Micro | Default: disable
+    weblogic_server: Literal["disable", "enable"]  # Enable to add an HTTP header to indicate SSL offlo | Default: disable
+    websphere_server: Literal["disable", "enable"]  # Enable to add an HTTP header to indicate SSL offlo | Default: disable
+    ssl_mode: Literal["half", "full"]  # Apply SSL offloading between the client and the Fo | Default: half
     ssl_certificate: list[dict[str, Any]]  # Name of the certificate to use for SSL handshake.
-    ssl_dh_bits: NotRequired[Literal["768", "1024", "1536", "2048", "3072", "4096"]]  # Number of bits to use in the Diffie-Hellman exchange for RSA
-    ssl_algorithm: NotRequired[Literal["high", "medium", "low", "custom"]]  # Permitted encryption algorithms for SSL sessions according t
-    ssl_cipher_suites: NotRequired[list[dict[str, Any]]]  # SSL/TLS cipher suites acceptable from a client, ordered by p
-    ssl_server_algorithm: NotRequired[Literal["high", "medium", "low", "custom", "client"]]  # Permitted encryption algorithms for the server side of SSL f
-    ssl_server_cipher_suites: NotRequired[list[dict[str, Any]]]  # SSL/TLS cipher suites to offer to a server, ordered by prior
-    ssl_pfs: NotRequired[Literal["require", "deny", "allow"]]  # Select the cipher suites that can be used for SSL perfect fo
-    ssl_min_version: NotRequired[Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]]  # Lowest SSL/TLS version acceptable from a client.
-    ssl_max_version: NotRequired[Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]]  # Highest SSL/TLS version acceptable from a client.
-    ssl_server_min_version: NotRequired[Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]]  # Lowest SSL/TLS version acceptable from a server. Use the cli
-    ssl_server_max_version: NotRequired[Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]]  # Highest SSL/TLS version acceptable from a server. Use the cl
-    ssl_accept_ffdhe_groups: NotRequired[Literal["enable", "disable"]]  # Enable/disable FFDHE cipher suite for SSL key exchange.
-    ssl_send_empty_frags: NotRequired[Literal["enable", "disable"]]  # Enable/disable sending empty fragments to avoid CBC IV attac
-    ssl_client_fallback: NotRequired[Literal["disable", "enable"]]  # Enable/disable support for preventing Downgrade Attacks on c
-    ssl_client_renegotiation: NotRequired[Literal["allow", "deny", "secure"]]  # Allow, deny, or require secure renegotiation of client sessi
-    ssl_client_session_state_type: NotRequired[Literal["disable", "time", "count", "both"]]  # How to expire SSL sessions for the segment of the SSL connec
-    ssl_client_session_state_timeout: NotRequired[int]  # Number of minutes to keep client to FortiGate SSL session st
-    ssl_client_session_state_max: NotRequired[int]  # Maximum number of client to FortiGate SSL session states to
-    ssl_client_rekey_count: NotRequired[int]  # Maximum length of data in MB before triggering a client reke
-    ssl_server_renegotiation: NotRequired[Literal["enable", "disable"]]  # Enable/disable secure renegotiation to comply with RFC 5746.
-    ssl_server_session_state_type: NotRequired[Literal["disable", "time", "count", "both"]]  # How to expire SSL sessions for the segment of the SSL connec
-    ssl_server_session_state_timeout: NotRequired[int]  # Number of minutes to keep FortiGate to Server SSL session st
-    ssl_server_session_state_max: NotRequired[int]  # Maximum number of FortiGate to Server SSL session states to
-    ssl_http_location_conversion: NotRequired[Literal["enable", "disable"]]  # Enable to replace HTTP with HTTPS in the reply's Location HT
-    ssl_http_match_host: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTP host matching for location conversion.
-    ssl_hpkp: NotRequired[Literal["disable", "enable", "report-only"]]  # Enable/disable including HPKP header in response.
-    ssl_hpkp_primary: NotRequired[str]  # Certificate to generate primary HPKP pin from.
-    ssl_hpkp_backup: NotRequired[str]  # Certificate to generate backup HPKP pin from.
-    ssl_hpkp_age: NotRequired[int]  # Number of seconds the client should honor the HPKP setting.
-    ssl_hpkp_report_uri: NotRequired[str]  # URL to report HPKP violations to.
-    ssl_hpkp_include_subdomains: NotRequired[Literal["disable", "enable"]]  # Indicate that HPKP header applies to all subdomains.
-    ssl_hsts: NotRequired[Literal["disable", "enable"]]  # Enable/disable including HSTS header in response.
-    ssl_hsts_age: NotRequired[int]  # Number of seconds the client should honor the HSTS setting.
-    ssl_hsts_include_subdomains: NotRequired[Literal["disable", "enable"]]  # Indicate that HSTS header applies to all subdomains.
-    monitor: NotRequired[list[dict[str, Any]]]  # Name of the health check monitor to use when polling to dete
-    max_embryonic_connections: NotRequired[int]  # Maximum number of incomplete connections.
-    color: NotRequired[int]  # Color of icon on the GUI.
-    ipv6_mappedip: str  # Range of mapped IPv6 addresses. Specify the start IPv6 addre
-    ipv6_mappedport: NotRequired[str]  # IPv6 port number range on the destination network to which t
-    one_click_gslb_server: NotRequired[Literal["disable", "enable"]]  # Enable/disable one click GSLB server integration with FortiG
-    gslb_hostname: NotRequired[str]  # Hostname to use within the configured FortiGSLB domain.
-    gslb_domain_name: NotRequired[str]  # Domain to use when integrating with FortiGSLB.
-    gslb_public_ips: NotRequired[list[dict[str, Any]]]  # Publicly accessible IP addresses for the FortiGSLB service.
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
+    ssl_algorithm: Literal["high", "medium", "low", "custom"]  # Permitted encryption algorithms for SSL sessions a | Default: high
+    ssl_cipher_suites: list[dict[str, Any]]  # SSL/TLS cipher suites acceptable from a client, or
+    ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]  # Permitted encryption algorithms for the server sid | Default: client
+    ssl_server_cipher_suites: list[dict[str, Any]]  # SSL/TLS cipher suites to offer to a server, ordere
+    ssl_pfs: Literal["require", "deny", "allow"]  # Select the cipher suites that can be used for SSL | Default: require
+    ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a client. | Default: tls-1.1
+    ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a client. | Default: tls-1.3
+    ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]  # Lowest SSL/TLS version acceptable from a server. U | Default: client
+    ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]  # Highest SSL/TLS version acceptable from a server. | Default: client
+    ssl_accept_ffdhe_groups: Literal["enable", "disable"]  # Enable/disable FFDHE cipher suite for SSL key exch | Default: enable
+    ssl_send_empty_frags: Literal["enable", "disable"]  # Enable/disable sending empty fragments to avoid CB | Default: enable
+    ssl_client_fallback: Literal["disable", "enable"]  # Enable/disable support for preventing Downgrade At | Default: enable
+    ssl_client_renegotiation: Literal["allow", "deny", "secure"]  # Allow, deny, or require secure renegotiation of cl | Default: secure
+    ssl_client_session_state_type: Literal["disable", "time", "count", "both"]  # How to expire SSL sessions for the segment of the | Default: both
+    ssl_client_session_state_timeout: int  # Number of minutes to keep client to FortiGate SSL | Default: 30 | Min: 1 | Max: 14400
+    ssl_client_session_state_max: int  # Maximum number of client to FortiGate SSL session | Default: 1000 | Min: 1 | Max: 10000
+    ssl_client_rekey_count: int  # Maximum length of data in MB before triggering a c | Default: 0 | Min: 200 | Max: 1048576
+    ssl_server_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+    ssl_server_session_state_type: Literal["disable", "time", "count", "both"]  # How to expire SSL sessions for the segment of the | Default: both
+    ssl_server_session_state_timeout: int  # Number of minutes to keep FortiGate to Server SSL | Default: 60 | Min: 1 | Max: 14400
+    ssl_server_session_state_max: int  # Maximum number of FortiGate to Server SSL session | Default: 100 | Min: 1 | Max: 10000
+    ssl_http_location_conversion: Literal["enable", "disable"]  # Enable to replace HTTP with HTTPS in the reply's L | Default: disable
+    ssl_http_match_host: Literal["enable", "disable"]  # Enable/disable HTTP host matching for location con | Default: enable
+    ssl_hpkp: Literal["disable", "enable", "report-only"]  # Enable/disable including HPKP header in response. | Default: disable
+    ssl_hpkp_primary: str  # Certificate to generate primary HPKP pin from. | MaxLen: 79
+    ssl_hpkp_backup: str  # Certificate to generate backup HPKP pin from. | MaxLen: 79
+    ssl_hpkp_age: int  # Number of seconds the client should honor the HPKP | Default: 5184000 | Min: 60 | Max: 157680000
+    ssl_hpkp_report_uri: str  # URL to report HPKP violations to. | MaxLen: 255
+    ssl_hpkp_include_subdomains: Literal["disable", "enable"]  # Indicate that HPKP header applies to all subdomain | Default: disable
+    ssl_hsts: Literal["disable", "enable"]  # Enable/disable including HSTS header in response. | Default: disable
+    ssl_hsts_age: int  # Number of seconds the client should honor the HSTS | Default: 5184000 | Min: 60 | Max: 157680000
+    ssl_hsts_include_subdomains: Literal["disable", "enable"]  # Indicate that HSTS header applies to all subdomain | Default: disable
+    monitor: list[dict[str, Any]]  # Name of the health check monitor to use when polli
+    max_embryonic_connections: int  # Maximum number of incomplete connections. | Default: 1000 | Min: 0 | Max: 100000
+    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
+    ipv6_mappedip: str  # Range of mapped IPv6 addresses. Specify the start
+    ipv6_mappedport: str  # IPv6 port number range on the destination network
+    one_click_gslb_server: Literal["disable", "enable"]  # Enable/disable one click GSLB server integration w | Default: disable
+    gslb_hostname: str  # Hostname to use within the configured FortiGSLB do | MaxLen: 35
+    gslb_domain_name: str  # Domain to use when integrating with FortiGSLB. | MaxLen: 255
+    gslb_public_ips: list[dict[str, Any]]  # Publicly accessible IP addresses for the FortiGSLB
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class VipSrcfilterItem(TypedDict):
+    """Type hints for src-filter table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    range: str  # Source-filter range. | MaxLen: 79
+
+
+class VipServiceItem(TypedDict):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+class VipExtaddrItem(TypedDict):
+    """Type hints for extaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class VipMappedipItem(TypedDict):
+    """Type hints for mappedip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    range: str  # Mapped IP range. | MaxLen: 79
+
+
+class VipSrcintffilterItem(TypedDict):
+    """Type hints for srcintf-filter table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 79
+
+
+class VipRealserversItem(TypedDict):
+    """Type hints for realservers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Real server ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["ip", "address"]  # Type of address. | Default: ip
+    address: str  # Dynamic address of the real server. | MaxLen: 79
+    ip: str  # IP address of the real server.
+    port: int  # Port for communicating with the real server. Requi | Default: 0 | Min: 1 | Max: 65535
+    status: Literal["active", "standby", "disable"]  # Set the status of the real server to active so tha | Default: active
+    weight: int  # Weight of the real server. If weighted load balanc | Default: 1 | Min: 1 | Max: 255
+    holddown_interval: int  # Time in seconds that the system waits before re-ac | Default: 300 | Min: 30 | Max: 65535
+    healthcheck: Literal["disable", "enable", "vip"]  # Enable to check the responsiveness of the real ser | Default: vip
+    http_host: str  # HTTP server domain name in HTTP header. | MaxLen: 63
+    translate_host: Literal["enable", "disable"]  # Enable/disable translation of hostname/IP from vir | Default: enable
+    max_connections: int  # Max number of active connections that can be direc | Default: 0 | Min: 0 | Max: 2147483647
+    monitor: str  # Name of the health check monitor to use when polli
+    client_ip: str  # Only clients in this IP range can connect to this
+    verify_cert: Literal["enable", "disable"]  # Enable/disable certificate verification of the rea | Default: enable
+
+
+class VipSslcertificateItem(TypedDict):
+    """Type hints for ssl-certificate table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Certificate list. | MaxLen: 79
+
+
+class VipSslciphersuitesItem(TypedDict):
+    """Type hints for ssl-cipher-suites table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    priority: int  # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]  # Cipher suite name.
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+
+
+class VipSslserverciphersuitesItem(TypedDict):
+    """Type hints for ssl-server-cipher-suites table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    priority: int  # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]  # Cipher suite name.
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # SSL/TLS versions that the cipher suite can be used | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
+
+
+class VipMonitorItem(TypedDict):
+    """Type hints for monitor table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Health monitor name. | MaxLen: 79
+
+
+class VipGslbpublicipsItem(TypedDict):
+    """Type hints for gslb-public-ips table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    index: int  # Index of this public IP setting. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # The publicly accessible IP address. | Default: 0.0.0.0
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class VipSrcfilterObject:
@@ -130,7 +265,7 @@ class VipSrcfilterObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Source-filter range.
+    # Source-filter range. | MaxLen: 79
     range: str
     
     # Methods from FortiObject
@@ -151,7 +286,7 @@ class VipServiceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Service name.
+    # Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -172,7 +307,7 @@ class VipExtaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -193,7 +328,7 @@ class VipMappedipObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Mapped IP range.
+    # Mapped IP range. | MaxLen: 79
     range: str
     
     # Methods from FortiObject
@@ -214,7 +349,7 @@ class VipSrcintffilterObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface name.
+    # Interface name. | MaxLen: 79
     interface_name: str
     
     # Methods from FortiObject
@@ -235,35 +370,35 @@ class VipRealserversObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Real server ID.
+    # Real server ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Type of address.
+    # Type of address. | Default: ip
     type: Literal["ip", "address"]
-    # Dynamic address of the real server.
+    # Dynamic address of the real server. | MaxLen: 79
     address: str
     # IP address of the real server.
     ip: str
-    # Port for communicating with the real server. Required if port forwarding is enab
+    # Port for communicating with the real server. Required if por | Default: 0 | Min: 1 | Max: 65535
     port: int
-    # Set the status of the real server to active so that it can accept traffic, or on
+    # Set the status of the real server to active so that it can a | Default: active
     status: Literal["active", "standby", "disable"]
-    # Weight of the real server. If weighted load balancing is enabled, the server wit
+    # Weight of the real server. If weighted load balancing is ena | Default: 1 | Min: 1 | Max: 255
     weight: int
-    # Time in seconds that the system waits before re-activating a previously down act
+    # Time in seconds that the system waits before re-activating a | Default: 300 | Min: 30 | Max: 65535
     holddown_interval: int
-    # Enable to check the responsiveness of the real server before forwarding traffic.
+    # Enable to check the responsiveness of the real server before | Default: vip
     healthcheck: Literal["disable", "enable", "vip"]
-    # HTTP server domain name in HTTP header.
+    # HTTP server domain name in HTTP header. | MaxLen: 63
     http_host: str
-    # Enable/disable translation of hostname/IP from virtual server to real server.
+    # Enable/disable translation of hostname/IP from virtual serve | Default: enable
     translate_host: Literal["enable", "disable"]
-    # Max number of active connections that can be directed to the real server. When r
+    # Max number of active connections that can be directed to the | Default: 0 | Min: 0 | Max: 2147483647
     max_connections: int
-    # Name of the health check monitor to use when polling to determine a virtual serv
+    # Name of the health check monitor to use when polling to dete
     monitor: str
-    # Only clients in this IP range can connect to this real server.
+    # Only clients in this IP range can connect to this real serve
     client_ip: str
-    # Enable/disable certificate verification of the real server.
+    # Enable/disable certificate verification of the real server. | Default: enable
     verify_cert: Literal["enable", "disable"]
     
     # Methods from FortiObject
@@ -284,7 +419,7 @@ class VipSslcertificateObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Certificate list.
+    # Certificate list. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -305,11 +440,11 @@ class VipSslciphersuitesObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # SSL/TLS cipher suites priority.
+    # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
     priority: int
     # Cipher suite name.
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
-    # SSL/TLS versions that the cipher suite can be used with.
+    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
     # Methods from FortiObject
@@ -330,11 +465,11 @@ class VipSslserverciphersuitesObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # SSL/TLS cipher suites priority.
+    # SSL/TLS cipher suites priority. | Default: 0 | Min: 0 | Max: 4294967295
     priority: int
     # Cipher suite name.
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
-    # SSL/TLS versions that the cipher suite can be used with.
+    # SSL/TLS versions that the cipher suite can be used with. | Default: ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     
     # Methods from FortiObject
@@ -355,7 +490,7 @@ class VipMonitorObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Health monitor name.
+    # Health monitor name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -376,9 +511,9 @@ class VipGslbpublicipsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Index of this public IP setting.
+    # Index of this public IP setting. | Default: 0 | Min: 0 | Max: 4294967295
     index: int
-    # The publicly accessible IP address.
+    # The publicly accessible IP address. | Default: 0.0.0.0
     ip: str
     
     # Methods from FortiObject
@@ -399,104 +534,104 @@ class VipResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    id: int
-    uuid: str
-    comment: str
-    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]
-    server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]
-    dns_mapping_ttl: int
-    ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]
-    src_filter: list[dict[str, Any]]
-    src_vip_filter: Literal["disable", "enable"]
-    service: list[dict[str, Any]]
-    extip: str
-    extaddr: list[dict[str, Any]]
-    h2_support: Literal["enable", "disable"]
-    h3_support: Literal["enable", "disable"]
-    quic: str
-    nat44: Literal["disable", "enable"]
-    nat46: Literal["disable", "enable"]
-    add_nat46_route: Literal["disable", "enable"]
-    mappedip: list[dict[str, Any]]
-    mapped_addr: str
-    extintf: str
-    arp_reply: Literal["disable", "enable"]
-    http_redirect: Literal["enable", "disable"]
-    persistence: Literal["none", "http-cookie", "ssl-session-id"]
-    nat_source_vip: Literal["disable", "enable"]
-    portforward: Literal["disable", "enable"]
-    status: Literal["disable", "enable"]
-    protocol: Literal["tcp", "udp", "sctp", "icmp"]
-    extport: str
-    mappedport: str
-    gratuitous_arp_interval: int
-    srcintf_filter: list[dict[str, Any]]
-    portmapping_type: Literal["1-to-1", "m-to-n"]
-    empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
-    user_agent_detect: Literal["disable", "enable"]
-    client_cert: Literal["disable", "enable"]
-    realservers: list[dict[str, Any]]
-    http_cookie_domain_from_host: Literal["disable", "enable"]
-    http_cookie_domain: str
-    http_cookie_path: str
-    http_cookie_generation: int
-    http_cookie_age: int
-    http_cookie_share: Literal["disable", "same-ip"]
-    https_cookie_secure: Literal["disable", "enable"]
-    http_multiplex: Literal["enable", "disable"]
-    http_multiplex_ttl: int
-    http_multiplex_max_request: int
-    http_multiplex_max_concurrent_request: int
-    http_ip_header: Literal["enable", "disable"]
-    http_ip_header_name: str
-    outlook_web_access: Literal["disable", "enable"]
-    weblogic_server: Literal["disable", "enable"]
-    websphere_server: Literal["disable", "enable"]
-    ssl_mode: Literal["half", "full"]
-    ssl_certificate: list[dict[str, Any]]
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
-    ssl_algorithm: Literal["high", "medium", "low", "custom"]
-    ssl_cipher_suites: list[dict[str, Any]]
-    ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]
-    ssl_server_cipher_suites: list[dict[str, Any]]
-    ssl_pfs: Literal["require", "deny", "allow"]
-    ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]
-    ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]
-    ssl_accept_ffdhe_groups: Literal["enable", "disable"]
-    ssl_send_empty_frags: Literal["enable", "disable"]
-    ssl_client_fallback: Literal["disable", "enable"]
-    ssl_client_renegotiation: Literal["allow", "deny", "secure"]
-    ssl_client_session_state_type: Literal["disable", "time", "count", "both"]
-    ssl_client_session_state_timeout: int
-    ssl_client_session_state_max: int
-    ssl_client_rekey_count: int
-    ssl_server_renegotiation: Literal["enable", "disable"]
-    ssl_server_session_state_type: Literal["disable", "time", "count", "both"]
-    ssl_server_session_state_timeout: int
-    ssl_server_session_state_max: int
-    ssl_http_location_conversion: Literal["enable", "disable"]
-    ssl_http_match_host: Literal["enable", "disable"]
-    ssl_hpkp: Literal["disable", "enable", "report-only"]
-    ssl_hpkp_primary: str
-    ssl_hpkp_backup: str
-    ssl_hpkp_age: int
-    ssl_hpkp_report_uri: str
-    ssl_hpkp_include_subdomains: Literal["disable", "enable"]
-    ssl_hsts: Literal["disable", "enable"]
-    ssl_hsts_age: int
-    ssl_hsts_include_subdomains: Literal["disable", "enable"]
-    monitor: list[dict[str, Any]]
-    max_embryonic_connections: int
-    color: int
-    ipv6_mappedip: str
-    ipv6_mappedport: str
-    one_click_gslb_server: Literal["disable", "enable"]
-    gslb_hostname: str
-    gslb_domain_name: str
-    gslb_public_ips: list[dict[str, Any]]
+    name: str  # Virtual IP name. | MaxLen: 79
+    id: int  # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    comment: str  # Comment. | MaxLen: 255
+    type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]  # Configure a static NAT, load balance, server load | Default: static-nat
+    server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]  # Protocol to be load balanced by the virtual server
+    dns_mapping_ttl: int  # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
+    ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
+    src_filter: list[VipSrcfilterItem]  # Source address filter. Each address must be either
+    src_vip_filter: Literal["disable", "enable"]  # Enable/disable use of 'src-filter' to match destin | Default: disable
+    service: list[VipServiceItem]  # Service name.
+    extip: str  # IP address or address range on the external interf
+    extaddr: list[VipExtaddrItem]  # External FQDN address name.
+    h2_support: Literal["enable", "disable"]  # Enable/disable HTTP2 support (default = enable). | Default: enable
+    h3_support: Literal["enable", "disable"]  # Enable/disable HTTP3/QUIC support | Default: disable
+    quic: str  # QUIC setting.
+    nat44: Literal["disable", "enable"]  # Enable/disable NAT44. | Default: enable
+    nat46: Literal["disable", "enable"]  # Enable/disable NAT46. | Default: disable
+    add_nat46_route: Literal["disable", "enable"]  # Enable/disable adding NAT46 route. | Default: enable
+    mappedip: list[VipMappedipItem]  # IP address or address range on the destination net
+    mapped_addr: str  # Mapped FQDN address name. | MaxLen: 79
+    extintf: str  # Interface connected to the source network that rec | MaxLen: 35
+    arp_reply: Literal["disable", "enable"]  # Enable to respond to ARP requests for this virtual | Default: enable
+    http_redirect: Literal["enable", "disable"]  # Enable/disable redirection of HTTP to HTTPS. | Default: disable
+    persistence: Literal["none", "http-cookie", "ssl-session-id"]  # Configure how to make sure that clients connect to | Default: none
+    nat_source_vip: Literal["disable", "enable"]  # Enable/disable forcing the source NAT mapped IP to | Default: disable
+    portforward: Literal["disable", "enable"]  # Enable/disable port forwarding. | Default: disable
+    status: Literal["disable", "enable"]  # Enable/disable VIP. | Default: enable
+    protocol: Literal["tcp", "udp", "sctp", "icmp"]  # Protocol to use when forwarding packets. | Default: tcp
+    extport: str  # Incoming port number range that you want to map to
+    mappedport: str  # Port number range on the destination network to wh
+    gratuitous_arp_interval: int  # Enable to have the VIP send gratuitous ARPs. 0=dis | Default: 0 | Min: 5 | Max: 8640000
+    srcintf_filter: list[VipSrcintffilterItem]  # Interfaces to which the VIP applies. Separate the
+    portmapping_type: Literal["1-to-1", "m-to-n"]  # Port mapping type. | Default: 1-to-1
+    empty_cert_action: Literal["accept", "block", "accept-unmanageable"]  # Action for an empty client certificate. | Default: block
+    user_agent_detect: Literal["disable", "enable"]  # Enable/disable detecting device type by HTTP user- | Default: enable
+    client_cert: Literal["disable", "enable"]  # Enable/disable requesting client certificate. | Default: enable
+    realservers: list[VipRealserversItem]  # Select the real servers that this server load bala
+    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
+    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
+    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
+    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
+    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
+    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across virtual servers. | Default: same-ip
+    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
+    http_multiplex: Literal["enable", "disable"]  # Enable/disable HTTP multiplexing. | Default: disable
+    http_multiplex_ttl: int  # Time-to-live for idle connections to servers. | Default: 15 | Min: 0 | Max: 2147483647
+    http_multiplex_max_request: int  # Maximum number of requests that a multiplex server | Default: 0 | Min: 0 | Max: 2147483647
+    http_multiplex_max_concurrent_request: int  # Maximum number of concurrent requests that a multi | Default: 0 | Min: 0 | Max: 2147483647
+    http_ip_header: Literal["enable", "disable"]  # For HTTP multiplexing, enable to add the original | Default: disable
+    http_ip_header_name: str  # For HTTP multiplexing, enter a custom HTTPS header | MaxLen: 35
+    outlook_web_access: Literal["disable", "enable"]  # Enable to add the Front-End-Https header for Micro | Default: disable
+    weblogic_server: Literal["disable", "enable"]  # Enable to add an HTTP header to indicate SSL offlo | Default: disable
+    websphere_server: Literal["disable", "enable"]  # Enable to add an HTTP header to indicate SSL offlo | Default: disable
+    ssl_mode: Literal["half", "full"]  # Apply SSL offloading between the client and the Fo | Default: half
+    ssl_certificate: list[VipSslcertificateItem]  # Name of the certificate to use for SSL handshake.
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
+    ssl_algorithm: Literal["high", "medium", "low", "custom"]  # Permitted encryption algorithms for SSL sessions a | Default: high
+    ssl_cipher_suites: list[VipSslciphersuitesItem]  # SSL/TLS cipher suites acceptable from a client, or
+    ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]  # Permitted encryption algorithms for the server sid | Default: client
+    ssl_server_cipher_suites: list[VipSslserverciphersuitesItem]  # SSL/TLS cipher suites to offer to a server, ordere
+    ssl_pfs: Literal["require", "deny", "allow"]  # Select the cipher suites that can be used for SSL | Default: require
+    ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a client. | Default: tls-1.1
+    ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a client. | Default: tls-1.3
+    ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]  # Lowest SSL/TLS version acceptable from a server. U | Default: client
+    ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]  # Highest SSL/TLS version acceptable from a server. | Default: client
+    ssl_accept_ffdhe_groups: Literal["enable", "disable"]  # Enable/disable FFDHE cipher suite for SSL key exch | Default: enable
+    ssl_send_empty_frags: Literal["enable", "disable"]  # Enable/disable sending empty fragments to avoid CB | Default: enable
+    ssl_client_fallback: Literal["disable", "enable"]  # Enable/disable support for preventing Downgrade At | Default: enable
+    ssl_client_renegotiation: Literal["allow", "deny", "secure"]  # Allow, deny, or require secure renegotiation of cl | Default: secure
+    ssl_client_session_state_type: Literal["disable", "time", "count", "both"]  # How to expire SSL sessions for the segment of the | Default: both
+    ssl_client_session_state_timeout: int  # Number of minutes to keep client to FortiGate SSL | Default: 30 | Min: 1 | Max: 14400
+    ssl_client_session_state_max: int  # Maximum number of client to FortiGate SSL session | Default: 1000 | Min: 1 | Max: 10000
+    ssl_client_rekey_count: int  # Maximum length of data in MB before triggering a c | Default: 0 | Min: 200 | Max: 1048576
+    ssl_server_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+    ssl_server_session_state_type: Literal["disable", "time", "count", "both"]  # How to expire SSL sessions for the segment of the | Default: both
+    ssl_server_session_state_timeout: int  # Number of minutes to keep FortiGate to Server SSL | Default: 60 | Min: 1 | Max: 14400
+    ssl_server_session_state_max: int  # Maximum number of FortiGate to Server SSL session | Default: 100 | Min: 1 | Max: 10000
+    ssl_http_location_conversion: Literal["enable", "disable"]  # Enable to replace HTTP with HTTPS in the reply's L | Default: disable
+    ssl_http_match_host: Literal["enable", "disable"]  # Enable/disable HTTP host matching for location con | Default: enable
+    ssl_hpkp: Literal["disable", "enable", "report-only"]  # Enable/disable including HPKP header in response. | Default: disable
+    ssl_hpkp_primary: str  # Certificate to generate primary HPKP pin from. | MaxLen: 79
+    ssl_hpkp_backup: str  # Certificate to generate backup HPKP pin from. | MaxLen: 79
+    ssl_hpkp_age: int  # Number of seconds the client should honor the HPKP | Default: 5184000 | Min: 60 | Max: 157680000
+    ssl_hpkp_report_uri: str  # URL to report HPKP violations to. | MaxLen: 255
+    ssl_hpkp_include_subdomains: Literal["disable", "enable"]  # Indicate that HPKP header applies to all subdomain | Default: disable
+    ssl_hsts: Literal["disable", "enable"]  # Enable/disable including HSTS header in response. | Default: disable
+    ssl_hsts_age: int  # Number of seconds the client should honor the HSTS | Default: 5184000 | Min: 60 | Max: 157680000
+    ssl_hsts_include_subdomains: Literal["disable", "enable"]  # Indicate that HSTS header applies to all subdomain | Default: disable
+    monitor: list[VipMonitorItem]  # Name of the health check monitor to use when polli
+    max_embryonic_connections: int  # Maximum number of incomplete connections. | Default: 1000 | Min: 0 | Max: 100000
+    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
+    ipv6_mappedip: str  # Range of mapped IPv6 addresses. Specify the start
+    ipv6_mappedport: str  # IPv6 port number range on the destination network
+    one_click_gslb_server: Literal["disable", "enable"]  # Enable/disable one click GSLB server integration w | Default: disable
+    gslb_hostname: str  # Hostname to use within the configured FortiGSLB do | MaxLen: 35
+    gslb_domain_name: str  # Domain to use when integrating with FortiGSLB. | MaxLen: 255
+    gslb_public_ips: list[VipGslbpublicipsItem]  # Publicly accessible IP addresses for the FortiGSLB
 
 
 @final
@@ -507,202 +642,202 @@ class VipObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Virtual IP name.
+    # Virtual IP name. | MaxLen: 79
     name: str
-    # Custom defined ID.
+    # Custom defined ID. | Default: 0 | Min: 0 | Max: 65535
     id: int
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comment: str
-    # Configure a static NAT, load balance, server load balance, access proxy, DNS tra
+    # Configure a static NAT, load balance, server load balance, a | Default: static-nat
     type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"]
     # Protocol to be load balanced by the virtual server
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]
-    # DNS mapping TTL (Set to zero to use TTL in DNS response, default = 0).
+    # DNS mapping TTL | Default: 0 | Min: 0 | Max: 604800
     dns_mapping_ttl: int
-    # Method used to distribute sessions to real servers.
+    # Method used to distribute sessions to real servers. | Default: static
     ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]
-    # Source address filter. Each address must be either an IP/subnet (x.x.x.x/n) or a
-    src_filter: list[VipSrcfilterObject]  # Table field - list of typed objects
-    # Enable/disable use of 'src-filter' to match destinations for the reverse SNAT ru
+    # Source address filter. Each address must be either an IP/sub
+    src_filter: list[VipSrcfilterObject]
+    # Enable/disable use of 'src-filter' to match destinations for | Default: disable
     src_vip_filter: Literal["disable", "enable"]
     # Service name.
-    service: list[VipServiceObject]  # Table field - list of typed objects
-    # IP address or address range on the external interface that you want to map to an
+    service: list[VipServiceObject]
+    # IP address or address range on the external interface that y
     extip: str
     # External FQDN address name.
-    extaddr: list[VipExtaddrObject]  # Table field - list of typed objects
-    # Enable/disable HTTP2 support (default = enable).
+    extaddr: list[VipExtaddrObject]
+    # Enable/disable HTTP2 support (default = enable). | Default: enable
     h2_support: Literal["enable", "disable"]
-    # Enable/disable HTTP3/QUIC support (default = disable).
+    # Enable/disable HTTP3/QUIC support (default = disable). | Default: disable
     h3_support: Literal["enable", "disable"]
     # QUIC setting.
     quic: str
-    # Enable/disable NAT44.
+    # Enable/disable NAT44. | Default: enable
     nat44: Literal["disable", "enable"]
-    # Enable/disable NAT46.
+    # Enable/disable NAT46. | Default: disable
     nat46: Literal["disable", "enable"]
-    # Enable/disable adding NAT46 route.
+    # Enable/disable adding NAT46 route. | Default: enable
     add_nat46_route: Literal["disable", "enable"]
-    # IP address or address range on the destination network to which the external IP
-    mappedip: list[VipMappedipObject]  # Table field - list of typed objects
-    # Mapped FQDN address name.
+    # IP address or address range on the destination network to wh
+    mappedip: list[VipMappedipObject]
+    # Mapped FQDN address name. | MaxLen: 79
     mapped_addr: str
-    # Interface connected to the source network that receives the packets that will be
+    # Interface connected to the source network that receives the | MaxLen: 35
     extintf: str
-    # Enable to respond to ARP requests for this virtual IP address. Enabled by defaul
+    # Enable to respond to ARP requests for this virtual IP addres | Default: enable
     arp_reply: Literal["disable", "enable"]
-    # Enable/disable redirection of HTTP to HTTPS.
+    # Enable/disable redirection of HTTP to HTTPS. | Default: disable
     http_redirect: Literal["enable", "disable"]
-    # Configure how to make sure that clients connect to the same server every time th
+    # Configure how to make sure that clients connect to the same | Default: none
     persistence: Literal["none", "http-cookie", "ssl-session-id"]
-    # Enable/disable forcing the source NAT mapped IP to the external IP for all traff
+    # Enable/disable forcing the source NAT mapped IP to the exter | Default: disable
     nat_source_vip: Literal["disable", "enable"]
-    # Enable/disable port forwarding.
+    # Enable/disable port forwarding. | Default: disable
     portforward: Literal["disable", "enable"]
-    # Enable/disable VIP.
+    # Enable/disable VIP. | Default: enable
     status: Literal["disable", "enable"]
-    # Protocol to use when forwarding packets.
+    # Protocol to use when forwarding packets. | Default: tcp
     protocol: Literal["tcp", "udp", "sctp", "icmp"]
-    # Incoming port number range that you want to map to a port number range on the de
+    # Incoming port number range that you want to map to a port nu
     extport: str
-    # Port number range on the destination network to which the external port number r
+    # Port number range on the destination network to which the ex
     mappedport: str
-    # Enable to have the VIP send gratuitous ARPs. 0=disabled. Set from 5 up to 864000
+    # Enable to have the VIP send gratuitous ARPs. 0=disabled. Set | Default: 0 | Min: 5 | Max: 8640000
     gratuitous_arp_interval: int
-    # Interfaces to which the VIP applies. Separate the names with spaces.
-    srcintf_filter: list[VipSrcintffilterObject]  # Table field - list of typed objects
-    # Port mapping type.
+    # Interfaces to which the VIP applies. Separate the names with
+    srcintf_filter: list[VipSrcintffilterObject]
+    # Port mapping type. | Default: 1-to-1
     portmapping_type: Literal["1-to-1", "m-to-n"]
-    # Action for an empty client certificate.
+    # Action for an empty client certificate. | Default: block
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
-    # Enable/disable detecting device type by HTTP user-agent if no client certificate
+    # Enable/disable detecting device type by HTTP user-agent if n | Default: enable
     user_agent_detect: Literal["disable", "enable"]
-    # Enable/disable requesting client certificate.
+    # Enable/disable requesting client certificate. | Default: enable
     client_cert: Literal["disable", "enable"]
-    # Select the real servers that this server load balancing VIP will distribute traf
-    realservers: list[VipRealserversObject]  # Table field - list of typed objects
-    # Enable/disable use of HTTP cookie domain from host field in HTTP.
+    # Select the real servers that this server load balancing VIP
+    realservers: list[VipRealserversObject]
+    # Enable/disable use of HTTP cookie domain from host field in | Default: disable
     http_cookie_domain_from_host: Literal["disable", "enable"]
-    # Domain that HTTP cookie persistence should apply to.
+    # Domain that HTTP cookie persistence should apply to. | MaxLen: 35
     http_cookie_domain: str
-    # Limit HTTP cookie persistence to the specified path.
+    # Limit HTTP cookie persistence to the specified path. | MaxLen: 35
     http_cookie_path: str
-    # Generation of HTTP cookie to be accepted. Changing invalidates all existing cook
+    # Generation of HTTP cookie to be accepted. Changing invalidat | Default: 0 | Min: 0 | Max: 4294967295
     http_cookie_generation: int
-    # Time in minutes that client web browsers should keep a cookie. Default is 60 min
+    # Time in minutes that client web browsers should keep a cooki | Default: 60 | Min: 0 | Max: 525600
     http_cookie_age: int
-    # Control sharing of cookies across virtual servers. Use of same-ip means a cookie
+    # Control sharing of cookies across virtual servers. Use of sa | Default: same-ip
     http_cookie_share: Literal["disable", "same-ip"]
-    # Enable/disable verification that inserted HTTPS cookies are secure.
+    # Enable/disable verification that inserted HTTPS cookies are | Default: disable
     https_cookie_secure: Literal["disable", "enable"]
-    # Enable/disable HTTP multiplexing.
+    # Enable/disable HTTP multiplexing. | Default: disable
     http_multiplex: Literal["enable", "disable"]
-    # Time-to-live for idle connections to servers.
+    # Time-to-live for idle connections to servers. | Default: 15 | Min: 0 | Max: 2147483647
     http_multiplex_ttl: int
-    # Maximum number of requests that a multiplex server can handle before disconnecti
+    # Maximum number of requests that a multiplex server can handl | Default: 0 | Min: 0 | Max: 2147483647
     http_multiplex_max_request: int
-    # Maximum number of concurrent requests that a multiplex server can handle
+    # Maximum number of concurrent requests that a multiplex serve | Default: 0 | Min: 0 | Max: 2147483647
     http_multiplex_max_concurrent_request: int
-    # For HTTP multiplexing, enable to add the original client IP address in the X-For
+    # For HTTP multiplexing, enable to add the original client IP | Default: disable
     http_ip_header: Literal["enable", "disable"]
-    # For HTTP multiplexing, enter a custom HTTPS header name. The original client IP
+    # For HTTP multiplexing, enter a custom HTTPS header name. The | MaxLen: 35
     http_ip_header_name: str
-    # Enable to add the Front-End-Https header for Microsoft Outlook Web Access.
+    # Enable to add the Front-End-Https header for Microsoft Outlo | Default: disable
     outlook_web_access: Literal["disable", "enable"]
-    # Enable to add an HTTP header to indicate SSL offloading for a WebLogic server.
+    # Enable to add an HTTP header to indicate SSL offloading for | Default: disable
     weblogic_server: Literal["disable", "enable"]
-    # Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
+    # Enable to add an HTTP header to indicate SSL offloading for | Default: disable
     websphere_server: Literal["disable", "enable"]
-    # Apply SSL offloading between the client and the FortiGate (half) or from the cli
+    # Apply SSL offloading between the client and the FortiGate | Default: half
     ssl_mode: Literal["half", "full"]
     # Name of the certificate to use for SSL handshake.
-    ssl_certificate: list[VipSslcertificateObject]  # Table field - list of typed objects
-    # Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL s
+    ssl_certificate: list[VipSslcertificateObject]
+    # Number of bits to use in the Diffie-Hellman exchange for RSA | Default: 2048
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
-    # Permitted encryption algorithms for SSL sessions according to encryption strengt
+    # Permitted encryption algorithms for SSL sessions according t | Default: high
     ssl_algorithm: Literal["high", "medium", "low", "custom"]
-    # SSL/TLS cipher suites acceptable from a client, ordered by priority.
-    ssl_cipher_suites: list[VipSslciphersuitesObject]  # Table field - list of typed objects
-    # Permitted encryption algorithms for the server side of SSL full mode sessions ac
+    # SSL/TLS cipher suites acceptable from a client, ordered by p
+    ssl_cipher_suites: list[VipSslciphersuitesObject]
+    # Permitted encryption algorithms for the server side of SSL f | Default: client
     ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]
-    # SSL/TLS cipher suites to offer to a server, ordered by priority.
-    ssl_server_cipher_suites: list[VipSslserverciphersuitesObject]  # Table field - list of typed objects
-    # Select the cipher suites that can be used for SSL perfect forward secrecy (PFS).
+    # SSL/TLS cipher suites to offer to a server, ordered by prior
+    ssl_server_cipher_suites: list[VipSslserverciphersuitesObject]
+    # Select the cipher suites that can be used for SSL perfect fo | Default: require
     ssl_pfs: Literal["require", "deny", "allow"]
-    # Lowest SSL/TLS version acceptable from a client.
+    # Lowest SSL/TLS version acceptable from a client. | Default: tls-1.1
     ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Highest SSL/TLS version acceptable from a client.
+    # Highest SSL/TLS version acceptable from a client. | Default: tls-1.3
     ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Lowest SSL/TLS version acceptable from a server. Use the client setting by defau
+    # Lowest SSL/TLS version acceptable from a server. Use the cli | Default: client
     ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]
-    # Highest SSL/TLS version acceptable from a server. Use the client setting by defa
+    # Highest SSL/TLS version acceptable from a server. Use the cl | Default: client
     ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"]
-    # Enable/disable FFDHE cipher suite for SSL key exchange.
+    # Enable/disable FFDHE cipher suite for SSL key exchange. | Default: enable
     ssl_accept_ffdhe_groups: Literal["enable", "disable"]
-    # Enable/disable sending empty fragments to avoid CBC IV attacks
+    # Enable/disable sending empty fragments to avoid CBC IV attac | Default: enable
     ssl_send_empty_frags: Literal["enable", "disable"]
-    # Enable/disable support for preventing Downgrade Attacks on client connections
+    # Enable/disable support for preventing Downgrade Attacks on c | Default: enable
     ssl_client_fallback: Literal["disable", "enable"]
-    # Allow, deny, or require secure renegotiation of client sessions to comply with R
+    # Allow, deny, or require secure renegotiation of client sessi | Default: secure
     ssl_client_renegotiation: Literal["allow", "deny", "secure"]
-    # How to expire SSL sessions for the segment of the SSL connection between the cli
+    # How to expire SSL sessions for the segment of the SSL connec | Default: both
     ssl_client_session_state_type: Literal["disable", "time", "count", "both"]
-    # Number of minutes to keep client to FortiGate SSL session state.
+    # Number of minutes to keep client to FortiGate SSL session st | Default: 30 | Min: 1 | Max: 14400
     ssl_client_session_state_timeout: int
-    # Maximum number of client to FortiGate SSL session states to keep.
+    # Maximum number of client to FortiGate SSL session states to | Default: 1000 | Min: 1 | Max: 10000
     ssl_client_session_state_max: int
-    # Maximum length of data in MB before triggering a client rekey (0 = disable).
+    # Maximum length of data in MB before triggering a client reke | Default: 0 | Min: 200 | Max: 1048576
     ssl_client_rekey_count: int
-    # Enable/disable secure renegotiation to comply with RFC 5746.
+    # Enable/disable secure renegotiation to comply with RFC 5746. | Default: enable
     ssl_server_renegotiation: Literal["enable", "disable"]
-    # How to expire SSL sessions for the segment of the SSL connection between the ser
+    # How to expire SSL sessions for the segment of the SSL connec | Default: both
     ssl_server_session_state_type: Literal["disable", "time", "count", "both"]
-    # Number of minutes to keep FortiGate to Server SSL session state.
+    # Number of minutes to keep FortiGate to Server SSL session st | Default: 60 | Min: 1 | Max: 14400
     ssl_server_session_state_timeout: int
-    # Maximum number of FortiGate to Server SSL session states to keep.
+    # Maximum number of FortiGate to Server SSL session states to | Default: 100 | Min: 1 | Max: 10000
     ssl_server_session_state_max: int
-    # Enable to replace HTTP with HTTPS in the reply's Location HTTP header field.
+    # Enable to replace HTTP with HTTPS in the reply's Location HT | Default: disable
     ssl_http_location_conversion: Literal["enable", "disable"]
-    # Enable/disable HTTP host matching for location conversion.
+    # Enable/disable HTTP host matching for location conversion. | Default: enable
     ssl_http_match_host: Literal["enable", "disable"]
-    # Enable/disable including HPKP header in response.
+    # Enable/disable including HPKP header in response. | Default: disable
     ssl_hpkp: Literal["disable", "enable", "report-only"]
-    # Certificate to generate primary HPKP pin from.
+    # Certificate to generate primary HPKP pin from. | MaxLen: 79
     ssl_hpkp_primary: str
-    # Certificate to generate backup HPKP pin from.
+    # Certificate to generate backup HPKP pin from. | MaxLen: 79
     ssl_hpkp_backup: str
-    # Number of seconds the client should honor the HPKP setting.
+    # Number of seconds the client should honor the HPKP setting. | Default: 5184000 | Min: 60 | Max: 157680000
     ssl_hpkp_age: int
-    # URL to report HPKP violations to.
+    # URL to report HPKP violations to. | MaxLen: 255
     ssl_hpkp_report_uri: str
-    # Indicate that HPKP header applies to all subdomains.
+    # Indicate that HPKP header applies to all subdomains. | Default: disable
     ssl_hpkp_include_subdomains: Literal["disable", "enable"]
-    # Enable/disable including HSTS header in response.
+    # Enable/disable including HSTS header in response. | Default: disable
     ssl_hsts: Literal["disable", "enable"]
-    # Number of seconds the client should honor the HSTS setting.
+    # Number of seconds the client should honor the HSTS setting. | Default: 5184000 | Min: 60 | Max: 157680000
     ssl_hsts_age: int
-    # Indicate that HSTS header applies to all subdomains.
+    # Indicate that HSTS header applies to all subdomains. | Default: disable
     ssl_hsts_include_subdomains: Literal["disable", "enable"]
-    # Name of the health check monitor to use when polling to determine a virtual serv
-    monitor: list[VipMonitorObject]  # Table field - list of typed objects
-    # Maximum number of incomplete connections.
+    # Name of the health check monitor to use when polling to dete
+    monitor: list[VipMonitorObject]
+    # Maximum number of incomplete connections. | Default: 1000 | Min: 0 | Max: 100000
     max_embryonic_connections: int
-    # Color of icon on the GUI.
+    # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
     color: int
-    # Range of mapped IPv6 addresses. Specify the start IPv6 address followed by a spa
+    # Range of mapped IPv6 addresses. Specify the start IPv6 addre
     ipv6_mappedip: str
-    # IPv6 port number range on the destination network to which the external port num
+    # IPv6 port number range on the destination network to which t
     ipv6_mappedport: str
-    # Enable/disable one click GSLB server integration with FortiGSLB.
+    # Enable/disable one click GSLB server integration with FortiG | Default: disable
     one_click_gslb_server: Literal["disable", "enable"]
-    # Hostname to use within the configured FortiGSLB domain.
+    # Hostname to use within the configured FortiGSLB domain. | MaxLen: 35
     gslb_hostname: str
-    # Domain to use when integrating with FortiGSLB.
+    # Domain to use when integrating with FortiGSLB. | MaxLen: 255
     gslb_domain_name: str
     # Publicly accessible IP addresses for the FortiGSLB service.
-    gslb_public_ips: list[VipGslbpublicipsObject]  # Table field - list of typed objects
+    gslb_public_ips: list[VipGslbpublicipsObject]
     
     # Common API response fields
     status: str
@@ -728,8 +863,66 @@ class Vip:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VipResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VipResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[VipResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -744,11 +937,12 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -764,11 +958,11 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -783,10 +977,11 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[VipObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -803,7 +998,7 @@ class Vip:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -863,7 +1058,7 @@ class Vip:
         **kwargs: Any,
     ) -> list[VipResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -878,9 +1073,9 @@ class Vip:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -1010,7 +1205,7 @@ class Vip:
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
     
@@ -1120,8 +1315,9 @@ class Vip:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -1227,7 +1423,114 @@ class Vip:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -1334,7 +1637,7 @@ class Vip:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -1441,7 +1744,7 @@ class Vip:
         gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
     
@@ -1551,8 +1854,9 @@ class Vip:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -1658,7 +1962,114 @@ class Vip:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -1765,7 +2176,7 @@ class Vip:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -1774,7 +2185,7 @@ class Vip:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VipObject: ...
     
@@ -1786,8 +2197,9 @@ class Vip:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -1795,7 +2207,16 @@ class Vip:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -1803,7 +2224,7 @@ class Vip:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -1916,7 +2337,7 @@ class Vip:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -1941,8 +2362,2525 @@ class Vip:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class VipDictMode:
+    """Vip endpoint for dict response mode (default for this client).
+    
+    By default returns VipResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return VipObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[VipObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> VipResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[VipResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class VipObjectMode:
+    """Vip endpoint for object response mode (default for this client).
+    
+    By default returns VipObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return VipResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> VipResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[VipResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[VipObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VipObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VipPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        comment: str | None = ...,
+        type: Literal["static-nat", "load-balance", "server-load-balance", "dns-translation", "fqdn", "access-proxy"] | None = ...,
+        server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
+        dns_mapping_ttl: int | None = ...,
+        ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
+        src_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_vip_filter: Literal["disable", "enable"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        extip: str | None = ...,
+        extaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        h2_support: Literal["enable", "disable"] | None = ...,
+        h3_support: Literal["enable", "disable"] | None = ...,
+        quic: str | None = ...,
+        nat44: Literal["disable", "enable"] | None = ...,
+        nat46: Literal["disable", "enable"] | None = ...,
+        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        mappedip: str | list[str] | list[dict[str, Any]] | None = ...,
+        mapped_addr: str | None = ...,
+        extintf: str | None = ...,
+        arp_reply: Literal["disable", "enable"] | None = ...,
+        http_redirect: Literal["enable", "disable"] | None = ...,
+        persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
+        nat_source_vip: Literal["disable", "enable"] | None = ...,
+        portforward: Literal["disable", "enable"] | None = ...,
+        status: Literal["disable", "enable"] | None = ...,
+        protocol: Literal["tcp", "udp", "sctp", "icmp"] | None = ...,
+        extport: str | None = ...,
+        mappedport: str | None = ...,
+        gratuitous_arp_interval: int | None = ...,
+        srcintf_filter: str | list[str] | list[dict[str, Any]] | None = ...,
+        portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
+        user_agent_detect: Literal["disable", "enable"] | None = ...,
+        client_cert: Literal["disable", "enable"] | None = ...,
+        realservers: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
+        http_cookie_domain: str | None = ...,
+        http_cookie_path: str | None = ...,
+        http_cookie_generation: int | None = ...,
+        http_cookie_age: int | None = ...,
+        http_cookie_share: Literal["disable", "same-ip"] | None = ...,
+        https_cookie_secure: Literal["disable", "enable"] | None = ...,
+        http_multiplex: Literal["enable", "disable"] | None = ...,
+        http_multiplex_ttl: int | None = ...,
+        http_multiplex_max_request: int | None = ...,
+        http_multiplex_max_concurrent_request: int | None = ...,
+        http_ip_header: Literal["enable", "disable"] | None = ...,
+        http_ip_header_name: str | None = ...,
+        outlook_web_access: Literal["disable", "enable"] | None = ...,
+        weblogic_server: Literal["disable", "enable"] | None = ...,
+        websphere_server: Literal["disable", "enable"] | None = ...,
+        ssl_mode: Literal["half", "full"] | None = ...,
+        ssl_certificate: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
+        ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
+        ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_server_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_server_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3", "client"] | None = ...,
+        ssl_accept_ffdhe_groups: Literal["enable", "disable"] | None = ...,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
+        ssl_client_fallback: Literal["disable", "enable"] | None = ...,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
+        ssl_client_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_client_session_state_timeout: int | None = ...,
+        ssl_client_session_state_max: int | None = ...,
+        ssl_client_rekey_count: int | None = ...,
+        ssl_server_renegotiation: Literal["enable", "disable"] | None = ...,
+        ssl_server_session_state_type: Literal["disable", "time", "count", "both"] | None = ...,
+        ssl_server_session_state_timeout: int | None = ...,
+        ssl_server_session_state_max: int | None = ...,
+        ssl_http_location_conversion: Literal["enable", "disable"] | None = ...,
+        ssl_http_match_host: Literal["enable", "disable"] | None = ...,
+        ssl_hpkp: Literal["disable", "enable", "report-only"] | None = ...,
+        ssl_hpkp_primary: str | None = ...,
+        ssl_hpkp_backup: str | None = ...,
+        ssl_hpkp_age: int | None = ...,
+        ssl_hpkp_report_uri: str | None = ...,
+        ssl_hpkp_include_subdomains: Literal["disable", "enable"] | None = ...,
+        ssl_hsts: Literal["disable", "enable"] | None = ...,
+        ssl_hsts_age: int | None = ...,
+        ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
+        monitor: str | list[str] | list[dict[str, Any]] | None = ...,
+        max_embryonic_connections: int | None = ...,
+        color: int | None = ...,
+        ipv6_mappedip: str | None = ...,
+        ipv6_mappedport: str | None = ...,
+        one_click_gslb_server: Literal["disable", "enable"] | None = ...,
+        gslb_hostname: str | None = ...,
+        gslb_domain_name: str | None = ...,
+        gslb_public_ips: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Vip",
+    "VipDictMode",
+    "VipObjectMode",
     "VipPayload",
     "VipObject",
 ]

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class VlansPayload(TypedDict, total=False):
     """
     Type hints for switch_controller/initial_config/vlans payload fields.
@@ -18,16 +22,18 @@ class VlansPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    optional_vlans: NotRequired[Literal["enable", "disable"]]  # Auto-generate pre-configured VLANs upon switch discovery.
-    default_vlan: NotRequired[str]  # Default VLAN (native) assigned to all switch ports upon disc
-    quarantine: NotRequired[str]  # VLAN for quarantined traffic.
-    rspan: NotRequired[str]  # VLAN for RSPAN/ERSPAN mirrored traffic.
-    voice: NotRequired[str]  # VLAN dedicated for voice devices.
-    video: NotRequired[str]  # VLAN dedicated for video devices.
-    nac: NotRequired[str]  # VLAN for NAC onboarding devices.
-    nac_segment: NotRequired[str]  # VLAN for NAC segment primary interface.
+    optional_vlans: Literal["enable", "disable"]  # Auto-generate pre-configured VLANs upon switch dis | Default: enable
+    default_vlan: str  # Default VLAN (native) assigned to all switch ports | Default: _default | MaxLen: 63
+    quarantine: str  # VLAN for quarantined traffic. | Default: quarantine | MaxLen: 63
+    rspan: str  # VLAN for RSPAN/ERSPAN mirrored traffic. | Default: rspan | MaxLen: 63
+    voice: str  # VLAN dedicated for voice devices. | Default: voice | MaxLen: 63
+    video: str  # VLAN dedicated for video devices. | Default: video | MaxLen: 63
+    nac: str  # VLAN for NAC onboarding devices. | Default: onboarding | MaxLen: 63
+    nac_segment: str  # VLAN for NAC segment primary interface. | Default: nac_segment | MaxLen: 63
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -37,14 +43,14 @@ class VlansResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    optional_vlans: Literal["enable", "disable"]
-    default_vlan: str
-    quarantine: str
-    rspan: str
-    voice: str
-    video: str
-    nac: str
-    nac_segment: str
+    optional_vlans: Literal["enable", "disable"]  # Auto-generate pre-configured VLANs upon switch dis | Default: enable
+    default_vlan: str  # Default VLAN (native) assigned to all switch ports | Default: _default | MaxLen: 63
+    quarantine: str  # VLAN for quarantined traffic. | Default: quarantine | MaxLen: 63
+    rspan: str  # VLAN for RSPAN/ERSPAN mirrored traffic. | Default: rspan | MaxLen: 63
+    voice: str  # VLAN dedicated for voice devices. | Default: voice | MaxLen: 63
+    video: str  # VLAN dedicated for video devices. | Default: video | MaxLen: 63
+    nac: str  # VLAN for NAC onboarding devices. | Default: onboarding | MaxLen: 63
+    nac_segment: str  # VLAN for NAC segment primary interface. | Default: nac_segment | MaxLen: 63
 
 
 @final
@@ -55,21 +61,21 @@ class VlansObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Auto-generate pre-configured VLANs upon switch discovery.
+    # Auto-generate pre-configured VLANs upon switch discovery. | Default: enable
     optional_vlans: Literal["enable", "disable"]
-    # Default VLAN (native) assigned to all switch ports upon discovery.
+    # Default VLAN (native) assigned to all switch ports upon disc | Default: _default | MaxLen: 63
     default_vlan: str
-    # VLAN for quarantined traffic.
+    # VLAN for quarantined traffic. | Default: quarantine | MaxLen: 63
     quarantine: str
-    # VLAN for RSPAN/ERSPAN mirrored traffic.
+    # VLAN for RSPAN/ERSPAN mirrored traffic. | Default: rspan | MaxLen: 63
     rspan: str
-    # VLAN dedicated for voice devices.
+    # VLAN dedicated for voice devices. | Default: voice | MaxLen: 63
     voice: str
-    # VLAN dedicated for video devices.
+    # VLAN dedicated for video devices. | Default: video | MaxLen: 63
     video: str
-    # VLAN for NAC onboarding devices.
+    # VLAN for NAC onboarding devices. | Default: onboarding | MaxLen: 63
     nac: str
-    # VLAN for NAC segment primary interface.
+    # VLAN for NAC segment primary interface. | Default: nac_segment | MaxLen: 63
     nac_segment: str
     
     # Common API response fields
@@ -95,8 +101,66 @@ class Vlans:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VlansResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VlansResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VlansResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -111,11 +175,12 @@ class Vlans:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlansObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -131,11 +196,11 @@ class Vlans:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlansObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -150,10 +215,11 @@ class Vlans:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlansObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -170,7 +236,7 @@ class Vlans:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -230,7 +296,7 @@ class Vlans:
         **kwargs: Any,
     ) -> VlansResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -245,9 +311,9 @@ class Vlans:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -287,7 +353,7 @@ class Vlans:
         nac_segment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VlansObject: ...
     
@@ -307,8 +373,9 @@ class Vlans:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -324,7 +391,24 @@ class Vlans:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -341,7 +425,7 @@ class Vlans:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -364,7 +448,7 @@ class Vlans:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -389,8 +473,479 @@ class Vlans:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class VlansDictMode:
+    """Vlans endpoint for dict response mode (default for this client).
+    
+    By default returns VlansResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return VlansObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> VlansResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> VlansResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class VlansObjectMode:
+    """Vlans endpoint for object response mode (default for this client).
+    
+    By default returns VlansObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return VlansResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> VlansResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> VlansResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> VlansObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VlansObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VlansPayload | None = ...,
+        optional_vlans: Literal["enable", "disable"] | None = ...,
+        default_vlan: str | None = ...,
+        quarantine: str | None = ...,
+        rspan: str | None = ...,
+        voice: str | None = ...,
+        video: str | None = ...,
+        nac: str | None = ...,
+        nac_segment: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Vlans",
+    "VlansDictMode",
+    "VlansObjectMode",
     "VlansPayload",
     "VlansObject",
 ]

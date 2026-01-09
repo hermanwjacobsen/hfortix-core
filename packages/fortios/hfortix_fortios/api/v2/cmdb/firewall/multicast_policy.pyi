@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class MulticastPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/multicast_policy payload fields.
@@ -22,29 +26,51 @@ class MulticastPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: NotRequired[int]  # Policy ID ((0 - 4294967294).
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    name: NotRequired[str]  # Policy name.
-    comments: NotRequired[str]  # Comment.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy.
-    srcintf: str  # Source interface name.
-    dstintf: str  # Destination interface name.
+    id: int  # Policy ID ((0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    name: str  # Policy name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 1023
+    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
+    srcintf: str  # Source interface name. | MaxLen: 35
+    dstintf: str  # Destination interface name. | MaxLen: 35
     srcaddr: list[dict[str, Any]]  # Source address objects.
     dstaddr: list[dict[str, Any]]  # Destination address objects.
-    snat: NotRequired[Literal["enable", "disable"]]  # Enable/disable substitution of the outgoing interface IP add
-    snat_ip: NotRequired[str]  # IPv4 address to be used as the source address for NATed traf
-    dnat: NotRequired[str]  # IPv4 DNAT address used for multicast destination addresses.
-    action: NotRequired[Literal["accept", "deny"]]  # Accept or deny traffic matching the policy.
-    protocol: NotRequired[int]  # Integer value for the protocol type as defined by IANA
-    start_port: NotRequired[int]  # Integer value for starting TCP/UDP/SCTP destination port in
-    end_port: NotRequired[int]  # Integer value for ending TCP/UDP/SCTP destination port in ra
-    utm_status: NotRequired[Literal["enable", "disable"]]  # Enable to add an IPS security profile to the policy.
-    ips_sensor: NotRequired[str]  # Name of an existing IPS sensor.
-    logtraffic: NotRequired[Literal["all", "utm", "disable"]]  # Enable or disable logging. Log all sessions or security prof
-    auto_asic_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable offloading policy traffic for hardware accele
-    traffic_shaper: NotRequired[str]  # Traffic shaper to apply to traffic forwarded by the multicas
+    snat: Literal["enable", "disable"]  # Enable/disable substitution of the outgoing interf | Default: disable
+    snat_ip: str  # IPv4 address to be used as the source address for | Default: 0.0.0.0
+    dnat: str  # IPv4 DNAT address used for multicast destination a | Default: 0.0.0.0
+    action: Literal["accept", "deny"]  # Accept or deny traffic matching the policy. | Default: accept
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    start_port: int  # Integer value for starting TCP/UDP/SCTP destinatio | Default: 1 | Min: 0 | Max: 65535
+    end_port: int  # Integer value for ending TCP/UDP/SCTP destination | Default: 65535 | Min: 0 | Max: 65535
+    utm_status: Literal["enable", "disable"]  # Enable to add an IPS security profile to the polic | Default: disable
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    logtraffic: Literal["all", "utm", "disable"]  # Enable or disable logging. Log all sessions or sec | Default: utm
+    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
+    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class MulticastPolicySrcaddrItem(TypedDict):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Source address objects. | MaxLen: 79
+
+
+class MulticastPolicyDstaddrItem(TypedDict):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Destination address objects. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class MulticastPolicySrcaddrObject:
@@ -54,7 +80,7 @@ class MulticastPolicySrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Source address objects.
+    # Source address objects. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -75,7 +101,7 @@ class MulticastPolicyDstaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Destination address objects.
+    # Destination address objects. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -96,27 +122,27 @@ class MulticastPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: int
-    uuid: str
-    name: str
-    comments: str
-    status: Literal["enable", "disable"]
-    srcintf: str
-    dstintf: str
-    srcaddr: list[dict[str, Any]]
-    dstaddr: list[dict[str, Any]]
-    snat: Literal["enable", "disable"]
-    snat_ip: str
-    dnat: str
-    action: Literal["accept", "deny"]
-    protocol: int
-    start_port: int
-    end_port: int
-    utm_status: Literal["enable", "disable"]
-    ips_sensor: str
-    logtraffic: Literal["all", "utm", "disable"]
-    auto_asic_offload: Literal["enable", "disable"]
-    traffic_shaper: str
+    id: int  # Policy ID ((0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    name: str  # Policy name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 1023
+    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
+    srcintf: str  # Source interface name. | MaxLen: 35
+    dstintf: str  # Destination interface name. | MaxLen: 35
+    srcaddr: list[MulticastPolicySrcaddrItem]  # Source address objects.
+    dstaddr: list[MulticastPolicyDstaddrItem]  # Destination address objects.
+    snat: Literal["enable", "disable"]  # Enable/disable substitution of the outgoing interf | Default: disable
+    snat_ip: str  # IPv4 address to be used as the source address for | Default: 0.0.0.0
+    dnat: str  # IPv4 DNAT address used for multicast destination a | Default: 0.0.0.0
+    action: Literal["accept", "deny"]  # Accept or deny traffic matching the policy. | Default: accept
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    start_port: int  # Integer value for starting TCP/UDP/SCTP destinatio | Default: 1 | Min: 0 | Max: 65535
+    end_port: int  # Integer value for ending TCP/UDP/SCTP destination | Default: 65535 | Min: 0 | Max: 65535
+    utm_status: Literal["enable", "disable"]  # Enable to add an IPS security profile to the polic | Default: disable
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    logtraffic: Literal["all", "utm", "disable"]  # Enable or disable logging. Log all sessions or sec | Default: utm
+    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
+    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
 
 
 @final
@@ -127,47 +153,47 @@ class MulticastPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Policy ID ((0 - 4294967294).
+    # Policy ID ((0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
     id: int
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Policy name.
+    # Policy name. | MaxLen: 35
     name: str
-    # Comment.
+    # Comment. | MaxLen: 1023
     comments: str
-    # Enable/disable this policy.
+    # Enable/disable this policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Source interface name.
+    # Source interface name. | MaxLen: 35
     srcintf: str
-    # Destination interface name.
+    # Destination interface name. | MaxLen: 35
     dstintf: str
     # Source address objects.
-    srcaddr: list[MulticastPolicySrcaddrObject]  # Table field - list of typed objects
+    srcaddr: list[MulticastPolicySrcaddrObject]
     # Destination address objects.
-    dstaddr: list[MulticastPolicyDstaddrObject]  # Table field - list of typed objects
-    # Enable/disable substitution of the outgoing interface IP address for the origina
+    dstaddr: list[MulticastPolicyDstaddrObject]
+    # Enable/disable substitution of the outgoing interface IP add | Default: disable
     snat: Literal["enable", "disable"]
-    # IPv4 address to be used as the source address for NATed traffic.
+    # IPv4 address to be used as the source address for NATed traf | Default: 0.0.0.0
     snat_ip: str
-    # IPv4 DNAT address used for multicast destination addresses.
+    # IPv4 DNAT address used for multicast destination addresses. | Default: 0.0.0.0
     dnat: str
-    # Accept or deny traffic matching the policy.
+    # Accept or deny traffic matching the policy. | Default: accept
     action: Literal["accept", "deny"]
-    # Integer value for the protocol type as defined by IANA (0 - 255, default = 0).
+    # Integer value for the protocol type as defined by IANA | Default: 0 | Min: 0 | Max: 255
     protocol: int
-    # Integer value for starting TCP/UDP/SCTP destination port in range
+    # Integer value for starting TCP/UDP/SCTP destination port in | Default: 1 | Min: 0 | Max: 65535
     start_port: int
-    # Integer value for ending TCP/UDP/SCTP destination port in range
+    # Integer value for ending TCP/UDP/SCTP destination port in ra | Default: 65535 | Min: 0 | Max: 65535
     end_port: int
-    # Enable to add an IPS security profile to the policy.
+    # Enable to add an IPS security profile to the policy. | Default: disable
     utm_status: Literal["enable", "disable"]
-    # Name of an existing IPS sensor.
+    # Name of an existing IPS sensor. | MaxLen: 47
     ips_sensor: str
-    # Enable or disable logging. Log all sessions or security profile sessions.
+    # Enable or disable logging. Log all sessions or security prof | Default: utm
     logtraffic: Literal["all", "utm", "disable"]
-    # Enable/disable offloading policy traffic for hardware acceleration.
+    # Enable/disable offloading policy traffic for hardware accele | Default: enable
     auto_asic_offload: Literal["enable", "disable"]
-    # Traffic shaper to apply to traffic forwarded by the multicast policy.
+    # Traffic shaper to apply to traffic forwarded by the multicas | MaxLen: 35
     traffic_shaper: str
     
     # Common API response fields
@@ -194,8 +220,66 @@ class MulticastPolicy:
     Primary Key: id
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> MulticastPolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> MulticastPolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        id: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[MulticastPolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -210,11 +294,12 @@ class MulticastPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -230,11 +315,11 @@ class MulticastPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -249,10 +334,11 @@ class MulticastPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[MulticastPolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -269,7 +355,7 @@ class MulticastPolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -329,7 +415,7 @@ class MulticastPolicy:
         **kwargs: Any,
     ) -> list[MulticastPolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -344,9 +430,9 @@ class MulticastPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -399,7 +485,7 @@ class MulticastPolicy:
         traffic_shaper: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicyObject: ...
     
@@ -432,8 +518,9 @@ class MulticastPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -462,7 +549,37 @@ class MulticastPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -492,7 +609,7 @@ class MulticastPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -522,7 +639,7 @@ class MulticastPolicy:
         traffic_shaper: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicyObject: ...
     
@@ -555,8 +672,9 @@ class MulticastPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -585,7 +703,37 @@ class MulticastPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -615,7 +763,7 @@ class MulticastPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -624,7 +772,7 @@ class MulticastPolicy:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> MulticastPolicyObject: ...
     
@@ -636,8 +784,9 @@ class MulticastPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -645,7 +794,16 @@ class MulticastPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        id: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -653,7 +811,7 @@ class MulticastPolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -689,7 +847,7 @@ class MulticastPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -714,8 +872,985 @@ class MulticastPolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class MulticastPolicyDictMode:
+    """MulticastPolicy endpoint for dict response mode (default for this client).
+    
+    By default returns MulticastPolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return MulticastPolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        id: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[MulticastPolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> MulticastPolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[MulticastPolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class MulticastPolicyObjectMode:
+    """MulticastPolicy endpoint for object response mode (default for this client).
+    
+    By default returns MulticastPolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return MulticastPolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        id: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MulticastPolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[MulticastPolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[MulticastPolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MulticastPolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: MulticastPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        srcintf: str | None = ...,
+        dstintf: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        snat: Literal["enable", "disable"] | None = ...,
+        snat_ip: str | None = ...,
+        dnat: str | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        protocol: int | None = ...,
+        start_port: int | None = ...,
+        end_port: int | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "MulticastPolicy",
+    "MulticastPolicyDictMode",
+    "MulticastPolicyObjectMode",
     "MulticastPolicyPayload",
     "MulticastPolicyObject",
 ]

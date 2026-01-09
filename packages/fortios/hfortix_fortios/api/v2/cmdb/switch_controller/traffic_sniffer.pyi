@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class TrafficSnifferPayload(TypedDict, total=False):
     """
     Type hints for switch_controller/traffic_sniffer payload fields.
@@ -13,13 +17,50 @@ class TrafficSnifferPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    mode: NotRequired[Literal["erspan-auto", "rspan", "none"]]  # Configure traffic sniffer mode.
-    erspan_ip: NotRequired[str]  # Configure ERSPAN collector IP address.
-    target_mac: NotRequired[list[dict[str, Any]]]  # Sniffer MACs to filter.
-    target_ip: NotRequired[list[dict[str, Any]]]  # Sniffer IPs to filter.
-    target_port: NotRequired[list[dict[str, Any]]]  # Sniffer ports to filter.
+    mode: Literal["erspan-auto", "rspan", "none"]  # Configure traffic sniffer mode. | Default: erspan-auto
+    erspan_ip: str  # Configure ERSPAN collector IP address. | Default: 0.0.0.0
+    target_mac: list[dict[str, Any]]  # Sniffer MACs to filter.
+    target_ip: list[dict[str, Any]]  # Sniffer IPs to filter.
+    target_port: list[dict[str, Any]]  # Sniffer ports to filter.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class TrafficSnifferTargetmacItem(TypedDict):
+    """Type hints for target-mac table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    mac: str  # Sniffer MAC. | Default: 00:00:00:00:00:00
+    description: str  # Description for the sniffer MAC. | MaxLen: 63
+
+
+class TrafficSnifferTargetipItem(TypedDict):
+    """Type hints for target-ip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    ip: str  # Sniffer IP. | Default: 0.0.0.0
+    description: str  # Description for the sniffer IP. | MaxLen: 63
+
+
+class TrafficSnifferTargetportItem(TypedDict):
+    """Type hints for target-port table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    switch_id: str  # Managed-switch ID. | MaxLen: 35
+    description: str  # Description for the sniffer port entry. | MaxLen: 63
+    in_ports: str  # Configure source ingress port interfaces.
+    out_ports: str  # Configure source egress port interfaces.
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class TrafficSnifferTargetmacObject:
@@ -29,9 +70,9 @@ class TrafficSnifferTargetmacObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Sniffer MAC.
+    # Sniffer MAC. | Default: 00:00:00:00:00:00
     mac: str
-    # Description for the sniffer MAC.
+    # Description for the sniffer MAC. | MaxLen: 63
     description: str
     
     # Methods from FortiObject
@@ -52,9 +93,9 @@ class TrafficSnifferTargetipObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Sniffer IP.
+    # Sniffer IP. | Default: 0.0.0.0
     ip: str
-    # Description for the sniffer IP.
+    # Description for the sniffer IP. | MaxLen: 63
     description: str
     
     # Methods from FortiObject
@@ -75,9 +116,9 @@ class TrafficSnifferTargetportObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Managed-switch ID.
+    # Managed-switch ID. | MaxLen: 35
     switch_id: str
-    # Description for the sniffer port entry.
+    # Description for the sniffer port entry. | MaxLen: 63
     description: str
     # Configure source ingress port interfaces.
     in_ports: str
@@ -102,11 +143,11 @@ class TrafficSnifferResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mode: Literal["erspan-auto", "rspan", "none"]
-    erspan_ip: str
-    target_mac: list[dict[str, Any]]
-    target_ip: list[dict[str, Any]]
-    target_port: list[dict[str, Any]]
+    mode: Literal["erspan-auto", "rspan", "none"]  # Configure traffic sniffer mode. | Default: erspan-auto
+    erspan_ip: str  # Configure ERSPAN collector IP address. | Default: 0.0.0.0
+    target_mac: list[TrafficSnifferTargetmacItem]  # Sniffer MACs to filter.
+    target_ip: list[TrafficSnifferTargetipItem]  # Sniffer IPs to filter.
+    target_port: list[TrafficSnifferTargetportItem]  # Sniffer ports to filter.
 
 
 @final
@@ -117,16 +158,16 @@ class TrafficSnifferObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Configure traffic sniffer mode.
+    # Configure traffic sniffer mode. | Default: erspan-auto
     mode: Literal["erspan-auto", "rspan", "none"]
-    # Configure ERSPAN collector IP address.
+    # Configure ERSPAN collector IP address. | Default: 0.0.0.0
     erspan_ip: str
     # Sniffer MACs to filter.
-    target_mac: list[TrafficSnifferTargetmacObject]  # Table field - list of typed objects
+    target_mac: list[TrafficSnifferTargetmacObject]
     # Sniffer IPs to filter.
-    target_ip: list[TrafficSnifferTargetipObject]  # Table field - list of typed objects
+    target_ip: list[TrafficSnifferTargetipObject]
     # Sniffer ports to filter.
-    target_port: list[TrafficSnifferTargetportObject]  # Table field - list of typed objects
+    target_port: list[TrafficSnifferTargetportObject]
     
     # Common API response fields
     status: str
@@ -151,8 +192,66 @@ class TrafficSniffer:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> TrafficSnifferResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> TrafficSnifferResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> TrafficSnifferResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -167,11 +266,12 @@ class TrafficSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficSnifferObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -187,11 +287,11 @@ class TrafficSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficSnifferObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -206,10 +306,11 @@ class TrafficSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficSnifferObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -226,7 +327,7 @@ class TrafficSniffer:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -286,7 +387,7 @@ class TrafficSniffer:
         **kwargs: Any,
     ) -> TrafficSnifferResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -301,9 +402,9 @@ class TrafficSniffer:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -340,7 +441,7 @@ class TrafficSniffer:
         target_port: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> TrafficSnifferObject: ...
     
@@ -357,8 +458,9 @@ class TrafficSniffer:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -371,7 +473,21 @@ class TrafficSniffer:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -385,7 +501,7 @@ class TrafficSniffer:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -405,7 +521,7 @@ class TrafficSniffer:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -430,8 +546,446 @@ class TrafficSniffer:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class TrafficSnifferDictMode:
+    """TrafficSniffer endpoint for dict response mode (default for this client).
+    
+    By default returns TrafficSnifferResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return TrafficSnifferObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> TrafficSnifferResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> TrafficSnifferResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class TrafficSnifferObjectMode:
+    """TrafficSniffer endpoint for object response mode (default for this client).
+    
+    By default returns TrafficSnifferObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return TrafficSnifferResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> TrafficSnifferResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> TrafficSnifferResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> TrafficSnifferObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: TrafficSnifferPayload | None = ...,
+        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        erspan_ip: str | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "TrafficSniffer",
+    "TrafficSnifferDictMode",
+    "TrafficSnifferObjectMode",
     "TrafficSnifferPayload",
     "TrafficSnifferObject",
 ]

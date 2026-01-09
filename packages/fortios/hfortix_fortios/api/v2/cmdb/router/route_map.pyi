@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class RouteMapPayload(TypedDict, total=False):
     """
     Type hints for router/route_map payload fields.
@@ -13,11 +17,71 @@ class RouteMapPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Name.
-    comments: NotRequired[str]  # Optional comments.
-    rule: NotRequired[list[dict[str, Any]]]  # Rule.
+    name: str  # Name. | MaxLen: 35
+    comments: str  # Optional comments. | MaxLen: 127
+    rule: list[dict[str, Any]]  # Rule.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class RouteMapRuleItem(TypedDict):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["permit", "deny"]  # Action. | Default: permit
+    match_as_path: str  # Match BGP AS path list. | MaxLen: 35
+    match_community: str  # Match BGP community list. | MaxLen: 35
+    match_extcommunity: str  # Match BGP extended community list. | MaxLen: 35
+    match_community_exact: Literal["enable", "disable"]  # Enable/disable exact matching of communities. | Default: disable
+    match_extcommunity_exact: Literal["enable", "disable"]  # Enable/disable exact matching of extended communit | Default: disable
+    match_origin: Literal["none", "egp", "igp", "incomplete"]  # Match BGP origin code. | Default: none
+    match_interface: str  # Match interface configuration. | MaxLen: 15
+    match_ip_address: str  # Match IP address permitted by access-list or prefi | MaxLen: 35
+    match_ip6_address: str  # Match IPv6 address permitted by access-list6 or pr | MaxLen: 35
+    match_ip_nexthop: str  # Match next hop IP address passed by access-list or | MaxLen: 35
+    match_ip6_nexthop: str  # Match next hop IPv6 address passed by access-list6 | MaxLen: 35
+    match_metric: int  # Match metric for redistribute routes. | Min: 0 | Max: 4294967295
+    match_route_type: Literal["external-type1", "external-type2", "none"]  # Match route type.
+    match_tag: int  # Match tag. | Min: 0 | Max: 4294967295
+    match_vrf: int  # Match VRF ID. | Min: 0 | Max: 511
+    match_suppress: Literal["enable", "disable"]  # Enable/disable matching of suppressed original nei | Default: disable
+    set_aggregator_as: int  # BGP aggregator AS. | Default: 0 | Min: 0 | Max: 4294967295
+    set_aggregator_ip: str  # BGP aggregator IP. | Default: 0.0.0.0
+    set_aspath_action: Literal["prepend", "replace"]  # Specify preferred action of set-aspath. | Default: prepend
+    set_aspath: str  # Prepend BGP AS path attribute.
+    set_atomic_aggregate: Literal["enable", "disable"]  # Enable/disable BGP atomic aggregate attribute. | Default: disable
+    set_community_delete: str  # Delete communities matching community list. | MaxLen: 35
+    set_community: str  # BGP community attribute.
+    set_community_additive: Literal["enable", "disable"]  # Enable/disable adding set-community to existing co | Default: disable
+    set_dampening_reachability_half_life: int  # Reachability half-life time for the penalty | Default: 0 | Min: 0 | Max: 45
+    set_dampening_reuse: int  # Value to start reusing a route | Default: 0 | Min: 0 | Max: 20000
+    set_dampening_suppress: int  # Value to start suppressing a route | Default: 0 | Min: 0 | Max: 20000
+    set_dampening_max_suppress: int  # Maximum duration to suppress a route | Default: 0 | Min: 0 | Max: 255
+    set_dampening_unreachability_half_life: int  # Unreachability Half-life time for the penalty | Default: 0 | Min: 0 | Max: 45
+    set_extcommunity_rt: str  # Route Target extended community.
+    set_extcommunity_soo: str  # Site-of-Origin extended community.
+    set_ip_nexthop: str  # IP address of next hop.
+    set_ip_prefsrc: str  # IP address of preferred source.
+    set_vpnv4_nexthop: str  # IP address of VPNv4 next-hop.
+    set_ip6_nexthop: str  # IPv6 global address of next hop.
+    set_ip6_nexthop_local: str  # IPv6 local address of next hop.
+    set_vpnv6_nexthop: str  # IPv6 global address of VPNv6 next-hop.
+    set_vpnv6_nexthop_local: str  # IPv6 link-local address of VPNv6 next-hop.
+    set_local_preference: int  # BGP local preference path attribute. | Min: 0 | Max: 4294967295
+    set_metric: int  # Metric value. | Min: 0 | Max: 4294967295
+    set_metric_type: Literal["external-type1", "external-type2", "none"]  # Metric type.
+    set_originator_id: str  # BGP originator ID attribute.
+    set_origin: Literal["none", "egp", "igp", "incomplete"]  # BGP origin code. | Default: none
+    set_tag: int  # Tag value. | Min: 0 | Max: 4294967295
+    set_weight: int  # BGP weight for routing table. | Min: 0 | Max: 4294967295
+    set_route_tag: int  # Route tag for routing table. | Min: 0 | Max: 4294967295
+    set_priority: int  # Priority for routing table. | Min: 1 | Max: 65535
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class RouteMapRuleObject:
@@ -27,67 +91,67 @@ class RouteMapRuleObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Rule ID.
+    # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Action.
+    # Action. | Default: permit
     action: Literal["permit", "deny"]
-    # Match BGP AS path list.
+    # Match BGP AS path list. | MaxLen: 35
     match_as_path: str
-    # Match BGP community list.
+    # Match BGP community list. | MaxLen: 35
     match_community: str
-    # Match BGP extended community list.
+    # Match BGP extended community list. | MaxLen: 35
     match_extcommunity: str
-    # Enable/disable exact matching of communities.
+    # Enable/disable exact matching of communities. | Default: disable
     match_community_exact: Literal["enable", "disable"]
-    # Enable/disable exact matching of extended communities.
+    # Enable/disable exact matching of extended communities. | Default: disable
     match_extcommunity_exact: Literal["enable", "disable"]
-    # Match BGP origin code.
+    # Match BGP origin code. | Default: none
     match_origin: Literal["none", "egp", "igp", "incomplete"]
-    # Match interface configuration.
+    # Match interface configuration. | MaxLen: 15
     match_interface: str
-    # Match IP address permitted by access-list or prefix-list.
+    # Match IP address permitted by access-list or prefix-list. | MaxLen: 35
     match_ip_address: str
-    # Match IPv6 address permitted by access-list6 or prefix-list6.
+    # Match IPv6 address permitted by access-list6 or prefix-list6 | MaxLen: 35
     match_ip6_address: str
-    # Match next hop IP address passed by access-list or prefix-list.
+    # Match next hop IP address passed by access-list or prefix-li | MaxLen: 35
     match_ip_nexthop: str
-    # Match next hop IPv6 address passed by access-list6 or prefix-list6.
+    # Match next hop IPv6 address passed by access-list6 or prefix | MaxLen: 35
     match_ip6_nexthop: str
-    # Match metric for redistribute routes.
+    # Match metric for redistribute routes. | Min: 0 | Max: 4294967295
     match_metric: int
     # Match route type.
     match_route_type: Literal["external-type1", "external-type2", "none"]
-    # Match tag.
+    # Match tag. | Min: 0 | Max: 4294967295
     match_tag: int
-    # Match VRF ID.
+    # Match VRF ID. | Min: 0 | Max: 511
     match_vrf: int
-    # Enable/disable matching of suppressed original neighbor.
+    # Enable/disable matching of suppressed original neighbor. | Default: disable
     match_suppress: Literal["enable", "disable"]
-    # BGP aggregator AS.
+    # BGP aggregator AS. | Default: 0 | Min: 0 | Max: 4294967295
     set_aggregator_as: int
-    # BGP aggregator IP.
+    # BGP aggregator IP. | Default: 0.0.0.0
     set_aggregator_ip: str
-    # Specify preferred action of set-aspath.
+    # Specify preferred action of set-aspath. | Default: prepend
     set_aspath_action: Literal["prepend", "replace"]
     # Prepend BGP AS path attribute.
     set_aspath: str
-    # Enable/disable BGP atomic aggregate attribute.
+    # Enable/disable BGP atomic aggregate attribute. | Default: disable
     set_atomic_aggregate: Literal["enable", "disable"]
-    # Delete communities matching community list.
+    # Delete communities matching community list. | MaxLen: 35
     set_community_delete: str
     # BGP community attribute.
     set_community: str
-    # Enable/disable adding set-community to existing community.
+    # Enable/disable adding set-community to existing community. | Default: disable
     set_community_additive: Literal["enable", "disable"]
-    # Reachability half-life time for the penalty (1 - 45 min, 0 = unset).
+    # Reachability half-life time for the penalty | Default: 0 | Min: 0 | Max: 45
     set_dampening_reachability_half_life: int
-    # Value to start reusing a route (1 - 20000, 0 = unset).
+    # Value to start reusing a route (1 - 20000, 0 = unset). | Default: 0 | Min: 0 | Max: 20000
     set_dampening_reuse: int
-    # Value to start suppressing a route (1 - 20000, 0 = unset).
+    # Value to start suppressing a route (1 - 20000, 0 = unset). | Default: 0 | Min: 0 | Max: 20000
     set_dampening_suppress: int
-    # Maximum duration to suppress a route (1 - 255 min, 0 = unset).
+    # Maximum duration to suppress a route | Default: 0 | Min: 0 | Max: 255
     set_dampening_max_suppress: int
-    # Unreachability Half-life time for the penalty (1 - 45 min, 0 = unset).
+    # Unreachability Half-life time for the penalty | Default: 0 | Min: 0 | Max: 45
     set_dampening_unreachability_half_life: int
     # Route Target extended community.
     set_extcommunity_rt: str
@@ -107,23 +171,23 @@ class RouteMapRuleObject:
     set_vpnv6_nexthop: str
     # IPv6 link-local address of VPNv6 next-hop.
     set_vpnv6_nexthop_local: str
-    # BGP local preference path attribute.
+    # BGP local preference path attribute. | Min: 0 | Max: 4294967295
     set_local_preference: int
-    # Metric value.
+    # Metric value. | Min: 0 | Max: 4294967295
     set_metric: int
     # Metric type.
     set_metric_type: Literal["external-type1", "external-type2", "none"]
     # BGP originator ID attribute.
     set_originator_id: str
-    # BGP origin code.
+    # BGP origin code. | Default: none
     set_origin: Literal["none", "egp", "igp", "incomplete"]
-    # Tag value.
+    # Tag value. | Min: 0 | Max: 4294967295
     set_tag: int
-    # BGP weight for routing table.
+    # BGP weight for routing table. | Min: 0 | Max: 4294967295
     set_weight: int
-    # Route tag for routing table.
+    # Route tag for routing table. | Min: 0 | Max: 4294967295
     set_route_tag: int
-    # Priority for routing table.
+    # Priority for routing table. | Min: 1 | Max: 65535
     set_priority: int
     
     # Methods from FortiObject
@@ -144,9 +208,9 @@ class RouteMapResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    comments: str
-    rule: list[dict[str, Any]]
+    name: str  # Name. | MaxLen: 35
+    comments: str  # Optional comments. | MaxLen: 127
+    rule: list[RouteMapRuleItem]  # Rule.
 
 
 @final
@@ -157,12 +221,12 @@ class RouteMapObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Optional comments.
+    # Optional comments. | MaxLen: 127
     comments: str
     # Rule.
-    rule: list[RouteMapRuleObject]  # Table field - list of typed objects
+    rule: list[RouteMapRuleObject]
     
     # Common API response fields
     status: str
@@ -188,8 +252,66 @@ class RouteMap:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> RouteMapResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> RouteMapResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[RouteMapResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -204,11 +326,12 @@ class RouteMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RouteMapObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -224,11 +347,11 @@ class RouteMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RouteMapObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -243,10 +366,11 @@ class RouteMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[RouteMapObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -263,7 +387,7 @@ class RouteMap:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -323,7 +447,7 @@ class RouteMap:
         **kwargs: Any,
     ) -> list[RouteMapResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -338,9 +462,9 @@ class RouteMap:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -375,7 +499,7 @@ class RouteMap:
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RouteMapObject: ...
     
@@ -390,8 +514,9 @@ class RouteMap:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -402,7 +527,19 @@ class RouteMap:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -414,7 +551,7 @@ class RouteMap:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -426,7 +563,7 @@ class RouteMap:
         rule: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RouteMapObject: ...
     
@@ -441,8 +578,9 @@ class RouteMap:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -453,7 +591,19 @@ class RouteMap:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -465,7 +615,7 @@ class RouteMap:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -474,7 +624,7 @@ class RouteMap:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RouteMapObject: ...
     
@@ -486,8 +636,9 @@ class RouteMap:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -495,7 +646,16 @@ class RouteMap:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -503,7 +663,7 @@ class RouteMap:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -521,7 +681,7 @@ class RouteMap:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -546,8 +706,625 @@ class RouteMap:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class RouteMapDictMode:
+    """RouteMap endpoint for dict response mode (default for this client).
+    
+    By default returns RouteMapResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return RouteMapObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[RouteMapObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> RouteMapResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[RouteMapResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class RouteMapObjectMode:
+    """RouteMap endpoint for object response mode (default for this client).
+    
+    By default returns RouteMapObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return RouteMapResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> RouteMapResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[RouteMapResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[RouteMapObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RouteMapObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: RouteMapPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "RouteMap",
+    "RouteMapDictMode",
+    "RouteMapObjectMode",
     "RouteMapPayload",
     "RouteMapObject",
 ]

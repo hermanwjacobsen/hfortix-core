@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class LocalPayload(TypedDict, total=False):
     """
     Type hints for certificate/local payload fields.
@@ -20,49 +24,51 @@ class LocalPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Name.
-    password: NotRequired[str]  # Password as a PEM file.
-    comments: NotRequired[str]  # Comment.
+    name: str  # Name. | MaxLen: 35
+    password: str  # Password as a PEM file. | MaxLen: 128
+    comments: str  # Comment. | MaxLen: 511
     private_key: str  # PEM format key encrypted with a password.
-    certificate: NotRequired[str]  # PEM format certificate.
-    csr: NotRequired[str]  # Certificate Signing Request.
-    state: NotRequired[str]  # Certificate Signing Request State.
-    scep_url: NotRequired[str]  # SCEP server URL.
-    range: NotRequired[Literal["global", "vdom"]]  # Either a global or VDOM IP address range for the certificate
-    source: NotRequired[Literal["factory", "user", "bundle"]]  # Certificate source type.
-    auto_regenerate_days: NotRequired[int]  # Number of days to wait before expiry of an updated local cer
-    auto_regenerate_days_warning: NotRequired[int]  # Number of days to wait before an expiry warning message is g
-    scep_password: NotRequired[str]  # SCEP server challenge password for auto-regeneration.
-    ca_identifier: NotRequired[str]  # CA identifier of the CA server for signing via SCEP.
-    name_encoding: NotRequired[Literal["printable", "utf8"]]  # Name encoding method for auto-regeneration.
-    source_ip: NotRequired[str]  # Source IP address for communications to the SCEP server.
-    ike_localid: NotRequired[str]  # Local ID the FortiGate uses for authentication as a VPN clie
-    ike_localid_type: NotRequired[Literal["asn1dn", "fqdn"]]  # IKE local ID type.
-    enroll_protocol: NotRequired[Literal["none", "scep", "cmpv2", "acme2", "est"]]  # Certificate enrollment protocol.
-    private_key_retain: NotRequired[Literal["enable", "disable"]]  # Enable/disable retention of private key during SCEP renewal
-    cmp_server: NotRequired[str]  # Address and port for CMP server (format = address:port).
-    cmp_path: NotRequired[str]  # Path location inside CMP server.
-    cmp_server_cert: NotRequired[str]  # CMP server certificate.
-    cmp_regeneration_method: NotRequired[Literal["keyupate", "renewal"]]  # CMP auto-regeneration method.
-    acme_ca_url: str  # The URL for the ACME CA server
-    acme_domain: str  # A valid domain that resolves to this FortiGate unit.
-    acme_email: str  # Contact email address that is required by some CAs like Lets
-    acme_eab_key_id: NotRequired[str]  # External Account Binding Key ID (optional setting).
-    acme_eab_key_hmac: NotRequired[str]  # External Account Binding HMAC Key (URL-encoded base64).
-    acme_rsa_key_size: NotRequired[int]  # Length of the RSA private key of the generated cert
-    acme_renew_window: NotRequired[int]  # Beginning of the renewal window
-    est_server: NotRequired[str]  # Address and port for EST server
-    est_ca_id: NotRequired[str]  # CA identifier of the CA server for signing via EST.
-    est_http_username: NotRequired[str]  # HTTP Authentication username for signing via EST.
-    est_http_password: NotRequired[str]  # HTTP Authentication password for signing via EST.
-    est_client_cert: NotRequired[str]  # Certificate used to authenticate this FortiGate to EST serve
-    est_server_cert: NotRequired[str]  # EST server's certificate must be verifiable by this certific
-    est_srp_username: NotRequired[str]  # EST SRP authentication username.
-    est_srp_password: NotRequired[str]  # EST SRP authentication password.
-    est_regeneration_method: NotRequired[Literal["create-new-key", "use-existing-key"]]  # EST behavioral options during re-enrollment.
-    details: NotRequired[str]  # Print local certificate detailed information.
+    certificate: str  # PEM format certificate.
+    csr: str  # Certificate Signing Request.
+    state: str  # Certificate Signing Request State.
+    scep_url: str  # SCEP server URL. | MaxLen: 255
+    range: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: global
+    source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
+    auto_regenerate_days: int  # Number of days to wait before expiry of an updated | Default: 0 | Min: 0 | Max: 4294967295
+    auto_regenerate_days_warning: int  # Number of days to wait before an expiry warning me | Default: 0 | Min: 0 | Max: 4294967295
+    scep_password: str  # SCEP server challenge password for auto-regenerati | MaxLen: 128
+    ca_identifier: str  # CA identifier of the CA server for signing via SCE | MaxLen: 255
+    name_encoding: Literal["printable", "utf8"]  # Name encoding method for auto-regeneration. | Default: printable
+    source_ip: str  # Source IP address for communications to the SCEP s | Default: 0.0.0.0
+    ike_localid: str  # Local ID the FortiGate uses for authentication as | MaxLen: 63
+    ike_localid_type: Literal["asn1dn", "fqdn"]  # IKE local ID type. | Default: asn1dn
+    enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"]  # Certificate enrollment protocol. | Default: none
+    private_key_retain: Literal["enable", "disable"]  # Enable/disable retention of private key during SCE | Default: disable
+    cmp_server: str  # Address and port for CMP server | MaxLen: 63
+    cmp_path: str  # Path location inside CMP server. | MaxLen: 255
+    cmp_server_cert: str  # CMP server certificate. | MaxLen: 79
+    cmp_regeneration_method: Literal["keyupate", "renewal"]  # CMP auto-regeneration method. | Default: keyupate
+    acme_ca_url: str  # The URL for the ACME CA server | Default: https://acme-v02.api.letsencrypt.org/directory | MaxLen: 255
+    acme_domain: str  # A valid domain that resolves to this FortiGate uni | MaxLen: 255
+    acme_email: str  # Contact email address that is required by some CAs | MaxLen: 255
+    acme_eab_key_id: str  # External Account Binding Key ID (optional setting) | MaxLen: 255
+    acme_eab_key_hmac: str  # External Account Binding HMAC Key | MaxLen: 128
+    acme_rsa_key_size: int  # Length of the RSA private key of the generated cer | Default: 2048 | Min: 2048 | Max: 4096
+    acme_renew_window: int  # Beginning of the renewal window | Default: 30 | Min: 1 | Max: 60
+    est_server: str  # Address and port for EST server | MaxLen: 255
+    est_ca_id: str  # CA identifier of the CA server for signing via EST | MaxLen: 255
+    est_http_username: str  # HTTP Authentication username for signing via EST. | MaxLen: 63
+    est_http_password: str  # HTTP Authentication password for signing via EST. | MaxLen: 128
+    est_client_cert: str  # Certificate used to authenticate this FortiGate to | MaxLen: 79
+    est_server_cert: str  # EST server's certificate must be verifiable by thi | MaxLen: 79
+    est_srp_username: str  # EST SRP authentication username. | MaxLen: 63
+    est_srp_password: str  # EST SRP authentication password. | MaxLen: 128
+    est_regeneration_method: Literal["create-new-key", "use-existing-key"]  # EST behavioral options during re-enrollment. | Default: create-new-key
+    details: str  # Print local certificate detailed information.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -72,47 +78,47 @@ class LocalResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    password: str
-    comments: str
-    private_key: str
-    certificate: str
-    csr: str
-    state: str
-    scep_url: str
-    range: Literal["global", "vdom"]
-    source: Literal["factory", "user", "bundle"]
-    auto_regenerate_days: int
-    auto_regenerate_days_warning: int
-    scep_password: str
-    ca_identifier: str
-    name_encoding: Literal["printable", "utf8"]
-    source_ip: str
-    ike_localid: str
-    ike_localid_type: Literal["asn1dn", "fqdn"]
-    enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"]
-    private_key_retain: Literal["enable", "disable"]
-    cmp_server: str
-    cmp_path: str
-    cmp_server_cert: str
-    cmp_regeneration_method: Literal["keyupate", "renewal"]
-    acme_ca_url: str
-    acme_domain: str
-    acme_email: str
-    acme_eab_key_id: str
-    acme_eab_key_hmac: str
-    acme_rsa_key_size: int
-    acme_renew_window: int
-    est_server: str
-    est_ca_id: str
-    est_http_username: str
-    est_http_password: str
-    est_client_cert: str
-    est_server_cert: str
-    est_srp_username: str
-    est_srp_password: str
-    est_regeneration_method: Literal["create-new-key", "use-existing-key"]
-    details: str
+    name: str  # Name. | MaxLen: 35
+    password: str  # Password as a PEM file. | MaxLen: 128
+    comments: str  # Comment. | MaxLen: 511
+    private_key: str  # PEM format key encrypted with a password.
+    certificate: str  # PEM format certificate.
+    csr: str  # Certificate Signing Request.
+    state: str  # Certificate Signing Request State.
+    scep_url: str  # SCEP server URL. | MaxLen: 255
+    range: Literal["global", "vdom"]  # Either a global or VDOM IP address range for the c | Default: global
+    source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
+    auto_regenerate_days: int  # Number of days to wait before expiry of an updated | Default: 0 | Min: 0 | Max: 4294967295
+    auto_regenerate_days_warning: int  # Number of days to wait before an expiry warning me | Default: 0 | Min: 0 | Max: 4294967295
+    scep_password: str  # SCEP server challenge password for auto-regenerati | MaxLen: 128
+    ca_identifier: str  # CA identifier of the CA server for signing via SCE | MaxLen: 255
+    name_encoding: Literal["printable", "utf8"]  # Name encoding method for auto-regeneration. | Default: printable
+    source_ip: str  # Source IP address for communications to the SCEP s | Default: 0.0.0.0
+    ike_localid: str  # Local ID the FortiGate uses for authentication as | MaxLen: 63
+    ike_localid_type: Literal["asn1dn", "fqdn"]  # IKE local ID type. | Default: asn1dn
+    enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"]  # Certificate enrollment protocol. | Default: none
+    private_key_retain: Literal["enable", "disable"]  # Enable/disable retention of private key during SCE | Default: disable
+    cmp_server: str  # Address and port for CMP server | MaxLen: 63
+    cmp_path: str  # Path location inside CMP server. | MaxLen: 255
+    cmp_server_cert: str  # CMP server certificate. | MaxLen: 79
+    cmp_regeneration_method: Literal["keyupate", "renewal"]  # CMP auto-regeneration method. | Default: keyupate
+    acme_ca_url: str  # The URL for the ACME CA server | Default: https://acme-v02.api.letsencrypt.org/directory | MaxLen: 255
+    acme_domain: str  # A valid domain that resolves to this FortiGate uni | MaxLen: 255
+    acme_email: str  # Contact email address that is required by some CAs | MaxLen: 255
+    acme_eab_key_id: str  # External Account Binding Key ID (optional setting) | MaxLen: 255
+    acme_eab_key_hmac: str  # External Account Binding HMAC Key | MaxLen: 128
+    acme_rsa_key_size: int  # Length of the RSA private key of the generated cer | Default: 2048 | Min: 2048 | Max: 4096
+    acme_renew_window: int  # Beginning of the renewal window | Default: 30 | Min: 1 | Max: 60
+    est_server: str  # Address and port for EST server | MaxLen: 255
+    est_ca_id: str  # CA identifier of the CA server for signing via EST | MaxLen: 255
+    est_http_username: str  # HTTP Authentication username for signing via EST. | MaxLen: 63
+    est_http_password: str  # HTTP Authentication password for signing via EST. | MaxLen: 128
+    est_client_cert: str  # Certificate used to authenticate this FortiGate to | MaxLen: 79
+    est_server_cert: str  # EST server's certificate must be verifiable by thi | MaxLen: 79
+    est_srp_username: str  # EST SRP authentication username. | MaxLen: 63
+    est_srp_password: str  # EST SRP authentication password. | MaxLen: 128
+    est_regeneration_method: Literal["create-new-key", "use-existing-key"]  # EST behavioral options during re-enrollment. | Default: create-new-key
+    details: str  # Print local certificate detailed information.
 
 
 @final
@@ -123,11 +129,11 @@ class LocalObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Password as a PEM file.
+    # Password as a PEM file. | MaxLen: 128
     password: str
-    # Comment.
+    # Comment. | MaxLen: 511
     comments: str
     # PEM format key encrypted with a password.
     private_key: str
@@ -137,71 +143,71 @@ class LocalObject:
     csr: str
     # Certificate Signing Request State.
     state: str
-    # SCEP server URL.
+    # SCEP server URL. | MaxLen: 255
     scep_url: str
-    # Either a global or VDOM IP address range for the certificate.
+    # Either a global or VDOM IP address range for the certificate | Default: global
     range: Literal["global", "vdom"]
-    # Certificate source type.
+    # Certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
-    # Number of days to wait before expiry of an updated local certificate is requeste
+    # Number of days to wait before expiry of an updated local cer | Default: 0 | Min: 0 | Max: 4294967295
     auto_regenerate_days: int
-    # Number of days to wait before an expiry warning message is generated
+    # Number of days to wait before an expiry warning message is g | Default: 0 | Min: 0 | Max: 4294967295
     auto_regenerate_days_warning: int
-    # SCEP server challenge password for auto-regeneration.
+    # SCEP server challenge password for auto-regeneration. | MaxLen: 128
     scep_password: str
-    # CA identifier of the CA server for signing via SCEP.
+    # CA identifier of the CA server for signing via SCEP. | MaxLen: 255
     ca_identifier: str
-    # Name encoding method for auto-regeneration.
+    # Name encoding method for auto-regeneration. | Default: printable
     name_encoding: Literal["printable", "utf8"]
-    # Source IP address for communications to the SCEP server.
+    # Source IP address for communications to the SCEP server. | Default: 0.0.0.0
     source_ip: str
-    # Local ID the FortiGate uses for authentication as a VPN client.
+    # Local ID the FortiGate uses for authentication as a VPN clie | MaxLen: 63
     ike_localid: str
-    # IKE local ID type.
+    # IKE local ID type. | Default: asn1dn
     ike_localid_type: Literal["asn1dn", "fqdn"]
-    # Certificate enrollment protocol.
+    # Certificate enrollment protocol. | Default: none
     enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"]
-    # Enable/disable retention of private key during SCEP renewal (default = disable).
+    # Enable/disable retention of private key during SCEP renewal | Default: disable
     private_key_retain: Literal["enable", "disable"]
-    # Address and port for CMP server (format = address:port).
+    # Address and port for CMP server (format = address:port). | MaxLen: 63
     cmp_server: str
-    # Path location inside CMP server.
+    # Path location inside CMP server. | MaxLen: 255
     cmp_path: str
-    # CMP server certificate.
+    # CMP server certificate. | MaxLen: 79
     cmp_server_cert: str
-    # CMP auto-regeneration method.
+    # CMP auto-regeneration method. | Default: keyupate
     cmp_regeneration_method: Literal["keyupate", "renewal"]
-    # The URL for the ACME CA server (Let's Encrypt is the default provider).
+    # The URL for the ACME CA server | Default: https://acme-v02.api.letsencrypt.org/directory | MaxLen: 255
     acme_ca_url: str
-    # A valid domain that resolves to this FortiGate unit.
+    # A valid domain that resolves to this FortiGate unit. | MaxLen: 255
     acme_domain: str
-    # Contact email address that is required by some CAs like LetsEncrypt.
+    # Contact email address that is required by some CAs like Lets | MaxLen: 255
     acme_email: str
-    # External Account Binding Key ID (optional setting).
+    # External Account Binding Key ID (optional setting). | MaxLen: 255
     acme_eab_key_id: str
-    # External Account Binding HMAC Key (URL-encoded base64).
+    # External Account Binding HMAC Key (URL-encoded base64). | MaxLen: 128
     acme_eab_key_hmac: str
-    # Length of the RSA private key of the generated cert (Minimum 2048 bits).
+    # Length of the RSA private key of the generated cert | Default: 2048 | Min: 2048 | Max: 4096
     acme_rsa_key_size: int
-    # Beginning of the renewal window
+    # Beginning of the renewal window | Default: 30 | Min: 1 | Max: 60
     acme_renew_window: int
-    # Address and port for EST server (e.g. https://example.com:1234).
+    # Address and port for EST server | MaxLen: 255
     est_server: str
-    # CA identifier of the CA server for signing via EST.
+    # CA identifier of the CA server for signing via EST. | MaxLen: 255
     est_ca_id: str
-    # HTTP Authentication username for signing via EST.
+    # HTTP Authentication username for signing via EST. | MaxLen: 63
     est_http_username: str
-    # HTTP Authentication password for signing via EST.
+    # HTTP Authentication password for signing via EST. | MaxLen: 128
     est_http_password: str
-    # Certificate used to authenticate this FortiGate to EST server.
+    # Certificate used to authenticate this FortiGate to EST serve | MaxLen: 79
     est_client_cert: str
-    # EST server's certificate must be verifiable by this certificate to be authentica
+    # EST server's certificate must be verifiable by this certific | MaxLen: 79
     est_server_cert: str
-    # EST SRP authentication username.
+    # EST SRP authentication username. | MaxLen: 63
     est_srp_username: str
-    # EST SRP authentication password.
+    # EST SRP authentication password. | MaxLen: 128
     est_srp_password: str
-    # EST behavioral options during re-enrollment.
+    # EST behavioral options during re-enrollment. | Default: create-new-key
     est_regeneration_method: Literal["create-new-key", "use-existing-key"]
     # Print local certificate detailed information.
     details: str
@@ -230,8 +236,66 @@ class Local:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LocalResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LocalResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[LocalResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -246,11 +310,12 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -266,11 +331,11 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -285,10 +350,11 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[LocalObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -305,7 +371,7 @@ class Local:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -365,7 +431,7 @@ class Local:
         **kwargs: Any,
     ) -> list[LocalResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -380,9 +446,9 @@ class Local:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -455,7 +521,7 @@ class Local:
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalObject: ...
     
@@ -508,8 +574,9 @@ class Local:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -558,7 +625,57 @@ class Local:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -608,7 +725,7 @@ class Local:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -664,7 +781,7 @@ class Local:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -689,8 +806,842 @@ class Local:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class LocalDictMode:
+    """Local endpoint for dict response mode (default for this client).
+    
+    By default returns LocalResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return LocalObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[LocalObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> LocalResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LocalResponse]: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class LocalObjectMode:
+    """Local endpoint for object response mode (default for this client).
+    
+    By default returns LocalObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return LocalResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> LocalResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[LocalResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> LocalObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LocalObject]: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LocalObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LocalPayload | None = ...,
+        name: str | None = ...,
+        password: str | None = ...,
+        comments: str | None = ...,
+        private_key: str | None = ...,
+        certificate: str | None = ...,
+        csr: str | None = ...,
+        state: str | None = ...,
+        scep_url: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        auto_regenerate_days: int | None = ...,
+        auto_regenerate_days_warning: int | None = ...,
+        scep_password: str | None = ...,
+        ca_identifier: str | None = ...,
+        name_encoding: Literal["printable", "utf8"] | None = ...,
+        source_ip: str | None = ...,
+        ike_localid: str | None = ...,
+        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
+        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
+        private_key_retain: Literal["enable", "disable"] | None = ...,
+        cmp_server: str | None = ...,
+        cmp_path: str | None = ...,
+        cmp_server_cert: str | None = ...,
+        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        acme_ca_url: str | None = ...,
+        acme_domain: str | None = ...,
+        acme_email: str | None = ...,
+        acme_eab_key_id: str | None = ...,
+        acme_eab_key_hmac: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
+        est_server: str | None = ...,
+        est_ca_id: str | None = ...,
+        est_http_username: str | None = ...,
+        est_http_password: str | None = ...,
+        est_client_cert: str | None = ...,
+        est_server_cert: str | None = ...,
+        est_srp_username: str | None = ...,
+        est_srp_password: str | None = ...,
+        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        details: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Local",
+    "LocalDictMode",
+    "LocalObjectMode",
     "LocalPayload",
     "LocalObject",
 ]

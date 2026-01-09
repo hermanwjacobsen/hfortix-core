@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class IpamPayload(TypedDict, total=False):
     """
     Type hints for system/ipam payload fields.
@@ -13,17 +17,48 @@ class IpamPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP address management services.
-    server_type: NotRequired[Literal["fabric-root"]]  # Configure the type of IPAM server to use.
-    automatic_conflict_resolution: NotRequired[Literal["disable", "enable"]]  # Enable/disable automatic conflict resolution.
-    require_subnet_size_match: NotRequired[Literal["disable", "enable"]]  # Enable/disable reassignment of subnets to make requested and
-    manage_lan_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of LAN interface addresses
-    manage_lan_extension_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of FortiExtender LAN exten
-    manage_ssid_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of FortiAP SSID addresses.
-    pools: NotRequired[list[dict[str, Any]]]  # Configure IPAM pools.
-    rules: NotRequired[list[dict[str, Any]]]  # Configure IPAM allocation rules.
+    status: Literal["enable", "disable"]  # Enable/disable IP address management services. | Default: disable
+    server_type: Literal["fabric-root"]  # Configure the type of IPAM server to use. | Default: fabric-root
+    automatic_conflict_resolution: Literal["disable", "enable"]  # Enable/disable automatic conflict resolution. | Default: disable
+    require_subnet_size_match: Literal["disable", "enable"]  # Enable/disable reassignment of subnets to make req | Default: enable
+    manage_lan_addresses: Literal["disable", "enable"]  # Enable/disable default management of LAN interface | Default: enable
+    manage_lan_extension_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiExtender | Default: enable
+    manage_ssid_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiAP SSID | Default: enable
+    pools: list[dict[str, Any]]  # Configure IPAM pools.
+    rules: list[dict[str, Any]]  # Configure IPAM allocation rules.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class IpamPoolsItem(TypedDict):
+    """Type hints for pools table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # IPAM pool name. | MaxLen: 79
+    description: str  # Description. | MaxLen: 127
+    subnet: str  # Configure IPAM pool subnet, Class A - Class B subn | Default: 0.0.0.0 0.0.0.0
+    exclude: str  # Configure pool exclude subnets.
+
+
+class IpamRulesItem(TypedDict):
+    """Type hints for rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # IPAM rule name. | MaxLen: 79
+    description: str  # Description. | MaxLen: 127
+    device: str  # Configure serial number or wildcard of FortiGate t
+    interface: str  # Configure name or wildcard of interface to match.
+    role: Literal["any", "lan", "wan", "dmz", "undefined"]  # Configure role of interface to match. | Default: any
+    pool: str  # Configure name of IPAM pool to use.
+    dhcp: Literal["enable", "disable"]  # Enable/disable DHCP server for matching IPAM inter | Default: disable
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class IpamPoolsObject:
@@ -33,11 +68,11 @@ class IpamPoolsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # IPAM pool name.
+    # IPAM pool name. | MaxLen: 79
     name: str
-    # Description.
+    # Description. | MaxLen: 127
     description: str
-    # Configure IPAM pool subnet, Class A - Class B subnet.
+    # Configure IPAM pool subnet, Class A - Class B subnet. | Default: 0.0.0.0 0.0.0.0
     subnet: str
     # Configure pool exclude subnets.
     exclude: str
@@ -60,19 +95,19 @@ class IpamRulesObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # IPAM rule name.
+    # IPAM rule name. | MaxLen: 79
     name: str
-    # Description.
+    # Description. | MaxLen: 127
     description: str
     # Configure serial number or wildcard of FortiGate to match.
     device: str
     # Configure name or wildcard of interface to match.
     interface: str
-    # Configure role of interface to match.
+    # Configure role of interface to match. | Default: any
     role: Literal["any", "lan", "wan", "dmz", "undefined"]
     # Configure name of IPAM pool to use.
     pool: str
-    # Enable/disable DHCP server for matching IPAM interfaces.
+    # Enable/disable DHCP server for matching IPAM interfaces. | Default: disable
     dhcp: Literal["enable", "disable"]
     
     # Methods from FortiObject
@@ -93,15 +128,15 @@ class IpamResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    status: Literal["enable", "disable"]
-    server_type: Literal["fabric-root"]
-    automatic_conflict_resolution: Literal["disable", "enable"]
-    require_subnet_size_match: Literal["disable", "enable"]
-    manage_lan_addresses: Literal["disable", "enable"]
-    manage_lan_extension_addresses: Literal["disable", "enable"]
-    manage_ssid_addresses: Literal["disable", "enable"]
-    pools: list[dict[str, Any]]
-    rules: list[dict[str, Any]]
+    status: Literal["enable", "disable"]  # Enable/disable IP address management services. | Default: disable
+    server_type: Literal["fabric-root"]  # Configure the type of IPAM server to use. | Default: fabric-root
+    automatic_conflict_resolution: Literal["disable", "enable"]  # Enable/disable automatic conflict resolution. | Default: disable
+    require_subnet_size_match: Literal["disable", "enable"]  # Enable/disable reassignment of subnets to make req | Default: enable
+    manage_lan_addresses: Literal["disable", "enable"]  # Enable/disable default management of LAN interface | Default: enable
+    manage_lan_extension_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiExtender | Default: enable
+    manage_ssid_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiAP SSID | Default: enable
+    pools: list[IpamPoolsItem]  # Configure IPAM pools.
+    rules: list[IpamRulesItem]  # Configure IPAM allocation rules.
 
 
 @final
@@ -112,24 +147,24 @@ class IpamObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable IP address management services.
+    # Enable/disable IP address management services. | Default: disable
     status: Literal["enable", "disable"]
-    # Configure the type of IPAM server to use.
+    # Configure the type of IPAM server to use. | Default: fabric-root
     server_type: Literal["fabric-root"]
-    # Enable/disable automatic conflict resolution.
+    # Enable/disable automatic conflict resolution. | Default: disable
     automatic_conflict_resolution: Literal["disable", "enable"]
-    # Enable/disable reassignment of subnets to make requested and actual sizes match.
+    # Enable/disable reassignment of subnets to make requested and | Default: enable
     require_subnet_size_match: Literal["disable", "enable"]
-    # Enable/disable default management of LAN interface addresses.
+    # Enable/disable default management of LAN interface addresses | Default: enable
     manage_lan_addresses: Literal["disable", "enable"]
-    # Enable/disable default management of FortiExtender LAN extension interface addre
+    # Enable/disable default management of FortiExtender LAN exten | Default: enable
     manage_lan_extension_addresses: Literal["disable", "enable"]
-    # Enable/disable default management of FortiAP SSID addresses.
+    # Enable/disable default management of FortiAP SSID addresses. | Default: enable
     manage_ssid_addresses: Literal["disable", "enable"]
     # Configure IPAM pools.
-    pools: list[IpamPoolsObject]  # Table field - list of typed objects
+    pools: list[IpamPoolsObject]
     # Configure IPAM allocation rules.
-    rules: list[IpamRulesObject]  # Table field - list of typed objects
+    rules: list[IpamRulesObject]
     
     # Common API response fields
     status: str
@@ -154,8 +189,66 @@ class Ipam:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpamResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpamResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpamResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -170,11 +263,12 @@ class Ipam:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpamObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -190,11 +284,11 @@ class Ipam:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpamObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -209,10 +303,11 @@ class Ipam:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpamObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -229,7 +324,7 @@ class Ipam:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -289,7 +384,7 @@ class Ipam:
         **kwargs: Any,
     ) -> IpamResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -304,9 +399,9 @@ class Ipam:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -347,7 +442,7 @@ class Ipam:
         rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpamObject: ...
     
@@ -368,8 +463,9 @@ class Ipam:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -386,7 +482,25 @@ class Ipam:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -404,7 +518,7 @@ class Ipam:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -428,7 +542,7 @@ class Ipam:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -453,8 +567,490 @@ class Ipam:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class IpamDictMode:
+    """Ipam endpoint for dict response mode (default for this client).
+    
+    By default returns IpamResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return IpamObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> IpamResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> IpamResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class IpamObjectMode:
+    """Ipam endpoint for object response mode (default for this client).
+    
+    By default returns IpamObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return IpamResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> IpamResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> IpamResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> IpamObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> IpamObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: IpamPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        server_type: Literal["fabric-root"] | None = ...,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
+        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
+        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Ipam",
+    "IpamDictMode",
+    "IpamObjectMode",
     "IpamPayload",
     "IpamObject",
 ]

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class IpsUrlfilterSetting6Payload(TypedDict, total=False):
     """
     Type hints for webfilter/ips_urlfilter_setting6 payload fields.
@@ -18,12 +22,14 @@ class IpsUrlfilterSetting6Payload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    device: NotRequired[str]  # Interface for this route.
-    distance: NotRequired[int]  # Administrative distance (1 - 255) for this route.
-    gateway6: NotRequired[str]  # Gateway IPv6 address for this route.
-    geo_filter: NotRequired[str]  # Filter based on geographical location. Route will NOT be ins
+    device: str  # Interface for this route. | MaxLen: 35
+    distance: int  # Administrative distance (1 - 255) for this route. | Default: 1 | Min: 1 | Max: 255
+    gateway6: str  # Gateway IPv6 address for this route. | Default: ::
+    geo_filter: str  # Filter based on geographical location. Route will | MaxLen: 255
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -33,10 +39,10 @@ class IpsUrlfilterSetting6Response(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    device: str
-    distance: int
-    gateway6: str
-    geo_filter: str
+    device: str  # Interface for this route. | MaxLen: 35
+    distance: int  # Administrative distance (1 - 255) for this route. | Default: 1 | Min: 1 | Max: 255
+    gateway6: str  # Gateway IPv6 address for this route. | Default: ::
+    geo_filter: str  # Filter based on geographical location. Route will | MaxLen: 255
 
 
 @final
@@ -47,13 +53,13 @@ class IpsUrlfilterSetting6Object:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Interface for this route.
+    # Interface for this route. | MaxLen: 35
     device: str
-    # Administrative distance (1 - 255) for this route.
+    # Administrative distance (1 - 255) for this route. | Default: 1 | Min: 1 | Max: 255
     distance: int
-    # Gateway IPv6 address for this route.
+    # Gateway IPv6 address for this route. | Default: ::
     gateway6: str
-    # Filter based on geographical location. Route will NOT be installed if the resolv
+    # Filter based on geographical location. Route will NOT be ins | MaxLen: 255
     geo_filter: str
     
     # Common API response fields
@@ -79,8 +85,66 @@ class IpsUrlfilterSetting6:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -95,11 +159,12 @@ class IpsUrlfilterSetting6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterSetting6Object: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -115,11 +180,11 @@ class IpsUrlfilterSetting6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterSetting6Object: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -134,10 +199,11 @@ class IpsUrlfilterSetting6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterSetting6Object: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -154,7 +220,7 @@ class IpsUrlfilterSetting6:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -214,7 +280,7 @@ class IpsUrlfilterSetting6:
         **kwargs: Any,
     ) -> IpsUrlfilterSetting6Response: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -229,9 +295,9 @@ class IpsUrlfilterSetting6:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -267,7 +333,7 @@ class IpsUrlfilterSetting6:
         geo_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> IpsUrlfilterSetting6Object: ...
     
@@ -283,8 +349,9 @@ class IpsUrlfilterSetting6:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -296,7 +363,20 @@ class IpsUrlfilterSetting6:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -309,7 +389,7 @@ class IpsUrlfilterSetting6:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -328,7 +408,7 @@ class IpsUrlfilterSetting6:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -353,8 +433,435 @@ class IpsUrlfilterSetting6:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class IpsUrlfilterSetting6DictMode:
+    """IpsUrlfilterSetting6 endpoint for dict response mode (default for this client).
+    
+    By default returns IpsUrlfilterSetting6Response (TypedDict).
+    Can be overridden per-call with response_mode="object" to return IpsUrlfilterSetting6Object.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Response: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class IpsUrlfilterSetting6ObjectMode:
+    """IpsUrlfilterSetting6 endpoint for object response mode (default for this client).
+    
+    By default returns IpsUrlfilterSetting6Object (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return IpsUrlfilterSetting6Response (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Response: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> IpsUrlfilterSetting6Object: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: IpsUrlfilterSetting6Payload | None = ...,
+        device: str | None = ...,
+        distance: int | None = ...,
+        gateway6: str | None = ...,
+        geo_filter: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "IpsUrlfilterSetting6",
+    "IpsUrlfilterSetting6DictMode",
+    "IpsUrlfilterSetting6ObjectMode",
     "IpsUrlfilterSetting6Payload",
     "IpsUrlfilterSetting6Object",
 ]

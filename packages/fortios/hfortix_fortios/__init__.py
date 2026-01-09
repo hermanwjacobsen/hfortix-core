@@ -79,7 +79,7 @@ from .types import (
 #     TrafficShaper,
 # )
 
-__version__ = "0.5.32"
+__version__ = "0.5.36"
 __all__ = [
     # Main client
     "FortiOS",

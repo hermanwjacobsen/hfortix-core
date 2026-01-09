@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class SslSshProfilePayload(TypedDict, total=False):
     """
     Type hints for firewall/ssl_ssh_profile payload fields.
@@ -19,37 +23,93 @@ class SslSshProfilePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Name.
-    comment: NotRequired[str]  # Optional comments.
-    ssl: NotRequired[str]  # Configure SSL options.
-    https: NotRequired[str]  # Configure HTTPS options.
-    ftps: NotRequired[str]  # Configure FTPS options.
-    imaps: NotRequired[str]  # Configure IMAPS options.
-    pop3s: NotRequired[str]  # Configure POP3S options.
-    smtps: NotRequired[str]  # Configure SMTPS options.
-    ssh: NotRequired[str]  # Configure SSH options.
-    dot: NotRequired[str]  # Configure DNS over TLS options.
-    allowlist: NotRequired[Literal["enable", "disable"]]  # Enable/disable exempting servers by FortiGuard allowlist.
-    block_blocklisted_certificates: NotRequired[Literal["disable", "enable"]]  # Enable/disable blocking SSL-based botnet communication by Fo
-    ssl_exempt: NotRequired[list[dict[str, Any]]]  # Servers to exempt from SSL inspection.
-    ech_outer_sni: NotRequired[list[dict[str, Any]]]  # ClientHelloOuter SNIs to be blocked.
-    server_cert_mode: Literal["re-sign", "replace"]  # Re-sign or replace the server's certificate.
-    use_ssl_server: NotRequired[Literal["disable", "enable"]]  # Enable/disable the use of SSL server table for SSL offloadin
-    caname: str  # CA certificate used by SSL Inspection.
-    untrusted_caname: str  # Untrusted CA certificate used by SSL Inspection.
-    server_cert: NotRequired[list[dict[str, Any]]]  # Certificate used by SSL Inspection to replace server certifi
-    ssl_server: list[dict[str, Any]]  # SSL server settings used for client certificate request.
-    ssl_exemption_ip_rating: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP based URL rating.
-    ssl_exemption_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of SSL exemptions.
-    ssl_anomaly_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of SSL anomalies.
-    ssl_negotiation_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of SSL negotiation events.
-    ssl_server_cert_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of server certificate information.
-    ssl_handshake_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of TLS handshakes.
-    rpc_over_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable inspection of RPC over HTTPS.
-    mapi_over_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable inspection of MAPI over HTTPS.
-    supported_alpn: NotRequired[Literal["http1-1", "http2", "all", "none"]]  # Configure ALPN option.
+    name: str  # Name. | MaxLen: 47
+    comment: str  # Optional comments. | MaxLen: 255
+    ssl: str  # Configure SSL options.
+    https: str  # Configure HTTPS options.
+    ftps: str  # Configure FTPS options.
+    imaps: str  # Configure IMAPS options.
+    pop3s: str  # Configure POP3S options.
+    smtps: str  # Configure SMTPS options.
+    ssh: str  # Configure SSH options.
+    dot: str  # Configure DNS over TLS options.
+    allowlist: Literal["enable", "disable"]  # Enable/disable exempting servers by FortiGuard all | Default: disable
+    block_blocklisted_certificates: Literal["disable", "enable"]  # Enable/disable blocking SSL-based botnet communica | Default: enable
+    ssl_exempt: list[dict[str, Any]]  # Servers to exempt from SSL inspection.
+    ech_outer_sni: list[dict[str, Any]]  # ClientHelloOuter SNIs to be blocked.
+    server_cert_mode: Literal["re-sign", "replace"]  # Re-sign or replace the server's certificate. | Default: re-sign
+    use_ssl_server: Literal["disable", "enable"]  # Enable/disable the use of SSL server table for SSL | Default: disable
+    caname: str  # CA certificate used by SSL Inspection. | Default: Fortinet_CA_SSL | MaxLen: 35
+    untrusted_caname: str  # Untrusted CA certificate used by SSL Inspection. | Default: Fortinet_CA_Untrusted | MaxLen: 35
+    server_cert: list[dict[str, Any]]  # Certificate used by SSL Inspection to replace serv
+    ssl_server: list[dict[str, Any]]  # SSL server settings used for client certificate re
+    ssl_exemption_ip_rating: Literal["enable", "disable"]  # Enable/disable IP based URL rating. | Default: enable
+    ssl_exemption_log: Literal["disable", "enable"]  # Enable/disable logging of SSL exemptions. | Default: disable
+    ssl_anomaly_log: Literal["disable", "enable"]  # Enable/disable logging of SSL anomalies. | Default: enable
+    ssl_negotiation_log: Literal["disable", "enable"]  # Enable/disable logging of SSL negotiation events. | Default: enable
+    ssl_server_cert_log: Literal["disable", "enable"]  # Enable/disable logging of server certificate infor | Default: disable
+    ssl_handshake_log: Literal["disable", "enable"]  # Enable/disable logging of TLS handshakes. | Default: disable
+    rpc_over_https: Literal["enable", "disable"]  # Enable/disable inspection of RPC over HTTPS. | Default: disable
+    mapi_over_https: Literal["enable", "disable"]  # Enable/disable inspection of MAPI over HTTPS. | Default: disable
+    supported_alpn: Literal["http1-1", "http2", "all", "none"]  # Configure ALPN option. | Default: all
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class SslSshProfileSslexemptItem(TypedDict):
+    """Type hints for ssl-exempt table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID number. | Default: 0 | Min: 0 | Max: 512
+    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]  # Type of address object (IPv4 or IPv6) or FortiGuar | Default: fortiguard-category
+    fortiguard_category: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
+    address: str  # IPv4 address object. | MaxLen: 79
+    address6: str  # IPv6 address object. | MaxLen: 79
+    wildcard_fqdn: str  # Exempt servers by wildcard FQDN. | MaxLen: 79
+    regex: str  # Exempt servers by regular expression. | MaxLen: 255
+
+
+class SslSshProfileEchoutersniItem(TypedDict):
+    """Type hints for ech-outer-sni table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # ClientHelloOuter SNI name. | MaxLen: 79
+    sni: str  # ClientHelloOuter SNI to be blocked. | MaxLen: 255
+
+
+class SslSshProfileServercertItem(TypedDict):
+    """Type hints for server-cert table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
+
+
+class SslSshProfileSslserverItem(TypedDict):
+    """Type hints for ssl-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # SSL server ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # IPv4 address of the SSL server. | Default: 0.0.0.0
+    https_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    smtps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    pop3s_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    imaps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    ftps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    ssl_other_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class SslSshProfileSslexemptObject:
@@ -59,19 +119,19 @@ class SslSshProfileSslexemptObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID number.
+    # ID number. | Default: 0 | Min: 0 | Max: 512
     id: int
-    # Type of address object (IPv4 or IPv6) or FortiGuard category.
+    # Type of address object (IPv4 or IPv6) or FortiGuard category | Default: fortiguard-category
     type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]
-    # FortiGuard category ID.
+    # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
     fortiguard_category: int
-    # IPv4 address object.
+    # IPv4 address object. | MaxLen: 79
     address: str
-    # IPv6 address object.
+    # IPv6 address object. | MaxLen: 79
     address6: str
-    # Exempt servers by wildcard FQDN.
+    # Exempt servers by wildcard FQDN. | MaxLen: 79
     wildcard_fqdn: str
-    # Exempt servers by regular expression.
+    # Exempt servers by regular expression. | MaxLen: 255
     regex: str
     
     # Methods from FortiObject
@@ -92,9 +152,9 @@ class SslSshProfileEchoutersniObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ClientHelloOuter SNI name.
+    # ClientHelloOuter SNI name. | MaxLen: 79
     name: str
-    # ClientHelloOuter SNI to be blocked.
+    # ClientHelloOuter SNI to be blocked. | MaxLen: 255
     sni: str
     
     # Methods from FortiObject
@@ -115,7 +175,7 @@ class SslSshProfileServercertObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Certificate list.
+    # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -136,21 +196,21 @@ class SslSshProfileSslserverObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # SSL server ID.
+    # SSL server ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # IPv4 address of the SSL server.
+    # IPv4 address of the SSL server. | Default: 0.0.0.0
     ip: str
-    # Action based on received client certificate during the HTTPS handshake.
+    # Action based on received client certificate during the HTTPS | Default: bypass
     https_client_certificate: Literal["bypass", "inspect", "block"]
-    # Action based on received client certificate during the SMTPS handshake.
+    # Action based on received client certificate during the SMTPS | Default: bypass
     smtps_client_certificate: Literal["bypass", "inspect", "block"]
-    # Action based on received client certificate during the POP3S handshake.
+    # Action based on received client certificate during the POP3S | Default: bypass
     pop3s_client_certificate: Literal["bypass", "inspect", "block"]
-    # Action based on received client certificate during the IMAPS handshake.
+    # Action based on received client certificate during the IMAPS | Default: bypass
     imaps_client_certificate: Literal["bypass", "inspect", "block"]
-    # Action based on received client certificate during the FTPS handshake.
+    # Action based on received client certificate during the FTPS | Default: bypass
     ftps_client_certificate: Literal["bypass", "inspect", "block"]
-    # Action based on received client certificate during an SSL protocol handshake.
+    # Action based on received client certificate during an SSL pr | Default: bypass
     ssl_other_client_certificate: Literal["bypass", "inspect", "block"]
     
     # Methods from FortiObject
@@ -171,35 +231,35 @@ class SslSshProfileResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    comment: str
-    ssl: str
-    https: str
-    ftps: str
-    imaps: str
-    pop3s: str
-    smtps: str
-    ssh: str
-    dot: str
-    allowlist: Literal["enable", "disable"]
-    block_blocklisted_certificates: Literal["disable", "enable"]
-    ssl_exempt: list[dict[str, Any]]
-    ech_outer_sni: list[dict[str, Any]]
-    server_cert_mode: Literal["re-sign", "replace"]
-    use_ssl_server: Literal["disable", "enable"]
-    caname: str
-    untrusted_caname: str
-    server_cert: list[dict[str, Any]]
-    ssl_server: list[dict[str, Any]]
-    ssl_exemption_ip_rating: Literal["enable", "disable"]
-    ssl_exemption_log: Literal["disable", "enable"]
-    ssl_anomaly_log: Literal["disable", "enable"]
-    ssl_negotiation_log: Literal["disable", "enable"]
-    ssl_server_cert_log: Literal["disable", "enable"]
-    ssl_handshake_log: Literal["disable", "enable"]
-    rpc_over_https: Literal["enable", "disable"]
-    mapi_over_https: Literal["enable", "disable"]
-    supported_alpn: Literal["http1-1", "http2", "all", "none"]
+    name: str  # Name. | MaxLen: 47
+    comment: str  # Optional comments. | MaxLen: 255
+    ssl: str  # Configure SSL options.
+    https: str  # Configure HTTPS options.
+    ftps: str  # Configure FTPS options.
+    imaps: str  # Configure IMAPS options.
+    pop3s: str  # Configure POP3S options.
+    smtps: str  # Configure SMTPS options.
+    ssh: str  # Configure SSH options.
+    dot: str  # Configure DNS over TLS options.
+    allowlist: Literal["enable", "disable"]  # Enable/disable exempting servers by FortiGuard all | Default: disable
+    block_blocklisted_certificates: Literal["disable", "enable"]  # Enable/disable blocking SSL-based botnet communica | Default: enable
+    ssl_exempt: list[SslSshProfileSslexemptItem]  # Servers to exempt from SSL inspection.
+    ech_outer_sni: list[SslSshProfileEchoutersniItem]  # ClientHelloOuter SNIs to be blocked.
+    server_cert_mode: Literal["re-sign", "replace"]  # Re-sign or replace the server's certificate. | Default: re-sign
+    use_ssl_server: Literal["disable", "enable"]  # Enable/disable the use of SSL server table for SSL | Default: disable
+    caname: str  # CA certificate used by SSL Inspection. | Default: Fortinet_CA_SSL | MaxLen: 35
+    untrusted_caname: str  # Untrusted CA certificate used by SSL Inspection. | Default: Fortinet_CA_Untrusted | MaxLen: 35
+    server_cert: list[SslSshProfileServercertItem]  # Certificate used by SSL Inspection to replace serv
+    ssl_server: list[SslSshProfileSslserverItem]  # SSL server settings used for client certificate re
+    ssl_exemption_ip_rating: Literal["enable", "disable"]  # Enable/disable IP based URL rating. | Default: enable
+    ssl_exemption_log: Literal["disable", "enable"]  # Enable/disable logging of SSL exemptions. | Default: disable
+    ssl_anomaly_log: Literal["disable", "enable"]  # Enable/disable logging of SSL anomalies. | Default: enable
+    ssl_negotiation_log: Literal["disable", "enable"]  # Enable/disable logging of SSL negotiation events. | Default: enable
+    ssl_server_cert_log: Literal["disable", "enable"]  # Enable/disable logging of server certificate infor | Default: disable
+    ssl_handshake_log: Literal["disable", "enable"]  # Enable/disable logging of TLS handshakes. | Default: disable
+    rpc_over_https: Literal["enable", "disable"]  # Enable/disable inspection of RPC over HTTPS. | Default: disable
+    mapi_over_https: Literal["enable", "disable"]  # Enable/disable inspection of MAPI over HTTPS. | Default: disable
+    supported_alpn: Literal["http1-1", "http2", "all", "none"]  # Configure ALPN option. | Default: all
 
 
 @final
@@ -210,9 +270,9 @@ class SslSshProfileObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 47
     name: str
-    # Optional comments.
+    # Optional comments. | MaxLen: 255
     comment: str
     # Configure SSL options.
     ssl: str
@@ -230,43 +290,43 @@ class SslSshProfileObject:
     ssh: str
     # Configure DNS over TLS options.
     dot: str
-    # Enable/disable exempting servers by FortiGuard allowlist.
+    # Enable/disable exempting servers by FortiGuard allowlist. | Default: disable
     allowlist: Literal["enable", "disable"]
-    # Enable/disable blocking SSL-based botnet communication by FortiGuard certificate
+    # Enable/disable blocking SSL-based botnet communication by Fo | Default: enable
     block_blocklisted_certificates: Literal["disable", "enable"]
     # Servers to exempt from SSL inspection.
-    ssl_exempt: list[SslSshProfileSslexemptObject]  # Table field - list of typed objects
+    ssl_exempt: list[SslSshProfileSslexemptObject]
     # ClientHelloOuter SNIs to be blocked.
-    ech_outer_sni: list[SslSshProfileEchoutersniObject]  # Table field - list of typed objects
-    # Re-sign or replace the server's certificate.
+    ech_outer_sni: list[SslSshProfileEchoutersniObject]
+    # Re-sign or replace the server's certificate. | Default: re-sign
     server_cert_mode: Literal["re-sign", "replace"]
-    # Enable/disable the use of SSL server table for SSL offloading.
+    # Enable/disable the use of SSL server table for SSL offloadin | Default: disable
     use_ssl_server: Literal["disable", "enable"]
-    # CA certificate used by SSL Inspection.
+    # CA certificate used by SSL Inspection. | Default: Fortinet_CA_SSL | MaxLen: 35
     caname: str
-    # Untrusted CA certificate used by SSL Inspection.
+    # Untrusted CA certificate used by SSL Inspection. | Default: Fortinet_CA_Untrusted | MaxLen: 35
     untrusted_caname: str
-    # Certificate used by SSL Inspection to replace server certificate.
-    server_cert: list[SslSshProfileServercertObject]  # Table field - list of typed objects
+    # Certificate used by SSL Inspection to replace server certifi
+    server_cert: list[SslSshProfileServercertObject]
     # SSL server settings used for client certificate request.
-    ssl_server: list[SslSshProfileSslserverObject]  # Table field - list of typed objects
-    # Enable/disable IP based URL rating.
+    ssl_server: list[SslSshProfileSslserverObject]
+    # Enable/disable IP based URL rating. | Default: enable
     ssl_exemption_ip_rating: Literal["enable", "disable"]
-    # Enable/disable logging of SSL exemptions.
+    # Enable/disable logging of SSL exemptions. | Default: disable
     ssl_exemption_log: Literal["disable", "enable"]
-    # Enable/disable logging of SSL anomalies.
+    # Enable/disable logging of SSL anomalies. | Default: enable
     ssl_anomaly_log: Literal["disable", "enable"]
-    # Enable/disable logging of SSL negotiation events.
+    # Enable/disable logging of SSL negotiation events. | Default: enable
     ssl_negotiation_log: Literal["disable", "enable"]
-    # Enable/disable logging of server certificate information.
+    # Enable/disable logging of server certificate information. | Default: disable
     ssl_server_cert_log: Literal["disable", "enable"]
-    # Enable/disable logging of TLS handshakes.
+    # Enable/disable logging of TLS handshakes. | Default: disable
     ssl_handshake_log: Literal["disable", "enable"]
-    # Enable/disable inspection of RPC over HTTPS.
+    # Enable/disable inspection of RPC over HTTPS. | Default: disable
     rpc_over_https: Literal["enable", "disable"]
-    # Enable/disable inspection of MAPI over HTTPS.
+    # Enable/disable inspection of MAPI over HTTPS. | Default: disable
     mapi_over_https: Literal["enable", "disable"]
-    # Configure ALPN option.
+    # Configure ALPN option. | Default: all
     supported_alpn: Literal["http1-1", "http2", "all", "none"]
     
     # Common API response fields
@@ -293,8 +353,66 @@ class SslSshProfile:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SslSshProfileResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SslSshProfileResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[SslSshProfileResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -309,11 +427,12 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -329,11 +448,11 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -348,10 +467,11 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[SslSshProfileObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -368,7 +488,7 @@ class SslSshProfile:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -428,7 +548,7 @@ class SslSshProfile:
         **kwargs: Any,
     ) -> list[SslSshProfileResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -443,9 +563,9 @@ class SslSshProfile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -506,7 +626,7 @@ class SslSshProfile:
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
@@ -547,8 +667,9 @@ class SslSshProfile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -585,7 +706,45 @@ class SslSshProfile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -623,7 +782,7 @@ class SslSshProfile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -661,7 +820,7 @@ class SslSshProfile:
         supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
@@ -702,8 +861,9 @@ class SslSshProfile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -740,7 +900,45 @@ class SslSshProfile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -778,7 +976,7 @@ class SslSshProfile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -787,7 +985,7 @@ class SslSshProfile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SslSshProfileObject: ...
     
@@ -799,8 +997,9 @@ class SslSshProfile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -808,7 +1007,16 @@ class SslSshProfile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -816,7 +1024,7 @@ class SslSshProfile:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -860,7 +1068,7 @@ class SslSshProfile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -885,8 +1093,1145 @@ class SslSshProfile:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class SslSshProfileDictMode:
+    """SslSshProfile endpoint for dict response mode (default for this client).
+    
+    By default returns SslSshProfileResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return SslSshProfileObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[SslSshProfileObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SslSshProfileResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[SslSshProfileResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class SslSshProfileObjectMode:
+    """SslSshProfile endpoint for object response mode (default for this client).
+    
+    By default returns SslSshProfileObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return SslSshProfileResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SslSshProfileResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[SslSshProfileResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[SslSshProfileObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SslSshProfileObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SslSshProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        ssl: str | None = ...,
+        https: str | None = ...,
+        ftps: str | None = ...,
+        imaps: str | None = ...,
+        pop3s: str | None = ...,
+        smtps: str | None = ...,
+        ssh: str | None = ...,
+        dot: str | None = ...,
+        allowlist: Literal["enable", "disable"] | None = ...,
+        block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
+        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
+        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_mode: Literal["re-sign", "replace"] | None = ...,
+        use_ssl_server: Literal["disable", "enable"] | None = ...,
+        caname: str | None = ...,
+        untrusted_caname: str | None = ...,
+        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
+        ssl_exemption_log: Literal["disable", "enable"] | None = ...,
+        ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
+        ssl_negotiation_log: Literal["disable", "enable"] | None = ...,
+        ssl_server_cert_log: Literal["disable", "enable"] | None = ...,
+        ssl_handshake_log: Literal["disable", "enable"] | None = ...,
+        rpc_over_https: Literal["enable", "disable"] | None = ...,
+        mapi_over_https: Literal["enable", "disable"] | None = ...,
+        supported_alpn: Literal["http1-1", "http2", "all", "none"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "SslSshProfile",
+    "SslSshProfileDictMode",
+    "SslSshProfileObjectMode",
     "SslSshProfilePayload",
     "SslSshProfileObject",
 ]

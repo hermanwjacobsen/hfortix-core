@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProfilePayload(TypedDict, total=False):
     """
     Type hints for icap/profile payload fields.
@@ -20,39 +24,68 @@ class ProfilePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    replacemsg_group: NotRequired[str]  # Replacement message group.
-    name: NotRequired[str]  # ICAP profile name.
-    comment: NotRequired[str]  # Comment.
-    request: NotRequired[Literal["disable", "enable"]]  # Enable/disable whether an HTTP request is passed to an ICAP
-    response: NotRequired[Literal["disable", "enable"]]  # Enable/disable whether an HTTP response is passed to an ICAP
-    file_transfer: NotRequired[Literal["ssh", "ftp"]]  # Configure the file transfer protocols to pass transferred fi
-    streaming_content_bypass: NotRequired[Literal["disable", "enable"]]  # Enable/disable bypassing of ICAP server for streaming conten
-    ocr_only: NotRequired[Literal["disable", "enable"]]  # Enable/disable this FortiGate unit to submit only OCR intere
-    size_limit_204: NotRequired[int]  # 204 response size limit to be saved by ICAP client in megaby
-    response_204: NotRequired[Literal["disable", "enable"]]  # Enable/disable allowance of 204 response from ICAP server.
-    preview: NotRequired[Literal["disable", "enable"]]  # Enable/disable preview of data to ICAP server.
-    preview_data_length: NotRequired[int]  # Preview data length to be sent to ICAP server.
-    request_server: str  # ICAP server to use for an HTTP request.
-    response_server: str  # ICAP server to use for an HTTP response.
-    file_transfer_server: str  # ICAP server to use for a file transfer.
-    request_failure: NotRequired[Literal["error", "bypass"]]  # Action to take if the ICAP server cannot be contacted when p
-    response_failure: NotRequired[Literal["error", "bypass"]]  # Action to take if the ICAP server cannot be contacted when p
-    file_transfer_failure: NotRequired[Literal["error", "bypass"]]  # Action to take if the ICAP server cannot be contacted when p
-    request_path: NotRequired[str]  # Path component of the ICAP URI that identifies the HTTP requ
-    response_path: NotRequired[str]  # Path component of the ICAP URI that identifies the HTTP resp
-    file_transfer_path: NotRequired[str]  # Path component of the ICAP URI that identifies the file tran
-    methods: NotRequired[Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]]  # The allowed HTTP methods that will be sent to ICAP server fo
-    response_req_hdr: NotRequired[Literal["disable", "enable"]]  # Enable/disable addition of req-hdr for ICAP response modific
-    respmod_default_action: NotRequired[Literal["forward", "bypass"]]  # Default action to ICAP response modification (respmod) proce
-    icap_block_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable UTM log when infection found
-    chunk_encap: NotRequired[Literal["disable", "enable"]]  # Enable/disable chunked encapsulation (default = disable).
-    extension_feature: NotRequired[Literal["scan-progress"]]  # Enable/disable ICAP extension features.
-    scan_progress_interval: NotRequired[int]  # Scan progress interval value.
-    timeout: NotRequired[int]  # Time (in seconds) that ICAP client waits for the response fr
-    icap_headers: NotRequired[list[dict[str, Any]]]  # Configure ICAP forwarded request headers.
-    respmod_forward_rules: NotRequired[list[dict[str, Any]]]  # ICAP response mode forward rules.
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    name: str  # ICAP profile name. | MaxLen: 47
+    comment: str  # Comment. | MaxLen: 255
+    request: Literal["disable", "enable"]  # Enable/disable whether an HTTP request is passed t | Default: disable
+    response: Literal["disable", "enable"]  # Enable/disable whether an HTTP response is passed | Default: disable
+    file_transfer: Literal["ssh", "ftp"]  # Configure the file transfer protocols to pass tran
+    streaming_content_bypass: Literal["disable", "enable"]  # Enable/disable bypassing of ICAP server for stream | Default: disable
+    ocr_only: Literal["disable", "enable"]  # Enable/disable this FortiGate unit to submit only | Default: disable
+    size_limit_204: int  # 204 response size limit to be saved by ICAP client | Default: 1 | Min: 1 | Max: 10
+    response_204: Literal["disable", "enable"]  # Enable/disable allowance of 204 response from ICAP | Default: disable
+    preview: Literal["disable", "enable"]  # Enable/disable preview of data to ICAP server. | Default: disable
+    preview_data_length: int  # Preview data length to be sent to ICAP server. | Default: 0 | Min: 0 | Max: 4096
+    request_server: str  # ICAP server to use for an HTTP request. | MaxLen: 63
+    response_server: str  # ICAP server to use for an HTTP response. | MaxLen: 63
+    file_transfer_server: str  # ICAP server to use for a file transfer. | MaxLen: 63
+    request_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    response_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    file_transfer_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    request_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    response_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    file_transfer_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post put trace connect other
+    response_req_hdr: Literal["disable", "enable"]  # Enable/disable addition of req-hdr for ICAP respon | Default: enable
+    respmod_default_action: Literal["forward", "bypass"]  # Default action to ICAP response modification | Default: forward
+    icap_block_log: Literal["disable", "enable"]  # Enable/disable UTM log when infection found | Default: disable
+    chunk_encap: Literal["disable", "enable"]  # Enable/disable chunked encapsulation | Default: disable
+    extension_feature: Literal["scan-progress"]  # Enable/disable ICAP extension features.
+    scan_progress_interval: int  # Scan progress interval value. | Default: 10 | Min: 5 | Max: 30
+    timeout: int  # Time (in seconds) that ICAP client waits for the r | Default: 30 | Min: 30 | Max: 3600
+    icap_headers: list[dict[str, Any]]  # Configure ICAP forwarded request headers.
+    respmod_forward_rules: list[dict[str, Any]]  # ICAP response mode forward rules.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ProfileIcapheadersItem(TypedDict):
+    """Type hints for icap-headers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # HTTP forwarded header ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # HTTP forwarded header name. | MaxLen: 79
+    content: str  # HTTP header content. | MaxLen: 255
+    base64_encoding: Literal["disable", "enable"]  # Enable/disable use of base64 encoding of HTTP cont | Default: disable
+
+
+class ProfileRespmodforwardrulesItem(TypedDict):
+    """Type hints for respmod-forward-rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 63
+    host: str  # Address object for the host. | MaxLen: 79
+    header_group: str  # HTTP header group.
+    action: Literal["forward", "bypass"]  # Action to be taken for ICAP server. | Default: forward
+    http_resp_status_code: str  # HTTP response status code.
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ProfileIcapheadersObject:
@@ -62,13 +95,13 @@ class ProfileIcapheadersObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # HTTP forwarded header ID.
+    # HTTP forwarded header ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # HTTP forwarded header name.
+    # HTTP forwarded header name. | MaxLen: 79
     name: str
-    # HTTP header content.
+    # HTTP header content. | MaxLen: 255
     content: str
-    # Enable/disable use of base64 encoding of HTTP content.
+    # Enable/disable use of base64 encoding of HTTP content. | Default: disable
     base64_encoding: Literal["disable", "enable"]
     
     # Methods from FortiObject
@@ -89,13 +122,13 @@ class ProfileRespmodforwardrulesObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 63
     name: str
-    # Address object for the host.
+    # Address object for the host. | MaxLen: 79
     host: str
     # HTTP header group.
     header_group: str
-    # Action to be taken for ICAP server.
+    # Action to be taken for ICAP server. | Default: forward
     action: Literal["forward", "bypass"]
     # HTTP response status code.
     http_resp_status_code: str
@@ -118,37 +151,37 @@ class ProfileResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    replacemsg_group: str
-    name: str
-    comment: str
-    request: Literal["disable", "enable"]
-    response: Literal["disable", "enable"]
-    file_transfer: Literal["ssh", "ftp"]
-    streaming_content_bypass: Literal["disable", "enable"]
-    ocr_only: Literal["disable", "enable"]
-    size_limit_204: int
-    response_204: Literal["disable", "enable"]
-    preview: Literal["disable", "enable"]
-    preview_data_length: int
-    request_server: str
-    response_server: str
-    file_transfer_server: str
-    request_failure: Literal["error", "bypass"]
-    response_failure: Literal["error", "bypass"]
-    file_transfer_failure: Literal["error", "bypass"]
-    request_path: str
-    response_path: str
-    file_transfer_path: str
-    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]
-    response_req_hdr: Literal["disable", "enable"]
-    respmod_default_action: Literal["forward", "bypass"]
-    icap_block_log: Literal["disable", "enable"]
-    chunk_encap: Literal["disable", "enable"]
-    extension_feature: Literal["scan-progress"]
-    scan_progress_interval: int
-    timeout: int
-    icap_headers: list[dict[str, Any]]
-    respmod_forward_rules: list[dict[str, Any]]
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    name: str  # ICAP profile name. | MaxLen: 47
+    comment: str  # Comment. | MaxLen: 255
+    request: Literal["disable", "enable"]  # Enable/disable whether an HTTP request is passed t | Default: disable
+    response: Literal["disable", "enable"]  # Enable/disable whether an HTTP response is passed | Default: disable
+    file_transfer: Literal["ssh", "ftp"]  # Configure the file transfer protocols to pass tran
+    streaming_content_bypass: Literal["disable", "enable"]  # Enable/disable bypassing of ICAP server for stream | Default: disable
+    ocr_only: Literal["disable", "enable"]  # Enable/disable this FortiGate unit to submit only | Default: disable
+    size_limit_204: int  # 204 response size limit to be saved by ICAP client | Default: 1 | Min: 1 | Max: 10
+    response_204: Literal["disable", "enable"]  # Enable/disable allowance of 204 response from ICAP | Default: disable
+    preview: Literal["disable", "enable"]  # Enable/disable preview of data to ICAP server. | Default: disable
+    preview_data_length: int  # Preview data length to be sent to ICAP server. | Default: 0 | Min: 0 | Max: 4096
+    request_server: str  # ICAP server to use for an HTTP request. | MaxLen: 63
+    response_server: str  # ICAP server to use for an HTTP response. | MaxLen: 63
+    file_transfer_server: str  # ICAP server to use for a file transfer. | MaxLen: 63
+    request_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    response_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    file_transfer_failure: Literal["error", "bypass"]  # Action to take if the ICAP server cannot be contac | Default: error
+    request_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    response_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    file_transfer_path: str  # Path component of the ICAP URI that identifies the | MaxLen: 127
+    methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]  # The allowed HTTP methods that will be sent to ICAP | Default: delete get head options post put trace connect other
+    response_req_hdr: Literal["disable", "enable"]  # Enable/disable addition of req-hdr for ICAP respon | Default: enable
+    respmod_default_action: Literal["forward", "bypass"]  # Default action to ICAP response modification | Default: forward
+    icap_block_log: Literal["disable", "enable"]  # Enable/disable UTM log when infection found | Default: disable
+    chunk_encap: Literal["disable", "enable"]  # Enable/disable chunked encapsulation | Default: disable
+    extension_feature: Literal["scan-progress"]  # Enable/disable ICAP extension features.
+    scan_progress_interval: int  # Scan progress interval value. | Default: 10 | Min: 5 | Max: 30
+    timeout: int  # Time (in seconds) that ICAP client waits for the r | Default: 30 | Min: 30 | Max: 3600
+    icap_headers: list[ProfileIcapheadersItem]  # Configure ICAP forwarded request headers.
+    respmod_forward_rules: list[ProfileRespmodforwardrulesItem]  # ICAP response mode forward rules.
 
 
 @final
@@ -159,68 +192,68 @@ class ProfileObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Replacement message group.
+    # Replacement message group. | MaxLen: 35
     replacemsg_group: str
-    # ICAP profile name.
+    # ICAP profile name. | MaxLen: 47
     name: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comment: str
-    # Enable/disable whether an HTTP request is passed to an ICAP server.
+    # Enable/disable whether an HTTP request is passed to an ICAP | Default: disable
     request: Literal["disable", "enable"]
-    # Enable/disable whether an HTTP response is passed to an ICAP server.
+    # Enable/disable whether an HTTP response is passed to an ICAP | Default: disable
     response: Literal["disable", "enable"]
-    # Configure the file transfer protocols to pass transferred files to an ICAP serve
+    # Configure the file transfer protocols to pass transferred fi
     file_transfer: Literal["ssh", "ftp"]
-    # Enable/disable bypassing of ICAP server for streaming content.
+    # Enable/disable bypassing of ICAP server for streaming conten | Default: disable
     streaming_content_bypass: Literal["disable", "enable"]
-    # Enable/disable this FortiGate unit to submit only OCR interested content to the
+    # Enable/disable this FortiGate unit to submit only OCR intere | Default: disable
     ocr_only: Literal["disable", "enable"]
-    # 204 response size limit to be saved by ICAP client in megabytes
+    # 204 response size limit to be saved by ICAP client in megaby | Default: 1 | Min: 1 | Max: 10
     size_limit_204: int
-    # Enable/disable allowance of 204 response from ICAP server.
+    # Enable/disable allowance of 204 response from ICAP server. | Default: disable
     response_204: Literal["disable", "enable"]
-    # Enable/disable preview of data to ICAP server.
+    # Enable/disable preview of data to ICAP server. | Default: disable
     preview: Literal["disable", "enable"]
-    # Preview data length to be sent to ICAP server.
+    # Preview data length to be sent to ICAP server. | Default: 0 | Min: 0 | Max: 4096
     preview_data_length: int
-    # ICAP server to use for an HTTP request.
+    # ICAP server to use for an HTTP request. | MaxLen: 63
     request_server: str
-    # ICAP server to use for an HTTP response.
+    # ICAP server to use for an HTTP response. | MaxLen: 63
     response_server: str
-    # ICAP server to use for a file transfer.
+    # ICAP server to use for a file transfer. | MaxLen: 63
     file_transfer_server: str
-    # Action to take if the ICAP server cannot be contacted when processing an HTTP re
+    # Action to take if the ICAP server cannot be contacted when p | Default: error
     request_failure: Literal["error", "bypass"]
-    # Action to take if the ICAP server cannot be contacted when processing an HTTP re
+    # Action to take if the ICAP server cannot be contacted when p | Default: error
     response_failure: Literal["error", "bypass"]
-    # Action to take if the ICAP server cannot be contacted when processing a file tra
+    # Action to take if the ICAP server cannot be contacted when p | Default: error
     file_transfer_failure: Literal["error", "bypass"]
-    # Path component of the ICAP URI that identifies the HTTP request processing servi
+    # Path component of the ICAP URI that identifies the HTTP requ | MaxLen: 127
     request_path: str
-    # Path component of the ICAP URI that identifies the HTTP response processing serv
+    # Path component of the ICAP URI that identifies the HTTP resp | MaxLen: 127
     response_path: str
-    # Path component of the ICAP URI that identifies the file transfer processing serv
+    # Path component of the ICAP URI that identifies the file tran | MaxLen: 127
     file_transfer_path: str
-    # The allowed HTTP methods that will be sent to ICAP server for further processing
+    # The allowed HTTP methods that will be sent to ICAP server fo | Default: delete get head options post put trace connect other
     methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"]
-    # Enable/disable addition of req-hdr for ICAP response modification (respmod) proc
+    # Enable/disable addition of req-hdr for ICAP response modific | Default: enable
     response_req_hdr: Literal["disable", "enable"]
-    # Default action to ICAP response modification (respmod) processing.
+    # Default action to ICAP response modification (respmod) proce | Default: forward
     respmod_default_action: Literal["forward", "bypass"]
-    # Enable/disable UTM log when infection found (default = disable).
+    # Enable/disable UTM log when infection found | Default: disable
     icap_block_log: Literal["disable", "enable"]
-    # Enable/disable chunked encapsulation (default = disable).
+    # Enable/disable chunked encapsulation (default = disable). | Default: disable
     chunk_encap: Literal["disable", "enable"]
     # Enable/disable ICAP extension features.
     extension_feature: Literal["scan-progress"]
-    # Scan progress interval value.
+    # Scan progress interval value. | Default: 10 | Min: 5 | Max: 30
     scan_progress_interval: int
-    # Time (in seconds) that ICAP client waits for the response from ICAP server.
+    # Time (in seconds) that ICAP client waits for the response fr | Default: 30 | Min: 30 | Max: 3600
     timeout: int
     # Configure ICAP forwarded request headers.
-    icap_headers: list[ProfileIcapheadersObject]  # Table field - list of typed objects
+    icap_headers: list[ProfileIcapheadersObject]
     # ICAP response mode forward rules.
-    respmod_forward_rules: list[ProfileRespmodforwardrulesObject]  # Table field - list of typed objects
+    respmod_forward_rules: list[ProfileRespmodforwardrulesObject]
     
     # Common API response fields
     status: str
@@ -246,8 +279,66 @@ class Profile:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProfileResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -262,11 +353,12 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -282,11 +374,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -301,10 +393,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProfileObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -321,7 +414,7 @@ class Profile:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -381,7 +474,7 @@ class Profile:
         **kwargs: Any,
     ) -> list[ProfileResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -396,9 +489,9 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -461,7 +554,7 @@ class Profile:
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -504,8 +597,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -544,7 +638,47 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -584,7 +718,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -624,7 +758,7 @@ class Profile:
         respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -667,8 +801,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -707,7 +842,47 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -747,7 +922,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -756,7 +931,7 @@ class Profile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -768,8 +943,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -777,7 +953,16 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -785,7 +970,7 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -831,7 +1016,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -856,8 +1041,1185 @@ class Profile:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProfileDictMode:
+    """Profile endpoint for dict response mode (default for this client).
+    
+    By default returns ProfileResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProfileObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProfileObjectMode:
+    """Profile endpoint for object response mode (default for this client).
+    
+    By default returns ProfileObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProfileResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        replacemsg_group: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        request: Literal["disable", "enable"] | None = ...,
+        response: Literal["disable", "enable"] | None = ...,
+        file_transfer: Literal["ssh", "ftp"] | list[str] | None = ...,
+        streaming_content_bypass: Literal["disable", "enable"] | None = ...,
+        ocr_only: Literal["disable", "enable"] | None = ...,
+        size_limit_204: int | None = ...,
+        response_204: Literal["disable", "enable"] | None = ...,
+        preview: Literal["disable", "enable"] | None = ...,
+        preview_data_length: int | None = ...,
+        request_server: str | None = ...,
+        response_server: str | None = ...,
+        file_transfer_server: str | None = ...,
+        request_failure: Literal["error", "bypass"] | None = ...,
+        response_failure: Literal["error", "bypass"] | None = ...,
+        file_transfer_failure: Literal["error", "bypass"] | None = ...,
+        request_path: str | None = ...,
+        response_path: str | None = ...,
+        file_transfer_path: str | None = ...,
+        methods: Literal["delete", "get", "head", "options", "post", "put", "trace", "connect", "other"] | list[str] | None = ...,
+        response_req_hdr: Literal["disable", "enable"] | None = ...,
+        respmod_default_action: Literal["forward", "bypass"] | None = ...,
+        icap_block_log: Literal["disable", "enable"] | None = ...,
+        chunk_encap: Literal["disable", "enable"] | None = ...,
+        extension_feature: Literal["scan-progress"] | list[str] | None = ...,
+        scan_progress_interval: int | None = ...,
+        timeout: int | None = ...,
+        icap_headers: str | list[str] | list[dict[str, Any]] | None = ...,
+        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Profile",
+    "ProfileDictMode",
+    "ProfileObjectMode",
     "ProfilePayload",
     "ProfileObject",
 ]

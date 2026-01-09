@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class SettingPayload(TypedDict, total=False):
     """
     Type hints for log/setting payload fields.
@@ -13,37 +17,49 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    resolve_ip: NotRequired[Literal["enable", "disable"]]  # Enable/disable adding resolved domain names to traffic logs
-    resolve_port: NotRequired[Literal["enable", "disable"]]  # Enable/disable adding resolved service names to traffic logs
-    log_user_in_upper: NotRequired[Literal["enable", "disable"]]  # Enable/disable logs with user-in-upper.
-    fwpolicy_implicit_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable implicit firewall policy logging.
-    fwpolicy6_implicit_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable implicit firewall policy6 logging.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended traffic logging.
-    local_in_allow: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-in-allow logging.
-    local_in_deny_unicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-in-deny-unicast logging.
-    local_in_deny_broadcast: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-in-deny-broadcast logging.
-    local_in_policy_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-in-policy logging.
-    local_out: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-out logging.
-    local_out_ioc_detection: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-out traffic IoC detection. Requires loc
-    daemon_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable daemon logging.
-    neighbor_event: NotRequired[Literal["enable", "disable"]]  # Enable/disable neighbor event logging.
-    brief_traffic_format: NotRequired[Literal["enable", "disable"]]  # Enable/disable brief format traffic logging.
-    user_anonymize: NotRequired[Literal["enable", "disable"]]  # Enable/disable anonymizing user names in log messages.
-    expolicy_implicit_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable proxy firewall implicit policy logging.
-    log_policy_comment: NotRequired[Literal["enable", "disable"]]  # Enable/disable inserting policy comments into traffic logs.
-    faz_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable override FortiAnalyzer settings.
-    syslog_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable override Syslog settings.
-    rest_api_set: NotRequired[Literal["enable", "disable"]]  # Enable/disable REST API POST/PUT/DELETE request logging.
-    rest_api_get: NotRequired[Literal["enable", "disable"]]  # Enable/disable REST API GET request logging.
-    rest_api_performance: NotRequired[Literal["enable", "disable"]]  # Enable/disable REST API memory and performance stats in rest
-    long_live_session_stat: NotRequired[Literal["enable", "disable"]]  # Enable/disable long-live-session statistics logging.
-    extended_utm_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended UTM logging.
-    zone_name: NotRequired[Literal["enable", "disable"]]  # Enable/disable zone name logging.
-    web_svc_perf: NotRequired[Literal["enable", "disable"]]  # Enable/disable web-svc performance logging.
-    custom_log_fields: NotRequired[list[dict[str, Any]]]  # Custom fields to append to all log messages.
-    anonymization_hash: NotRequired[str]  # User name anonymization hash salt.
+    resolve_ip: Literal["enable", "disable"]  # Enable/disable adding resolved domain names to tra | Default: disable
+    resolve_port: Literal["enable", "disable"]  # Enable/disable adding resolved service names to tr | Default: enable
+    log_user_in_upper: Literal["enable", "disable"]  # Enable/disable logs with user-in-upper. | Default: disable
+    fwpolicy_implicit_log: Literal["enable", "disable"]  # Enable/disable implicit firewall policy logging. | Default: disable
+    fwpolicy6_implicit_log: Literal["enable", "disable"]  # Enable/disable implicit firewall policy6 logging. | Default: disable
+    extended_log: Literal["enable", "disable"]  # Enable/disable extended traffic logging. | Default: disable
+    local_in_allow: Literal["enable", "disable"]  # Enable/disable local-in-allow logging. | Default: disable
+    local_in_deny_unicast: Literal["enable", "disable"]  # Enable/disable local-in-deny-unicast logging. | Default: disable
+    local_in_deny_broadcast: Literal["enable", "disable"]  # Enable/disable local-in-deny-broadcast logging. | Default: disable
+    local_in_policy_log: Literal["enable", "disable"]  # Enable/disable local-in-policy logging. | Default: disable
+    local_out: Literal["enable", "disable"]  # Enable/disable local-out logging. | Default: enable
+    local_out_ioc_detection: Literal["enable", "disable"]  # Enable/disable local-out traffic IoC detection. Re | Default: enable
+    daemon_log: Literal["enable", "disable"]  # Enable/disable daemon logging. | Default: disable
+    neighbor_event: Literal["enable", "disable"]  # Enable/disable neighbor event logging. | Default: disable
+    brief_traffic_format: Literal["enable", "disable"]  # Enable/disable brief format traffic logging. | Default: disable
+    user_anonymize: Literal["enable", "disable"]  # Enable/disable anonymizing user names in log messa | Default: disable
+    expolicy_implicit_log: Literal["enable", "disable"]  # Enable/disable proxy firewall implicit policy logg | Default: disable
+    log_policy_comment: Literal["enable", "disable"]  # Enable/disable inserting policy comments into traf | Default: disable
+    faz_override: Literal["enable", "disable"]  # Enable/disable override FortiAnalyzer settings. | Default: disable
+    syslog_override: Literal["enable", "disable"]  # Enable/disable override Syslog settings. | Default: disable
+    rest_api_set: Literal["enable", "disable"]  # Enable/disable REST API POST/PUT/DELETE request lo | Default: disable
+    rest_api_get: Literal["enable", "disable"]  # Enable/disable REST API GET request logging. | Default: disable
+    rest_api_performance: Literal["enable", "disable"]  # Enable/disable REST API memory and performance sta | Default: disable
+    long_live_session_stat: Literal["enable", "disable"]  # Enable/disable long-live-session statistics loggin | Default: enable
+    extended_utm_log: Literal["enable", "disable"]  # Enable/disable extended UTM logging. | Default: disable
+    zone_name: Literal["enable", "disable"]  # Enable/disable zone name logging. | Default: disable
+    web_svc_perf: Literal["enable", "disable"]  # Enable/disable web-svc performance logging. | Default: disable
+    custom_log_fields: list[dict[str, Any]]  # Custom fields to append to all log messages.
+    anonymization_hash: str  # User name anonymization hash salt. | MaxLen: 32
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class SettingCustomlogfieldsItem(TypedDict):
+    """Type hints for custom-log-fields table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    field_id: str  # Custom log field. | MaxLen: 35
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class SettingCustomlogfieldsObject:
@@ -53,7 +69,7 @@ class SettingCustomlogfieldsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom log field.
+    # Custom log field. | MaxLen: 35
     field_id: str
     
     # Methods from FortiObject
@@ -74,35 +90,35 @@ class SettingResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    resolve_ip: Literal["enable", "disable"]
-    resolve_port: Literal["enable", "disable"]
-    log_user_in_upper: Literal["enable", "disable"]
-    fwpolicy_implicit_log: Literal["enable", "disable"]
-    fwpolicy6_implicit_log: Literal["enable", "disable"]
-    extended_log: Literal["enable", "disable"]
-    local_in_allow: Literal["enable", "disable"]
-    local_in_deny_unicast: Literal["enable", "disable"]
-    local_in_deny_broadcast: Literal["enable", "disable"]
-    local_in_policy_log: Literal["enable", "disable"]
-    local_out: Literal["enable", "disable"]
-    local_out_ioc_detection: Literal["enable", "disable"]
-    daemon_log: Literal["enable", "disable"]
-    neighbor_event: Literal["enable", "disable"]
-    brief_traffic_format: Literal["enable", "disable"]
-    user_anonymize: Literal["enable", "disable"]
-    expolicy_implicit_log: Literal["enable", "disable"]
-    log_policy_comment: Literal["enable", "disable"]
-    faz_override: Literal["enable", "disable"]
-    syslog_override: Literal["enable", "disable"]
-    rest_api_set: Literal["enable", "disable"]
-    rest_api_get: Literal["enable", "disable"]
-    rest_api_performance: Literal["enable", "disable"]
-    long_live_session_stat: Literal["enable", "disable"]
-    extended_utm_log: Literal["enable", "disable"]
-    zone_name: Literal["enable", "disable"]
-    web_svc_perf: Literal["enable", "disable"]
-    custom_log_fields: list[dict[str, Any]]
-    anonymization_hash: str
+    resolve_ip: Literal["enable", "disable"]  # Enable/disable adding resolved domain names to tra | Default: disable
+    resolve_port: Literal["enable", "disable"]  # Enable/disable adding resolved service names to tr | Default: enable
+    log_user_in_upper: Literal["enable", "disable"]  # Enable/disable logs with user-in-upper. | Default: disable
+    fwpolicy_implicit_log: Literal["enable", "disable"]  # Enable/disable implicit firewall policy logging. | Default: disable
+    fwpolicy6_implicit_log: Literal["enable", "disable"]  # Enable/disable implicit firewall policy6 logging. | Default: disable
+    extended_log: Literal["enable", "disable"]  # Enable/disable extended traffic logging. | Default: disable
+    local_in_allow: Literal["enable", "disable"]  # Enable/disable local-in-allow logging. | Default: disable
+    local_in_deny_unicast: Literal["enable", "disable"]  # Enable/disable local-in-deny-unicast logging. | Default: disable
+    local_in_deny_broadcast: Literal["enable", "disable"]  # Enable/disable local-in-deny-broadcast logging. | Default: disable
+    local_in_policy_log: Literal["enable", "disable"]  # Enable/disable local-in-policy logging. | Default: disable
+    local_out: Literal["enable", "disable"]  # Enable/disable local-out logging. | Default: enable
+    local_out_ioc_detection: Literal["enable", "disable"]  # Enable/disable local-out traffic IoC detection. Re | Default: enable
+    daemon_log: Literal["enable", "disable"]  # Enable/disable daemon logging. | Default: disable
+    neighbor_event: Literal["enable", "disable"]  # Enable/disable neighbor event logging. | Default: disable
+    brief_traffic_format: Literal["enable", "disable"]  # Enable/disable brief format traffic logging. | Default: disable
+    user_anonymize: Literal["enable", "disable"]  # Enable/disable anonymizing user names in log messa | Default: disable
+    expolicy_implicit_log: Literal["enable", "disable"]  # Enable/disable proxy firewall implicit policy logg | Default: disable
+    log_policy_comment: Literal["enable", "disable"]  # Enable/disable inserting policy comments into traf | Default: disable
+    faz_override: Literal["enable", "disable"]  # Enable/disable override FortiAnalyzer settings. | Default: disable
+    syslog_override: Literal["enable", "disable"]  # Enable/disable override Syslog settings. | Default: disable
+    rest_api_set: Literal["enable", "disable"]  # Enable/disable REST API POST/PUT/DELETE request lo | Default: disable
+    rest_api_get: Literal["enable", "disable"]  # Enable/disable REST API GET request logging. | Default: disable
+    rest_api_performance: Literal["enable", "disable"]  # Enable/disable REST API memory and performance sta | Default: disable
+    long_live_session_stat: Literal["enable", "disable"]  # Enable/disable long-live-session statistics loggin | Default: enable
+    extended_utm_log: Literal["enable", "disable"]  # Enable/disable extended UTM logging. | Default: disable
+    zone_name: Literal["enable", "disable"]  # Enable/disable zone name logging. | Default: disable
+    web_svc_perf: Literal["enable", "disable"]  # Enable/disable web-svc performance logging. | Default: disable
+    custom_log_fields: list[SettingCustomlogfieldsItem]  # Custom fields to append to all log messages.
+    anonymization_hash: str  # User name anonymization hash salt. | MaxLen: 32
 
 
 @final
@@ -113,63 +129,63 @@ class SettingObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable adding resolved domain names to traffic logs if possible.
+    # Enable/disable adding resolved domain names to traffic logs | Default: disable
     resolve_ip: Literal["enable", "disable"]
-    # Enable/disable adding resolved service names to traffic logs.
+    # Enable/disable adding resolved service names to traffic logs | Default: enable
     resolve_port: Literal["enable", "disable"]
-    # Enable/disable logs with user-in-upper.
+    # Enable/disable logs with user-in-upper. | Default: disable
     log_user_in_upper: Literal["enable", "disable"]
-    # Enable/disable implicit firewall policy logging.
+    # Enable/disable implicit firewall policy logging. | Default: disable
     fwpolicy_implicit_log: Literal["enable", "disable"]
-    # Enable/disable implicit firewall policy6 logging.
+    # Enable/disable implicit firewall policy6 logging. | Default: disable
     fwpolicy6_implicit_log: Literal["enable", "disable"]
-    # Enable/disable extended traffic logging.
+    # Enable/disable extended traffic logging. | Default: disable
     extended_log: Literal["enable", "disable"]
-    # Enable/disable local-in-allow logging.
+    # Enable/disable local-in-allow logging. | Default: disable
     local_in_allow: Literal["enable", "disable"]
-    # Enable/disable local-in-deny-unicast logging.
+    # Enable/disable local-in-deny-unicast logging. | Default: disable
     local_in_deny_unicast: Literal["enable", "disable"]
-    # Enable/disable local-in-deny-broadcast logging.
+    # Enable/disable local-in-deny-broadcast logging. | Default: disable
     local_in_deny_broadcast: Literal["enable", "disable"]
-    # Enable/disable local-in-policy logging.
+    # Enable/disable local-in-policy logging. | Default: disable
     local_in_policy_log: Literal["enable", "disable"]
-    # Enable/disable local-out logging.
+    # Enable/disable local-out logging. | Default: enable
     local_out: Literal["enable", "disable"]
-    # Enable/disable local-out traffic IoC detection. Requires local-out to be enabled
+    # Enable/disable local-out traffic IoC detection. Requires loc | Default: enable
     local_out_ioc_detection: Literal["enable", "disable"]
-    # Enable/disable daemon logging.
+    # Enable/disable daemon logging. | Default: disable
     daemon_log: Literal["enable", "disable"]
-    # Enable/disable neighbor event logging.
+    # Enable/disable neighbor event logging. | Default: disable
     neighbor_event: Literal["enable", "disable"]
-    # Enable/disable brief format traffic logging.
+    # Enable/disable brief format traffic logging. | Default: disable
     brief_traffic_format: Literal["enable", "disable"]
-    # Enable/disable anonymizing user names in log messages.
+    # Enable/disable anonymizing user names in log messages. | Default: disable
     user_anonymize: Literal["enable", "disable"]
-    # Enable/disable proxy firewall implicit policy logging.
+    # Enable/disable proxy firewall implicit policy logging. | Default: disable
     expolicy_implicit_log: Literal["enable", "disable"]
-    # Enable/disable inserting policy comments into traffic logs.
+    # Enable/disable inserting policy comments into traffic logs. | Default: disable
     log_policy_comment: Literal["enable", "disable"]
-    # Enable/disable override FortiAnalyzer settings.
+    # Enable/disable override FortiAnalyzer settings. | Default: disable
     faz_override: Literal["enable", "disable"]
-    # Enable/disable override Syslog settings.
+    # Enable/disable override Syslog settings. | Default: disable
     syslog_override: Literal["enable", "disable"]
-    # Enable/disable REST API POST/PUT/DELETE request logging.
+    # Enable/disable REST API POST/PUT/DELETE request logging. | Default: disable
     rest_api_set: Literal["enable", "disable"]
-    # Enable/disable REST API GET request logging.
+    # Enable/disable REST API GET request logging. | Default: disable
     rest_api_get: Literal["enable", "disable"]
-    # Enable/disable REST API memory and performance stats in rest-api-get/set logs.
+    # Enable/disable REST API memory and performance stats in rest | Default: disable
     rest_api_performance: Literal["enable", "disable"]
-    # Enable/disable long-live-session statistics logging.
+    # Enable/disable long-live-session statistics logging. | Default: enable
     long_live_session_stat: Literal["enable", "disable"]
-    # Enable/disable extended UTM logging.
+    # Enable/disable extended UTM logging. | Default: disable
     extended_utm_log: Literal["enable", "disable"]
-    # Enable/disable zone name logging.
+    # Enable/disable zone name logging. | Default: disable
     zone_name: Literal["enable", "disable"]
-    # Enable/disable web-svc performance logging.
+    # Enable/disable web-svc performance logging. | Default: disable
     web_svc_perf: Literal["enable", "disable"]
     # Custom fields to append to all log messages.
-    custom_log_fields: list[SettingCustomlogfieldsObject]  # Table field - list of typed objects
-    # User name anonymization hash salt.
+    custom_log_fields: list[SettingCustomlogfieldsObject]
+    # User name anonymization hash salt. | MaxLen: 32
     anonymization_hash: str
     
     # Common API response fields
@@ -195,8 +211,66 @@ class Setting:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -211,11 +285,12 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -231,11 +306,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -250,10 +325,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -270,7 +346,7 @@ class Setting:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -330,7 +406,7 @@ class Setting:
         **kwargs: Any,
     ) -> SettingResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -345,9 +421,9 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -408,7 +484,7 @@ class Setting:
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -449,8 +525,9 @@ class Setting:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -487,7 +564,45 @@ class Setting:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -525,7 +640,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -569,7 +684,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -594,8 +709,710 @@ class Setting:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class SettingDictMode:
+    """Setting endpoint for dict response mode (default for this client).
+    
+    By default returns SettingResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return SettingObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class SettingObjectMode:
+    """Setting endpoint for object response mode (default for this client).
+    
+    By default returns SettingObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        resolve_ip: Literal["enable", "disable"] | None = ...,
+        resolve_port: Literal["enable", "disable"] | None = ...,
+        log_user_in_upper: Literal["enable", "disable"] | None = ...,
+        fwpolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        fwpolicy6_implicit_log: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        local_in_allow: Literal["enable", "disable"] | None = ...,
+        local_in_deny_unicast: Literal["enable", "disable"] | None = ...,
+        local_in_deny_broadcast: Literal["enable", "disable"] | None = ...,
+        local_in_policy_log: Literal["enable", "disable"] | None = ...,
+        local_out: Literal["enable", "disable"] | None = ...,
+        local_out_ioc_detection: Literal["enable", "disable"] | None = ...,
+        daemon_log: Literal["enable", "disable"] | None = ...,
+        neighbor_event: Literal["enable", "disable"] | None = ...,
+        brief_traffic_format: Literal["enable", "disable"] | None = ...,
+        user_anonymize: Literal["enable", "disable"] | None = ...,
+        expolicy_implicit_log: Literal["enable", "disable"] | None = ...,
+        log_policy_comment: Literal["enable", "disable"] | None = ...,
+        faz_override: Literal["enable", "disable"] | None = ...,
+        syslog_override: Literal["enable", "disable"] | None = ...,
+        rest_api_set: Literal["enable", "disable"] | None = ...,
+        rest_api_get: Literal["enable", "disable"] | None = ...,
+        rest_api_performance: Literal["enable", "disable"] | None = ...,
+        long_live_session_stat: Literal["enable", "disable"] | None = ...,
+        extended_utm_log: Literal["enable", "disable"] | None = ...,
+        zone_name: Literal["enable", "disable"] | None = ...,
+        web_svc_perf: Literal["enable", "disable"] | None = ...,
+        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        anonymization_hash: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Setting",
+    "SettingDictMode",
+    "SettingObjectMode",
     "SettingPayload",
     "SettingObject",
 ]

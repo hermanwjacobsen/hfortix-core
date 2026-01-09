@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProxyPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/proxy_policy payload fields.
@@ -28,91 +32,353 @@ class ProxyPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    policyid: NotRequired[int]  # Policy ID.
-    name: NotRequired[str]  # Policy name.
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    policyid: int  # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Policy name. | MaxLen: 35
     proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]  # Type of explicit proxy.
-    access_proxy: NotRequired[list[dict[str, Any]]]  # IPv4 access proxy.
-    access_proxy6: NotRequired[list[dict[str, Any]]]  # IPv6 access proxy.
-    ztna_proxy: NotRequired[list[dict[str, Any]]]  # ZTNA proxies.
+    access_proxy: list[dict[str, Any]]  # IPv4 access proxy.
+    access_proxy6: list[dict[str, Any]]  # IPv6 access proxy.
+    ztna_proxy: list[dict[str, Any]]  # ZTNA proxies.
     srcintf: list[dict[str, Any]]  # Source interface names.
     dstintf: list[dict[str, Any]]  # Destination interface names.
-    srcaddr: NotRequired[list[dict[str, Any]]]  # Source address objects.
-    poolname: NotRequired[list[dict[str, Any]]]  # Name of IP pool object.
-    poolname6: NotRequired[list[dict[str, Any]]]  # Name of IPv6 pool object.
-    dstaddr: NotRequired[list[dict[str, Any]]]  # Destination address objects.
-    ztna_ems_tag: NotRequired[list[dict[str, Any]]]  # ZTNA EMS Tag names.
-    ztna_tags_match_logic: NotRequired[Literal["or", "and"]]  # ZTNA tag matching logic.
-    device_ownership: NotRequired[Literal["enable", "disable"]]  # When enabled, the ownership enforcement will be done at poli
-    url_risk: NotRequired[list[dict[str, Any]]]  # URL risk level name.
-    internet_service: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services for this policy. If
-    internet_service_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, Internet Services match against any internet s
-    internet_service_name: NotRequired[list[dict[str, Any]]]  # Internet Service name.
-    internet_service_group: NotRequired[list[dict[str, Any]]]  # Internet Service group name.
-    internet_service_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service name.
-    internet_service_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service group name.
-    internet_service_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service name.
-    internet_service6: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services IPv6 for this policy
-    internet_service6_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, Internet Services match against any internet s
-    internet_service6_name: NotRequired[list[dict[str, Any]]]  # Internet Service IPv6 name.
-    internet_service6_group: NotRequired[list[dict[str, Any]]]  # Internet Service IPv6 group name.
-    internet_service6_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service IPv6 name.
-    internet_service6_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service IPv6 group name.
-    internet_service6_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service IPv6 name.
-    service: NotRequired[list[dict[str, Any]]]  # Name of service objects.
-    srcaddr_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, source addresses match against any address EXC
-    dstaddr_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, destination addresses match against any addres
-    ztna_ems_tag_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, ZTNA EMS tags match against any tag EXCEPT the
-    service_negate: NotRequired[Literal["enable", "disable"]]  # When enabled, services match against any service EXCEPT the
-    action: NotRequired[Literal["accept", "deny", "redirect", "isolate"]]  # Accept or deny traffic matching the policy parameters.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the active status of the policy.
-    schedule: str  # Name of schedule object.
-    logtraffic: NotRequired[Literal["all", "utm", "disable"]]  # Enable/disable logging traffic through the policy.
-    session_ttl: NotRequired[int]  # TTL in seconds for sessions accepted by this policy
-    srcaddr6: NotRequired[list[dict[str, Any]]]  # IPv6 source address objects.
-    dstaddr6: NotRequired[list[dict[str, Any]]]  # IPv6 destination address objects.
-    groups: NotRequired[list[dict[str, Any]]]  # Names of group objects.
-    users: NotRequired[list[dict[str, Any]]]  # Names of user objects.
-    http_tunnel_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTP tunnel authentication.
-    ssh_policy_redirect: NotRequired[Literal["enable", "disable"]]  # Redirect SSH traffic to matching transparent proxy policy.
-    webproxy_forward_server: NotRequired[str]  # Web proxy forward server name.
-    isolator_server: str  # Isolator server name.
-    webproxy_profile: NotRequired[str]  # Name of web proxy profile.
-    transparent: NotRequired[Literal["enable", "disable"]]  # Enable to use the IP address of the client to connect to the
-    webcache: NotRequired[Literal["enable", "disable"]]  # Enable/disable web caching.
-    webcache_https: NotRequired[Literal["disable", "enable"]]  # Enable/disable web caching for HTTPS
-    disclaimer: NotRequired[Literal["disable", "domain", "policy", "user"]]  # Web proxy disclaimer setting: by domain, policy, or user.
-    utm_status: NotRequired[Literal["enable", "disable"]]  # Enable the use of UTM profiles/sensors/lists.
-    profile_type: NotRequired[Literal["single", "group"]]  # Determine whether the firewall policy allows security profil
-    profile_group: NotRequired[str]  # Name of profile group.
-    profile_protocol_options: NotRequired[str]  # Name of an existing Protocol options profile.
-    ssl_ssh_profile: NotRequired[str]  # Name of an existing SSL SSH profile.
-    av_profile: NotRequired[str]  # Name of an existing Antivirus profile.
-    webfilter_profile: NotRequired[str]  # Name of an existing Web filter profile.
-    dnsfilter_profile: NotRequired[str]  # Name of an existing DNS filter profile.
-    emailfilter_profile: NotRequired[str]  # Name of an existing email filter profile.
-    dlp_profile: NotRequired[str]  # Name of an existing DLP profile.
-    file_filter_profile: NotRequired[str]  # Name of an existing file-filter profile.
-    ips_sensor: NotRequired[str]  # Name of an existing IPS sensor.
-    application_list: NotRequired[str]  # Name of an existing Application list.
-    ips_voip_filter: NotRequired[str]  # Name of an existing VoIP (ips) profile.
-    sctp_filter_profile: NotRequired[str]  # Name of an existing SCTP filter profile.
-    icap_profile: NotRequired[str]  # Name of an existing ICAP profile.
-    videofilter_profile: NotRequired[str]  # Name of an existing VideoFilter profile.
-    waf_profile: NotRequired[str]  # Name of an existing Web application firewall profile.
-    ssh_filter_profile: NotRequired[str]  # Name of an existing SSH filter profile.
-    casb_profile: NotRequired[str]  # Name of an existing CASB profile.
-    replacemsg_override_group: NotRequired[str]  # Authentication replacement message override group.
-    logtraffic_start: NotRequired[Literal["enable", "disable"]]  # Enable/disable policy log traffic start.
-    log_http_transaction: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTP transaction log.
-    comments: NotRequired[str]  # Optional comments.
-    block_notification: NotRequired[Literal["enable", "disable"]]  # Enable/disable block notification.
-    redirect_url: NotRequired[str]  # Redirect URL for further explicit web proxy processing.
-    https_sub_category: NotRequired[Literal["enable", "disable"]]  # Enable/disable HTTPS sub-category policy matching.
-    decrypted_traffic_mirror: NotRequired[str]  # Decrypted traffic mirror.
-    detect_https_in_http_request: NotRequired[Literal["enable", "disable"]]  # Enable/disable detection of HTTPS in HTTP request.
+    srcaddr: list[dict[str, Any]]  # Source address objects.
+    poolname: list[dict[str, Any]]  # Name of IP pool object.
+    poolname6: list[dict[str, Any]]  # Name of IPv6 pool object.
+    dstaddr: list[dict[str, Any]]  # Destination address objects.
+    ztna_ems_tag: list[dict[str, Any]]  # ZTNA EMS Tag names.
+    ztna_tags_match_logic: Literal["or", "and"]  # ZTNA tag matching logic. | Default: or
+    device_ownership: Literal["enable", "disable"]  # When enabled, the ownership enforcement will be do | Default: disable
+    url_risk: list[dict[str, Any]]  # URL risk level name.
+    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
+    internet_service_negate: Literal["enable", "disable"]  # When enabled, Internet Services match against any | Default: disable
+    internet_service_name: list[dict[str, Any]]  # Internet Service name.
+    internet_service_group: list[dict[str, Any]]  # Internet Service group name.
+    internet_service_custom: list[dict[str, Any]]  # Custom Internet Service name.
+    internet_service_custom_group: list[dict[str, Any]]  # Custom Internet Service group name.
+    internet_service_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service name.
+    internet_service6: Literal["enable", "disable"]  # Enable/disable use of Internet Services IPv6 for t | Default: disable
+    internet_service6_negate: Literal["enable", "disable"]  # When enabled, Internet Services match against any | Default: disable
+    internet_service6_name: list[dict[str, Any]]  # Internet Service IPv6 name.
+    internet_service6_group: list[dict[str, Any]]  # Internet Service IPv6 group name.
+    internet_service6_custom: list[dict[str, Any]]  # Custom Internet Service IPv6 name.
+    internet_service6_custom_group: list[dict[str, Any]]  # Custom Internet Service IPv6 group name.
+    internet_service6_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service IPv6 name.
+    service: list[dict[str, Any]]  # Name of service objects.
+    srcaddr_negate: Literal["enable", "disable"]  # When enabled, source addresses match against any a | Default: disable
+    dstaddr_negate: Literal["enable", "disable"]  # When enabled, destination addresses match against | Default: disable
+    ztna_ems_tag_negate: Literal["enable", "disable"]  # When enabled, ZTNA EMS tags match against any tag | Default: disable
+    service_negate: Literal["enable", "disable"]  # When enabled, services match against any service E | Default: disable
+    action: Literal["accept", "deny", "redirect", "isolate"]  # Accept or deny traffic matching the policy paramet | Default: deny
+    status: Literal["enable", "disable"]  # Enable/disable the active status of the policy. | Default: enable
+    schedule: str  # Name of schedule object. | MaxLen: 35
+    logtraffic: Literal["all", "utm", "disable"]  # Enable/disable logging traffic through the policy. | Default: utm
+    session_ttl: int  # TTL in seconds for sessions accepted by this polic | Default: 0 | Min: 300 | Max: 2764800
+    srcaddr6: list[dict[str, Any]]  # IPv6 source address objects.
+    dstaddr6: list[dict[str, Any]]  # IPv6 destination address objects.
+    groups: list[dict[str, Any]]  # Names of group objects.
+    users: list[dict[str, Any]]  # Names of user objects.
+    http_tunnel_auth: Literal["enable", "disable"]  # Enable/disable HTTP tunnel authentication. | Default: disable
+    ssh_policy_redirect: Literal["enable", "disable"]  # Redirect SSH traffic to matching transparent proxy | Default: disable
+    webproxy_forward_server: str  # Web proxy forward server name. | MaxLen: 63
+    isolator_server: str  # Isolator server name. | MaxLen: 63
+    webproxy_profile: str  # Name of web proxy profile. | MaxLen: 63
+    transparent: Literal["enable", "disable"]  # Enable to use the IP address of the client to conn | Default: disable
+    webcache: Literal["enable", "disable"]  # Enable/disable web caching. | Default: disable
+    webcache_https: Literal["disable", "enable"]  # Enable/disable web caching for HTTPS | Default: disable
+    disclaimer: Literal["disable", "domain", "policy", "user"]  # Web proxy disclaimer setting: by domain, policy, o | Default: disable
+    utm_status: Literal["enable", "disable"]  # Enable the use of UTM profiles/sensors/lists. | Default: disable
+    profile_type: Literal["single", "group"]  # Determine whether the firewall policy allows secur | Default: single
+    profile_group: str  # Name of profile group. | MaxLen: 47
+    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
+    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: no-inspection | MaxLen: 47
+    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
+    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
+    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
+    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
+    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
+    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    application_list: str  # Name of an existing Application list. | MaxLen: 47
+    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
+    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
+    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
+    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
+    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
+    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
+    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
+    replacemsg_override_group: str  # Authentication replacement message override group. | MaxLen: 35
+    logtraffic_start: Literal["enable", "disable"]  # Enable/disable policy log traffic start. | Default: disable
+    log_http_transaction: Literal["enable", "disable"]  # Enable/disable HTTP transaction log. | Default: disable
+    comments: str  # Optional comments. | MaxLen: 1023
+    block_notification: Literal["enable", "disable"]  # Enable/disable block notification. | Default: disable
+    redirect_url: str  # Redirect URL for further explicit web proxy proces | MaxLen: 1023
+    https_sub_category: Literal["enable", "disable"]  # Enable/disable HTTPS sub-category policy matching. | Default: disable
+    decrypted_traffic_mirror: str  # Decrypted traffic mirror. | MaxLen: 35
+    detect_https_in_http_request: Literal["enable", "disable"]  # Enable/disable detection of HTTPS in HTTP request. | Default: disable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ProxyPolicyAccessproxyItem(TypedDict):
+    """Type hints for access-proxy table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Access Proxy name. | MaxLen: 79
+
+
+class ProxyPolicyAccessproxy6Item(TypedDict):
+    """Type hints for access-proxy6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Access proxy name. | MaxLen: 79
+
+
+class ProxyPolicyZtnaproxyItem(TypedDict):
+    """Type hints for ztna-proxy table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # ZTNA proxy name. | MaxLen: 79
+
+
+class ProxyPolicySrcintfItem(TypedDict):
+    """Type hints for srcintf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class ProxyPolicyDstintfItem(TypedDict):
+    """Type hints for dstintf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class ProxyPolicySrcaddrItem(TypedDict):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ProxyPolicyPoolnameItem(TypedDict):
+    """Type hints for poolname table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # IP pool name. | MaxLen: 79
+
+
+class ProxyPolicyPoolname6Item(TypedDict):
+    """Type hints for poolname6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # IPv6 pool name. | MaxLen: 79
+
+
+class ProxyPolicyDstaddrItem(TypedDict):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ProxyPolicyZtnaemstagItem(TypedDict):
+    """Type hints for ztna-ems-tag table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # EMS Tag name. | MaxLen: 79
+
+
+class ProxyPolicyUrlriskItem(TypedDict):
+    """Type hints for url-risk table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Risk level name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservicenameItem(TypedDict):
+    """Type hints for internet-service-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservicegroupItem(TypedDict):
+    """Type hints for internet-service-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service group name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservicecustomItem(TypedDict):
+    """Type hints for internet-service-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservicecustomgroupItem(TypedDict):
+    """Type hints for internet-service-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service group name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservicefortiguardItem(TypedDict):
+    """Type hints for internet-service-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservice6nameItem(TypedDict):
+    """Type hints for internet-service6-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service IPv6 name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservice6groupItem(TypedDict):
+    """Type hints for internet-service6-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service IPv6 group name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservice6customItem(TypedDict):
+    """Type hints for internet-service6-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service IPv6 name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservice6customgroupItem(TypedDict):
+    """Type hints for internet-service6-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service IPv6 group name. | MaxLen: 79
+
+
+class ProxyPolicyInternetservice6fortiguardItem(TypedDict):
+    """Type hints for internet-service6-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # FortiGuard Internet Service IPv6 name. | MaxLen: 79
+
+
+class ProxyPolicyServiceItem(TypedDict):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+class ProxyPolicySrcaddr6Item(TypedDict):
+    """Type hints for srcaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ProxyPolicyDstaddr6Item(TypedDict):
+    """Type hints for dstaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ProxyPolicyGroupsItem(TypedDict):
+    """Type hints for groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+class ProxyPolicyUsersItem(TypedDict):
+    """Type hints for users table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ProxyPolicyAccessproxyObject:
@@ -122,7 +388,7 @@ class ProxyPolicyAccessproxyObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Access Proxy name.
+    # Access Proxy name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -143,7 +409,7 @@ class ProxyPolicyAccessproxy6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Access proxy name.
+    # Access proxy name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -164,7 +430,7 @@ class ProxyPolicyZtnaproxyObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ZTNA proxy name.
+    # ZTNA proxy name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -185,7 +451,7 @@ class ProxyPolicySrcintfObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface name.
+    # Interface name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -206,7 +472,7 @@ class ProxyPolicyDstintfObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface name.
+    # Interface name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -227,7 +493,7 @@ class ProxyPolicySrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -248,7 +514,7 @@ class ProxyPolicyPoolnameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # IP pool name.
+    # IP pool name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -269,7 +535,7 @@ class ProxyPolicyPoolname6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # IPv6 pool name.
+    # IPv6 pool name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -290,7 +556,7 @@ class ProxyPolicyDstaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -311,7 +577,7 @@ class ProxyPolicyZtnaemstagObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # EMS Tag name.
+    # EMS Tag name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -332,7 +598,7 @@ class ProxyPolicyUrlriskObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Risk level name.
+    # Risk level name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -353,7 +619,7 @@ class ProxyPolicyInternetservicenameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service name.
+    # Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -374,7 +640,7 @@ class ProxyPolicyInternetservicegroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service group name.
+    # Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -395,7 +661,7 @@ class ProxyPolicyInternetservicecustomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service name.
+    # Custom Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -416,7 +682,7 @@ class ProxyPolicyInternetservicecustomgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service group name.
+    # Custom Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -437,7 +703,7 @@ class ProxyPolicyInternetservicefortiguardObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard Internet Service name.
+    # FortiGuard Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -458,7 +724,7 @@ class ProxyPolicyInternetservice6nameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service IPv6 name.
+    # Internet Service IPv6 name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -479,7 +745,7 @@ class ProxyPolicyInternetservice6groupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service IPv6 group name.
+    # Internet Service IPv6 group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -500,7 +766,7 @@ class ProxyPolicyInternetservice6customObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service IPv6 name.
+    # Custom Internet Service IPv6 name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -521,7 +787,7 @@ class ProxyPolicyInternetservice6customgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service IPv6 group name.
+    # Custom Internet Service IPv6 group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -542,7 +808,7 @@ class ProxyPolicyInternetservice6fortiguardObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard Internet Service IPv6 name.
+    # FortiGuard Internet Service IPv6 name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -563,7 +829,7 @@ class ProxyPolicyServiceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Service name.
+    # Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -584,7 +850,7 @@ class ProxyPolicySrcaddr6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -605,7 +871,7 @@ class ProxyPolicyDstaddr6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -626,7 +892,7 @@ class ProxyPolicyGroupsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Group name.
+    # Group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -647,7 +913,7 @@ class ProxyPolicyUsersObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Group name.
+    # Group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -668,89 +934,89 @@ class ProxyPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    uuid: str
-    policyid: int
-    name: str
-    proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]
-    access_proxy: list[dict[str, Any]]
-    access_proxy6: list[dict[str, Any]]
-    ztna_proxy: list[dict[str, Any]]
-    srcintf: list[dict[str, Any]]
-    dstintf: list[dict[str, Any]]
-    srcaddr: list[dict[str, Any]]
-    poolname: list[dict[str, Any]]
-    poolname6: list[dict[str, Any]]
-    dstaddr: list[dict[str, Any]]
-    ztna_ems_tag: list[dict[str, Any]]
-    ztna_tags_match_logic: Literal["or", "and"]
-    device_ownership: Literal["enable", "disable"]
-    url_risk: list[dict[str, Any]]
-    internet_service: Literal["enable", "disable"]
-    internet_service_negate: Literal["enable", "disable"]
-    internet_service_name: list[dict[str, Any]]
-    internet_service_group: list[dict[str, Any]]
-    internet_service_custom: list[dict[str, Any]]
-    internet_service_custom_group: list[dict[str, Any]]
-    internet_service_fortiguard: list[dict[str, Any]]
-    internet_service6: Literal["enable", "disable"]
-    internet_service6_negate: Literal["enable", "disable"]
-    internet_service6_name: list[dict[str, Any]]
-    internet_service6_group: list[dict[str, Any]]
-    internet_service6_custom: list[dict[str, Any]]
-    internet_service6_custom_group: list[dict[str, Any]]
-    internet_service6_fortiguard: list[dict[str, Any]]
-    service: list[dict[str, Any]]
-    srcaddr_negate: Literal["enable", "disable"]
-    dstaddr_negate: Literal["enable", "disable"]
-    ztna_ems_tag_negate: Literal["enable", "disable"]
-    service_negate: Literal["enable", "disable"]
-    action: Literal["accept", "deny", "redirect", "isolate"]
-    status: Literal["enable", "disable"]
-    schedule: str
-    logtraffic: Literal["all", "utm", "disable"]
-    session_ttl: int
-    srcaddr6: list[dict[str, Any]]
-    dstaddr6: list[dict[str, Any]]
-    groups: list[dict[str, Any]]
-    users: list[dict[str, Any]]
-    http_tunnel_auth: Literal["enable", "disable"]
-    ssh_policy_redirect: Literal["enable", "disable"]
-    webproxy_forward_server: str
-    isolator_server: str
-    webproxy_profile: str
-    transparent: Literal["enable", "disable"]
-    webcache: Literal["enable", "disable"]
-    webcache_https: Literal["disable", "enable"]
-    disclaimer: Literal["disable", "domain", "policy", "user"]
-    utm_status: Literal["enable", "disable"]
-    profile_type: Literal["single", "group"]
-    profile_group: str
-    profile_protocol_options: str
-    ssl_ssh_profile: str
-    av_profile: str
-    webfilter_profile: str
-    dnsfilter_profile: str
-    emailfilter_profile: str
-    dlp_profile: str
-    file_filter_profile: str
-    ips_sensor: str
-    application_list: str
-    ips_voip_filter: str
-    sctp_filter_profile: str
-    icap_profile: str
-    videofilter_profile: str
-    waf_profile: str
-    ssh_filter_profile: str
-    casb_profile: str
-    replacemsg_override_group: str
-    logtraffic_start: Literal["enable", "disable"]
-    log_http_transaction: Literal["enable", "disable"]
-    comments: str
-    block_notification: Literal["enable", "disable"]
-    redirect_url: str
-    https_sub_category: Literal["enable", "disable"]
-    decrypted_traffic_mirror: str
-    detect_https_in_http_request: Literal["enable", "disable"]
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    policyid: int  # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Policy name. | MaxLen: 35
+    proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]  # Type of explicit proxy.
+    access_proxy: list[ProxyPolicyAccessproxyItem]  # IPv4 access proxy.
+    access_proxy6: list[ProxyPolicyAccessproxy6Item]  # IPv6 access proxy.
+    ztna_proxy: list[ProxyPolicyZtnaproxyItem]  # ZTNA proxies.
+    srcintf: list[ProxyPolicySrcintfItem]  # Source interface names.
+    dstintf: list[ProxyPolicyDstintfItem]  # Destination interface names.
+    srcaddr: list[ProxyPolicySrcaddrItem]  # Source address objects.
+    poolname: list[ProxyPolicyPoolnameItem]  # Name of IP pool object.
+    poolname6: list[ProxyPolicyPoolname6Item]  # Name of IPv6 pool object.
+    dstaddr: list[ProxyPolicyDstaddrItem]  # Destination address objects.
+    ztna_ems_tag: list[ProxyPolicyZtnaemstagItem]  # ZTNA EMS Tag names.
+    ztna_tags_match_logic: Literal["or", "and"]  # ZTNA tag matching logic. | Default: or
+    device_ownership: Literal["enable", "disable"]  # When enabled, the ownership enforcement will be do | Default: disable
+    url_risk: list[ProxyPolicyUrlriskItem]  # URL risk level name.
+    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
+    internet_service_negate: Literal["enable", "disable"]  # When enabled, Internet Services match against any | Default: disable
+    internet_service_name: list[ProxyPolicyInternetservicenameItem]  # Internet Service name.
+    internet_service_group: list[ProxyPolicyInternetservicegroupItem]  # Internet Service group name.
+    internet_service_custom: list[ProxyPolicyInternetservicecustomItem]  # Custom Internet Service name.
+    internet_service_custom_group: list[ProxyPolicyInternetservicecustomgroupItem]  # Custom Internet Service group name.
+    internet_service_fortiguard: list[ProxyPolicyInternetservicefortiguardItem]  # FortiGuard Internet Service name.
+    internet_service6: Literal["enable", "disable"]  # Enable/disable use of Internet Services IPv6 for t | Default: disable
+    internet_service6_negate: Literal["enable", "disable"]  # When enabled, Internet Services match against any | Default: disable
+    internet_service6_name: list[ProxyPolicyInternetservice6nameItem]  # Internet Service IPv6 name.
+    internet_service6_group: list[ProxyPolicyInternetservice6groupItem]  # Internet Service IPv6 group name.
+    internet_service6_custom: list[ProxyPolicyInternetservice6customItem]  # Custom Internet Service IPv6 name.
+    internet_service6_custom_group: list[ProxyPolicyInternetservice6customgroupItem]  # Custom Internet Service IPv6 group name.
+    internet_service6_fortiguard: list[ProxyPolicyInternetservice6fortiguardItem]  # FortiGuard Internet Service IPv6 name.
+    service: list[ProxyPolicyServiceItem]  # Name of service objects.
+    srcaddr_negate: Literal["enable", "disable"]  # When enabled, source addresses match against any a | Default: disable
+    dstaddr_negate: Literal["enable", "disable"]  # When enabled, destination addresses match against | Default: disable
+    ztna_ems_tag_negate: Literal["enable", "disable"]  # When enabled, ZTNA EMS tags match against any tag | Default: disable
+    service_negate: Literal["enable", "disable"]  # When enabled, services match against any service E | Default: disable
+    action: Literal["accept", "deny", "redirect", "isolate"]  # Accept or deny traffic matching the policy paramet | Default: deny
+    status: Literal["enable", "disable"]  # Enable/disable the active status of the policy. | Default: enable
+    schedule: str  # Name of schedule object. | MaxLen: 35
+    logtraffic: Literal["all", "utm", "disable"]  # Enable/disable logging traffic through the policy. | Default: utm
+    session_ttl: int  # TTL in seconds for sessions accepted by this polic | Default: 0 | Min: 300 | Max: 2764800
+    srcaddr6: list[ProxyPolicySrcaddr6Item]  # IPv6 source address objects.
+    dstaddr6: list[ProxyPolicyDstaddr6Item]  # IPv6 destination address objects.
+    groups: list[ProxyPolicyGroupsItem]  # Names of group objects.
+    users: list[ProxyPolicyUsersItem]  # Names of user objects.
+    http_tunnel_auth: Literal["enable", "disable"]  # Enable/disable HTTP tunnel authentication. | Default: disable
+    ssh_policy_redirect: Literal["enable", "disable"]  # Redirect SSH traffic to matching transparent proxy | Default: disable
+    webproxy_forward_server: str  # Web proxy forward server name. | MaxLen: 63
+    isolator_server: str  # Isolator server name. | MaxLen: 63
+    webproxy_profile: str  # Name of web proxy profile. | MaxLen: 63
+    transparent: Literal["enable", "disable"]  # Enable to use the IP address of the client to conn | Default: disable
+    webcache: Literal["enable", "disable"]  # Enable/disable web caching. | Default: disable
+    webcache_https: Literal["disable", "enable"]  # Enable/disable web caching for HTTPS | Default: disable
+    disclaimer: Literal["disable", "domain", "policy", "user"]  # Web proxy disclaimer setting: by domain, policy, o | Default: disable
+    utm_status: Literal["enable", "disable"]  # Enable the use of UTM profiles/sensors/lists. | Default: disable
+    profile_type: Literal["single", "group"]  # Determine whether the firewall policy allows secur | Default: single
+    profile_group: str  # Name of profile group. | MaxLen: 47
+    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
+    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: no-inspection | MaxLen: 47
+    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
+    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
+    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
+    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
+    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
+    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    application_list: str  # Name of an existing Application list. | MaxLen: 47
+    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
+    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
+    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
+    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
+    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
+    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
+    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
+    replacemsg_override_group: str  # Authentication replacement message override group. | MaxLen: 35
+    logtraffic_start: Literal["enable", "disable"]  # Enable/disable policy log traffic start. | Default: disable
+    log_http_transaction: Literal["enable", "disable"]  # Enable/disable HTTP transaction log. | Default: disable
+    comments: str  # Optional comments. | MaxLen: 1023
+    block_notification: Literal["enable", "disable"]  # Enable/disable block notification. | Default: disable
+    redirect_url: str  # Redirect URL for further explicit web proxy proces | MaxLen: 1023
+    https_sub_category: Literal["enable", "disable"]  # Enable/disable HTTPS sub-category policy matching. | Default: disable
+    decrypted_traffic_mirror: str  # Decrypted traffic mirror. | MaxLen: 35
+    detect_https_in_http_request: Literal["enable", "disable"]  # Enable/disable detection of HTTPS in HTTP request. | Default: disable
 
 
 @final
@@ -761,171 +1027,171 @@ class ProxyPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Policy ID.
+    # Policy ID. | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Policy name.
+    # Policy name. | MaxLen: 35
     name: str
     # Type of explicit proxy.
     proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]
     # IPv4 access proxy.
-    access_proxy: list[ProxyPolicyAccessproxyObject]  # Table field - list of typed objects
+    access_proxy: list[ProxyPolicyAccessproxyObject]
     # IPv6 access proxy.
-    access_proxy6: list[ProxyPolicyAccessproxy6Object]  # Table field - list of typed objects
+    access_proxy6: list[ProxyPolicyAccessproxy6Object]
     # ZTNA proxies.
-    ztna_proxy: list[ProxyPolicyZtnaproxyObject]  # Table field - list of typed objects
+    ztna_proxy: list[ProxyPolicyZtnaproxyObject]
     # Source interface names.
-    srcintf: list[ProxyPolicySrcintfObject]  # Table field - list of typed objects
+    srcintf: list[ProxyPolicySrcintfObject]
     # Destination interface names.
-    dstintf: list[ProxyPolicyDstintfObject]  # Table field - list of typed objects
+    dstintf: list[ProxyPolicyDstintfObject]
     # Source address objects.
-    srcaddr: list[ProxyPolicySrcaddrObject]  # Table field - list of typed objects
+    srcaddr: list[ProxyPolicySrcaddrObject]
     # Name of IP pool object.
-    poolname: list[ProxyPolicyPoolnameObject]  # Table field - list of typed objects
+    poolname: list[ProxyPolicyPoolnameObject]
     # Name of IPv6 pool object.
-    poolname6: list[ProxyPolicyPoolname6Object]  # Table field - list of typed objects
+    poolname6: list[ProxyPolicyPoolname6Object]
     # Destination address objects.
-    dstaddr: list[ProxyPolicyDstaddrObject]  # Table field - list of typed objects
+    dstaddr: list[ProxyPolicyDstaddrObject]
     # ZTNA EMS Tag names.
-    ztna_ems_tag: list[ProxyPolicyZtnaemstagObject]  # Table field - list of typed objects
-    # ZTNA tag matching logic.
+    ztna_ems_tag: list[ProxyPolicyZtnaemstagObject]
+    # ZTNA tag matching logic. | Default: or
     ztna_tags_match_logic: Literal["or", "and"]
-    # When enabled, the ownership enforcement will be done at policy level.
+    # When enabled, the ownership enforcement will be done at poli | Default: disable
     device_ownership: Literal["enable", "disable"]
     # URL risk level name.
-    url_risk: list[ProxyPolicyUrlriskObject]  # Table field - list of typed objects
-    # Enable/disable use of Internet Services for this policy. If enabled, destination
+    url_risk: list[ProxyPolicyUrlriskObject]
+    # Enable/disable use of Internet Services for this policy. If | Default: disable
     internet_service: Literal["enable", "disable"]
-    # When enabled, Internet Services match against any internet service EXCEPT the se
+    # When enabled, Internet Services match against any internet s | Default: disable
     internet_service_negate: Literal["enable", "disable"]
     # Internet Service name.
-    internet_service_name: list[ProxyPolicyInternetservicenameObject]  # Table field - list of typed objects
+    internet_service_name: list[ProxyPolicyInternetservicenameObject]
     # Internet Service group name.
-    internet_service_group: list[ProxyPolicyInternetservicegroupObject]  # Table field - list of typed objects
+    internet_service_group: list[ProxyPolicyInternetservicegroupObject]
     # Custom Internet Service name.
-    internet_service_custom: list[ProxyPolicyInternetservicecustomObject]  # Table field - list of typed objects
+    internet_service_custom: list[ProxyPolicyInternetservicecustomObject]
     # Custom Internet Service group name.
-    internet_service_custom_group: list[ProxyPolicyInternetservicecustomgroupObject]  # Table field - list of typed objects
+    internet_service_custom_group: list[ProxyPolicyInternetservicecustomgroupObject]
     # FortiGuard Internet Service name.
-    internet_service_fortiguard: list[ProxyPolicyInternetservicefortiguardObject]  # Table field - list of typed objects
-    # Enable/disable use of Internet Services IPv6 for this policy. If enabled, destin
+    internet_service_fortiguard: list[ProxyPolicyInternetservicefortiguardObject]
+    # Enable/disable use of Internet Services IPv6 for this policy | Default: disable
     internet_service6: Literal["enable", "disable"]
-    # When enabled, Internet Services match against any internet service IPv6 EXCEPT t
+    # When enabled, Internet Services match against any internet s | Default: disable
     internet_service6_negate: Literal["enable", "disable"]
     # Internet Service IPv6 name.
-    internet_service6_name: list[ProxyPolicyInternetservice6nameObject]  # Table field - list of typed objects
+    internet_service6_name: list[ProxyPolicyInternetservice6nameObject]
     # Internet Service IPv6 group name.
-    internet_service6_group: list[ProxyPolicyInternetservice6groupObject]  # Table field - list of typed objects
+    internet_service6_group: list[ProxyPolicyInternetservice6groupObject]
     # Custom Internet Service IPv6 name.
-    internet_service6_custom: list[ProxyPolicyInternetservice6customObject]  # Table field - list of typed objects
+    internet_service6_custom: list[ProxyPolicyInternetservice6customObject]
     # Custom Internet Service IPv6 group name.
-    internet_service6_custom_group: list[ProxyPolicyInternetservice6customgroupObject]  # Table field - list of typed objects
+    internet_service6_custom_group: list[ProxyPolicyInternetservice6customgroupObject]
     # FortiGuard Internet Service IPv6 name.
-    internet_service6_fortiguard: list[ProxyPolicyInternetservice6fortiguardObject]  # Table field - list of typed objects
+    internet_service6_fortiguard: list[ProxyPolicyInternetservice6fortiguardObject]
     # Name of service objects.
-    service: list[ProxyPolicyServiceObject]  # Table field - list of typed objects
-    # When enabled, source addresses match against any address EXCEPT the specified so
+    service: list[ProxyPolicyServiceObject]
+    # When enabled, source addresses match against any address EXC | Default: disable
     srcaddr_negate: Literal["enable", "disable"]
-    # When enabled, destination addresses match against any address EXCEPT the specifi
+    # When enabled, destination addresses match against any addres | Default: disable
     dstaddr_negate: Literal["enable", "disable"]
-    # When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS
+    # When enabled, ZTNA EMS tags match against any tag EXCEPT the | Default: disable
     ztna_ems_tag_negate: Literal["enable", "disable"]
-    # When enabled, services match against any service EXCEPT the specified destinatio
+    # When enabled, services match against any service EXCEPT the | Default: disable
     service_negate: Literal["enable", "disable"]
-    # Accept or deny traffic matching the policy parameters.
+    # Accept or deny traffic matching the policy parameters. | Default: deny
     action: Literal["accept", "deny", "redirect", "isolate"]
-    # Enable/disable the active status of the policy.
+    # Enable/disable the active status of the policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Name of schedule object.
+    # Name of schedule object. | MaxLen: 35
     schedule: str
-    # Enable/disable logging traffic through the policy.
+    # Enable/disable logging traffic through the policy. | Default: utm
     logtraffic: Literal["all", "utm", "disable"]
-    # TTL in seconds for sessions accepted by this policy
+    # TTL in seconds for sessions accepted by this policy | Default: 0 | Min: 300 | Max: 2764800
     session_ttl: int
     # IPv6 source address objects.
-    srcaddr6: list[ProxyPolicySrcaddr6Object]  # Table field - list of typed objects
+    srcaddr6: list[ProxyPolicySrcaddr6Object]
     # IPv6 destination address objects.
-    dstaddr6: list[ProxyPolicyDstaddr6Object]  # Table field - list of typed objects
+    dstaddr6: list[ProxyPolicyDstaddr6Object]
     # Names of group objects.
-    groups: list[ProxyPolicyGroupsObject]  # Table field - list of typed objects
+    groups: list[ProxyPolicyGroupsObject]
     # Names of user objects.
-    users: list[ProxyPolicyUsersObject]  # Table field - list of typed objects
-    # Enable/disable HTTP tunnel authentication.
+    users: list[ProxyPolicyUsersObject]
+    # Enable/disable HTTP tunnel authentication. | Default: disable
     http_tunnel_auth: Literal["enable", "disable"]
-    # Redirect SSH traffic to matching transparent proxy policy.
+    # Redirect SSH traffic to matching transparent proxy policy. | Default: disable
     ssh_policy_redirect: Literal["enable", "disable"]
-    # Web proxy forward server name.
+    # Web proxy forward server name. | MaxLen: 63
     webproxy_forward_server: str
-    # Isolator server name.
+    # Isolator server name. | MaxLen: 63
     isolator_server: str
-    # Name of web proxy profile.
+    # Name of web proxy profile. | MaxLen: 63
     webproxy_profile: str
-    # Enable to use the IP address of the client to connect to the server.
+    # Enable to use the IP address of the client to connect to the | Default: disable
     transparent: Literal["enable", "disable"]
-    # Enable/disable web caching.
+    # Enable/disable web caching. | Default: disable
     webcache: Literal["enable", "disable"]
-    # Enable/disable web caching for HTTPS
+    # Enable/disable web caching for HTTPS | Default: disable
     webcache_https: Literal["disable", "enable"]
-    # Web proxy disclaimer setting: by domain, policy, or user.
+    # Web proxy disclaimer setting: by domain, policy, or user. | Default: disable
     disclaimer: Literal["disable", "domain", "policy", "user"]
-    # Enable the use of UTM profiles/sensors/lists.
+    # Enable the use of UTM profiles/sensors/lists. | Default: disable
     utm_status: Literal["enable", "disable"]
-    # Determine whether the firewall policy allows security profile groups or single p
+    # Determine whether the firewall policy allows security profil | Default: single
     profile_type: Literal["single", "group"]
-    # Name of profile group.
+    # Name of profile group. | MaxLen: 47
     profile_group: str
-    # Name of an existing Protocol options profile.
+    # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
     profile_protocol_options: str
-    # Name of an existing SSL SSH profile.
+    # Name of an existing SSL SSH profile. | Default: no-inspection | MaxLen: 47
     ssl_ssh_profile: str
-    # Name of an existing Antivirus profile.
+    # Name of an existing Antivirus profile. | MaxLen: 47
     av_profile: str
-    # Name of an existing Web filter profile.
+    # Name of an existing Web filter profile. | MaxLen: 47
     webfilter_profile: str
-    # Name of an existing DNS filter profile.
+    # Name of an existing DNS filter profile. | MaxLen: 47
     dnsfilter_profile: str
-    # Name of an existing email filter profile.
+    # Name of an existing email filter profile. | MaxLen: 47
     emailfilter_profile: str
-    # Name of an existing DLP profile.
+    # Name of an existing DLP profile. | MaxLen: 47
     dlp_profile: str
-    # Name of an existing file-filter profile.
+    # Name of an existing file-filter profile. | MaxLen: 47
     file_filter_profile: str
-    # Name of an existing IPS sensor.
+    # Name of an existing IPS sensor. | MaxLen: 47
     ips_sensor: str
-    # Name of an existing Application list.
+    # Name of an existing Application list. | MaxLen: 47
     application_list: str
-    # Name of an existing VoIP (ips) profile.
+    # Name of an existing VoIP (ips) profile. | MaxLen: 47
     ips_voip_filter: str
-    # Name of an existing SCTP filter profile.
+    # Name of an existing SCTP filter profile. | MaxLen: 47
     sctp_filter_profile: str
-    # Name of an existing ICAP profile.
+    # Name of an existing ICAP profile. | MaxLen: 47
     icap_profile: str
-    # Name of an existing VideoFilter profile.
+    # Name of an existing VideoFilter profile. | MaxLen: 47
     videofilter_profile: str
-    # Name of an existing Web application firewall profile.
+    # Name of an existing Web application firewall profile. | MaxLen: 47
     waf_profile: str
-    # Name of an existing SSH filter profile.
+    # Name of an existing SSH filter profile. | MaxLen: 47
     ssh_filter_profile: str
-    # Name of an existing CASB profile.
+    # Name of an existing CASB profile. | MaxLen: 47
     casb_profile: str
-    # Authentication replacement message override group.
+    # Authentication replacement message override group. | MaxLen: 35
     replacemsg_override_group: str
-    # Enable/disable policy log traffic start.
+    # Enable/disable policy log traffic start. | Default: disable
     logtraffic_start: Literal["enable", "disable"]
-    # Enable/disable HTTP transaction log.
+    # Enable/disable HTTP transaction log. | Default: disable
     log_http_transaction: Literal["enable", "disable"]
-    # Optional comments.
+    # Optional comments. | MaxLen: 1023
     comments: str
-    # Enable/disable block notification.
+    # Enable/disable block notification. | Default: disable
     block_notification: Literal["enable", "disable"]
-    # Redirect URL for further explicit web proxy processing.
+    # Redirect URL for further explicit web proxy processing. | MaxLen: 1023
     redirect_url: str
-    # Enable/disable HTTPS sub-category policy matching.
+    # Enable/disable HTTPS sub-category policy matching. | Default: disable
     https_sub_category: Literal["enable", "disable"]
-    # Decrypted traffic mirror.
+    # Decrypted traffic mirror. | MaxLen: 35
     decrypted_traffic_mirror: str
-    # Enable/disable detection of HTTPS in HTTP request.
+    # Enable/disable detection of HTTPS in HTTP request. | Default: disable
     detect_https_in_http_request: Literal["enable", "disable"]
     
     # Common API response fields
@@ -952,8 +1218,66 @@ class ProxyPolicy:
     Primary Key: policyid
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProxyPolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProxyPolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        policyid: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProxyPolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -968,11 +1292,12 @@ class ProxyPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyPolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -988,11 +1313,11 @@ class ProxyPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyPolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -1007,10 +1332,11 @@ class ProxyPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProxyPolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -1027,7 +1353,7 @@ class ProxyPolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -1087,7 +1413,7 @@ class ProxyPolicy:
         **kwargs: Any,
     ) -> list[ProxyPolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -1102,9 +1428,9 @@ class ProxyPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -1219,7 +1545,7 @@ class ProxyPolicy:
         detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyPolicyObject: ...
     
@@ -1314,8 +1640,9 @@ class ProxyPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -1406,7 +1733,99 @@ class ProxyPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -1498,7 +1917,7 @@ class ProxyPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -1590,7 +2009,7 @@ class ProxyPolicy:
         detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyPolicyObject: ...
     
@@ -1685,8 +2104,9 @@ class ProxyPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -1777,7 +2197,99 @@ class ProxyPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -1869,7 +2381,7 @@ class ProxyPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -1878,7 +2390,7 @@ class ProxyPolicy:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyPolicyObject: ...
     
@@ -1890,8 +2402,9 @@ class ProxyPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -1899,7 +2412,16 @@ class ProxyPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        policyid: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -1907,7 +2429,7 @@ class ProxyPolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -2005,7 +2527,7 @@ class ProxyPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -2030,8 +2552,2225 @@ class ProxyPolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProxyPolicyDictMode:
+    """ProxyPolicy endpoint for dict response mode (default for this client).
+    
+    By default returns ProxyPolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProxyPolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProxyPolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProxyPolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProxyPolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProxyPolicyObjectMode:
+    """ProxyPolicy endpoint for object response mode (default for this client).
+    
+    By default returns ProxyPolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProxyPolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProxyPolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProxyPolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProxyPolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyPolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProxyPolicyPayload | None = ...,
+        uuid: str | None = ...,
+        policyid: int | None = ...,
+        name: str | None = ...,
+        proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
+        access_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        access_proxy6: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_proxy: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname: str | list[str] | list[dict[str, Any]] | None = ...,
+        poolname6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | None = ...,
+        ztna_tags_match_logic: Literal["or", "and"] | None = ...,
+        device_ownership: Literal["enable", "disable"] | None = ...,
+        url_risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6: Literal["enable", "disable"] | None = ...,
+        internet_service6_negate: Literal["enable", "disable"] | None = ...,
+        internet_service6_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny", "redirect", "isolate"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        session_ttl: int | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        http_tunnel_auth: Literal["enable", "disable"] | None = ...,
+        ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
+        webproxy_forward_server: str | None = ...,
+        isolator_server: str | None = ...,
+        webproxy_profile: str | None = ...,
+        transparent: Literal["enable", "disable"] | None = ...,
+        webcache: Literal["enable", "disable"] | None = ...,
+        webcache_https: Literal["disable", "enable"] | None = ...,
+        disclaimer: Literal["disable", "domain", "policy", "user"] | None = ...,
+        utm_status: Literal["enable", "disable"] | None = ...,
+        profile_type: Literal["single", "group"] | None = ...,
+        profile_group: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        logtraffic_start: Literal["enable", "disable"] | None = ...,
+        log_http_transaction: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        block_notification: Literal["enable", "disable"] | None = ...,
+        redirect_url: str | None = ...,
+        https_sub_category: Literal["enable", "disable"] | None = ...,
+        decrypted_traffic_mirror: str | None = ...,
+        detect_https_in_http_request: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ProxyPolicy",
+    "ProxyPolicyDictMode",
+    "ProxyPolicyObjectMode",
     "ProxyPolicyPayload",
     "ProxyPolicyObject",
 ]

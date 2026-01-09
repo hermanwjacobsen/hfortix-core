@@ -6,12 +6,48 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .profile import Profile
+    from .profile import Profile, ProfileDictMode, ProfileObjectMode
+
+__all__ = [
+    "Profile",
+    "VirtualpatchDictMode",
+    "VirtualpatchObjectMode",
+]
+
+class VirtualpatchDictMode:
+    """VIRTUAL_PATCH API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    profile: ProfileDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize virtual_patch category with HTTP client."""
+        ...
 
 
-class VirtualPatch:
-    """Type stub for VirtualPatch."""
+class VirtualpatchObjectMode:
+    """VIRTUAL_PATCH API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    profile: ProfileObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize virtual_patch category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Virtualpatch:
+    """VIRTUAL_PATCH API category."""
+    
     profile: Profile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize virtual_patch category with HTTP client."""
+        ...

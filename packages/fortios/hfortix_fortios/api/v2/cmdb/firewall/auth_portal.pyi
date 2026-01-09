@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class AuthPortalPayload(TypedDict, total=False):
     """
     Type hints for firewall/auth_portal payload fields.
@@ -18,13 +22,25 @@ class AuthPortalPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    groups: NotRequired[list[dict[str, Any]]]  # Firewall user groups permitted to authenticate through this
-    portal_addr: NotRequired[str]  # Address (or FQDN) of the authentication portal.
-    portal_addr6: NotRequired[str]  # IPv6 address (or FQDN) of authentication portal.
-    identity_based_route: NotRequired[str]  # Name of the identity-based route that applies to this portal
-    proxy_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable authentication by proxy daemon
+    groups: list[dict[str, Any]]  # Firewall user groups permitted to authenticate thr
+    portal_addr: str  # Address (or FQDN) of the authentication portal. | MaxLen: 63
+    portal_addr6: str  # IPv6 address (or FQDN) of authentication portal. | MaxLen: 63
+    identity_based_route: str  # Name of the identity-based route that applies to t | MaxLen: 35
+    proxy_auth: Literal["enable", "disable"]  # Enable/disable authentication by proxy daemon | Default: disable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class AuthPortalGroupsItem(TypedDict):
+    """Type hints for groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class AuthPortalGroupsObject:
@@ -34,7 +50,7 @@ class AuthPortalGroupsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Group name.
+    # Group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -55,11 +71,11 @@ class AuthPortalResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    groups: list[dict[str, Any]]
-    portal_addr: str
-    portal_addr6: str
-    identity_based_route: str
-    proxy_auth: Literal["enable", "disable"]
+    groups: list[AuthPortalGroupsItem]  # Firewall user groups permitted to authenticate thr
+    portal_addr: str  # Address (or FQDN) of the authentication portal. | MaxLen: 63
+    portal_addr6: str  # IPv6 address (or FQDN) of authentication portal. | MaxLen: 63
+    identity_based_route: str  # Name of the identity-based route that applies to t | MaxLen: 35
+    proxy_auth: Literal["enable", "disable"]  # Enable/disable authentication by proxy daemon | Default: disable
 
 
 @final
@@ -70,15 +86,15 @@ class AuthPortalObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Firewall user groups permitted to authenticate through this portal. Separate gro
-    groups: list[AuthPortalGroupsObject]  # Table field - list of typed objects
-    # Address (or FQDN) of the authentication portal.
+    # Firewall user groups permitted to authenticate through this
+    groups: list[AuthPortalGroupsObject]
+    # Address (or FQDN) of the authentication portal. | MaxLen: 63
     portal_addr: str
-    # IPv6 address (or FQDN) of authentication portal.
+    # IPv6 address (or FQDN) of authentication portal. | MaxLen: 63
     portal_addr6: str
-    # Name of the identity-based route that applies to this portal.
+    # Name of the identity-based route that applies to this portal | MaxLen: 35
     identity_based_route: str
-    # Enable/disable authentication by proxy daemon (default = disable).
+    # Enable/disable authentication by proxy daemon | Default: disable
     proxy_auth: Literal["enable", "disable"]
     
     # Common API response fields
@@ -104,8 +120,66 @@ class AuthPortal:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> AuthPortalResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> AuthPortalResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> AuthPortalResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -120,11 +194,12 @@ class AuthPortal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AuthPortalObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -140,11 +215,11 @@ class AuthPortal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AuthPortalObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -159,10 +234,11 @@ class AuthPortal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AuthPortalObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -179,7 +255,7 @@ class AuthPortal:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -239,7 +315,7 @@ class AuthPortal:
         **kwargs: Any,
     ) -> AuthPortalResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -254,9 +330,9 @@ class AuthPortal:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -293,7 +369,7 @@ class AuthPortal:
         proxy_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AuthPortalObject: ...
     
@@ -310,8 +386,9 @@ class AuthPortal:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -324,7 +401,21 @@ class AuthPortal:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -338,7 +429,7 @@ class AuthPortal:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -358,7 +449,7 @@ class AuthPortal:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -383,8 +474,446 @@ class AuthPortal:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class AuthPortalDictMode:
+    """AuthPortal endpoint for dict response mode (default for this client).
+    
+    By default returns AuthPortalResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return AuthPortalObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> AuthPortalResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> AuthPortalResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class AuthPortalObjectMode:
+    """AuthPortal endpoint for object response mode (default for this client).
+    
+    By default returns AuthPortalObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return AuthPortalResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> AuthPortalResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> AuthPortalResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> AuthPortalObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: AuthPortalPayload | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        portal_addr: str | None = ...,
+        portal_addr6: str | None = ...,
+        identity_based_route: str | None = ...,
+        proxy_auth: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "AuthPortal",
+    "AuthPortalDictMode",
+    "AuthPortalObjectMode",
     "AuthPortalPayload",
     "AuthPortalObject",
 ]

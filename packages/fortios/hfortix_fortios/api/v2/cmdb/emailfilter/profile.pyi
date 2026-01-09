@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProfilePayload(TypedDict, total=False):
     """
     Type hints for emailfilter/profile payload fields.
@@ -23,31 +27,33 @@ class ProfilePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Profile name.
-    comment: NotRequired[str]  # Comment.
-    feature_set: NotRequired[Literal["flow", "proxy"]]  # Flow/proxy feature set.
-    replacemsg_group: NotRequired[str]  # Replacement message group.
-    spam_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable spam logging for email filtering.
-    spam_log_fortiguard_response: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging FortiGuard spam response.
-    spam_filtering: NotRequired[Literal["enable", "disable"]]  # Enable/disable spam filtering.
-    external: NotRequired[Literal["enable", "disable"]]  # Enable/disable external Email inspection.
-    options: NotRequired[Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]]  # Options.
-    imap: NotRequired[str]  # IMAP.
-    pop3: NotRequired[str]  # POP3.
-    smtp: NotRequired[str]  # SMTP.
-    mapi: NotRequired[str]  # MAPI.
-    msn_hotmail: NotRequired[str]  # MSN Hotmail.
-    yahoo_mail: NotRequired[str]  # Yahoo! Mail.
-    gmail: NotRequired[str]  # Gmail.
-    other_webmails: NotRequired[str]  # Other supported webmails.
-    spam_bword_threshold: NotRequired[int]  # Spam banned word threshold.
-    spam_bword_table: NotRequired[int]  # Anti-spam banned word table ID.
-    spam_bal_table: NotRequired[int]  # Anti-spam block/allow list table ID.
-    spam_mheader_table: NotRequired[int]  # Anti-spam MIME header table ID.
-    spam_rbl_table: NotRequired[int]  # Anti-spam DNSBL table ID.
-    spam_iptrust_table: NotRequired[int]  # Anti-spam IP trust table ID.
+    name: str  # Profile name. | MaxLen: 47
+    comment: str  # Comment. | MaxLen: 255
+    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    spam_log: Literal["disable", "enable"]  # Enable/disable spam logging for email filtering. | Default: enable
+    spam_log_fortiguard_response: Literal["disable", "enable"]  # Enable/disable logging FortiGuard spam response. | Default: disable
+    spam_filtering: Literal["enable", "disable"]  # Enable/disable spam filtering. | Default: disable
+    external: Literal["enable", "disable"]  # Enable/disable external Email inspection. | Default: disable
+    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]  # Options.
+    imap: str  # IMAP.
+    pop3: str  # POP3.
+    smtp: str  # SMTP.
+    mapi: str  # MAPI.
+    msn_hotmail: str  # MSN Hotmail.
+    yahoo_mail: str  # Yahoo! Mail.
+    gmail: str  # Gmail.
+    other_webmails: str  # Other supported webmails.
+    spam_bword_threshold: int  # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
+    spam_bword_table: int  # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_bal_table: int  # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_mheader_table: int  # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_rbl_table: int  # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_iptrust_table: int  # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -57,29 +63,29 @@ class ProfileResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    comment: str
-    feature_set: Literal["flow", "proxy"]
-    replacemsg_group: str
-    spam_log: Literal["disable", "enable"]
-    spam_log_fortiguard_response: Literal["disable", "enable"]
-    spam_filtering: Literal["enable", "disable"]
-    external: Literal["enable", "disable"]
-    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    msn_hotmail: str
-    yahoo_mail: str
-    gmail: str
-    other_webmails: str
-    spam_bword_threshold: int
-    spam_bword_table: int
-    spam_bal_table: int
-    spam_mheader_table: int
-    spam_rbl_table: int
-    spam_iptrust_table: int
+    name: str  # Profile name. | MaxLen: 47
+    comment: str  # Comment. | MaxLen: 255
+    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    spam_log: Literal["disable", "enable"]  # Enable/disable spam logging for email filtering. | Default: enable
+    spam_log_fortiguard_response: Literal["disable", "enable"]  # Enable/disable logging FortiGuard spam response. | Default: disable
+    spam_filtering: Literal["enable", "disable"]  # Enable/disable spam filtering. | Default: disable
+    external: Literal["enable", "disable"]  # Enable/disable external Email inspection. | Default: disable
+    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]  # Options.
+    imap: str  # IMAP.
+    pop3: str  # POP3.
+    smtp: str  # SMTP.
+    mapi: str  # MAPI.
+    msn_hotmail: str  # MSN Hotmail.
+    yahoo_mail: str  # Yahoo! Mail.
+    gmail: str  # Gmail.
+    other_webmails: str  # Other supported webmails.
+    spam_bword_threshold: int  # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
+    spam_bword_table: int  # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_bal_table: int  # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_mheader_table: int  # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_rbl_table: int  # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    spam_iptrust_table: int  # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
 
 
 @final
@@ -90,21 +96,21 @@ class ProfileObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Profile name.
+    # Profile name. | MaxLen: 47
     name: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comment: str
-    # Flow/proxy feature set.
+    # Flow/proxy feature set. | Default: flow
     feature_set: Literal["flow", "proxy"]
-    # Replacement message group.
+    # Replacement message group. | MaxLen: 35
     replacemsg_group: str
-    # Enable/disable spam logging for email filtering.
+    # Enable/disable spam logging for email filtering. | Default: enable
     spam_log: Literal["disable", "enable"]
-    # Enable/disable logging FortiGuard spam response.
+    # Enable/disable logging FortiGuard spam response. | Default: disable
     spam_log_fortiguard_response: Literal["disable", "enable"]
-    # Enable/disable spam filtering.
+    # Enable/disable spam filtering. | Default: disable
     spam_filtering: Literal["enable", "disable"]
-    # Enable/disable external Email inspection.
+    # Enable/disable external Email inspection. | Default: disable
     external: Literal["enable", "disable"]
     # Options.
     options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]
@@ -124,17 +130,17 @@ class ProfileObject:
     gmail: str
     # Other supported webmails.
     other_webmails: str
-    # Spam banned word threshold.
+    # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
     spam_bword_threshold: int
-    # Anti-spam banned word table ID.
+    # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_bword_table: int
-    # Anti-spam block/allow list table ID.
+    # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_bal_table: int
-    # Anti-spam MIME header table ID.
+    # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_mheader_table: int
-    # Anti-spam DNSBL table ID.
+    # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_rbl_table: int
-    # Anti-spam IP trust table ID.
+    # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_iptrust_table: int
     
     # Common API response fields
@@ -161,8 +167,66 @@ class Profile:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProfileResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -177,11 +241,12 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -197,11 +262,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -216,10 +281,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProfileObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -236,7 +302,7 @@ class Profile:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -296,7 +362,7 @@ class Profile:
         **kwargs: Any,
     ) -> list[ProfileResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -311,9 +377,9 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -368,7 +434,7 @@ class Profile:
         spam_iptrust_table: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -403,8 +469,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -435,7 +502,39 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -467,7 +566,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -499,7 +598,7 @@ class Profile:
         spam_iptrust_table: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -534,8 +633,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -566,7 +666,39 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -598,7 +730,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -607,7 +739,7 @@ class Profile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -619,8 +751,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -628,7 +761,16 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -636,7 +778,7 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -674,7 +816,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -699,8 +841,1025 @@ class Profile:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProfileDictMode:
+    """Profile endpoint for dict response mode (default for this client).
+    
+    By default returns ProfileResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProfileObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProfileObjectMode:
+    """Profile endpoint for object response mode (default for this client).
+    
+    By default returns ProfileObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProfileResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        spam_log: Literal["disable", "enable"] | None = ...,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
+        spam_filtering: Literal["enable", "disable"] | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        imap: str | None = ...,
+        pop3: str | None = ...,
+        smtp: str | None = ...,
+        mapi: str | None = ...,
+        msn_hotmail: str | None = ...,
+        yahoo_mail: str | None = ...,
+        gmail: str | None = ...,
+        other_webmails: str | None = ...,
+        spam_bword_threshold: int | None = ...,
+        spam_bword_table: int | None = ...,
+        spam_bal_table: int | None = ...,
+        spam_mheader_table: int | None = ...,
+        spam_rbl_table: int | None = ...,
+        spam_iptrust_table: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Profile",
+    "ProfileDictMode",
+    "ProfileObjectMode",
     "ProfilePayload",
     "ProfileObject",
 ]

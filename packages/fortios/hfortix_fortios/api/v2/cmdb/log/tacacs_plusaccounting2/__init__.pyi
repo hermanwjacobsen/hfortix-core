@@ -6,14 +6,53 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .filter import Filter
-    from .setting import Setting
+    from .filter import Filter, FilterDictMode, FilterObjectMode
+    from .setting import Setting, SettingDictMode, SettingObjectMode
+
+__all__ = [
+    "Filter",
+    "Setting",
+    "Tacacsplusaccounting2DictMode",
+    "Tacacsplusaccounting2ObjectMode",
+]
+
+class Tacacsplusaccounting2DictMode:
+    """TACACS_PLUSACCOUNTING2 API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    filter: FilterDictMode
+    setting: SettingDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize tacacs_plusaccounting2 category with HTTP client."""
+        ...
 
 
-class TacacsPlusaccounting2:
-    """Type stub for TacacsPlusaccounting2."""
+class Tacacsplusaccounting2ObjectMode:
+    """TACACS_PLUSACCOUNTING2 API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    filter: FilterObjectMode
+    setting: SettingObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize tacacs_plusaccounting2 category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Tacacsplusaccounting2:
+    """TACACS_PLUSACCOUNTING2 API category."""
+    
     filter: Filter
     setting: Setting
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize tacacs_plusaccounting2 category with HTTP client."""
+        ...

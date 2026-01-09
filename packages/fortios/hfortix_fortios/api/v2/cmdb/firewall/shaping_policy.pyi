@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ShapingPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/shaping_policy payload fields.
@@ -23,54 +27,286 @@ class ShapingPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: NotRequired[int]  # Shaping policy ID (0 - 4294967295).
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    name: NotRequired[str]  # Shaping policy name.
-    comment: NotRequired[str]  # Comments.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this traffic shaping policy.
-    ip_version: NotRequired[Literal["4", "6"]]  # Apply this traffic shaping policy to IPv4 or IPv6 traffic.
-    traffic_type: NotRequired[Literal["forwarding", "local-in", "local-out"]]  # Traffic type.
+    id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    name: str  # Shaping policy name. | MaxLen: 35
+    comment: str  # Comments. | MaxLen: 255
+    status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
+    ip_version: Literal["4", "6"]  # Apply this traffic shaping policy to IPv4 or IPv6 | Default: 4
+    traffic_type: Literal["forwarding", "local-in", "local-out"]  # Traffic type. | Default: forwarding
     srcaddr: list[dict[str, Any]]  # IPv4 source address and address group names.
     dstaddr: list[dict[str, Any]]  # IPv4 destination address and address group names.
     srcaddr6: list[dict[str, Any]]  # IPv6 source address and address group names.
     dstaddr6: list[dict[str, Any]]  # IPv6 destination address and address group names.
-    internet_service: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services for this policy. If
-    internet_service_name: NotRequired[list[dict[str, Any]]]  # Internet Service ID.
-    internet_service_group: NotRequired[list[dict[str, Any]]]  # Internet Service group name.
-    internet_service_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service name.
-    internet_service_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service group name.
-    internet_service_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service name.
-    internet_service_src: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services in source for this p
-    internet_service_src_name: NotRequired[list[dict[str, Any]]]  # Internet Service source name.
-    internet_service_src_group: NotRequired[list[dict[str, Any]]]  # Internet Service source group name.
-    internet_service_src_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service source name.
-    internet_service_src_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service source group name.
-    internet_service_src_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service source name.
+    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
+    internet_service_name: list[dict[str, Any]]  # Internet Service ID.
+    internet_service_group: list[dict[str, Any]]  # Internet Service group name.
+    internet_service_custom: list[dict[str, Any]]  # Custom Internet Service name.
+    internet_service_custom_group: list[dict[str, Any]]  # Custom Internet Service group name.
+    internet_service_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service name.
+    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
+    internet_service_src_name: list[dict[str, Any]]  # Internet Service source name.
+    internet_service_src_group: list[dict[str, Any]]  # Internet Service source group name.
+    internet_service_src_custom: list[dict[str, Any]]  # Custom Internet Service source name.
+    internet_service_src_custom_group: list[dict[str, Any]]  # Custom Internet Service source group name.
+    internet_service_src_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service source name.
     service: list[dict[str, Any]]  # Service and service group names.
-    schedule: NotRequired[str]  # Schedule name.
-    users: NotRequired[list[dict[str, Any]]]  # Apply this traffic shaping policy to individual users that h
-    groups: NotRequired[list[dict[str, Any]]]  # Apply this traffic shaping policy to user groups that have a
-    application: NotRequired[list[dict[str, Any]]]  # IDs of one or more applications that this shaper applies app
-    app_category: NotRequired[list[dict[str, Any]]]  # IDs of one or more application categories that this shaper a
-    app_group: NotRequired[list[dict[str, Any]]]  # One or more application group names.
-    url_category: NotRequired[list[dict[str, Any]]]  # IDs of one or more FortiGuard Web Filtering categories that
-    srcintf: NotRequired[list[dict[str, Any]]]  # One or more incoming (ingress) interfaces.
+    schedule: str  # Schedule name. | MaxLen: 35
+    users: list[dict[str, Any]]  # Apply this traffic shaping policy to individual us
+    groups: list[dict[str, Any]]  # Apply this traffic shaping policy to user groups t
+    application: list[dict[str, Any]]  # IDs of one or more applications that this shaper a
+    app_category: list[dict[str, Any]]  # IDs of one or more application categories that thi
+    app_group: list[dict[str, Any]]  # One or more application group names.
+    url_category: list[dict[str, Any]]  # IDs of one or more FortiGuard Web Filtering catego
+    srcintf: list[dict[str, Any]]  # One or more incoming (ingress) interfaces.
     dstintf: list[dict[str, Any]]  # One or more outgoing (egress) interfaces.
-    tos_mask: NotRequired[str]  # Non-zero bit positions are used for comparison while zero bi
-    tos: NotRequired[str]  # ToS (Type of Service) value used for comparison.
-    tos_negate: NotRequired[Literal["enable", "disable"]]  # Enable negated TOS match.
-    traffic_shaper: NotRequired[str]  # Traffic shaper to apply to traffic forwarded by the firewall
-    traffic_shaper_reverse: NotRequired[str]  # Traffic shaper to apply to response traffic received by the
-    per_ip_shaper: NotRequired[str]  # Per-IP traffic shaper to apply with this policy.
-    class_id: NotRequired[int]  # Traffic class ID.
-    diffserv_forward: NotRequired[Literal["enable", "disable"]]  # Enable to change packet's DiffServ values to the specified d
-    diffserv_reverse: NotRequired[Literal["enable", "disable"]]  # Enable to change packet's reverse (reply) DiffServ values to
-    diffservcode_forward: NotRequired[str]  # Change packet's DiffServ to this value.
-    diffservcode_rev: NotRequired[str]  # Change packet's reverse (reply) DiffServ to this value.
-    cos_mask: NotRequired[str]  # VLAN CoS evaluated bits.
-    cos: NotRequired[str]  # VLAN CoS bit pattern.
+    tos_mask: str  # Non-zero bit positions are used for comparison whi
+    tos: str  # ToS (Type of Service) value used for comparison.
+    tos_negate: Literal["enable", "disable"]  # Enable negated TOS match. | Default: disable
+    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
+    traffic_shaper_reverse: str  # Traffic shaper to apply to response traffic receiv | MaxLen: 35
+    per_ip_shaper: str  # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
+    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
+    diffserv_forward: Literal["enable", "disable"]  # Enable to change packet's DiffServ values to the s | Default: disable
+    diffserv_reverse: Literal["enable", "disable"]  # Enable to change packet's reverse (reply) DiffServ | Default: disable
+    diffservcode_forward: str  # Change packet's DiffServ to this value.
+    diffservcode_rev: str  # Change packet's reverse (reply) DiffServ to this v
+    cos_mask: str  # VLAN CoS evaluated bits.
+    cos: str  # VLAN CoS bit pattern.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ShapingPolicySrcaddrItem(TypedDict):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ShapingPolicyDstaddrItem(TypedDict):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ShapingPolicySrcaddr6Item(TypedDict):
+    """Type hints for srcaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ShapingPolicyDstaddr6Item(TypedDict):
+    """Type hints for dstaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicenameItem(TypedDict):
+    """Type hints for internet-service-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicegroupItem(TypedDict):
+    """Type hints for internet-service-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service group name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicecustomItem(TypedDict):
+    """Type hints for internet-service-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicecustomgroupItem(TypedDict):
+    """Type hints for internet-service-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service group name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicefortiguardItem(TypedDict):
+    """Type hints for internet-service-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicesrcnameItem(TypedDict):
+    """Type hints for internet-service-src-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicesrcgroupItem(TypedDict):
+    """Type hints for internet-service-src-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service group name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicesrccustomItem(TypedDict):
+    """Type hints for internet-service-src-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicesrccustomgroupItem(TypedDict):
+    """Type hints for internet-service-src-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service group name. | MaxLen: 79
+
+
+class ShapingPolicyInternetservicesrcfortiguardItem(TypedDict):
+    """Type hints for internet-service-src-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+
+
+class ShapingPolicyServiceItem(TypedDict):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+class ShapingPolicyUsersItem(TypedDict):
+    """Type hints for users table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # User name. | MaxLen: 79
+
+
+class ShapingPolicyGroupsItem(TypedDict):
+    """Type hints for groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Group name. | MaxLen: 79
+
+
+class ShapingPolicyApplicationItem(TypedDict):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class ShapingPolicyAppcategoryItem(TypedDict):
+    """Type hints for app-category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class ShapingPolicyAppgroupItem(TypedDict):
+    """Type hints for app-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Application group name. | MaxLen: 79
+
+
+class ShapingPolicyUrlcategoryItem(TypedDict):
+    """Type hints for url-category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # URL category ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class ShapingPolicySrcintfItem(TypedDict):
+    """Type hints for srcintf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class ShapingPolicyDstintfItem(TypedDict):
+    """Type hints for dstintf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ShapingPolicySrcaddrObject:
@@ -80,7 +316,7 @@ class ShapingPolicySrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -101,7 +337,7 @@ class ShapingPolicyDstaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -122,7 +358,7 @@ class ShapingPolicySrcaddr6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -143,7 +379,7 @@ class ShapingPolicyDstaddr6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -164,7 +400,7 @@ class ShapingPolicyInternetservicenameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service name.
+    # Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -185,7 +421,7 @@ class ShapingPolicyInternetservicegroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service group name.
+    # Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -206,7 +442,7 @@ class ShapingPolicyInternetservicecustomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service name.
+    # Custom Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -227,7 +463,7 @@ class ShapingPolicyInternetservicecustomgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service group name.
+    # Custom Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -248,7 +484,7 @@ class ShapingPolicyInternetservicefortiguardObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard Internet Service name.
+    # FortiGuard Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -269,7 +505,7 @@ class ShapingPolicyInternetservicesrcnameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service name.
+    # Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -290,7 +526,7 @@ class ShapingPolicyInternetservicesrcgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service group name.
+    # Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -311,7 +547,7 @@ class ShapingPolicyInternetservicesrccustomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service name.
+    # Custom Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -332,7 +568,7 @@ class ShapingPolicyInternetservicesrccustomgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service group name.
+    # Custom Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -353,7 +589,7 @@ class ShapingPolicyInternetservicesrcfortiguardObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard Internet Service name.
+    # FortiGuard Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -374,7 +610,7 @@ class ShapingPolicyServiceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Service name.
+    # Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -395,7 +631,7 @@ class ShapingPolicyUsersObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # User name.
+    # User name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -416,7 +652,7 @@ class ShapingPolicyGroupsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Group name.
+    # Group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -437,7 +673,7 @@ class ShapingPolicyApplicationObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Application IDs.
+    # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     
     # Methods from FortiObject
@@ -458,7 +694,7 @@ class ShapingPolicyAppcategoryObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Category IDs.
+    # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     
     # Methods from FortiObject
@@ -479,7 +715,7 @@ class ShapingPolicyAppgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Application group name.
+    # Application group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -500,7 +736,7 @@ class ShapingPolicyUrlcategoryObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # URL category ID.
+    # URL category ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     
     # Methods from FortiObject
@@ -521,7 +757,7 @@ class ShapingPolicySrcintfObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface name.
+    # Interface name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -542,7 +778,7 @@ class ShapingPolicyDstintfObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Interface name.
+    # Interface name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -563,52 +799,52 @@ class ShapingPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: int
-    uuid: str
-    name: str
-    comment: str
-    status: Literal["enable", "disable"]
-    ip_version: Literal["4", "6"]
-    traffic_type: Literal["forwarding", "local-in", "local-out"]
-    srcaddr: list[dict[str, Any]]
-    dstaddr: list[dict[str, Any]]
-    srcaddr6: list[dict[str, Any]]
-    dstaddr6: list[dict[str, Any]]
-    internet_service: Literal["enable", "disable"]
-    internet_service_name: list[dict[str, Any]]
-    internet_service_group: list[dict[str, Any]]
-    internet_service_custom: list[dict[str, Any]]
-    internet_service_custom_group: list[dict[str, Any]]
-    internet_service_fortiguard: list[dict[str, Any]]
-    internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[dict[str, Any]]
-    internet_service_src_group: list[dict[str, Any]]
-    internet_service_src_custom: list[dict[str, Any]]
-    internet_service_src_custom_group: list[dict[str, Any]]
-    internet_service_src_fortiguard: list[dict[str, Any]]
-    service: list[dict[str, Any]]
-    schedule: str
-    users: list[dict[str, Any]]
-    groups: list[dict[str, Any]]
-    application: list[dict[str, Any]]
-    app_category: list[dict[str, Any]]
-    app_group: list[dict[str, Any]]
-    url_category: list[dict[str, Any]]
-    srcintf: list[dict[str, Any]]
-    dstintf: list[dict[str, Any]]
-    tos_mask: str
-    tos: str
-    tos_negate: Literal["enable", "disable"]
-    traffic_shaper: str
-    traffic_shaper_reverse: str
-    per_ip_shaper: str
-    class_id: int
-    diffserv_forward: Literal["enable", "disable"]
-    diffserv_reverse: Literal["enable", "disable"]
-    diffservcode_forward: str
-    diffservcode_rev: str
-    cos_mask: str
-    cos: str
+    id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    name: str  # Shaping policy name. | MaxLen: 35
+    comment: str  # Comments. | MaxLen: 255
+    status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
+    ip_version: Literal["4", "6"]  # Apply this traffic shaping policy to IPv4 or IPv6 | Default: 4
+    traffic_type: Literal["forwarding", "local-in", "local-out"]  # Traffic type. | Default: forwarding
+    srcaddr: list[ShapingPolicySrcaddrItem]  # IPv4 source address and address group names.
+    dstaddr: list[ShapingPolicyDstaddrItem]  # IPv4 destination address and address group names.
+    srcaddr6: list[ShapingPolicySrcaddr6Item]  # IPv6 source address and address group names.
+    dstaddr6: list[ShapingPolicyDstaddr6Item]  # IPv6 destination address and address group names.
+    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
+    internet_service_name: list[ShapingPolicyInternetservicenameItem]  # Internet Service ID.
+    internet_service_group: list[ShapingPolicyInternetservicegroupItem]  # Internet Service group name.
+    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]  # Custom Internet Service name.
+    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]  # Custom Internet Service group name.
+    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]  # FortiGuard Internet Service name.
+    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
+    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]  # Internet Service source name.
+    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]  # Internet Service source group name.
+    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]  # Custom Internet Service source name.
+    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]  # Custom Internet Service source group name.
+    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]  # FortiGuard Internet Service source name.
+    service: list[ShapingPolicyServiceItem]  # Service and service group names.
+    schedule: str  # Schedule name. | MaxLen: 35
+    users: list[ShapingPolicyUsersItem]  # Apply this traffic shaping policy to individual us
+    groups: list[ShapingPolicyGroupsItem]  # Apply this traffic shaping policy to user groups t
+    application: list[ShapingPolicyApplicationItem]  # IDs of one or more applications that this shaper a
+    app_category: list[ShapingPolicyAppcategoryItem]  # IDs of one or more application categories that thi
+    app_group: list[ShapingPolicyAppgroupItem]  # One or more application group names.
+    url_category: list[ShapingPolicyUrlcategoryItem]  # IDs of one or more FortiGuard Web Filtering catego
+    srcintf: list[ShapingPolicySrcintfItem]  # One or more incoming (ingress) interfaces.
+    dstintf: list[ShapingPolicyDstintfItem]  # One or more outgoing (egress) interfaces.
+    tos_mask: str  # Non-zero bit positions are used for comparison whi
+    tos: str  # ToS (Type of Service) value used for comparison.
+    tos_negate: Literal["enable", "disable"]  # Enable negated TOS match. | Default: disable
+    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
+    traffic_shaper_reverse: str  # Traffic shaper to apply to response traffic receiv | MaxLen: 35
+    per_ip_shaper: str  # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
+    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
+    diffserv_forward: Literal["enable", "disable"]  # Enable to change packet's DiffServ values to the s | Default: disable
+    diffserv_reverse: Literal["enable", "disable"]  # Enable to change packet's reverse (reply) DiffServ | Default: disable
+    diffservcode_forward: str  # Change packet's DiffServ to this value.
+    diffservcode_rev: str  # Change packet's reverse (reply) DiffServ to this v
+    cos_mask: str  # VLAN CoS evaluated bits.
+    cos: str  # VLAN CoS bit pattern.
 
 
 @final
@@ -619,89 +855,89 @@ class ShapingPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Shaping policy ID (0 - 4294967295).
+    # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Shaping policy name.
+    # Shaping policy name. | MaxLen: 35
     name: str
-    # Comments.
+    # Comments. | MaxLen: 255
     comment: str
-    # Enable/disable this traffic shaping policy.
+    # Enable/disable this traffic shaping policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Apply this traffic shaping policy to IPv4 or IPv6 traffic.
+    # Apply this traffic shaping policy to IPv4 or IPv6 traffic. | Default: 4
     ip_version: Literal["4", "6"]
-    # Traffic type.
+    # Traffic type. | Default: forwarding
     traffic_type: Literal["forwarding", "local-in", "local-out"]
     # IPv4 source address and address group names.
-    srcaddr: list[ShapingPolicySrcaddrObject]  # Table field - list of typed objects
+    srcaddr: list[ShapingPolicySrcaddrObject]
     # IPv4 destination address and address group names.
-    dstaddr: list[ShapingPolicyDstaddrObject]  # Table field - list of typed objects
+    dstaddr: list[ShapingPolicyDstaddrObject]
     # IPv6 source address and address group names.
-    srcaddr6: list[ShapingPolicySrcaddr6Object]  # Table field - list of typed objects
+    srcaddr6: list[ShapingPolicySrcaddr6Object]
     # IPv6 destination address and address group names.
-    dstaddr6: list[ShapingPolicyDstaddr6Object]  # Table field - list of typed objects
-    # Enable/disable use of Internet Services for this policy. If enabled, destination
+    dstaddr6: list[ShapingPolicyDstaddr6Object]
+    # Enable/disable use of Internet Services for this policy. If | Default: disable
     internet_service: Literal["enable", "disable"]
     # Internet Service ID.
-    internet_service_name: list[ShapingPolicyInternetservicenameObject]  # Table field - list of typed objects
+    internet_service_name: list[ShapingPolicyInternetservicenameObject]
     # Internet Service group name.
-    internet_service_group: list[ShapingPolicyInternetservicegroupObject]  # Table field - list of typed objects
+    internet_service_group: list[ShapingPolicyInternetservicegroupObject]
     # Custom Internet Service name.
-    internet_service_custom: list[ShapingPolicyInternetservicecustomObject]  # Table field - list of typed objects
+    internet_service_custom: list[ShapingPolicyInternetservicecustomObject]
     # Custom Internet Service group name.
-    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupObject]  # Table field - list of typed objects
+    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupObject]
     # FortiGuard Internet Service name.
-    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardObject]  # Table field - list of typed objects
-    # Enable/disable use of Internet Services in source for this policy. If enabled, s
+    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardObject]
+    # Enable/disable use of Internet Services in source for this p | Default: disable
     internet_service_src: Literal["enable", "disable"]
     # Internet Service source name.
-    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameObject]  # Table field - list of typed objects
+    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameObject]
     # Internet Service source group name.
-    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupObject]  # Table field - list of typed objects
+    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupObject]
     # Custom Internet Service source name.
-    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomObject]  # Table field - list of typed objects
+    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomObject]
     # Custom Internet Service source group name.
-    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupObject]  # Table field - list of typed objects
+    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupObject]
     # FortiGuard Internet Service source name.
-    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardObject]  # Table field - list of typed objects
+    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardObject]
     # Service and service group names.
-    service: list[ShapingPolicyServiceObject]  # Table field - list of typed objects
-    # Schedule name.
+    service: list[ShapingPolicyServiceObject]
+    # Schedule name. | MaxLen: 35
     schedule: str
-    # Apply this traffic shaping policy to individual users that have authenticated wi
-    users: list[ShapingPolicyUsersObject]  # Table field - list of typed objects
-    # Apply this traffic shaping policy to user groups that have authenticated with th
-    groups: list[ShapingPolicyGroupsObject]  # Table field - list of typed objects
-    # IDs of one or more applications that this shaper applies application control tra
-    application: list[ShapingPolicyApplicationObject]  # Table field - list of typed objects
-    # IDs of one or more application categories that this shaper applies application c
-    app_category: list[ShapingPolicyAppcategoryObject]  # Table field - list of typed objects
+    # Apply this traffic shaping policy to individual users that h
+    users: list[ShapingPolicyUsersObject]
+    # Apply this traffic shaping policy to user groups that have a
+    groups: list[ShapingPolicyGroupsObject]
+    # IDs of one or more applications that this shaper applies app
+    application: list[ShapingPolicyApplicationObject]
+    # IDs of one or more application categories that this shaper a
+    app_category: list[ShapingPolicyAppcategoryObject]
     # One or more application group names.
-    app_group: list[ShapingPolicyAppgroupObject]  # Table field - list of typed objects
-    # IDs of one or more FortiGuard Web Filtering categories that this shaper applies
-    url_category: list[ShapingPolicyUrlcategoryObject]  # Table field - list of typed objects
+    app_group: list[ShapingPolicyAppgroupObject]
+    # IDs of one or more FortiGuard Web Filtering categories that
+    url_category: list[ShapingPolicyUrlcategoryObject]
     # One or more incoming (ingress) interfaces.
-    srcintf: list[ShapingPolicySrcintfObject]  # Table field - list of typed objects
+    srcintf: list[ShapingPolicySrcintfObject]
     # One or more outgoing (egress) interfaces.
-    dstintf: list[ShapingPolicyDstintfObject]  # Table field - list of typed objects
-    # Non-zero bit positions are used for comparison while zero bit positions are igno
+    dstintf: list[ShapingPolicyDstintfObject]
+    # Non-zero bit positions are used for comparison while zero bi
     tos_mask: str
     # ToS (Type of Service) value used for comparison.
     tos: str
-    # Enable negated TOS match.
+    # Enable negated TOS match. | Default: disable
     tos_negate: Literal["enable", "disable"]
-    # Traffic shaper to apply to traffic forwarded by the firewall policy.
+    # Traffic shaper to apply to traffic forwarded by the firewall | MaxLen: 35
     traffic_shaper: str
-    # Traffic shaper to apply to response traffic received by the firewall policy.
+    # Traffic shaper to apply to response traffic received by the | MaxLen: 35
     traffic_shaper_reverse: str
-    # Per-IP traffic shaper to apply with this policy.
+    # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
     per_ip_shaper: str
-    # Traffic class ID.
+    # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
     class_id: int
-    # Enable to change packet's DiffServ values to the specified diffservcode-forward
+    # Enable to change packet's DiffServ values to the specified d | Default: disable
     diffserv_forward: Literal["enable", "disable"]
-    # Enable to change packet's reverse (reply) DiffServ values to the specified diffs
+    # Enable to change packet's reverse (reply) DiffServ values to | Default: disable
     diffserv_reverse: Literal["enable", "disable"]
     # Change packet's DiffServ to this value.
     diffservcode_forward: str
@@ -736,8 +972,66 @@ class ShapingPolicy:
     Primary Key: id
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ShapingPolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ShapingPolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        id: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ShapingPolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -752,11 +1046,12 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -772,11 +1067,11 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -791,10 +1086,11 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ShapingPolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -811,7 +1107,7 @@ class ShapingPolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -871,7 +1167,7 @@ class ShapingPolicy:
         **kwargs: Any,
     ) -> list[ShapingPolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -886,9 +1182,9 @@ class ShapingPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -966,7 +1262,7 @@ class ShapingPolicy:
         cos: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
@@ -1024,8 +1320,9 @@ class ShapingPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -1079,7 +1376,62 @@ class ShapingPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -1134,7 +1486,7 @@ class ShapingPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -1189,7 +1541,7 @@ class ShapingPolicy:
         cos: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
@@ -1247,8 +1599,9 @@ class ShapingPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -1302,7 +1655,62 @@ class ShapingPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -1357,7 +1765,7 @@ class ShapingPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -1366,7 +1774,7 @@ class ShapingPolicy:
         id: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ShapingPolicyObject: ...
     
@@ -1378,8 +1786,9 @@ class ShapingPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -1387,7 +1796,16 @@ class ShapingPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        id: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -1395,7 +1813,7 @@ class ShapingPolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -1456,7 +1874,7 @@ class ShapingPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -1481,8 +1899,1485 @@ class ShapingPolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ShapingPolicyDictMode:
+    """ShapingPolicy endpoint for dict response mode (default for this client).
+    
+    By default returns ShapingPolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ShapingPolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        id: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ShapingPolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ShapingPolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ShapingPolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ShapingPolicyObjectMode:
+    """ShapingPolicy endpoint for object response mode (default for this client).
+    
+    By default returns ShapingPolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ShapingPolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        id: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ShapingPolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ShapingPolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        id: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        id: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ShapingPolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ShapingPolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ShapingPolicyPayload | None = ...,
+        id: int | None = ...,
+        uuid: str | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ip_version: Literal["4", "6"] | None = ...,
+        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | None = ...,
+        tos_mask: str | None = ...,
+        tos: str | None = ...,
+        tos_negate: Literal["enable", "disable"] | None = ...,
+        traffic_shaper: str | None = ...,
+        traffic_shaper_reverse: str | None = ...,
+        per_ip_shaper: str | None = ...,
+        class_id: int | None = ...,
+        diffserv_forward: Literal["enable", "disable"] | None = ...,
+        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffservcode_forward: str | None = ...,
+        diffservcode_rev: str | None = ...,
+        cos_mask: str | None = ...,
+        cos: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ShapingPolicy",
+    "ShapingPolicyDictMode",
+    "ShapingPolicyObjectMode",
     "ShapingPolicyPayload",
     "ShapingPolicyObject",
 ]

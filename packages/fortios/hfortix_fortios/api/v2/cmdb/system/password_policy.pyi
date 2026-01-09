@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class PasswordPolicyPayload(TypedDict, total=False):
     """
     Type hints for system/password_policy payload fields.
@@ -13,20 +17,22 @@ class PasswordPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable setting a password policy for locally defined
-    apply_to: NotRequired[Literal["admin-password", "ipsec-preshared-key"]]  # Apply password policy to administrator passwords or IPsec pr
-    minimum_length: NotRequired[int]  # Minimum password length (12 - 128, default = 12).
-    min_lower_case_letter: NotRequired[int]  # Minimum number of lowercase characters in password
-    min_upper_case_letter: NotRequired[int]  # Minimum number of uppercase characters in password
-    min_non_alphanumeric: NotRequired[int]  # Minimum number of non-alphanumeric characters in password
-    min_number: NotRequired[int]  # Minimum number of numeric characters in password
-    expire_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable password expiration.
-    expire_day: NotRequired[int]  # Number of days after which passwords expire
-    reuse_password: NotRequired[Literal["enable", "disable"]]  # Enable/disable reuse of password.
-    reuse_password_limit: NotRequired[int]  # Number of times passwords can be reused
-    login_lockout_upon_weaker_encryption: NotRequired[Literal["enable", "disable"]]  # Enable/disable administrative user login lockout upon downgr
+    status: Literal["enable", "disable"]  # Enable/disable setting a password policy for local | Default: enable
+    apply_to: Literal["admin-password", "ipsec-preshared-key"]  # Apply password policy to administrator passwords o | Default: admin-password
+    minimum_length: int  # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
+    min_lower_case_letter: int  # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
+    min_upper_case_letter: int  # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
+    min_non_alphanumeric: int  # Minimum number of non-alphanumeric characters in p | Default: 1 | Min: 0 | Max: 128
+    min_number: int  # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
+    expire_status: Literal["enable", "disable"]  # Enable/disable password expiration. | Default: disable
+    expire_day: int  # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
+    reuse_password: Literal["enable", "disable"]  # Enable/disable reuse of password. | Default: enable
+    reuse_password_limit: int  # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
+    login_lockout_upon_weaker_encryption: Literal["enable", "disable"]  # Enable/disable administrative user login lockout u | Default: disable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -36,18 +42,18 @@ class PasswordPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    status: Literal["enable", "disable"]
-    apply_to: Literal["admin-password", "ipsec-preshared-key"]
-    minimum_length: int
-    min_lower_case_letter: int
-    min_upper_case_letter: int
-    min_non_alphanumeric: int
-    min_number: int
-    expire_status: Literal["enable", "disable"]
-    expire_day: int
-    reuse_password: Literal["enable", "disable"]
-    reuse_password_limit: int
-    login_lockout_upon_weaker_encryption: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]  # Enable/disable setting a password policy for local | Default: enable
+    apply_to: Literal["admin-password", "ipsec-preshared-key"]  # Apply password policy to administrator passwords o | Default: admin-password
+    minimum_length: int  # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
+    min_lower_case_letter: int  # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
+    min_upper_case_letter: int  # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
+    min_non_alphanumeric: int  # Minimum number of non-alphanumeric characters in p | Default: 1 | Min: 0 | Max: 128
+    min_number: int  # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
+    expire_status: Literal["enable", "disable"]  # Enable/disable password expiration. | Default: disable
+    expire_day: int  # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
+    reuse_password: Literal["enable", "disable"]  # Enable/disable reuse of password. | Default: enable
+    reuse_password_limit: int  # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
+    login_lockout_upon_weaker_encryption: Literal["enable", "disable"]  # Enable/disable administrative user login lockout u | Default: disable
 
 
 @final
@@ -58,29 +64,29 @@ class PasswordPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable setting a password policy for locally defined administrator passw
+    # Enable/disable setting a password policy for locally defined | Default: enable
     status: Literal["enable", "disable"]
-    # Apply password policy to administrator passwords or IPsec pre-shared keys or bot
+    # Apply password policy to administrator passwords or IPsec pr | Default: admin-password
     apply_to: Literal["admin-password", "ipsec-preshared-key"]
-    # Minimum password length (12 - 128, default = 12).
+    # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
     minimum_length: int
-    # Minimum number of lowercase characters in password (0 - 128, default = 1).
+    # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
     min_lower_case_letter: int
-    # Minimum number of uppercase characters in password (0 - 128, default = 1).
+    # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
     min_upper_case_letter: int
-    # Minimum number of non-alphanumeric characters in password (0 - 128, default = 1)
+    # Minimum number of non-alphanumeric characters in password | Default: 1 | Min: 0 | Max: 128
     min_non_alphanumeric: int
-    # Minimum number of numeric characters in password (0 - 128, default = 1).
+    # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
     min_number: int
-    # Enable/disable password expiration.
+    # Enable/disable password expiration. | Default: disable
     expire_status: Literal["enable", "disable"]
-    # Number of days after which passwords expire (1 - 999 days, default = 90).
+    # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
     expire_day: int
-    # Enable/disable reuse of password.
+    # Enable/disable reuse of password. | Default: enable
     reuse_password: Literal["enable", "disable"]
-    # Number of times passwords can be reused
+    # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
     reuse_password_limit: int
-    # Enable/disable administrative user login lockout upon downgrade
+    # Enable/disable administrative user login lockout upon downgr | Default: disable
     login_lockout_upon_weaker_encryption: Literal["enable", "disable"]
     
     # Common API response fields
@@ -106,8 +112,66 @@ class PasswordPolicy:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> PasswordPolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> PasswordPolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> PasswordPolicyResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -122,11 +186,12 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -142,11 +207,11 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -161,10 +226,11 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -181,7 +247,7 @@ class PasswordPolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -241,7 +307,7 @@ class PasswordPolicy:
         **kwargs: Any,
     ) -> PasswordPolicyResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -256,9 +322,9 @@ class PasswordPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -302,7 +368,7 @@ class PasswordPolicy:
         login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> PasswordPolicyObject: ...
     
@@ -326,8 +392,9 @@ class PasswordPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -347,7 +414,28 @@ class PasswordPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -368,7 +456,7 @@ class PasswordPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -395,7 +483,7 @@ class PasswordPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -420,8 +508,523 @@ class PasswordPolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class PasswordPolicyDictMode:
+    """PasswordPolicy endpoint for dict response mode (default for this client).
+    
+    By default returns PasswordPolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return PasswordPolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> PasswordPolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> PasswordPolicyResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class PasswordPolicyObjectMode:
+    """PasswordPolicy endpoint for object response mode (default for this client).
+    
+    By default returns PasswordPolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return PasswordPolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> PasswordPolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> PasswordPolicyResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> PasswordPolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: PasswordPolicyPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list[str] | None = ...,
+        minimum_length: int | None = ...,
+        min_lower_case_letter: int | None = ...,
+        min_upper_case_letter: int | None = ...,
+        min_non_alphanumeric: int | None = ...,
+        min_number: int | None = ...,
+        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_day: int | None = ...,
+        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password_limit: int | None = ...,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "PasswordPolicy",
+    "PasswordPolicyDictMode",
+    "PasswordPolicyObjectMode",
     "PasswordPolicyPayload",
     "PasswordPolicyObject",
 ]

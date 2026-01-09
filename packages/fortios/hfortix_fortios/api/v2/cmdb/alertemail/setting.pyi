@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class SettingPayload(TypedDict, total=False):
     """
     Type hints for alertemail/setting payload fields.
@@ -13,43 +17,45 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    username: NotRequired[str]  # Name that appears in the From: field of alert emails
-    mailto1: NotRequired[str]  # Email address to send alert email to
-    mailto2: NotRequired[str]  # Optional second email address to send alert email to
-    mailto3: NotRequired[str]  # Optional third email address to send alert email to
-    filter_mode: NotRequired[Literal["category", "threshold"]]  # How to filter log messages that are sent to alert emails.
-    email_interval: NotRequired[int]  # Interval between sending alert emails
-    IPS_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPS logs in alert email.
-    firewall_authentication_failure_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable firewall authentication failure logs in alert
-    HA_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable HA logs in alert email.
-    IPsec_errors_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPsec error logs in alert email.
-    FDS_update_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiGuard update logs in alert email.
-    PPP_errors_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable PPP error logs in alert email.
-    sslvpn_authentication_errors_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable Agentless VPN authentication error logs in al
-    antivirus_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable antivirus logs in alert email.
-    webfilter_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable web filter logs in alert email.
-    configuration_changes_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable configuration change logs in alert email.
-    violation_traffic_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable violation traffic logs in alert email.
-    admin_login_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable administrator login/logout logs in alert emai
-    FDS_license_expiring_warning: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiGuard license expiration warnings in ale
-    log_disk_usage_warning: NotRequired[Literal["enable", "disable"]]  # Enable/disable disk usage warnings in alert email.
-    fortiguard_log_quota_warning: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiCloud log quota warnings in alert email.
-    amc_interface_bypass_mode: NotRequired[Literal["enable", "disable"]]  # Enable/disable Fortinet Advanced Mezzanine Card (AMC) interf
-    FIPS_CC_errors: NotRequired[Literal["enable", "disable"]]  # Enable/disable FIPS and Common Criteria error logs in alert
-    FSSO_disconnect_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging of FSSO collector agent disconnect.
-    ssh_logs: NotRequired[Literal["enable", "disable"]]  # Enable/disable SSH logs in alert email.
-    local_disk_usage: NotRequired[int]  # Disk usage percentage at which to send alert email
-    emergency_interval: NotRequired[int]  # Emergency alert interval in minutes.
-    alert_interval: NotRequired[int]  # Alert alert interval in minutes.
-    critical_interval: NotRequired[int]  # Critical alert interval in minutes.
-    error_interval: NotRequired[int]  # Error alert interval in minutes.
-    warning_interval: NotRequired[int]  # Warning alert interval in minutes.
-    notification_interval: NotRequired[int]  # Notification alert interval in minutes.
-    information_interval: NotRequired[int]  # Information alert interval in minutes.
-    debug_interval: NotRequired[int]  # Debug alert interval in minutes.
-    severity: NotRequired[Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]]  # Lowest severity level to log.
+    username: str  # Name that appears in the From: field of alert emai | MaxLen: 63
+    mailto1: str  # Email address to send alert email to | MaxLen: 63
+    mailto2: str  # Optional second email address to send alert email | MaxLen: 63
+    mailto3: str  # Optional third email address to send alert email t | MaxLen: 63
+    filter_mode: Literal["category", "threshold"]  # How to filter log messages that are sent to alert | Default: category
+    email_interval: int  # Interval between sending alert emails | Default: 5 | Min: 1 | Max: 99999
+    IPS_logs: Literal["enable", "disable"]  # Enable/disable IPS logs in alert email. | Default: disable
+    firewall_authentication_failure_logs: Literal["enable", "disable"]  # Enable/disable firewall authentication failure log | Default: disable
+    HA_logs: Literal["enable", "disable"]  # Enable/disable HA logs in alert email. | Default: disable
+    IPsec_errors_logs: Literal["enable", "disable"]  # Enable/disable IPsec error logs in alert email. | Default: disable
+    FDS_update_logs: Literal["enable", "disable"]  # Enable/disable FortiGuard update logs in alert ema | Default: disable
+    PPP_errors_logs: Literal["enable", "disable"]  # Enable/disable PPP error logs in alert email. | Default: disable
+    sslvpn_authentication_errors_logs: Literal["enable", "disable"]  # Enable/disable Agentless VPN authentication error | Default: disable
+    antivirus_logs: Literal["enable", "disable"]  # Enable/disable antivirus logs in alert email. | Default: disable
+    webfilter_logs: Literal["enable", "disable"]  # Enable/disable web filter logs in alert email. | Default: disable
+    configuration_changes_logs: Literal["enable", "disable"]  # Enable/disable configuration change logs in alert | Default: disable
+    violation_traffic_logs: Literal["enable", "disable"]  # Enable/disable violation traffic logs in alert ema | Default: disable
+    admin_login_logs: Literal["enable", "disable"]  # Enable/disable administrator login/logout logs in | Default: disable
+    FDS_license_expiring_warning: Literal["enable", "disable"]  # Enable/disable FortiGuard license expiration warni | Default: disable
+    log_disk_usage_warning: Literal["enable", "disable"]  # Enable/disable disk usage warnings in alert email. | Default: disable
+    fortiguard_log_quota_warning: Literal["enable", "disable"]  # Enable/disable FortiCloud log quota warnings in al | Default: disable
+    amc_interface_bypass_mode: Literal["enable", "disable"]  # Enable/disable Fortinet Advanced Mezzanine Card | Default: disable
+    FIPS_CC_errors: Literal["enable", "disable"]  # Enable/disable FIPS and Common Criteria error logs | Default: disable
+    FSSO_disconnect_logs: Literal["enable", "disable"]  # Enable/disable logging of FSSO collector agent dis | Default: disable
+    ssh_logs: Literal["enable", "disable"]  # Enable/disable SSH logs in alert email. | Default: disable
+    local_disk_usage: int  # Disk usage percentage at which to send alert email | Default: 75 | Min: 1 | Max: 99
+    emergency_interval: int  # Emergency alert interval in minutes. | Default: 1 | Min: 1 | Max: 99999
+    alert_interval: int  # Alert alert interval in minutes. | Default: 2 | Min: 1 | Max: 99999
+    critical_interval: int  # Critical alert interval in minutes. | Default: 3 | Min: 1 | Max: 99999
+    error_interval: int  # Error alert interval in minutes. | Default: 5 | Min: 1 | Max: 99999
+    warning_interval: int  # Warning alert interval in minutes. | Default: 10 | Min: 1 | Max: 99999
+    notification_interval: int  # Notification alert interval in minutes. | Default: 20 | Min: 1 | Max: 99999
+    information_interval: int  # Information alert interval in minutes. | Default: 30 | Min: 1 | Max: 99999
+    debug_interval: int  # Debug alert interval in minutes. | Default: 60 | Min: 1 | Max: 99999
+    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]  # Lowest severity level to log. | Default: alert
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -59,41 +65,41 @@ class SettingResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    username: str
-    mailto1: str
-    mailto2: str
-    mailto3: str
-    filter_mode: Literal["category", "threshold"]
-    email_interval: int
-    IPS_logs: Literal["enable", "disable"]
-    firewall_authentication_failure_logs: Literal["enable", "disable"]
-    HA_logs: Literal["enable", "disable"]
-    IPsec_errors_logs: Literal["enable", "disable"]
-    FDS_update_logs: Literal["enable", "disable"]
-    PPP_errors_logs: Literal["enable", "disable"]
-    sslvpn_authentication_errors_logs: Literal["enable", "disable"]
-    antivirus_logs: Literal["enable", "disable"]
-    webfilter_logs: Literal["enable", "disable"]
-    configuration_changes_logs: Literal["enable", "disable"]
-    violation_traffic_logs: Literal["enable", "disable"]
-    admin_login_logs: Literal["enable", "disable"]
-    FDS_license_expiring_warning: Literal["enable", "disable"]
-    log_disk_usage_warning: Literal["enable", "disable"]
-    fortiguard_log_quota_warning: Literal["enable", "disable"]
-    amc_interface_bypass_mode: Literal["enable", "disable"]
-    FIPS_CC_errors: Literal["enable", "disable"]
-    FSSO_disconnect_logs: Literal["enable", "disable"]
-    ssh_logs: Literal["enable", "disable"]
-    local_disk_usage: int
-    emergency_interval: int
-    alert_interval: int
-    critical_interval: int
-    error_interval: int
-    warning_interval: int
-    notification_interval: int
-    information_interval: int
-    debug_interval: int
-    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+    username: str  # Name that appears in the From: field of alert emai | MaxLen: 63
+    mailto1: str  # Email address to send alert email to | MaxLen: 63
+    mailto2: str  # Optional second email address to send alert email | MaxLen: 63
+    mailto3: str  # Optional third email address to send alert email t | MaxLen: 63
+    filter_mode: Literal["category", "threshold"]  # How to filter log messages that are sent to alert | Default: category
+    email_interval: int  # Interval between sending alert emails | Default: 5 | Min: 1 | Max: 99999
+    IPS_logs: Literal["enable", "disable"]  # Enable/disable IPS logs in alert email. | Default: disable
+    firewall_authentication_failure_logs: Literal["enable", "disable"]  # Enable/disable firewall authentication failure log | Default: disable
+    HA_logs: Literal["enable", "disable"]  # Enable/disable HA logs in alert email. | Default: disable
+    IPsec_errors_logs: Literal["enable", "disable"]  # Enable/disable IPsec error logs in alert email. | Default: disable
+    FDS_update_logs: Literal["enable", "disable"]  # Enable/disable FortiGuard update logs in alert ema | Default: disable
+    PPP_errors_logs: Literal["enable", "disable"]  # Enable/disable PPP error logs in alert email. | Default: disable
+    sslvpn_authentication_errors_logs: Literal["enable", "disable"]  # Enable/disable Agentless VPN authentication error | Default: disable
+    antivirus_logs: Literal["enable", "disable"]  # Enable/disable antivirus logs in alert email. | Default: disable
+    webfilter_logs: Literal["enable", "disable"]  # Enable/disable web filter logs in alert email. | Default: disable
+    configuration_changes_logs: Literal["enable", "disable"]  # Enable/disable configuration change logs in alert | Default: disable
+    violation_traffic_logs: Literal["enable", "disable"]  # Enable/disable violation traffic logs in alert ema | Default: disable
+    admin_login_logs: Literal["enable", "disable"]  # Enable/disable administrator login/logout logs in | Default: disable
+    FDS_license_expiring_warning: Literal["enable", "disable"]  # Enable/disable FortiGuard license expiration warni | Default: disable
+    log_disk_usage_warning: Literal["enable", "disable"]  # Enable/disable disk usage warnings in alert email. | Default: disable
+    fortiguard_log_quota_warning: Literal["enable", "disable"]  # Enable/disable FortiCloud log quota warnings in al | Default: disable
+    amc_interface_bypass_mode: Literal["enable", "disable"]  # Enable/disable Fortinet Advanced Mezzanine Card | Default: disable
+    FIPS_CC_errors: Literal["enable", "disable"]  # Enable/disable FIPS and Common Criteria error logs | Default: disable
+    FSSO_disconnect_logs: Literal["enable", "disable"]  # Enable/disable logging of FSSO collector agent dis | Default: disable
+    ssh_logs: Literal["enable", "disable"]  # Enable/disable SSH logs in alert email. | Default: disable
+    local_disk_usage: int  # Disk usage percentage at which to send alert email | Default: 75 | Min: 1 | Max: 99
+    emergency_interval: int  # Emergency alert interval in minutes. | Default: 1 | Min: 1 | Max: 99999
+    alert_interval: int  # Alert alert interval in minutes. | Default: 2 | Min: 1 | Max: 99999
+    critical_interval: int  # Critical alert interval in minutes. | Default: 3 | Min: 1 | Max: 99999
+    error_interval: int  # Error alert interval in minutes. | Default: 5 | Min: 1 | Max: 99999
+    warning_interval: int  # Warning alert interval in minutes. | Default: 10 | Min: 1 | Max: 99999
+    notification_interval: int  # Notification alert interval in minutes. | Default: 20 | Min: 1 | Max: 99999
+    information_interval: int  # Information alert interval in minutes. | Default: 30 | Min: 1 | Max: 99999
+    debug_interval: int  # Debug alert interval in minutes. | Default: 60 | Min: 1 | Max: 99999
+    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]  # Lowest severity level to log. | Default: alert
 
 
 @final
@@ -104,75 +110,75 @@ class SettingObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name that appears in the From: field of alert emails (max. 63 characters).
+    # Name that appears in the From: field of alert emails | MaxLen: 63
     username: str
-    # Email address to send alert email to (usually a system administrator)
+    # Email address to send alert email to | MaxLen: 63
     mailto1: str
-    # Optional second email address to send alert email to (max. 63 characters).
+    # Optional second email address to send alert email to | MaxLen: 63
     mailto2: str
-    # Optional third email address to send alert email to (max. 63 characters).
+    # Optional third email address to send alert email to | MaxLen: 63
     mailto3: str
-    # How to filter log messages that are sent to alert emails.
+    # How to filter log messages that are sent to alert emails. | Default: category
     filter_mode: Literal["category", "threshold"]
-    # Interval between sending alert emails (1 - 99999 min, default = 5).
+    # Interval between sending alert emails | Default: 5 | Min: 1 | Max: 99999
     email_interval: int
-    # Enable/disable IPS logs in alert email.
+    # Enable/disable IPS logs in alert email. | Default: disable
     IPS_logs: Literal["enable", "disable"]
-    # Enable/disable firewall authentication failure logs in alert email.
+    # Enable/disable firewall authentication failure logs in alert | Default: disable
     firewall_authentication_failure_logs: Literal["enable", "disable"]
-    # Enable/disable HA logs in alert email.
+    # Enable/disable HA logs in alert email. | Default: disable
     HA_logs: Literal["enable", "disable"]
-    # Enable/disable IPsec error logs in alert email.
+    # Enable/disable IPsec error logs in alert email. | Default: disable
     IPsec_errors_logs: Literal["enable", "disable"]
-    # Enable/disable FortiGuard update logs in alert email.
+    # Enable/disable FortiGuard update logs in alert email. | Default: disable
     FDS_update_logs: Literal["enable", "disable"]
-    # Enable/disable PPP error logs in alert email.
+    # Enable/disable PPP error logs in alert email. | Default: disable
     PPP_errors_logs: Literal["enable", "disable"]
-    # Enable/disable Agentless VPN authentication error logs in alert email.
+    # Enable/disable Agentless VPN authentication error logs in al | Default: disable
     sslvpn_authentication_errors_logs: Literal["enable", "disable"]
-    # Enable/disable antivirus logs in alert email.
+    # Enable/disable antivirus logs in alert email. | Default: disable
     antivirus_logs: Literal["enable", "disable"]
-    # Enable/disable web filter logs in alert email.
+    # Enable/disable web filter logs in alert email. | Default: disable
     webfilter_logs: Literal["enable", "disable"]
-    # Enable/disable configuration change logs in alert email.
+    # Enable/disable configuration change logs in alert email. | Default: disable
     configuration_changes_logs: Literal["enable", "disable"]
-    # Enable/disable violation traffic logs in alert email.
+    # Enable/disable violation traffic logs in alert email. | Default: disable
     violation_traffic_logs: Literal["enable", "disable"]
-    # Enable/disable administrator login/logout logs in alert email.
+    # Enable/disable administrator login/logout logs in alert emai | Default: disable
     admin_login_logs: Literal["enable", "disable"]
-    # Enable/disable FortiGuard license expiration warnings in alert email.
+    # Enable/disable FortiGuard license expiration warnings in ale | Default: disable
     FDS_license_expiring_warning: Literal["enable", "disable"]
-    # Enable/disable disk usage warnings in alert email.
+    # Enable/disable disk usage warnings in alert email. | Default: disable
     log_disk_usage_warning: Literal["enable", "disable"]
-    # Enable/disable FortiCloud log quota warnings in alert email.
+    # Enable/disable FortiCloud log quota warnings in alert email. | Default: disable
     fortiguard_log_quota_warning: Literal["enable", "disable"]
-    # Enable/disable Fortinet Advanced Mezzanine Card (AMC) interface bypass mode logs
+    # Enable/disable Fortinet Advanced Mezzanine Card (AMC) interf | Default: disable
     amc_interface_bypass_mode: Literal["enable", "disable"]
-    # Enable/disable FIPS and Common Criteria error logs in alert email.
+    # Enable/disable FIPS and Common Criteria error logs in alert | Default: disable
     FIPS_CC_errors: Literal["enable", "disable"]
-    # Enable/disable logging of FSSO collector agent disconnect.
+    # Enable/disable logging of FSSO collector agent disconnect. | Default: disable
     FSSO_disconnect_logs: Literal["enable", "disable"]
-    # Enable/disable SSH logs in alert email.
+    # Enable/disable SSH logs in alert email. | Default: disable
     ssh_logs: Literal["enable", "disable"]
-    # Disk usage percentage at which to send alert email
+    # Disk usage percentage at which to send alert email | Default: 75 | Min: 1 | Max: 99
     local_disk_usage: int
-    # Emergency alert interval in minutes.
+    # Emergency alert interval in minutes. | Default: 1 | Min: 1 | Max: 99999
     emergency_interval: int
-    # Alert alert interval in minutes.
+    # Alert alert interval in minutes. | Default: 2 | Min: 1 | Max: 99999
     alert_interval: int
-    # Critical alert interval in minutes.
+    # Critical alert interval in minutes. | Default: 3 | Min: 1 | Max: 99999
     critical_interval: int
-    # Error alert interval in minutes.
+    # Error alert interval in minutes. | Default: 5 | Min: 1 | Max: 99999
     error_interval: int
-    # Warning alert interval in minutes.
+    # Warning alert interval in minutes. | Default: 10 | Min: 1 | Max: 99999
     warning_interval: int
-    # Notification alert interval in minutes.
+    # Notification alert interval in minutes. | Default: 20 | Min: 1 | Max: 99999
     notification_interval: int
-    # Information alert interval in minutes.
+    # Information alert interval in minutes. | Default: 30 | Min: 1 | Max: 99999
     information_interval: int
-    # Debug alert interval in minutes.
+    # Debug alert interval in minutes. | Default: 60 | Min: 1 | Max: 99999
     debug_interval: int
-    # Lowest severity level to log.
+    # Lowest severity level to log. | Default: alert
     severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
     
     # Common API response fields
@@ -198,8 +204,66 @@ class Setting:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -214,11 +278,12 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -234,11 +299,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -253,10 +318,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -273,7 +339,7 @@ class Setting:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -333,7 +399,7 @@ class Setting:
         **kwargs: Any,
     ) -> SettingResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -348,9 +414,9 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -417,7 +483,7 @@ class Setting:
         severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -464,8 +530,9 @@ class Setting:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -508,7 +575,51 @@ class Setting:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -552,7 +663,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -602,7 +713,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -627,8 +738,776 @@ class Setting:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class SettingDictMode:
+    """Setting endpoint for dict response mode (default for this client).
+    
+    By default returns SettingResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return SettingObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class SettingObjectMode:
+    """Setting endpoint for object response mode (default for this client).
+    
+    By default returns SettingObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        username: str | None = ...,
+        mailto1: str | None = ...,
+        mailto2: str | None = ...,
+        mailto3: str | None = ...,
+        filter_mode: Literal["category", "threshold"] | None = ...,
+        email_interval: int | None = ...,
+        IPS_logs: Literal["enable", "disable"] | None = ...,
+        firewall_authentication_failure_logs: Literal["enable", "disable"] | None = ...,
+        HA_logs: Literal["enable", "disable"] | None = ...,
+        IPsec_errors_logs: Literal["enable", "disable"] | None = ...,
+        FDS_update_logs: Literal["enable", "disable"] | None = ...,
+        PPP_errors_logs: Literal["enable", "disable"] | None = ...,
+        sslvpn_authentication_errors_logs: Literal["enable", "disable"] | None = ...,
+        antivirus_logs: Literal["enable", "disable"] | None = ...,
+        webfilter_logs: Literal["enable", "disable"] | None = ...,
+        configuration_changes_logs: Literal["enable", "disable"] | None = ...,
+        violation_traffic_logs: Literal["enable", "disable"] | None = ...,
+        admin_login_logs: Literal["enable", "disable"] | None = ...,
+        FDS_license_expiring_warning: Literal["enable", "disable"] | None = ...,
+        log_disk_usage_warning: Literal["enable", "disable"] | None = ...,
+        fortiguard_log_quota_warning: Literal["enable", "disable"] | None = ...,
+        amc_interface_bypass_mode: Literal["enable", "disable"] | None = ...,
+        FIPS_CC_errors: Literal["enable", "disable"] | None = ...,
+        FSSO_disconnect_logs: Literal["enable", "disable"] | None = ...,
+        ssh_logs: Literal["enable", "disable"] | None = ...,
+        local_disk_usage: int | None = ...,
+        emergency_interval: int | None = ...,
+        alert_interval: int | None = ...,
+        critical_interval: int | None = ...,
+        error_interval: int | None = ...,
+        warning_interval: int | None = ...,
+        notification_interval: int | None = ...,
+        information_interval: int | None = ...,
+        debug_interval: int | None = ...,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Setting",
+    "SettingDictMode",
+    "SettingObjectMode",
     "SettingPayload",
     "SettingObject",
 ]

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class LinkMonitorPayload(TypedDict, total=False):
     """
     Type hints for system/link_monitor payload fields.
@@ -19,42 +23,78 @@ class LinkMonitorPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Link monitor name.
-    addr_mode: NotRequired[Literal["ipv4", "ipv6"]]  # Address mode (IPv4 or IPv6).
-    srcintf: NotRequired[str]  # Interface that receives the traffic to be monitored.
-    server_config: NotRequired[Literal["default", "individual"]]  # Mode of server configuration.
-    server_type: NotRequired[Literal["static", "dynamic"]]  # Server type (static or dynamic).
+    name: str  # Link monitor name. | MaxLen: 35
+    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
+    srcintf: str  # Interface that receives the traffic to be monitore | MaxLen: 15
+    server_config: Literal["default", "individual"]  # Mode of server configuration. | Default: default
+    server_type: Literal["static", "dynamic"]  # Server type (static or dynamic). | Default: static
     server: list[dict[str, Any]]  # IP address of the server(s) to be monitored.
-    protocol: NotRequired[Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]]  # Protocols used to monitor the server.
-    port: NotRequired[int]  # Port number of the traffic to be used to monitor the server.
-    gateway_ip: NotRequired[str]  # Gateway IP address used to probe the server.
-    gateway_ip6: NotRequired[str]  # Gateway IPv6 address used to probe the server.
-    route: NotRequired[list[dict[str, Any]]]  # Subnet to monitor.
-    source_ip: NotRequired[str]  # Source IP address used in packet to the server.
-    source_ip6: NotRequired[str]  # Source IPv6 address used in packet to the server.
-    http_get: str  # If you are monitoring an HTML server you can send an HTTP-GE
-    http_agent: NotRequired[str]  # String in the http-agent field in the HTTP header.
-    http_match: NotRequired[str]  # String that you expect to see in the HTTP-GET requests of th
-    interval: NotRequired[int]  # Detection interval in milliseconds
-    probe_timeout: NotRequired[int]  # Time to wait before a probe packet is considered lost
-    failtime: NotRequired[int]  # Number of retry attempts before the server is considered dow
-    recoverytime: NotRequired[int]  # Number of successful responses received before server is con
-    probe_count: NotRequired[int]  # Number of most recent probes that should be used to calculat
-    security_mode: NotRequired[Literal["none", "authentication"]]  # Twamp controller security mode.
-    password: NotRequired[str]  # TWAMP controller password in authentication mode.
-    packet_size: NotRequired[int]  # Packet size of a TWAMP test session (124/158 - 1024).
-    ha_priority: NotRequired[int]  # HA election priority (1 - 50).
-    fail_weight: NotRequired[int]  # Threshold weight to trigger link failure alert.
-    update_cascade_interface: NotRequired[Literal["enable", "disable"]]  # Enable/disable update cascade interface.
-    update_static_route: NotRequired[Literal["enable", "disable"]]  # Enable/disable updating the static route.
-    update_policy_route: NotRequired[Literal["enable", "disable"]]  # Enable/disable updating the policy route.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this link monitor.
-    diffservcode: NotRequired[str]  # Differentiated services code point (DSCP) in the IP header o
-    class_id: NotRequired[int]  # Traffic class ID.
-    service_detection: NotRequired[Literal["enable", "disable"]]  # Only use monitor to read quality values. If enabled, static
-    server_list: NotRequired[list[dict[str, Any]]]  # Servers for link-monitor to monitor.
+    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
+    port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
+    gateway_ip: str  # Gateway IP address used to probe the server. | Default: 0.0.0.0
+    gateway_ip6: str  # Gateway IPv6 address used to probe the server. | Default: ::
+    route: list[dict[str, Any]]  # Subnet to monitor.
+    source_ip: str  # Source IP address used in packet to the server. | Default: 0.0.0.0
+    source_ip6: str  # Source IPv6 address used in packet to the server. | Default: ::
+    http_get: str  # If you are monitoring an HTML server you can send | Default: / | MaxLen: 1024
+    http_agent: str  # String in the http-agent field in the HTTP header. | Default: Chrome/ Safari/ | MaxLen: 1024
+    http_match: str  # String that you expect to see in the HTTP-GET requ | MaxLen: 1024
+    interval: int  # Detection interval in milliseconds | Default: 500 | Min: 20 | Max: 3600000
+    probe_timeout: int  # Time to wait before a probe packet is considered l | Default: 500 | Min: 20 | Max: 5000
+    failtime: int  # Number of retry attempts before the server is cons | Default: 5 | Min: 1 | Max: 3600
+    recoverytime: int  # Number of successful responses received before ser | Default: 5 | Min: 1 | Max: 3600
+    probe_count: int  # Number of most recent probes that should be used t | Default: 30 | Min: 5 | Max: 30
+    security_mode: Literal["none", "authentication"]  # Twamp controller security mode. | Default: none
+    password: str  # TWAMP controller password in authentication mode. | MaxLen: 128
+    packet_size: int  # Packet size of a TWAMP test session | Default: 124 | Min: 0 | Max: 65535
+    ha_priority: int  # HA election priority (1 - 50). | Default: 1 | Min: 1 | Max: 50
+    fail_weight: int  # Threshold weight to trigger link failure alert. | Default: 0 | Min: 0 | Max: 255
+    update_cascade_interface: Literal["enable", "disable"]  # Enable/disable update cascade interface. | Default: enable
+    update_static_route: Literal["enable", "disable"]  # Enable/disable updating the static route. | Default: enable
+    update_policy_route: Literal["enable", "disable"]  # Enable/disable updating the policy route. | Default: enable
+    status: Literal["enable", "disable"]  # Enable/disable this link monitor. | Default: enable
+    diffservcode: str  # Differentiated services code point (DSCP) in the I
+    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
+    service_detection: Literal["enable", "disable"]  # Only use monitor to read quality values. If enable | Default: disable
+    server_list: list[dict[str, Any]]  # Servers for link-monitor to monitor.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class LinkMonitorServerItem(TypedDict):
+    """Type hints for server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    address: str  # Server address. | MaxLen: 79
+
+
+class LinkMonitorRouteItem(TypedDict):
+    """Type hints for route table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    subnet: str  # IP and netmask (x.x.x.x/y). | MaxLen: 79
+
+
+class LinkMonitorServerlistItem(TypedDict):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Server ID. | Default: 0 | Min: 1 | Max: 32
+    dst: str  # IP address of the server to be monitored. | MaxLen: 64
+    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
+    port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
+    weight: int  # Weight of the monitor to this dst (0 - 255). | Default: 0 | Min: 0 | Max: 255
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class LinkMonitorServerObject:
@@ -64,7 +104,7 @@ class LinkMonitorServerObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Server address.
+    # Server address. | MaxLen: 79
     address: str
     
     # Methods from FortiObject
@@ -85,7 +125,7 @@ class LinkMonitorRouteObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # IP and netmask (x.x.x.x/y).
+    # IP and netmask (x.x.x.x/y). | MaxLen: 79
     subnet: str
     
     # Methods from FortiObject
@@ -106,15 +146,15 @@ class LinkMonitorServerlistObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Server ID.
+    # Server ID. | Default: 0 | Min: 1 | Max: 32
     id: int
-    # IP address of the server to be monitored.
+    # IP address of the server to be monitored. | MaxLen: 64
     dst: str
-    # Protocols used to monitor the server.
+    # Protocols used to monitor the server. | Default: ping
     protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]
-    # Port number of the traffic to be used to monitor the server.
+    # Port number of the traffic to be used to monitor the server. | Default: 0 | Min: 1 | Max: 65535
     port: int
-    # Weight of the monitor to this dst (0 - 255).
+    # Weight of the monitor to this dst (0 - 255). | Default: 0 | Min: 0 | Max: 255
     weight: int
     
     # Methods from FortiObject
@@ -135,40 +175,40 @@ class LinkMonitorResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    addr_mode: Literal["ipv4", "ipv6"]
-    srcintf: str
-    server_config: Literal["default", "individual"]
-    server_type: Literal["static", "dynamic"]
-    server: list[dict[str, Any]]
-    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]
-    port: int
-    gateway_ip: str
-    gateway_ip6: str
-    route: list[dict[str, Any]]
-    source_ip: str
-    source_ip6: str
-    http_get: str
-    http_agent: str
-    http_match: str
-    interval: int
-    probe_timeout: int
-    failtime: int
-    recoverytime: int
-    probe_count: int
-    security_mode: Literal["none", "authentication"]
-    password: str
-    packet_size: int
-    ha_priority: int
-    fail_weight: int
-    update_cascade_interface: Literal["enable", "disable"]
-    update_static_route: Literal["enable", "disable"]
-    update_policy_route: Literal["enable", "disable"]
-    status: Literal["enable", "disable"]
-    diffservcode: str
-    class_id: int
-    service_detection: Literal["enable", "disable"]
-    server_list: list[dict[str, Any]]
+    name: str  # Link monitor name. | MaxLen: 35
+    addr_mode: Literal["ipv4", "ipv6"]  # Address mode (IPv4 or IPv6). | Default: ipv4
+    srcintf: str  # Interface that receives the traffic to be monitore | MaxLen: 15
+    server_config: Literal["default", "individual"]  # Mode of server configuration. | Default: default
+    server_type: Literal["static", "dynamic"]  # Server type (static or dynamic). | Default: static
+    server: list[LinkMonitorServerItem]  # IP address of the server(s) to be monitored.
+    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]  # Protocols used to monitor the server. | Default: ping
+    port: int  # Port number of the traffic to be used to monitor t | Default: 0 | Min: 1 | Max: 65535
+    gateway_ip: str  # Gateway IP address used to probe the server. | Default: 0.0.0.0
+    gateway_ip6: str  # Gateway IPv6 address used to probe the server. | Default: ::
+    route: list[LinkMonitorRouteItem]  # Subnet to monitor.
+    source_ip: str  # Source IP address used in packet to the server. | Default: 0.0.0.0
+    source_ip6: str  # Source IPv6 address used in packet to the server. | Default: ::
+    http_get: str  # If you are monitoring an HTML server you can send | Default: / | MaxLen: 1024
+    http_agent: str  # String in the http-agent field in the HTTP header. | Default: Chrome/ Safari/ | MaxLen: 1024
+    http_match: str  # String that you expect to see in the HTTP-GET requ | MaxLen: 1024
+    interval: int  # Detection interval in milliseconds | Default: 500 | Min: 20 | Max: 3600000
+    probe_timeout: int  # Time to wait before a probe packet is considered l | Default: 500 | Min: 20 | Max: 5000
+    failtime: int  # Number of retry attempts before the server is cons | Default: 5 | Min: 1 | Max: 3600
+    recoverytime: int  # Number of successful responses received before ser | Default: 5 | Min: 1 | Max: 3600
+    probe_count: int  # Number of most recent probes that should be used t | Default: 30 | Min: 5 | Max: 30
+    security_mode: Literal["none", "authentication"]  # Twamp controller security mode. | Default: none
+    password: str  # TWAMP controller password in authentication mode. | MaxLen: 128
+    packet_size: int  # Packet size of a TWAMP test session | Default: 124 | Min: 0 | Max: 65535
+    ha_priority: int  # HA election priority (1 - 50). | Default: 1 | Min: 1 | Max: 50
+    fail_weight: int  # Threshold weight to trigger link failure alert. | Default: 0 | Min: 0 | Max: 255
+    update_cascade_interface: Literal["enable", "disable"]  # Enable/disable update cascade interface. | Default: enable
+    update_static_route: Literal["enable", "disable"]  # Enable/disable updating the static route. | Default: enable
+    update_policy_route: Literal["enable", "disable"]  # Enable/disable updating the policy route. | Default: enable
+    status: Literal["enable", "disable"]  # Enable/disable this link monitor. | Default: enable
+    diffservcode: str  # Differentiated services code point (DSCP) in the I
+    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
+    service_detection: Literal["enable", "disable"]  # Only use monitor to read quality values. If enable | Default: disable
+    server_list: list[LinkMonitorServerlistItem]  # Servers for link-monitor to monitor.
 
 
 @final
@@ -179,74 +219,74 @@ class LinkMonitorObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Link monitor name.
+    # Link monitor name. | MaxLen: 35
     name: str
-    # Address mode (IPv4 or IPv6).
+    # Address mode (IPv4 or IPv6). | Default: ipv4
     addr_mode: Literal["ipv4", "ipv6"]
-    # Interface that receives the traffic to be monitored.
+    # Interface that receives the traffic to be monitored. | MaxLen: 15
     srcintf: str
-    # Mode of server configuration.
+    # Mode of server configuration. | Default: default
     server_config: Literal["default", "individual"]
-    # Server type (static or dynamic).
+    # Server type (static or dynamic). | Default: static
     server_type: Literal["static", "dynamic"]
     # IP address of the server(s) to be monitored.
-    server: list[LinkMonitorServerObject]  # Table field - list of typed objects
-    # Protocols used to monitor the server.
+    server: list[LinkMonitorServerObject]
+    # Protocols used to monitor the server. | Default: ping
     protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]
-    # Port number of the traffic to be used to monitor the server.
+    # Port number of the traffic to be used to monitor the server. | Default: 0 | Min: 1 | Max: 65535
     port: int
-    # Gateway IP address used to probe the server.
+    # Gateway IP address used to probe the server. | Default: 0.0.0.0
     gateway_ip: str
-    # Gateway IPv6 address used to probe the server.
+    # Gateway IPv6 address used to probe the server. | Default: ::
     gateway_ip6: str
     # Subnet to monitor.
-    route: list[LinkMonitorRouteObject]  # Table field - list of typed objects
-    # Source IP address used in packet to the server.
+    route: list[LinkMonitorRouteObject]
+    # Source IP address used in packet to the server. | Default: 0.0.0.0
     source_ip: str
-    # Source IPv6 address used in packet to the server.
+    # Source IPv6 address used in packet to the server. | Default: ::
     source_ip6: str
-    # If you are monitoring an HTML server you can send an HTTP-GET request with a cus
+    # If you are monitoring an HTML server you can send an HTTP-GE | Default: / | MaxLen: 1024
     http_get: str
-    # String in the http-agent field in the HTTP header.
+    # String in the http-agent field in the HTTP header. | Default: Chrome/ Safari/ | MaxLen: 1024
     http_agent: str
-    # String that you expect to see in the HTTP-GET requests of the traffic to be moni
+    # String that you expect to see in the HTTP-GET requests of th | MaxLen: 1024
     http_match: str
-    # Detection interval in milliseconds (20 - 3600 * 1000 msec, default = 500).
+    # Detection interval in milliseconds | Default: 500 | Min: 20 | Max: 3600000
     interval: int
-    # Time to wait before a probe packet is considered lost
+    # Time to wait before a probe packet is considered lost | Default: 500 | Min: 20 | Max: 5000
     probe_timeout: int
-    # Number of retry attempts before the server is considered down
+    # Number of retry attempts before the server is considered dow | Default: 5 | Min: 1 | Max: 3600
     failtime: int
-    # Number of successful responses received before server is considered recovered
+    # Number of successful responses received before server is con | Default: 5 | Min: 1 | Max: 3600
     recoverytime: int
-    # Number of most recent probes that should be used to calculate latency and jitter
+    # Number of most recent probes that should be used to calculat | Default: 30 | Min: 5 | Max: 30
     probe_count: int
-    # Twamp controller security mode.
+    # Twamp controller security mode. | Default: none
     security_mode: Literal["none", "authentication"]
-    # TWAMP controller password in authentication mode.
+    # TWAMP controller password in authentication mode. | MaxLen: 128
     password: str
-    # Packet size of a TWAMP test session (124/158 - 1024).
+    # Packet size of a TWAMP test session (124/158 - 1024). | Default: 124 | Min: 0 | Max: 65535
     packet_size: int
-    # HA election priority (1 - 50).
+    # HA election priority (1 - 50). | Default: 1 | Min: 1 | Max: 50
     ha_priority: int
-    # Threshold weight to trigger link failure alert.
+    # Threshold weight to trigger link failure alert. | Default: 0 | Min: 0 | Max: 255
     fail_weight: int
-    # Enable/disable update cascade interface.
+    # Enable/disable update cascade interface. | Default: enable
     update_cascade_interface: Literal["enable", "disable"]
-    # Enable/disable updating the static route.
+    # Enable/disable updating the static route. | Default: enable
     update_static_route: Literal["enable", "disable"]
-    # Enable/disable updating the policy route.
+    # Enable/disable updating the policy route. | Default: enable
     update_policy_route: Literal["enable", "disable"]
-    # Enable/disable this link monitor.
+    # Enable/disable this link monitor. | Default: enable
     status: Literal["enable", "disable"]
-    # Differentiated services code point (DSCP) in the IP header of the probe packet.
+    # Differentiated services code point (DSCP) in the IP header o
     diffservcode: str
-    # Traffic class ID.
+    # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
     class_id: int
-    # Only use monitor to read quality values. If enabled, static routes and cascade i
+    # Only use monitor to read quality values. If enabled, static | Default: disable
     service_detection: Literal["enable", "disable"]
     # Servers for link-monitor to monitor.
-    server_list: list[LinkMonitorServerlistObject]  # Table field - list of typed objects
+    server_list: list[LinkMonitorServerlistObject]
     
     # Common API response fields
     status: str
@@ -272,8 +312,66 @@ class LinkMonitor:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LinkMonitorResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LinkMonitorResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[LinkMonitorResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -288,11 +386,12 @@ class LinkMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LinkMonitorObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -308,11 +407,11 @@ class LinkMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LinkMonitorObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -327,10 +426,11 @@ class LinkMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[LinkMonitorObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -347,7 +447,7 @@ class LinkMonitor:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -407,7 +507,7 @@ class LinkMonitor:
         **kwargs: Any,
     ) -> list[LinkMonitorResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -422,9 +522,9 @@ class LinkMonitor:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -490,7 +590,7 @@ class LinkMonitor:
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LinkMonitorObject: ...
     
@@ -536,8 +636,9 @@ class LinkMonitor:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -579,7 +680,50 @@ class LinkMonitor:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -622,7 +766,7 @@ class LinkMonitor:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -665,7 +809,7 @@ class LinkMonitor:
         server_list: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LinkMonitorObject: ...
     
@@ -711,8 +855,9 @@ class LinkMonitor:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -754,7 +899,50 @@ class LinkMonitor:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -797,7 +985,7 @@ class LinkMonitor:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -806,7 +994,7 @@ class LinkMonitor:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LinkMonitorObject: ...
     
@@ -818,8 +1006,9 @@ class LinkMonitor:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -827,7 +1016,16 @@ class LinkMonitor:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -835,7 +1033,7 @@ class LinkMonitor:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -884,7 +1082,7 @@ class LinkMonitor:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -909,8 +1107,1245 @@ class LinkMonitor:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class LinkMonitorDictMode:
+    """LinkMonitor endpoint for dict response mode (default for this client).
+    
+    By default returns LinkMonitorResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return LinkMonitorObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[LinkMonitorObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> LinkMonitorResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LinkMonitorResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class LinkMonitorObjectMode:
+    """LinkMonitor endpoint for object response mode (default for this client).
+    
+    By default returns LinkMonitorObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return LinkMonitorResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> LinkMonitorResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[LinkMonitorResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LinkMonitorObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LinkMonitorObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LinkMonitorPayload | None = ...,
+        name: str | None = ...,
+        addr_mode: Literal["ipv4", "ipv6"] | None = ...,
+        srcintf: str | None = ...,
+        server_config: Literal["default", "individual"] | None = ...,
+        server_type: Literal["static", "dynamic"] | None = ...,
+        server: str | list[str] | list[dict[str, Any]] | None = ...,
+        protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
+        port: int | None = ...,
+        gateway_ip: str | None = ...,
+        gateway_ip6: str | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        http_get: str | None = ...,
+        http_agent: str | None = ...,
+        http_match: str | None = ...,
+        interval: int | None = ...,
+        probe_timeout: int | None = ...,
+        failtime: int | None = ...,
+        recoverytime: int | None = ...,
+        probe_count: int | None = ...,
+        security_mode: Literal["none", "authentication"] | None = ...,
+        password: str | None = ...,
+        packet_size: int | None = ...,
+        ha_priority: int | None = ...,
+        fail_weight: int | None = ...,
+        update_cascade_interface: Literal["enable", "disable"] | None = ...,
+        update_static_route: Literal["enable", "disable"] | None = ...,
+        update_policy_route: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        diffservcode: str | None = ...,
+        class_id: int | None = ...,
+        service_detection: Literal["enable", "disable"] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "LinkMonitor",
+    "LinkMonitorDictMode",
+    "LinkMonitorObjectMode",
     "LinkMonitorPayload",
     "LinkMonitorObject",
 ]

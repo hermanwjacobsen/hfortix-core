@@ -1,3 +1,4 @@
+
 # HFortix FortiOS
 
 Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
@@ -5,34 +6,64 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![PyPI version](https://badge.fury.io/py/hfortix-fortios.svg)](https://pypi.org/project/hfortix-fortios/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.18 (January 7, 2026)**
->
-> **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
-> **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New**: Major generator optimizations - 143K lines eliminated, 10x faster autocomplete!
 
-**Version:** 0.5.18
+> **⚠️ BETA STATUS - Version 0.5.34 (January 8, 2026)**
+>
+> **Breaking Changes:** See v0.5.33 and v0.5.32 for important return type changes in dict/object mode.
+> **Status:** Production-ready but in beta until v1.0 with comprehensive unit tests.
+> **What's New:** See below for all recent improvements, fixes, and new features!
+
+**Version:** 0.5.34
 **Status:** Beta (100% auto-generated, production-ready, optimized for performance)
 
-## 🚀 What's New in v0.5.18 (January 2026)
 
-### Major Generator Optimizations
+## 🚀 What's New in v0.5.34 (January 2026)
 
-**Massive performance and maintainability improvements through code generation refactoring:**
+### Major Improvements and Breaking Changes (v0.5.32–v0.5.34)
 
-- ✅ **143,419 lines eliminated** - Removed duplicate boilerplate code
-- ✅ **10x faster autocomplete** - Protocol-based type hints eliminate IDE overhead
-- ✅ **99.8% less code duplication** - Centralized validation and type definitions
-- ✅ **25% smaller files** - Average endpoint file reduced from 949 to 708 lines
-- ✅ **Full parameter autocomplete** - 220+ parameters per endpoint with exact Literal types
+- **Enhanced type stub overloads for better IDE autocomplete**
+    - All 1,000+ endpoints now have specific overloads for default mode (when `response_mode` is not specified)
+    - Pylance now correctly infers types for queries by mkey without explicit type annotations
+    - No longer need to annotate: `rule: RuleResponse = ...` — just use `rule = ...`
+    - Improved overload ordering for better type inference
 
-**Technical Highlights:**
-- Protocol inheritance eliminates 131,200 lines of duplicate `@overload` decorators
-- Centralized validation removes 11,727 lines of duplicate helper code
-- IDE/type checker memory usage reduced by 99% for type information
-- Autocomplete response time: 200-500ms → < 10ms
+- **Dict/Object mode query by name returns single item**
+    - When querying by name/mkey with `response_mode="dict"` or `response_mode="object"`, now returns a single dict/object instead of a list
+    - Example: `group = fgt.api.cmdb.firewall.service.group.get(name="test")` returns a `dict` or `FortiObject`, not a list
+    - **Breaking Change:** Tests and code expecting a list for single-item queries must be updated
 
-See [CHANGELOG.md](CHANGELOG.md) for complete details.
+- **Nested typed classes for table field children**
+    - Table fields now have their own typed classes (e.g., `GroupMemberObject`)
+    - Enables full IDE autocomplete for nested table attributes like `.name`, `.id`, etc.
+
+- **Keyword argument support for mkey parameters**
+    - Both `get("name")` and `get(name="name")` infer the correct return type
+
+- **IDE autocomplete for table field members in object mode**
+    - Table fields now return typed objects instead of generic `FortiObject`
+    - Full attribute autocomplete for nested objects
+
+- **Universal table field normalization with schema awareness**
+    - Handles custom mkeys: `interface-name`, `id`, `index`, `seq-num`, `priority`, etc.
+    - All string values are automatically stripped of whitespace
+
+- **Enhanced parameter documentation**
+    - All POST/PUT method parameters now show field descriptions from the FortiOS schema in IDE tooltips
+
+- **Type annotations for FortiOS client attributes**
+    - Improved type inference and autocomplete for `fgt.api`, `fgt.api.cmdb`, etc.
+
+- **Other Notable Fixes and Improvements:**
+    - Fixed stub generator comment truncation (no more broken comments in stubs)
+    - Enhanced error messages for duplicate name/unique field conflicts
+    - `set()` now accepts all field parameters (not just payload_dict)
+    - Singleton endpoints now return a single object, not a list
+    - `FortiObject` now supports both attribute and dictionary-style access
+    - Filter parameter now accepts both string and list
+    - Interactive help system for all API endpoints: `endpoint.help()`
+    - Formatting utilities: `to_json()`, `to_csv()`, `to_dict()`, etc.
+
+See the [complete changelog](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) for all details and previous versions.
 
 ## Overview
 

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProfilePayload(TypedDict, total=False):
     """
     Type hints for webfilter/profile payload fields.
@@ -18,43 +22,55 @@ class ProfilePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Profile name.
-    comment: NotRequired[str]  # Optional comments.
-    feature_set: NotRequired[Literal["flow", "proxy"]]  # Flow/proxy feature set.
-    replacemsg_group: NotRequired[str]  # Replacement message group.
-    options: NotRequired[Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"]]  # Options.
-    https_replacemsg: NotRequired[Literal["enable", "disable"]]  # Enable replacement messages for HTTPS.
-    web_flow_log_encoding: NotRequired[Literal["utf-8", "punycode"]]  # Log encoding in flow mode.
-    ovrd_perm: NotRequired[Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"]]  # Permitted override types.
-    post_action: NotRequired[Literal["normal", "block"]]  # Action taken for HTTP POST traffic.
-    override: NotRequired[str]  # Web Filter override settings.
-    web: NotRequired[str]  # Web content filtering settings.
-    ftgd_wf: NotRequired[str]  # FortiGuard Web Filter settings.
-    antiphish: NotRequired[str]  # AntiPhishing profile.
-    wisp: NotRequired[Literal["enable", "disable"]]  # Enable/disable web proxy WISP.
-    wisp_servers: NotRequired[list[dict[str, Any]]]  # WISP servers.
-    wisp_algorithm: NotRequired[Literal["primary-secondary", "round-robin", "auto-learning"]]  # WISP server selection algorithm.
-    log_all_url: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging all URLs visited.
-    web_content_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging logging blocked web content.
-    web_filter_activex_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging ActiveX.
-    web_filter_command_block_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging blocked commands.
-    web_filter_cookie_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging cookie filtering.
-    web_filter_applet_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging Java applets.
-    web_filter_jscript_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging JScripts.
-    web_filter_js_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging Java scripts.
-    web_filter_vbs_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging VBS scripts.
-    web_filter_unknown_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging unknown scripts.
-    web_filter_referer_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging referrers.
-    web_filter_cookie_removal_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging blocked cookies.
-    web_url_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging URL filtering.
-    web_invalid_domain_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging invalid domain names.
-    web_ftgd_err_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging rating errors.
-    web_ftgd_quota_usage: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging daily quota usage.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging for web filtering.
-    web_extended_all_action_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended any filter action logging for web fi
-    web_antiphishing_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging of AntiPhishing checks.
+    name: str  # Profile name. | MaxLen: 47
+    comment: str  # Optional comments. | MaxLen: 255
+    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"]  # Options.
+    https_replacemsg: Literal["enable", "disable"]  # Enable replacement messages for HTTPS. | Default: enable
+    web_flow_log_encoding: Literal["utf-8", "punycode"]  # Log encoding in flow mode. | Default: utf-8
+    ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"]  # Permitted override types.
+    post_action: Literal["normal", "block"]  # Action taken for HTTP POST traffic. | Default: normal
+    override: str  # Web Filter override settings.
+    web: str  # Web content filtering settings.
+    ftgd_wf: str  # FortiGuard Web Filter settings.
+    antiphish: str  # AntiPhishing profile.
+    wisp: Literal["enable", "disable"]  # Enable/disable web proxy WISP. | Default: disable
+    wisp_servers: list[dict[str, Any]]  # WISP servers.
+    wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]  # WISP server selection algorithm. | Default: auto-learning
+    log_all_url: Literal["enable", "disable"]  # Enable/disable logging all URLs visited. | Default: disable
+    web_content_log: Literal["enable", "disable"]  # Enable/disable logging logging blocked web content | Default: enable
+    web_filter_activex_log: Literal["enable", "disable"]  # Enable/disable logging ActiveX. | Default: enable
+    web_filter_command_block_log: Literal["enable", "disable"]  # Enable/disable logging blocked commands. | Default: enable
+    web_filter_cookie_log: Literal["enable", "disable"]  # Enable/disable logging cookie filtering. | Default: enable
+    web_filter_applet_log: Literal["enable", "disable"]  # Enable/disable logging Java applets. | Default: enable
+    web_filter_jscript_log: Literal["enable", "disable"]  # Enable/disable logging JScripts. | Default: enable
+    web_filter_js_log: Literal["enable", "disable"]  # Enable/disable logging Java scripts. | Default: enable
+    web_filter_vbs_log: Literal["enable", "disable"]  # Enable/disable logging VBS scripts. | Default: enable
+    web_filter_unknown_log: Literal["enable", "disable"]  # Enable/disable logging unknown scripts. | Default: enable
+    web_filter_referer_log: Literal["enable", "disable"]  # Enable/disable logging referrers. | Default: enable
+    web_filter_cookie_removal_log: Literal["enable", "disable"]  # Enable/disable logging blocked cookies. | Default: enable
+    web_url_log: Literal["enable", "disable"]  # Enable/disable logging URL filtering. | Default: enable
+    web_invalid_domain_log: Literal["enable", "disable"]  # Enable/disable logging invalid domain names. | Default: enable
+    web_ftgd_err_log: Literal["enable", "disable"]  # Enable/disable logging rating errors. | Default: enable
+    web_ftgd_quota_usage: Literal["enable", "disable"]  # Enable/disable logging daily quota usage. | Default: enable
+    extended_log: Literal["enable", "disable"]  # Enable/disable extended logging for web filtering. | Default: disable
+    web_extended_all_action_log: Literal["enable", "disable"]  # Enable/disable extended any filter action logging | Default: disable
+    web_antiphishing_log: Literal["enable", "disable"]  # Enable/disable logging of AntiPhishing checks. | Default: enable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ProfileWispserversItem(TypedDict):
+    """Type hints for wisp-servers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Server name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ProfileWispserversObject:
@@ -64,7 +80,7 @@ class ProfileWispserversObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Server name.
+    # Server name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -85,41 +101,41 @@ class ProfileResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    comment: str
-    feature_set: Literal["flow", "proxy"]
-    replacemsg_group: str
-    options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"]
-    https_replacemsg: Literal["enable", "disable"]
-    web_flow_log_encoding: Literal["utf-8", "punycode"]
-    ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"]
-    post_action: Literal["normal", "block"]
-    override: str
-    web: str
-    ftgd_wf: str
-    antiphish: str
-    wisp: Literal["enable", "disable"]
-    wisp_servers: list[dict[str, Any]]
-    wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]
-    log_all_url: Literal["enable", "disable"]
-    web_content_log: Literal["enable", "disable"]
-    web_filter_activex_log: Literal["enable", "disable"]
-    web_filter_command_block_log: Literal["enable", "disable"]
-    web_filter_cookie_log: Literal["enable", "disable"]
-    web_filter_applet_log: Literal["enable", "disable"]
-    web_filter_jscript_log: Literal["enable", "disable"]
-    web_filter_js_log: Literal["enable", "disable"]
-    web_filter_vbs_log: Literal["enable", "disable"]
-    web_filter_unknown_log: Literal["enable", "disable"]
-    web_filter_referer_log: Literal["enable", "disable"]
-    web_filter_cookie_removal_log: Literal["enable", "disable"]
-    web_url_log: Literal["enable", "disable"]
-    web_invalid_domain_log: Literal["enable", "disable"]
-    web_ftgd_err_log: Literal["enable", "disable"]
-    web_ftgd_quota_usage: Literal["enable", "disable"]
-    extended_log: Literal["enable", "disable"]
-    web_extended_all_action_log: Literal["enable", "disable"]
-    web_antiphishing_log: Literal["enable", "disable"]
+    name: str  # Profile name. | MaxLen: 47
+    comment: str  # Optional comments. | MaxLen: 255
+    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
+    replacemsg_group: str  # Replacement message group. | MaxLen: 35
+    options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"]  # Options.
+    https_replacemsg: Literal["enable", "disable"]  # Enable replacement messages for HTTPS. | Default: enable
+    web_flow_log_encoding: Literal["utf-8", "punycode"]  # Log encoding in flow mode. | Default: utf-8
+    ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"]  # Permitted override types.
+    post_action: Literal["normal", "block"]  # Action taken for HTTP POST traffic. | Default: normal
+    override: str  # Web Filter override settings.
+    web: str  # Web content filtering settings.
+    ftgd_wf: str  # FortiGuard Web Filter settings.
+    antiphish: str  # AntiPhishing profile.
+    wisp: Literal["enable", "disable"]  # Enable/disable web proxy WISP. | Default: disable
+    wisp_servers: list[ProfileWispserversItem]  # WISP servers.
+    wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]  # WISP server selection algorithm. | Default: auto-learning
+    log_all_url: Literal["enable", "disable"]  # Enable/disable logging all URLs visited. | Default: disable
+    web_content_log: Literal["enable", "disable"]  # Enable/disable logging logging blocked web content | Default: enable
+    web_filter_activex_log: Literal["enable", "disable"]  # Enable/disable logging ActiveX. | Default: enable
+    web_filter_command_block_log: Literal["enable", "disable"]  # Enable/disable logging blocked commands. | Default: enable
+    web_filter_cookie_log: Literal["enable", "disable"]  # Enable/disable logging cookie filtering. | Default: enable
+    web_filter_applet_log: Literal["enable", "disable"]  # Enable/disable logging Java applets. | Default: enable
+    web_filter_jscript_log: Literal["enable", "disable"]  # Enable/disable logging JScripts. | Default: enable
+    web_filter_js_log: Literal["enable", "disable"]  # Enable/disable logging Java scripts. | Default: enable
+    web_filter_vbs_log: Literal["enable", "disable"]  # Enable/disable logging VBS scripts. | Default: enable
+    web_filter_unknown_log: Literal["enable", "disable"]  # Enable/disable logging unknown scripts. | Default: enable
+    web_filter_referer_log: Literal["enable", "disable"]  # Enable/disable logging referrers. | Default: enable
+    web_filter_cookie_removal_log: Literal["enable", "disable"]  # Enable/disable logging blocked cookies. | Default: enable
+    web_url_log: Literal["enable", "disable"]  # Enable/disable logging URL filtering. | Default: enable
+    web_invalid_domain_log: Literal["enable", "disable"]  # Enable/disable logging invalid domain names. | Default: enable
+    web_ftgd_err_log: Literal["enable", "disable"]  # Enable/disable logging rating errors. | Default: enable
+    web_ftgd_quota_usage: Literal["enable", "disable"]  # Enable/disable logging daily quota usage. | Default: enable
+    extended_log: Literal["enable", "disable"]  # Enable/disable extended logging for web filtering. | Default: disable
+    web_extended_all_action_log: Literal["enable", "disable"]  # Enable/disable extended any filter action logging | Default: disable
+    web_antiphishing_log: Literal["enable", "disable"]  # Enable/disable logging of AntiPhishing checks. | Default: enable
 
 
 @final
@@ -130,23 +146,23 @@ class ProfileObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Profile name.
+    # Profile name. | MaxLen: 47
     name: str
-    # Optional comments.
+    # Optional comments. | MaxLen: 255
     comment: str
-    # Flow/proxy feature set.
+    # Flow/proxy feature set. | Default: flow
     feature_set: Literal["flow", "proxy"]
-    # Replacement message group.
+    # Replacement message group. | MaxLen: 35
     replacemsg_group: str
     # Options.
     options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"]
-    # Enable replacement messages for HTTPS.
+    # Enable replacement messages for HTTPS. | Default: enable
     https_replacemsg: Literal["enable", "disable"]
-    # Log encoding in flow mode.
+    # Log encoding in flow mode. | Default: utf-8
     web_flow_log_encoding: Literal["utf-8", "punycode"]
     # Permitted override types.
     ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"]
-    # Action taken for HTTP POST traffic.
+    # Action taken for HTTP POST traffic. | Default: normal
     post_action: Literal["normal", "block"]
     # Web Filter override settings.
     override: str
@@ -156,49 +172,49 @@ class ProfileObject:
     ftgd_wf: str
     # AntiPhishing profile.
     antiphish: str
-    # Enable/disable web proxy WISP.
+    # Enable/disable web proxy WISP. | Default: disable
     wisp: Literal["enable", "disable"]
     # WISP servers.
-    wisp_servers: list[ProfileWispserversObject]  # Table field - list of typed objects
-    # WISP server selection algorithm.
+    wisp_servers: list[ProfileWispserversObject]
+    # WISP server selection algorithm. | Default: auto-learning
     wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]
-    # Enable/disable logging all URLs visited.
+    # Enable/disable logging all URLs visited. | Default: disable
     log_all_url: Literal["enable", "disable"]
-    # Enable/disable logging logging blocked web content.
+    # Enable/disable logging logging blocked web content. | Default: enable
     web_content_log: Literal["enable", "disable"]
-    # Enable/disable logging ActiveX.
+    # Enable/disable logging ActiveX. | Default: enable
     web_filter_activex_log: Literal["enable", "disable"]
-    # Enable/disable logging blocked commands.
+    # Enable/disable logging blocked commands. | Default: enable
     web_filter_command_block_log: Literal["enable", "disable"]
-    # Enable/disable logging cookie filtering.
+    # Enable/disable logging cookie filtering. | Default: enable
     web_filter_cookie_log: Literal["enable", "disable"]
-    # Enable/disable logging Java applets.
+    # Enable/disable logging Java applets. | Default: enable
     web_filter_applet_log: Literal["enable", "disable"]
-    # Enable/disable logging JScripts.
+    # Enable/disable logging JScripts. | Default: enable
     web_filter_jscript_log: Literal["enable", "disable"]
-    # Enable/disable logging Java scripts.
+    # Enable/disable logging Java scripts. | Default: enable
     web_filter_js_log: Literal["enable", "disable"]
-    # Enable/disable logging VBS scripts.
+    # Enable/disable logging VBS scripts. | Default: enable
     web_filter_vbs_log: Literal["enable", "disable"]
-    # Enable/disable logging unknown scripts.
+    # Enable/disable logging unknown scripts. | Default: enable
     web_filter_unknown_log: Literal["enable", "disable"]
-    # Enable/disable logging referrers.
+    # Enable/disable logging referrers. | Default: enable
     web_filter_referer_log: Literal["enable", "disable"]
-    # Enable/disable logging blocked cookies.
+    # Enable/disable logging blocked cookies. | Default: enable
     web_filter_cookie_removal_log: Literal["enable", "disable"]
-    # Enable/disable logging URL filtering.
+    # Enable/disable logging URL filtering. | Default: enable
     web_url_log: Literal["enable", "disable"]
-    # Enable/disable logging invalid domain names.
+    # Enable/disable logging invalid domain names. | Default: enable
     web_invalid_domain_log: Literal["enable", "disable"]
-    # Enable/disable logging rating errors.
+    # Enable/disable logging rating errors. | Default: enable
     web_ftgd_err_log: Literal["enable", "disable"]
-    # Enable/disable logging daily quota usage.
+    # Enable/disable logging daily quota usage. | Default: enable
     web_ftgd_quota_usage: Literal["enable", "disable"]
-    # Enable/disable extended logging for web filtering.
+    # Enable/disable extended logging for web filtering. | Default: disable
     extended_log: Literal["enable", "disable"]
-    # Enable/disable extended any filter action logging for web filtering.
+    # Enable/disable extended any filter action logging for web fi | Default: disable
     web_extended_all_action_log: Literal["enable", "disable"]
-    # Enable/disable logging of AntiPhishing checks.
+    # Enable/disable logging of AntiPhishing checks. | Default: enable
     web_antiphishing_log: Literal["enable", "disable"]
     
     # Common API response fields
@@ -225,8 +241,66 @@ class Profile:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProfileResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -241,11 +315,12 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -261,11 +336,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -280,10 +355,11 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProfileObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -300,7 +376,7 @@ class Profile:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -360,7 +436,7 @@ class Profile:
         **kwargs: Any,
     ) -> list[ProfileResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -375,9 +451,9 @@ class Profile:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -444,7 +520,7 @@ class Profile:
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -491,8 +567,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -535,7 +612,51 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -579,7 +700,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -623,7 +744,7 @@ class Profile:
         web_antiphishing_log: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -670,8 +791,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -714,7 +836,51 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -758,7 +924,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -767,7 +933,7 @@ class Profile:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileObject: ...
     
@@ -779,8 +945,9 @@ class Profile:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -788,7 +955,16 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -796,7 +972,7 @@ class Profile:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -846,7 +1022,7 @@ class Profile:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -871,8 +1047,1265 @@ class Profile:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProfileDictMode:
+    """Profile endpoint for dict response mode (default for this client).
+    
+    By default returns ProfileResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProfileObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProfileObjectMode:
+    """Profile endpoint for object response mode (default for this client).
+    
+    By default returns ProfileObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProfileResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProfileResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProfileResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfilePayload | None = ...,
+        name: str | None = ...,
+        comment: str | None = ...,
+        feature_set: Literal["flow", "proxy"] | None = ...,
+        replacemsg_group: str | None = ...,
+        options: Literal["activexfilter", "cookiefilter", "javafilter", "block-invalid-url", "jscript", "js", "vbs", "unknown", "intrinsic", "wf-referer", "wf-cookie", "per-user-bal"] | list[str] | None = ...,
+        https_replacemsg: Literal["enable", "disable"] | None = ...,
+        web_flow_log_encoding: Literal["utf-8", "punycode"] | None = ...,
+        ovrd_perm: Literal["bannedword-override", "urlfilter-override", "fortiguard-wf-override", "contenttype-check-override"] | list[str] | None = ...,
+        post_action: Literal["normal", "block"] | None = ...,
+        override: str | None = ...,
+        web: str | None = ...,
+        ftgd_wf: str | None = ...,
+        antiphish: str | None = ...,
+        wisp: Literal["enable", "disable"] | None = ...,
+        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
+        log_all_url: Literal["enable", "disable"] | None = ...,
+        web_content_log: Literal["enable", "disable"] | None = ...,
+        web_filter_activex_log: Literal["enable", "disable"] | None = ...,
+        web_filter_command_block_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_log: Literal["enable", "disable"] | None = ...,
+        web_filter_applet_log: Literal["enable", "disable"] | None = ...,
+        web_filter_jscript_log: Literal["enable", "disable"] | None = ...,
+        web_filter_js_log: Literal["enable", "disable"] | None = ...,
+        web_filter_vbs_log: Literal["enable", "disable"] | None = ...,
+        web_filter_unknown_log: Literal["enable", "disable"] | None = ...,
+        web_filter_referer_log: Literal["enable", "disable"] | None = ...,
+        web_filter_cookie_removal_log: Literal["enable", "disable"] | None = ...,
+        web_url_log: Literal["enable", "disable"] | None = ...,
+        web_invalid_domain_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_err_log: Literal["enable", "disable"] | None = ...,
+        web_ftgd_quota_usage: Literal["enable", "disable"] | None = ...,
+        extended_log: Literal["enable", "disable"] | None = ...,
+        web_extended_all_action_log: Literal["enable", "disable"] | None = ...,
+        web_antiphishing_log: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Profile",
+    "ProfileDictMode",
+    "ProfileObjectMode",
     "ProfilePayload",
     "ProfileObject",
 ]

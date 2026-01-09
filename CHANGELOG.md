@@ -7,6 +7,139 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.41] - 2026-01-09
+
+### Fixed
+- **Fixed missing helper methods in DictMode and ObjectMode classes**
+  - Added helper method signatures to mode-specific classes: `exists()`, `set()`, `defaults()`, `schema()`, `help()`, `fields()`, `field_info()`, `validate_field()`, `required_fields()`
+  - Fixed "Attribute is unknown" errors when calling helper methods on mode-specific clients
+  - Example: `fg.api.cmdb.authentication.rule.defaults()` now works correctly
+  - Example: `fgt_object.api.cmdb.firewall.service.group.exists(name="test")` now works correctly
+  - Helper methods were previously only available in base class, not in DictMode/ObjectMode
+  - Regenerated all 1,064 endpoint `.pyi` stub files
+
+## [0.5.40] - 2026-01-09
+
+### Fixed
+- **Fixed overload matching for mode-specific clients with keyword arguments**
+  - Added explicit default `@overload` decorators for ObjectMode mutation methods (POST/PUT/DELETE)
+  - Fixed "No overloads match" error when calling mutations with keyword args but no `response_mode`
+  - ObjectMode methods now correctly infer return types without requiring explicit `response_mode="object"`
+  - Example: `fgt_object.api.cmdb.firewall.policy.post(name="test", action="accept")` → `PolicyObject`
+  - Previously required keyword-only `response_mode` parameter due to `*,` separator
+  - DictMode already had proper default overloads; fixed ObjectMode to match
+  - Regenerated all 1,064 endpoint `.pyi` stub files
+
+## [0.5.39] - 2026-01-09
+
+### Fixed
+- **Fixed POST/PUT/DELETE type inference for mutation operations**
+  - Added explicit `@overload` decorators for default case (no `response_mode` parameter)
+  - Fixed "No overloads match" Pylance errors when calling mutations without `response_mode`
+  - Removed `response_mode` parameter from final `def` implementation signatures
+  - Made all mode override overloads keyword-only using `*,` separator
+  - Pylance now correctly infers `MutationResponse` for default calls
+  - Example: `delete(name="test")` → `MutationResponse`, not `RuleObject`
+  - Fixed for both DictMode (default) and ObjectMode classes
+  - Regenerated all 1,064 endpoint `.pyi` stub files
+
+## [0.5.38] - 2026-01-09
+
+### Fixed
+- **Fixed Literal type validation in Payload TypedDict dict literals**
+  - Removed `NotRequired` wrapper from Literal fields in Payload TypedDict stubs
+  - Pylance now validates Literal values when assigning dict literals to Payload types
+  - Example: `policy: PolicyPayload = {"action": "invalid"}` now shows type error
+  - Previously, `NotRequired[Literal[...]]` prevented Pylance from validating inner Literal
+  - Fields are still optional via `total=False` on the TypedDict class
+  - All 1,064 endpoints regenerated with this fix
+
+- **Fixed test template expecting list instead of dict for mkey queries**
+  - Since v0.5.33, querying by mkey returns single dict, not list of one item
+  - Updated test template to expect `dict` instead of `list` for `get(mkey=value)`
+  - Regenerated all 936 auto-generated test files
+
+## [0.5.37] - 2026-01-09
+
+### Fixed
+- **Fixed Pylance overload matching for default response mode**
+  - Reordered stub file overloads: DEFAULT mode (no `response_mode`) now comes FIRST
+  - Pylance matches overloads top-to-bottom; previous order caused `response_mode: Literal["object"] = ...` to match calls without `response_mode`
+  - Fixed "Never is not iterable" error when iterating over table fields without explicit `response_mode`
+  - Example: `for intf in rule["srcintf"]` now works without needing `response_mode="dict"`
+  - Accessing nonexistent fields like `rule["nonexistent_field"]` now correctly shows TypedDict key error
+  - Fixed in generator template and regenerated all 1,064 endpoints
+  - Also fixed `post()`, `put()`, and `delete()` method overloads for consistency
+
+### Added
+- **Added `MutationResponse` TypedDict for POST/PUT/DELETE operations**
+  - New `MutationResponse` type in `hfortix_core.types` with `status` and `http_status` fields
+  - POST/PUT/DELETE now return `MutationResponse` instead of `dict[str, Any]`
+  - Enables type checking for mutation responses: `result["nonexistent"]` now shows error
+  - Example: `post_result["status"]` works, `post_result["nonexistent"]` shows error
+
+- **Added `RawAPIResponse` TypedDict for `raw_json=True` mode**
+  - New `RawAPIResponse` type for full FortiOS API envelope responses
+  - Fields: `http_method`, `http_status`, `status`, `vdom`, `results`, `path`, `name`, `mkey`, `revision`, `serial`, `version`, `build`
+  - All fields marked as required to provide autocomplete without warnings
+  - Primary purpose: catch typos - `response["nonexistent"]` shows error
+  - Use `.get()` for fields that may not be present in specific response types
+
+- **Added validation hints to type stub comments**
+  - Field comments now include: `Default: value`, `Min: value`, `Max: value`, `MaxLen: value`
+  - Example: `cache_ttl: int  # Defines the minimal TTL... | Default: 0 | Min: 0 | Max: 86400`
+  - Example: `name: str  # Address name. | MaxLen: 79`
+  - Validation hints shown in Payload TypedDict, Response TypedDict, and Object classes
+  - Also shown in nested TypedDict items for table field children
+  - Helps developers understand field constraints without consulting documentation
+
+## [0.5.36] - 2026-01-08
+
+### Changed
+- **Regenerated all 1,064 endpoints with enhanced TypedDict autocomplete**
+  - Applied nested TypedDict fixes to all endpoints
+  - Ensured all table field items have proper type hints
+  - All endpoints now provide full autocomplete for nested table field items
+
+## [0.5.35] - 2026-01-08
+
+### Added
+- **Nested TypedDict autocomplete for table field items in dict mode**
+  - Generated TypedDict classes for all table field children (e.g., `RuleSrcintfItem`)
+  - Full IDE autocomplete when iterating over table fields: `for intf in rule["srcintf"]: intf["name"]`
+  - Type checking for nested items: `intf["nonexistent_field"]` now shows error
+  - Fields are required (not `NotRequired`) since they're always present in API responses
+  - Applies to all endpoints with table fields
+
+### Fixed
+- **Fixed type inference for default response mode**
+  - Removed overly restrictive `raw_json: Literal[False]` constraint from default mode overloads
+  - Pylance now correctly infers types when `response_mode` is not specified
+  - Fixed `"Never" is not iterable` error when iterating over table fields
+  - Response type inference now works regardless of client-level or request-level `response_mode` setting
+
+## [0.5.34] - 2026-01-08
+
+### Improved
+- **Enhanced type stub overloads for better IDE autocomplete without explicit type annotations**
+  - Added specific overloads for default mode (when `response_mode` is not specified)
+  - Pylance now correctly infers `RuleResponse` type when querying by mkey without `response_mode`
+  - Example: `rule = fgt.api.cmdb.authentication.rule.get(name="test")` now properly typed as `RuleResponse`
+  - No longer need explicit type annotations like `rule: RuleResponse = ...`
+  - Applies to all 1,064 endpoints
+  - Improved overload ordering for better type inference
+
+## [0.5.33] - 2026-01-08
+
+### Fixed
+- **Dict mode query by name now returns single dict instead of list**
+  - When querying by name/mkey with `response_mode="dict"` (or default), now correctly returns single dict instead of list
+  - Aligns dict mode behavior with object mode for consistency
+  - Example: `group = fgt.api.cmdb.firewall.service.group.get(name="test")` returns `dict` not `list[dict]`
+  - Both modes now have identical unwrapping behavior when querying by identifier
+  - **Breaking Change**: Tests expecting list for single-item queries need to be updated
+  - Fixed 936 auto-generated test files to expect dict instead of list
+
 ## [0.5.32] - 2025-01-24
 
 ### Fixed

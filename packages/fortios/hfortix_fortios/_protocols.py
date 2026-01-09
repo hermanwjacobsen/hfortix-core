@@ -93,18 +93,35 @@ class GetProtocol(Protocol):
         **kwargs: Any,
     ) -> dict[str, Any]: ...
     
-    # Overload for default behavior (no response_mode, no raw_json)
+    # Overload for default behavior WITH name (returns dict - client default is dict mode)
     @overload
     def get(
         self,
-        name: str | None = None,
+        name: str,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
+        raw_json: Literal[False] = False,
+        response_mode: None = None,
         **kwargs: Any,
-    ) -> dict[str, Any] | FortiObject | list[FortiObject]: ...
+    ) -> dict[str, Any]: ...
+    
+    # Overload for default behavior WITHOUT name (returns dict - client default is dict mode)
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: list[str] | None = None,
+        count: int | None = None,
+        start: int | None = None,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        raw_json: Literal[False] = False,
+        response_mode: None = None,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
     
     # Overload for raw_json=True
     @overload

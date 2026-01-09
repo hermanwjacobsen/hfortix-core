@@ -5,19 +5,20 @@ Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.0-beta (January 4, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.32 (January 24, 2025)**
 >
 > **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
+> **What's New**: Enhanced object mode with nested table wrapping and single object returns!
 
-**Version:** 0.5.0-beta
+**Version:** 0.5.32
 **Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
 
 HFortix is a modular Python SDK that provides comprehensive, production-ready clients for Fortinet products. Starting with FortiOS/FortiGate, with future support planned for FortiManager, FortiAnalyzer, and more.
 
-**Version 0.5.0** features complete code regeneration with 1,219 auto-generated endpoints and removes hand-written convenience wrappers in favor of a more maintainable, comprehensive approach.
+**Version 0.5.32** features major improvements to object response mode, auto-normalization for list fields, and enhanced IDE support with 15,000+ parameters having enum autocomplete.
 
 This is a **meta-package** that provides convenient installation patterns for the HFortix ecosystem.
 

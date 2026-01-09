@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class FortiguardPayload(TypedDict, total=False):
     """
     Type hints for webfilter/fortiguard payload fields.
@@ -13,20 +17,22 @@ class FortiguardPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    cache_mode: NotRequired[Literal["ttl", "db-ver"]]  # Cache entry expiration mode.
-    cache_prefix_match: NotRequired[Literal["enable", "disable"]]  # Enable/disable prefix matching in the cache.
-    cache_mem_permille: NotRequired[int]  # Maximum permille of available memory allocated to caching
-    ovrd_auth_port_http: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTP override authenti
-    ovrd_auth_port_https: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTPS override authent
-    ovrd_auth_port_https_flow: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTPS override authent
-    ovrd_auth_port_warning: NotRequired[int]  # Port to use for FortiGuard Web Filter Warning override authe
-    ovrd_auth_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of HTTPS for override authentication.
-    warn_auth_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of HTTPS for warning and authentication.
-    close_ports: NotRequired[Literal["enable", "disable"]]  # Close ports used for HTTP/HTTPS override authentication and
-    request_packet_size_limit: NotRequired[int]  # Limit size of URL request packets sent to FortiGuard server
-    embed_image: NotRequired[Literal["enable", "disable"]]  # Enable/disable embedding images into replacement messages
+    cache_mode: Literal["ttl", "db-ver"]  # Cache entry expiration mode. | Default: ttl
+    cache_prefix_match: Literal["enable", "disable"]  # Enable/disable prefix matching in the cache. | Default: enable
+    cache_mem_permille: int  # Maximum permille of available memory allocated to | Default: 1 | Min: 1 | Max: 150
+    ovrd_auth_port_http: int  # Port to use for FortiGuard Web Filter HTTP overrid | Default: 8008 | Min: 0 | Max: 65535
+    ovrd_auth_port_https: int  # Port to use for FortiGuard Web Filter HTTPS overri | Default: 8010 | Min: 0 | Max: 65535
+    ovrd_auth_port_https_flow: int  # Port to use for FortiGuard Web Filter HTTPS overri | Default: 8015 | Min: 0 | Max: 65535
+    ovrd_auth_port_warning: int  # Port to use for FortiGuard Web Filter Warning over | Default: 8020 | Min: 0 | Max: 65535
+    ovrd_auth_https: Literal["enable", "disable"]  # Enable/disable use of HTTPS for override authentic | Default: enable
+    warn_auth_https: Literal["enable", "disable"]  # Enable/disable use of HTTPS for warning and authen | Default: enable
+    close_ports: Literal["enable", "disable"]  # Close ports used for HTTP/HTTPS override authentic | Default: disable
+    request_packet_size_limit: int  # Limit size of URL request packets sent to FortiGua | Default: 0 | Min: 576 | Max: 10000
+    embed_image: Literal["enable", "disable"]  # Enable/disable embedding images into replacement m | Default: enable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -36,18 +42,18 @@ class FortiguardResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    cache_mode: Literal["ttl", "db-ver"]
-    cache_prefix_match: Literal["enable", "disable"]
-    cache_mem_permille: int
-    ovrd_auth_port_http: int
-    ovrd_auth_port_https: int
-    ovrd_auth_port_https_flow: int
-    ovrd_auth_port_warning: int
-    ovrd_auth_https: Literal["enable", "disable"]
-    warn_auth_https: Literal["enable", "disable"]
-    close_ports: Literal["enable", "disable"]
-    request_packet_size_limit: int
-    embed_image: Literal["enable", "disable"]
+    cache_mode: Literal["ttl", "db-ver"]  # Cache entry expiration mode. | Default: ttl
+    cache_prefix_match: Literal["enable", "disable"]  # Enable/disable prefix matching in the cache. | Default: enable
+    cache_mem_permille: int  # Maximum permille of available memory allocated to | Default: 1 | Min: 1 | Max: 150
+    ovrd_auth_port_http: int  # Port to use for FortiGuard Web Filter HTTP overrid | Default: 8008 | Min: 0 | Max: 65535
+    ovrd_auth_port_https: int  # Port to use for FortiGuard Web Filter HTTPS overri | Default: 8010 | Min: 0 | Max: 65535
+    ovrd_auth_port_https_flow: int  # Port to use for FortiGuard Web Filter HTTPS overri | Default: 8015 | Min: 0 | Max: 65535
+    ovrd_auth_port_warning: int  # Port to use for FortiGuard Web Filter Warning over | Default: 8020 | Min: 0 | Max: 65535
+    ovrd_auth_https: Literal["enable", "disable"]  # Enable/disable use of HTTPS for override authentic | Default: enable
+    warn_auth_https: Literal["enable", "disable"]  # Enable/disable use of HTTPS for warning and authen | Default: enable
+    close_ports: Literal["enable", "disable"]  # Close ports used for HTTP/HTTPS override authentic | Default: disable
+    request_packet_size_limit: int  # Limit size of URL request packets sent to FortiGua | Default: 0 | Min: 576 | Max: 10000
+    embed_image: Literal["enable", "disable"]  # Enable/disable embedding images into replacement m | Default: enable
 
 
 @final
@@ -58,29 +64,29 @@ class FortiguardObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Cache entry expiration mode.
+    # Cache entry expiration mode. | Default: ttl
     cache_mode: Literal["ttl", "db-ver"]
-    # Enable/disable prefix matching in the cache.
+    # Enable/disable prefix matching in the cache. | Default: enable
     cache_prefix_match: Literal["enable", "disable"]
-    # Maximum permille of available memory allocated to caching (1 - 150).
+    # Maximum permille of available memory allocated to caching | Default: 1 | Min: 1 | Max: 150
     cache_mem_permille: int
-    # Port to use for FortiGuard Web Filter HTTP override authentication.
+    # Port to use for FortiGuard Web Filter HTTP override authenti | Default: 8008 | Min: 0 | Max: 65535
     ovrd_auth_port_http: int
-    # Port to use for FortiGuard Web Filter HTTPS override authentication in proxy mod
+    # Port to use for FortiGuard Web Filter HTTPS override authent | Default: 8010 | Min: 0 | Max: 65535
     ovrd_auth_port_https: int
-    # Port to use for FortiGuard Web Filter HTTPS override authentication in flow mode
+    # Port to use for FortiGuard Web Filter HTTPS override authent | Default: 8015 | Min: 0 | Max: 65535
     ovrd_auth_port_https_flow: int
-    # Port to use for FortiGuard Web Filter Warning override authentication.
+    # Port to use for FortiGuard Web Filter Warning override authe | Default: 8020 | Min: 0 | Max: 65535
     ovrd_auth_port_warning: int
-    # Enable/disable use of HTTPS for override authentication.
+    # Enable/disable use of HTTPS for override authentication. | Default: enable
     ovrd_auth_https: Literal["enable", "disable"]
-    # Enable/disable use of HTTPS for warning and authentication.
+    # Enable/disable use of HTTPS for warning and authentication. | Default: enable
     warn_auth_https: Literal["enable", "disable"]
-    # Close ports used for HTTP/HTTPS override authentication and disable user overrid
+    # Close ports used for HTTP/HTTPS override authentication and | Default: disable
     close_ports: Literal["enable", "disable"]
-    # Limit size of URL request packets sent to FortiGuard server (0 for default).
+    # Limit size of URL request packets sent to FortiGuard server | Default: 0 | Min: 576 | Max: 10000
     request_packet_size_limit: int
-    # Enable/disable embedding images into replacement messages (default = enable).
+    # Enable/disable embedding images into replacement messages | Default: enable
     embed_image: Literal["enable", "disable"]
     
     # Common API response fields
@@ -106,8 +112,66 @@ class Fortiguard:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FortiguardResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FortiguardResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FortiguardResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -122,11 +186,12 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -142,11 +207,11 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -161,10 +226,11 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -181,7 +247,7 @@ class Fortiguard:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -241,7 +307,7 @@ class Fortiguard:
         **kwargs: Any,
     ) -> FortiguardResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -256,9 +322,9 @@ class Fortiguard:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -302,7 +368,7 @@ class Fortiguard:
         embed_image: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FortiguardObject: ...
     
@@ -326,8 +392,9 @@ class Fortiguard:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -347,7 +414,28 @@ class Fortiguard:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -368,7 +456,7 @@ class Fortiguard:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -395,7 +483,7 @@ class Fortiguard:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -420,8 +508,523 @@ class Fortiguard:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class FortiguardDictMode:
+    """Fortiguard endpoint for dict response mode (default for this client).
+    
+    By default returns FortiguardResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return FortiguardObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> FortiguardResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> FortiguardResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class FortiguardObjectMode:
+    """Fortiguard endpoint for object response mode (default for this client).
+    
+    By default returns FortiguardObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return FortiguardResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> FortiguardResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> FortiguardResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> FortiguardObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FortiguardPayload | None = ...,
+        cache_mode: Literal["ttl", "db-ver"] | None = ...,
+        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mem_permille: int | None = ...,
+        ovrd_auth_port_http: int | None = ...,
+        ovrd_auth_port_https: int | None = ...,
+        ovrd_auth_port_https_flow: int | None = ...,
+        ovrd_auth_port_warning: int | None = ...,
+        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
+        warn_auth_https: Literal["enable", "disable"] | None = ...,
+        close_ports: Literal["enable", "disable"] | None = ...,
+        request_packet_size_limit: int | None = ...,
+        embed_image: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Fortiguard",
+    "FortiguardDictMode",
+    "FortiguardObjectMode",
     "FortiguardPayload",
     "FortiguardObject",
 ]

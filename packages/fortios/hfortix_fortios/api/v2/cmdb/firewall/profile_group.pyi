@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProfileGroupPayload(TypedDict, total=False):
     """
     Type hints for firewall/profile_group payload fields.
@@ -28,29 +32,31 @@ class ProfileGroupPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Profile group name.
-    profile_protocol_options: NotRequired[str]  # Name of an existing Protocol options profile.
-    ssl_ssh_profile: NotRequired[str]  # Name of an existing SSL SSH profile.
-    av_profile: NotRequired[str]  # Name of an existing Antivirus profile.
-    webfilter_profile: NotRequired[str]  # Name of an existing Web filter profile.
-    dnsfilter_profile: NotRequired[str]  # Name of an existing DNS filter profile.
-    emailfilter_profile: NotRequired[str]  # Name of an existing email filter profile.
-    dlp_profile: NotRequired[str]  # Name of an existing DLP profile.
-    file_filter_profile: NotRequired[str]  # Name of an existing file-filter profile.
-    ips_sensor: NotRequired[str]  # Name of an existing IPS sensor.
-    application_list: NotRequired[str]  # Name of an existing Application list.
-    voip_profile: NotRequired[str]  # Name of an existing VoIP (voipd) profile.
-    ips_voip_filter: NotRequired[str]  # Name of an existing VoIP (ips) profile.
-    sctp_filter_profile: NotRequired[str]  # Name of an existing SCTP filter profile.
-    diameter_filter_profile: NotRequired[str]  # Name of an existing Diameter filter profile.
-    virtual_patch_profile: NotRequired[str]  # Name of an existing virtual-patch profile.
-    icap_profile: NotRequired[str]  # Name of an existing ICAP profile.
-    videofilter_profile: NotRequired[str]  # Name of an existing VideoFilter profile.
-    waf_profile: NotRequired[str]  # Name of an existing Web application firewall profile.
-    ssh_filter_profile: NotRequired[str]  # Name of an existing SSH filter profile.
-    casb_profile: NotRequired[str]  # Name of an existing CASB profile.
+    name: str  # Profile group name. | MaxLen: 47
+    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
+    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
+    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
+    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
+    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
+    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
+    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
+    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    application_list: str  # Name of an existing Application list. | MaxLen: 47
+    voip_profile: str  # Name of an existing VoIP (voipd) profile. | MaxLen: 47
+    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
+    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
+    diameter_filter_profile: str  # Name of an existing Diameter filter profile. | MaxLen: 47
+    virtual_patch_profile: str  # Name of an existing virtual-patch profile. | MaxLen: 47
+    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
+    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
+    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
+    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
+    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -60,27 +66,27 @@ class ProfileGroupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    profile_protocol_options: str
-    ssl_ssh_profile: str
-    av_profile: str
-    webfilter_profile: str
-    dnsfilter_profile: str
-    emailfilter_profile: str
-    dlp_profile: str
-    file_filter_profile: str
-    ips_sensor: str
-    application_list: str
-    voip_profile: str
-    ips_voip_filter: str
-    sctp_filter_profile: str
-    diameter_filter_profile: str
-    virtual_patch_profile: str
-    icap_profile: str
-    videofilter_profile: str
-    waf_profile: str
-    ssh_filter_profile: str
-    casb_profile: str
+    name: str  # Profile group name. | MaxLen: 47
+    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
+    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
+    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
+    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
+    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
+    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
+    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
+    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
+    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
+    application_list: str  # Name of an existing Application list. | MaxLen: 47
+    voip_profile: str  # Name of an existing VoIP (voipd) profile. | MaxLen: 47
+    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
+    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
+    diameter_filter_profile: str  # Name of an existing Diameter filter profile. | MaxLen: 47
+    virtual_patch_profile: str  # Name of an existing virtual-patch profile. | MaxLen: 47
+    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
+    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
+    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
+    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
+    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
 
 
 @final
@@ -91,47 +97,47 @@ class ProfileGroupObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Profile group name.
+    # Profile group name. | MaxLen: 47
     name: str
-    # Name of an existing Protocol options profile.
+    # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
     profile_protocol_options: str
-    # Name of an existing SSL SSH profile.
+    # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
     ssl_ssh_profile: str
-    # Name of an existing Antivirus profile.
+    # Name of an existing Antivirus profile. | MaxLen: 47
     av_profile: str
-    # Name of an existing Web filter profile.
+    # Name of an existing Web filter profile. | MaxLen: 47
     webfilter_profile: str
-    # Name of an existing DNS filter profile.
+    # Name of an existing DNS filter profile. | MaxLen: 47
     dnsfilter_profile: str
-    # Name of an existing email filter profile.
+    # Name of an existing email filter profile. | MaxLen: 47
     emailfilter_profile: str
-    # Name of an existing DLP profile.
+    # Name of an existing DLP profile. | MaxLen: 47
     dlp_profile: str
-    # Name of an existing file-filter profile.
+    # Name of an existing file-filter profile. | MaxLen: 47
     file_filter_profile: str
-    # Name of an existing IPS sensor.
+    # Name of an existing IPS sensor. | MaxLen: 47
     ips_sensor: str
-    # Name of an existing Application list.
+    # Name of an existing Application list. | MaxLen: 47
     application_list: str
-    # Name of an existing VoIP (voipd) profile.
+    # Name of an existing VoIP (voipd) profile. | MaxLen: 47
     voip_profile: str
-    # Name of an existing VoIP (ips) profile.
+    # Name of an existing VoIP (ips) profile. | MaxLen: 47
     ips_voip_filter: str
-    # Name of an existing SCTP filter profile.
+    # Name of an existing SCTP filter profile. | MaxLen: 47
     sctp_filter_profile: str
-    # Name of an existing Diameter filter profile.
+    # Name of an existing Diameter filter profile. | MaxLen: 47
     diameter_filter_profile: str
-    # Name of an existing virtual-patch profile.
+    # Name of an existing virtual-patch profile. | MaxLen: 47
     virtual_patch_profile: str
-    # Name of an existing ICAP profile.
+    # Name of an existing ICAP profile. | MaxLen: 47
     icap_profile: str
-    # Name of an existing VideoFilter profile.
+    # Name of an existing VideoFilter profile. | MaxLen: 47
     videofilter_profile: str
-    # Name of an existing Web application firewall profile.
+    # Name of an existing Web application firewall profile. | MaxLen: 47
     waf_profile: str
-    # Name of an existing SSH filter profile.
+    # Name of an existing SSH filter profile. | MaxLen: 47
     ssh_filter_profile: str
-    # Name of an existing CASB profile.
+    # Name of an existing CASB profile. | MaxLen: 47
     casb_profile: str
     
     # Common API response fields
@@ -158,8 +164,66 @@ class ProfileGroup:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileGroupResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProfileGroupResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProfileGroupResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -174,11 +238,12 @@ class ProfileGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileGroupObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -194,11 +259,11 @@ class ProfileGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileGroupObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -213,10 +278,11 @@ class ProfileGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProfileGroupObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -233,7 +299,7 @@ class ProfileGroup:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -293,7 +359,7 @@ class ProfileGroup:
         **kwargs: Any,
     ) -> list[ProfileGroupResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -308,9 +374,9 @@ class ProfileGroup:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -363,7 +429,7 @@ class ProfileGroup:
         casb_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileGroupObject: ...
     
@@ -396,8 +462,9 @@ class ProfileGroup:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -426,7 +493,37 @@ class ProfileGroup:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -456,7 +553,7 @@ class ProfileGroup:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -486,7 +583,7 @@ class ProfileGroup:
         casb_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileGroupObject: ...
     
@@ -519,8 +616,9 @@ class ProfileGroup:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -549,7 +647,37 @@ class ProfileGroup:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -579,7 +707,7 @@ class ProfileGroup:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -588,7 +716,7 @@ class ProfileGroup:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProfileGroupObject: ...
     
@@ -600,8 +728,9 @@ class ProfileGroup:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -609,7 +738,16 @@ class ProfileGroup:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -617,7 +755,7 @@ class ProfileGroup:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -653,7 +791,7 @@ class ProfileGroup:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -678,8 +816,985 @@ class ProfileGroup:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProfileGroupDictMode:
+    """ProfileGroup endpoint for dict response mode (default for this client).
+    
+    By default returns ProfileGroupResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProfileGroupObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProfileGroupObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileGroupResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileGroupResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProfileGroupObjectMode:
+    """ProfileGroup endpoint for object response mode (default for this client).
+    
+    By default returns ProfileGroupObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProfileGroupResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProfileGroupResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProfileGroupResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProfileGroupObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProfileGroupObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProfileGroupPayload | None = ...,
+        name: str | None = ...,
+        profile_protocol_options: str | None = ...,
+        ssl_ssh_profile: str | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile: str | None = ...,
+        dnsfilter_profile: str | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile: str | None = ...,
+        file_filter_profile: str | None = ...,
+        ips_sensor: str | None = ...,
+        application_list: str | None = ...,
+        voip_profile: str | None = ...,
+        ips_voip_filter: str | None = ...,
+        sctp_filter_profile: str | None = ...,
+        diameter_filter_profile: str | None = ...,
+        virtual_patch_profile: str | None = ...,
+        icap_profile: str | None = ...,
+        videofilter_profile: str | None = ...,
+        waf_profile: str | None = ...,
+        ssh_filter_profile: str | None = ...,
+        casb_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ProfileGroup",
+    "ProfileGroupDictMode",
+    "ProfileGroupObjectMode",
     "ProfileGroupPayload",
     "ProfileGroupObject",
 ]

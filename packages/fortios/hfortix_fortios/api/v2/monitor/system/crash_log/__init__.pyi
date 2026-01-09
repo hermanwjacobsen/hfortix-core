@@ -6,14 +6,53 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .clear import Clear
-    from .download import Download
+    from .clear import Clear, ClearDictMode, ClearObjectMode
+    from .download import Download, DownloadDictMode, DownloadObjectMode
+
+__all__ = [
+    "Clear",
+    "Download",
+    "CrashlogDictMode",
+    "CrashlogObjectMode",
+]
+
+class CrashlogDictMode:
+    """CRASH_LOG API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    clear: ClearDictMode
+    download: DownloadDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize crash_log category with HTTP client."""
+        ...
 
 
-class CrashLog:
-    """Type stub for CrashLog."""
+class CrashlogObjectMode:
+    """CRASH_LOG API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    clear: ClearObjectMode
+    download: DownloadObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize crash_log category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Crashlog:
+    """CRASH_LOG API category."""
+    
     clear: Clear
     download: Download
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize crash_log category with HTTP client."""
+        ...

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class GlobalPayload(TypedDict, total=False):
     """
     Type hints for web_proxy/global_ payload fields.
@@ -20,36 +24,58 @@ class GlobalPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ssl_cert: NotRequired[str]  # SSL certificate for SSL interception.
-    ssl_ca_cert: NotRequired[str]  # SSL CA certificate for SSL interception.
-    fast_policy_match: NotRequired[Literal["enable", "disable"]]  # Enable/disable fast matching algorithm for explicit and tran
-    ldap_user_cache: NotRequired[Literal["enable", "disable"]]  # Enable/disable LDAP user cache for explicit and transparent
-    proxy_fqdn: str  # Fully Qualified Domain Name of the explicit web proxy
-    max_request_length: NotRequired[int]  # Maximum length of HTTP request line
-    max_message_length: NotRequired[int]  # Maximum length of HTTP message, not including body
-    http2_client_window_size: NotRequired[int]  # HTTP/2 client initial window size in bytes
-    http2_server_window_size: NotRequired[int]  # HTTP/2 server initial window size in bytes
-    auth_sign_timeout: NotRequired[int]  # Proxy auth query sign timeout in seconds
-    strict_web_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable strict web checking to block web sites that s
-    forward_proxy_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable forwarding proxy authentication headers.
-    forward_server_affinity_timeout: NotRequired[int]  # Period of time before the source IP's traffic is no longer a
-    max_waf_body_cache_length: NotRequired[int]  # Maximum length of HTTP messages processed by Web Application
-    webproxy_profile: NotRequired[str]  # Name of the web proxy profile to apply when explicit proxy t
-    learn_client_ip: NotRequired[Literal["enable", "disable"]]  # Enable/disable learning the client's IP address from headers
-    always_learn_client_ip: NotRequired[Literal["enable", "disable"]]  # Enable/disable learning the client's IP address from headers
-    learn_client_ip_from_header: NotRequired[Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]]  # Learn client IP address from the specified headers.
-    learn_client_ip_srcaddr: NotRequired[list[dict[str, Any]]]  # Source address name (srcaddr or srcaddr6 must be set).
-    learn_client_ip_srcaddr6: NotRequired[list[dict[str, Any]]]  # IPv6 Source address name (srcaddr or srcaddr6 must be set).
-    src_affinity_exempt_addr: NotRequired[list[dict[str, Any]]]  # IPv4 source addresses to exempt proxy affinity.
-    src_affinity_exempt_addr6: NotRequired[list[dict[str, Any]]]  # IPv6 source addresses to exempt proxy affinity.
-    policy_partial_match: NotRequired[Literal["enable", "disable"]]  # Enable/disable policy partial matching.
-    log_policy_pending: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging sessions that are pending on policy m
-    log_forward_server: NotRequired[Literal["enable", "disable"]]  # Enable/disable forward server name logging in forward traffi
-    log_app_id: NotRequired[Literal["enable", "disable"]]  # Enable/disable always log application type in traffic log.
-    proxy_transparent_cert_inspection: NotRequired[Literal["enable", "disable"]]  # Enable/disable transparent proxy certificate inspection.
-    request_obs_fold: NotRequired[Literal["replace-with-sp", "block", "keep"]]  # Action when HTTP/1.x request header contains obs-fold
+    ssl_cert: str  # SSL certificate for SSL interception. | Default: Fortinet_Factory | MaxLen: 35
+    ssl_ca_cert: str  # SSL CA certificate for SSL interception. | Default: Fortinet_CA_SSL | MaxLen: 35
+    fast_policy_match: Literal["enable", "disable"]  # Enable/disable fast matching algorithm for explici | Default: enable
+    ldap_user_cache: Literal["enable", "disable"]  # Enable/disable LDAP user cache for explicit and tr | Default: disable
+    proxy_fqdn: str  # Fully Qualified Domain Name of the explicit web pr | Default: default.fqdn | MaxLen: 255
+    max_request_length: int  # Maximum length of HTTP request line | Default: 8 | Min: 2 | Max: 64
+    max_message_length: int  # Maximum length of HTTP message, not including body | Default: 32 | Min: 16 | Max: 256
+    http2_client_window_size: int  # HTTP/2 client initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
+    http2_server_window_size: int  # HTTP/2 server initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
+    auth_sign_timeout: int  # Proxy auth query sign timeout in seconds | Default: 120 | Min: 30 | Max: 3600
+    strict_web_check: Literal["enable", "disable"]  # Enable/disable strict web checking to block web si | Default: disable
+    forward_proxy_auth: Literal["enable", "disable"]  # Enable/disable forwarding proxy authentication hea | Default: disable
+    forward_server_affinity_timeout: int  # Period of time before the source IP's traffic is n | Default: 30 | Min: 6 | Max: 60
+    max_waf_body_cache_length: int  # Maximum length of HTTP messages processed by Web A | Default: 1 | Min: 1 | Max: 1024
+    webproxy_profile: str  # Name of the web proxy profile to apply when explic | MaxLen: 63
+    learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
+    always_learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
+    learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]  # Learn client IP address from the specified headers
+    learn_client_ip_srcaddr: list[dict[str, Any]]  # Source address name
+    learn_client_ip_srcaddr6: list[dict[str, Any]]  # IPv6 Source address name
+    src_affinity_exempt_addr: list[dict[str, Any]]  # IPv4 source addresses to exempt proxy affinity.
+    src_affinity_exempt_addr6: list[dict[str, Any]]  # IPv6 source addresses to exempt proxy affinity.
+    policy_partial_match: Literal["enable", "disable"]  # Enable/disable policy partial matching. | Default: enable
+    log_policy_pending: Literal["enable", "disable"]  # Enable/disable logging sessions that are pending o | Default: disable
+    log_forward_server: Literal["enable", "disable"]  # Enable/disable forward server name logging in forw | Default: disable
+    log_app_id: Literal["enable", "disable"]  # Enable/disable always log application type in traf | Default: disable
+    proxy_transparent_cert_inspection: Literal["enable", "disable"]  # Enable/disable transparent proxy certificate inspe | Default: disable
+    request_obs_fold: Literal["replace-with-sp", "block", "keep"]  # Action when HTTP/1.x request header contains obs-f | Default: keep
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class GlobalLearnclientipsrcaddrItem(TypedDict):
+    """Type hints for learn-client-ip-srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class GlobalLearnclientipsrcaddr6Item(TypedDict):
+    """Type hints for learn-client-ip-srcaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class GlobalLearnclientipsrcaddrObject:
@@ -59,7 +85,7 @@ class GlobalLearnclientipsrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -80,7 +106,7 @@ class GlobalLearnclientipsrcaddr6Object:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -101,34 +127,34 @@ class GlobalResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ssl_cert: str
-    ssl_ca_cert: str
-    fast_policy_match: Literal["enable", "disable"]
-    ldap_user_cache: Literal["enable", "disable"]
-    proxy_fqdn: str
-    max_request_length: int
-    max_message_length: int
-    http2_client_window_size: int
-    http2_server_window_size: int
-    auth_sign_timeout: int
-    strict_web_check: Literal["enable", "disable"]
-    forward_proxy_auth: Literal["enable", "disable"]
-    forward_server_affinity_timeout: int
-    max_waf_body_cache_length: int
-    webproxy_profile: str
-    learn_client_ip: Literal["enable", "disable"]
-    always_learn_client_ip: Literal["enable", "disable"]
-    learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]
-    learn_client_ip_srcaddr: list[dict[str, Any]]
-    learn_client_ip_srcaddr6: list[dict[str, Any]]
-    src_affinity_exempt_addr: list[dict[str, Any]]
-    src_affinity_exempt_addr6: list[dict[str, Any]]
-    policy_partial_match: Literal["enable", "disable"]
-    log_policy_pending: Literal["enable", "disable"]
-    log_forward_server: Literal["enable", "disable"]
-    log_app_id: Literal["enable", "disable"]
-    proxy_transparent_cert_inspection: Literal["enable", "disable"]
-    request_obs_fold: Literal["replace-with-sp", "block", "keep"]
+    ssl_cert: str  # SSL certificate for SSL interception. | Default: Fortinet_Factory | MaxLen: 35
+    ssl_ca_cert: str  # SSL CA certificate for SSL interception. | Default: Fortinet_CA_SSL | MaxLen: 35
+    fast_policy_match: Literal["enable", "disable"]  # Enable/disable fast matching algorithm for explici | Default: enable
+    ldap_user_cache: Literal["enable", "disable"]  # Enable/disable LDAP user cache for explicit and tr | Default: disable
+    proxy_fqdn: str  # Fully Qualified Domain Name of the explicit web pr | Default: default.fqdn | MaxLen: 255
+    max_request_length: int  # Maximum length of HTTP request line | Default: 8 | Min: 2 | Max: 64
+    max_message_length: int  # Maximum length of HTTP message, not including body | Default: 32 | Min: 16 | Max: 256
+    http2_client_window_size: int  # HTTP/2 client initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
+    http2_server_window_size: int  # HTTP/2 server initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
+    auth_sign_timeout: int  # Proxy auth query sign timeout in seconds | Default: 120 | Min: 30 | Max: 3600
+    strict_web_check: Literal["enable", "disable"]  # Enable/disable strict web checking to block web si | Default: disable
+    forward_proxy_auth: Literal["enable", "disable"]  # Enable/disable forwarding proxy authentication hea | Default: disable
+    forward_server_affinity_timeout: int  # Period of time before the source IP's traffic is n | Default: 30 | Min: 6 | Max: 60
+    max_waf_body_cache_length: int  # Maximum length of HTTP messages processed by Web A | Default: 1 | Min: 1 | Max: 1024
+    webproxy_profile: str  # Name of the web proxy profile to apply when explic | MaxLen: 63
+    learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
+    always_learn_client_ip: Literal["enable", "disable"]  # Enable/disable learning the client's IP address fr | Default: disable
+    learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]  # Learn client IP address from the specified headers
+    learn_client_ip_srcaddr: list[GlobalLearnclientipsrcaddrItem]  # Source address name
+    learn_client_ip_srcaddr6: list[GlobalLearnclientipsrcaddr6Item]  # IPv6 Source address name
+    src_affinity_exempt_addr: list[dict[str, Any]]  # IPv4 source addresses to exempt proxy affinity.
+    src_affinity_exempt_addr6: list[dict[str, Any]]  # IPv6 source addresses to exempt proxy affinity.
+    policy_partial_match: Literal["enable", "disable"]  # Enable/disable policy partial matching. | Default: enable
+    log_policy_pending: Literal["enable", "disable"]  # Enable/disable logging sessions that are pending o | Default: disable
+    log_forward_server: Literal["enable", "disable"]  # Enable/disable forward server name logging in forw | Default: disable
+    log_app_id: Literal["enable", "disable"]  # Enable/disable always log application type in traf | Default: disable
+    proxy_transparent_cert_inspection: Literal["enable", "disable"]  # Enable/disable transparent proxy certificate inspe | Default: disable
+    request_obs_fold: Literal["replace-with-sp", "block", "keep"]  # Action when HTTP/1.x request header contains obs-f | Default: keep
 
 
 @final
@@ -139,61 +165,61 @@ class GlobalObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # SSL certificate for SSL interception.
+    # SSL certificate for SSL interception. | Default: Fortinet_Factory | MaxLen: 35
     ssl_cert: str
-    # SSL CA certificate for SSL interception.
+    # SSL CA certificate for SSL interception. | Default: Fortinet_CA_SSL | MaxLen: 35
     ssl_ca_cert: str
-    # Enable/disable fast matching algorithm for explicit and transparent proxy policy
+    # Enable/disable fast matching algorithm for explicit and tran | Default: enable
     fast_policy_match: Literal["enable", "disable"]
-    # Enable/disable LDAP user cache for explicit and transparent proxy user.
+    # Enable/disable LDAP user cache for explicit and transparent | Default: disable
     ldap_user_cache: Literal["enable", "disable"]
-    # Fully Qualified Domain Name of the explicit web proxy (default = default.fqdn) t
+    # Fully Qualified Domain Name of the explicit web proxy | Default: default.fqdn | MaxLen: 255
     proxy_fqdn: str
-    # Maximum length of HTTP request line (2 - 64 Kbytes, default = 8).
+    # Maximum length of HTTP request line | Default: 8 | Min: 2 | Max: 64
     max_request_length: int
-    # Maximum length of HTTP message, not including body
+    # Maximum length of HTTP message, not including body | Default: 32 | Min: 16 | Max: 256
     max_message_length: int
-    # HTTP/2 client initial window size in bytes
+    # HTTP/2 client initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
     http2_client_window_size: int
-    # HTTP/2 server initial window size in bytes
+    # HTTP/2 server initial window size in bytes | Default: 1048576 | Min: 65535 | Max: 2147483647
     http2_server_window_size: int
-    # Proxy auth query sign timeout in seconds (30 - 3600, default = 120).
+    # Proxy auth query sign timeout in seconds | Default: 120 | Min: 30 | Max: 3600
     auth_sign_timeout: int
-    # Enable/disable strict web checking to block web sites that send incorrect header
+    # Enable/disable strict web checking to block web sites that s | Default: disable
     strict_web_check: Literal["enable", "disable"]
-    # Enable/disable forwarding proxy authentication headers.
+    # Enable/disable forwarding proxy authentication headers. | Default: disable
     forward_proxy_auth: Literal["enable", "disable"]
-    # Period of time before the source IP's traffic is no longer assigned to the forwa
+    # Period of time before the source IP's traffic is no longer a | Default: 30 | Min: 6 | Max: 60
     forward_server_affinity_timeout: int
-    # Maximum length of HTTP messages processed by Web Application Firewall (WAF)
+    # Maximum length of HTTP messages processed by Web Application | Default: 1 | Min: 1 | Max: 1024
     max_waf_body_cache_length: int
-    # Name of the web proxy profile to apply when explicit proxy traffic is allowed by
+    # Name of the web proxy profile to apply when explicit proxy t | MaxLen: 63
     webproxy_profile: str
-    # Enable/disable learning the client's IP address from headers.
+    # Enable/disable learning the client's IP address from headers | Default: disable
     learn_client_ip: Literal["enable", "disable"]
-    # Enable/disable learning the client's IP address from headers for every request.
+    # Enable/disable learning the client's IP address from headers | Default: disable
     always_learn_client_ip: Literal["enable", "disable"]
     # Learn client IP address from the specified headers.
     learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]
     # Source address name (srcaddr or srcaddr6 must be set).
-    learn_client_ip_srcaddr: list[GlobalLearnclientipsrcaddrObject]  # Table field - list of typed objects
+    learn_client_ip_srcaddr: list[GlobalLearnclientipsrcaddrObject]
     # IPv6 Source address name (srcaddr or srcaddr6 must be set).
-    learn_client_ip_srcaddr6: list[GlobalLearnclientipsrcaddr6Object]  # Table field - list of typed objects
+    learn_client_ip_srcaddr6: list[GlobalLearnclientipsrcaddr6Object]
     # IPv4 source addresses to exempt proxy affinity.
-    src_affinity_exempt_addr: list[dict[str, Any]]  # Multi-value field
+    src_affinity_exempt_addr: list[dict[str, Any]]
     # IPv6 source addresses to exempt proxy affinity.
-    src_affinity_exempt_addr6: list[dict[str, Any]]  # Multi-value field
-    # Enable/disable policy partial matching.
+    src_affinity_exempt_addr6: list[dict[str, Any]]
+    # Enable/disable policy partial matching. | Default: enable
     policy_partial_match: Literal["enable", "disable"]
-    # Enable/disable logging sessions that are pending on policy matching.
+    # Enable/disable logging sessions that are pending on policy m | Default: disable
     log_policy_pending: Literal["enable", "disable"]
-    # Enable/disable forward server name logging in forward traffic log.
+    # Enable/disable forward server name logging in forward traffi | Default: disable
     log_forward_server: Literal["enable", "disable"]
-    # Enable/disable always log application type in traffic log.
+    # Enable/disable always log application type in traffic log. | Default: disable
     log_app_id: Literal["enable", "disable"]
-    # Enable/disable transparent proxy certificate inspection.
+    # Enable/disable transparent proxy certificate inspection. | Default: disable
     proxy_transparent_cert_inspection: Literal["enable", "disable"]
-    # Action when HTTP/1.x request header contains obs-fold (default = keep).
+    # Action when HTTP/1.x request header contains obs-fold | Default: keep
     request_obs_fold: Literal["replace-with-sp", "block", "keep"]
     
     # Common API response fields
@@ -219,8 +245,66 @@ class Global:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GlobalResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -235,11 +319,12 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -255,11 +340,11 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -274,10 +359,11 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -294,7 +380,7 @@ class Global:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -354,7 +440,7 @@ class Global:
         **kwargs: Any,
     ) -> GlobalResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -369,9 +455,9 @@ class Global:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -431,7 +517,7 @@ class Global:
         request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GlobalObject: ...
     
@@ -471,8 +557,9 @@ class Global:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -508,7 +595,44 @@ class Global:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -545,7 +669,7 @@ class Global:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -588,7 +712,7 @@ class Global:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -613,8 +737,699 @@ class Global:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class GlobalDictMode:
+    """Global endpoint for dict response mode (default for this client).
+    
+    By default returns GlobalResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return GlobalObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class GlobalObjectMode:
+    """Global endpoint for object response mode (default for this client).
+    
+    By default returns GlobalObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return GlobalResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> GlobalResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> GlobalObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GlobalPayload | None = ...,
+        ssl_cert: str | None = ...,
+        ssl_ca_cert: str | None = ...,
+        fast_policy_match: Literal["enable", "disable"] | None = ...,
+        ldap_user_cache: Literal["enable", "disable"] | None = ...,
+        proxy_fqdn: str | None = ...,
+        max_request_length: int | None = ...,
+        max_message_length: int | None = ...,
+        http2_client_window_size: int | None = ...,
+        http2_server_window_size: int | None = ...,
+        auth_sign_timeout: int | None = ...,
+        strict_web_check: Literal["enable", "disable"] | None = ...,
+        forward_proxy_auth: Literal["enable", "disable"] | None = ...,
+        forward_server_affinity_timeout: int | None = ...,
+        max_waf_body_cache_length: int | None = ...,
+        webproxy_profile: str | None = ...,
+        learn_client_ip: Literal["enable", "disable"] | None = ...,
+        always_learn_client_ip: Literal["enable", "disable"] | None = ...,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        src_affinity_exempt_addr: str | list[str] | None = ...,
+        src_affinity_exempt_addr6: str | list[str] | None = ...,
+        policy_partial_match: Literal["enable", "disable"] | None = ...,
+        log_policy_pending: Literal["enable", "disable"] | None = ...,
+        log_forward_server: Literal["enable", "disable"] | None = ...,
+        log_app_id: Literal["enable", "disable"] | None = ...,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = ...,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Global",
+    "GlobalDictMode",
+    "GlobalObjectMode",
     "GlobalPayload",
     "GlobalObject",
 ]

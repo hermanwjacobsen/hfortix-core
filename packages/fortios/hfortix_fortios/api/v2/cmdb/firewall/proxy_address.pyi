@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ProxyAddressPayload(TypedDict, total=False):
     """
     Type hints for firewall/proxy_address payload fields.
@@ -22,29 +26,76 @@ class ProxyAddressPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Address name.
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    type: NotRequired[Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]]  # Proxy address type.
-    host: str  # Address object for the host.
-    host_regex: NotRequired[str]  # Host name as a regular expression.
-    path: NotRequired[str]  # URL path as a regular expression.
-    query: NotRequired[str]  # Match the query part of the URL as a regular expression.
-    referrer: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of referrer field in the HTTP header to m
-    category: NotRequired[list[dict[str, Any]]]  # FortiGuard category ID.
-    method: NotRequired[Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]]  # HTTP request methods to be used.
-    ua: NotRequired[Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]]  # Names of browsers to be used as user agent.
-    ua_min_ver: NotRequired[str]  # Minimum version of the user agent specified in dotted notati
-    ua_max_ver: NotRequired[str]  # Maximum version of the user agent specified in dotted notati
-    header_name: NotRequired[str]  # Name of HTTP header.
-    header: NotRequired[str]  # HTTP header name as a regular expression.
-    case_sensitivity: NotRequired[Literal["disable", "enable"]]  # Enable to make the pattern case sensitive.
-    header_group: NotRequired[list[dict[str, Any]]]  # HTTP header group.
-    color: NotRequired[int]  # Integer value to determine the color of the icon in the GUI
-    tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
-    comment: NotRequired[str]  # Optional comments.
+    name: str  # Address name. | MaxLen: 79
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
+    host: str  # Address object for the host. | MaxLen: 79
+    host_regex: str  # Host name as a regular expression. | MaxLen: 255
+    path: str  # URL path as a regular expression. | MaxLen: 255
+    query: str  # Match the query part of the URL as a regular expre | MaxLen: 255
+    referrer: Literal["enable", "disable"]  # Enable/disable use of referrer field in the HTTP h | Default: disable
+    category: list[dict[str, Any]]  # FortiGuard category ID.
+    method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]  # HTTP request methods to be used.
+    ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]  # Names of browsers to be used as user agent.
+    ua_min_ver: str  # Minimum version of the user agent specified in dot | MaxLen: 63
+    ua_max_ver: str  # Maximum version of the user agent specified in dot | MaxLen: 63
+    header_name: str  # Name of HTTP header. | MaxLen: 79
+    header: str  # HTTP header name as a regular expression. | MaxLen: 255
+    case_sensitivity: Literal["disable", "enable"]  # Enable to make the pattern case sensitive. | Default: disable
+    header_group: list[dict[str, Any]]  # HTTP header group.
+    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
+    tagging: list[dict[str, Any]]  # Config object tagging.
+    comment: str  # Optional comments. | MaxLen: 255
     application: list[dict[str, Any]]  # SaaS application.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ProxyAddressCategoryItem(TypedDict):
+    """Type hints for category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class ProxyAddressHeadergroupItem(TypedDict):
+    """Type hints for header-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    header_name: str  # HTTP header. | MaxLen: 79
+    header: str  # HTTP header regular expression. | MaxLen: 255
+    case_sensitivity: Literal["disable", "enable"]  # Case sensitivity in pattern. | Default: disable
+
+
+class ProxyAddressTaggingItem(TypedDict):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+class ProxyAddressApplicationItem(TypedDict):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # SaaS application name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ProxyAddressCategoryObject:
@@ -54,7 +105,7 @@ class ProxyAddressCategoryObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard category ID.
+    # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
     
     # Methods from FortiObject
@@ -75,13 +126,13 @@ class ProxyAddressHeadergroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # HTTP header.
+    # HTTP header. | MaxLen: 79
     header_name: str
-    # HTTP header regular expression.
+    # HTTP header regular expression. | MaxLen: 255
     header: str
-    # Case sensitivity in pattern.
+    # Case sensitivity in pattern. | Default: disable
     case_sensitivity: Literal["disable", "enable"]
     
     # Methods from FortiObject
@@ -102,9 +153,9 @@ class ProxyAddressTaggingObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Tagging entry name.
+    # Tagging entry name. | MaxLen: 63
     name: str
-    # Tag category.
+    # Tag category. | MaxLen: 63
     category: str
     # Tags.
     tags: str
@@ -127,7 +178,7 @@ class ProxyAddressApplicationObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # SaaS application name.
+    # SaaS application name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -148,27 +199,27 @@ class ProxyAddressResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    uuid: str
-    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]
-    host: str
-    host_regex: str
-    path: str
-    query: str
-    referrer: Literal["enable", "disable"]
-    category: list[dict[str, Any]]
-    method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]
-    ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]
-    ua_min_ver: str
-    ua_max_ver: str
-    header_name: str
-    header: str
-    case_sensitivity: Literal["disable", "enable"]
-    header_group: list[dict[str, Any]]
-    color: int
-    tagging: list[dict[str, Any]]
-    comment: str
-    application: list[dict[str, Any]]
+    name: str  # Address name. | MaxLen: 79
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]  # Proxy address type. | Default: url
+    host: str  # Address object for the host. | MaxLen: 79
+    host_regex: str  # Host name as a regular expression. | MaxLen: 255
+    path: str  # URL path as a regular expression. | MaxLen: 255
+    query: str  # Match the query part of the URL as a regular expre | MaxLen: 255
+    referrer: Literal["enable", "disable"]  # Enable/disable use of referrer field in the HTTP h | Default: disable
+    category: list[ProxyAddressCategoryItem]  # FortiGuard category ID.
+    method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]  # HTTP request methods to be used.
+    ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]  # Names of browsers to be used as user agent.
+    ua_min_ver: str  # Minimum version of the user agent specified in dot | MaxLen: 63
+    ua_max_ver: str  # Maximum version of the user agent specified in dot | MaxLen: 63
+    header_name: str  # Name of HTTP header. | MaxLen: 79
+    header: str  # HTTP header name as a regular expression. | MaxLen: 255
+    case_sensitivity: Literal["disable", "enable"]  # Enable to make the pattern case sensitive. | Default: disable
+    header_group: list[ProxyAddressHeadergroupItem]  # HTTP header group.
+    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
+    tagging: list[ProxyAddressTaggingItem]  # Config object tagging.
+    comment: str  # Optional comments. | MaxLen: 255
+    application: list[ProxyAddressApplicationItem]  # SaaS application.
 
 
 @final
@@ -179,48 +230,48 @@ class ProxyAddressObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Proxy address type.
+    # Proxy address type. | Default: url
     type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]
-    # Address object for the host.
+    # Address object for the host. | MaxLen: 79
     host: str
-    # Host name as a regular expression.
+    # Host name as a regular expression. | MaxLen: 255
     host_regex: str
-    # URL path as a regular expression.
+    # URL path as a regular expression. | MaxLen: 255
     path: str
-    # Match the query part of the URL as a regular expression.
+    # Match the query part of the URL as a regular expression. | MaxLen: 255
     query: str
-    # Enable/disable use of referrer field in the HTTP header to match the address.
+    # Enable/disable use of referrer field in the HTTP header to m | Default: disable
     referrer: Literal["enable", "disable"]
     # FortiGuard category ID.
-    category: list[ProxyAddressCategoryObject]  # Table field - list of typed objects
+    category: list[ProxyAddressCategoryObject]
     # HTTP request methods to be used.
     method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]
     # Names of browsers to be used as user agent.
     ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]
-    # Minimum version of the user agent specified in dotted notation. For example, use
+    # Minimum version of the user agent specified in dotted notati | MaxLen: 63
     ua_min_ver: str
-    # Maximum version of the user agent specified in dotted notation. For example, use
+    # Maximum version of the user agent specified in dotted notati | MaxLen: 63
     ua_max_ver: str
-    # Name of HTTP header.
+    # Name of HTTP header. | MaxLen: 79
     header_name: str
-    # HTTP header name as a regular expression.
+    # HTTP header name as a regular expression. | MaxLen: 255
     header: str
-    # Enable to make the pattern case sensitive.
+    # Enable to make the pattern case sensitive. | Default: disable
     case_sensitivity: Literal["disable", "enable"]
     # HTTP header group.
-    header_group: list[ProxyAddressHeadergroupObject]  # Table field - list of typed objects
-    # Integer value to determine the color of the icon in the GUI
+    header_group: list[ProxyAddressHeadergroupObject]
+    # Integer value to determine the color of the icon in the GUI | Default: 0 | Min: 0 | Max: 32
     color: int
     # Config object tagging.
-    tagging: list[ProxyAddressTaggingObject]  # Table field - list of typed objects
-    # Optional comments.
+    tagging: list[ProxyAddressTaggingObject]
+    # Optional comments. | MaxLen: 255
     comment: str
     # SaaS application.
-    application: list[ProxyAddressApplicationObject]  # Table field - list of typed objects
+    application: list[ProxyAddressApplicationObject]
     
     # Common API response fields
     status: str
@@ -246,8 +297,66 @@ class ProxyAddress:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProxyAddressResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ProxyAddressResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ProxyAddressResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -262,11 +371,12 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -282,11 +392,11 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -301,10 +411,11 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ProxyAddressObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -321,7 +432,7 @@ class ProxyAddress:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -381,7 +492,7 @@ class ProxyAddress:
         **kwargs: Any,
     ) -> list[ProxyAddressResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -396,9 +507,9 @@ class ProxyAddress:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -451,7 +562,7 @@ class ProxyAddress:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
@@ -484,8 +595,9 @@ class ProxyAddress:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -514,7 +626,37 @@ class ProxyAddress:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -544,7 +686,7 @@ class ProxyAddress:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -574,7 +716,7 @@ class ProxyAddress:
         application: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
@@ -607,8 +749,9 @@ class ProxyAddress:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -637,7 +780,37 @@ class ProxyAddress:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -667,7 +840,7 @@ class ProxyAddress:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -676,7 +849,7 @@ class ProxyAddress:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ProxyAddressObject: ...
     
@@ -688,8 +861,9 @@ class ProxyAddress:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -697,7 +871,16 @@ class ProxyAddress:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -705,7 +888,7 @@ class ProxyAddress:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -741,7 +924,7 @@ class ProxyAddress:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -766,8 +949,985 @@ class ProxyAddress:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ProxyAddressDictMode:
+    """ProxyAddress endpoint for dict response mode (default for this client).
+    
+    By default returns ProxyAddressResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ProxyAddressObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ProxyAddressObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ProxyAddressResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProxyAddressResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ProxyAddressObjectMode:
+    """ProxyAddress endpoint for object response mode (default for this client).
+    
+    By default returns ProxyAddressObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ProxyAddressResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ProxyAddressResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ProxyAddressResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ProxyAddressObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ProxyAddressObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ProxyAddressPayload | None = ...,
+        name: str | None = ...,
+        uuid: str | None = ...,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        host: str | None = ...,
+        host_regex: str | None = ...,
+        path: str | None = ...,
+        query: str | None = ...,
+        referrer: Literal["enable", "disable"] | None = ...,
+        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
+        ua_min_ver: str | None = ...,
+        ua_max_ver: str | None = ...,
+        header_name: str | None = ...,
+        header: str | None = ...,
+        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        comment: str | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ProxyAddress",
+    "ProxyAddressDictMode",
+    "ProxyAddressObjectMode",
     "ProxyAddressPayload",
     "ProxyAddressObject",
 ]

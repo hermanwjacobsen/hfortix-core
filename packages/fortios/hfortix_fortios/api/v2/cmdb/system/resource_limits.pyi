@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ResourceLimitsPayload(TypedDict, total=False):
     """
     Type hints for system/resource_limits payload fields.
@@ -13,26 +17,28 @@ class ResourceLimitsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    session: NotRequired[int]  # Maximum number of sessions.
-    ipsec_phase1: NotRequired[int]  # Maximum number of VPN IPsec phase1 tunnels.
-    ipsec_phase2: NotRequired[int]  # Maximum number of VPN IPsec phase2 tunnels.
-    ipsec_phase1_interface: NotRequired[int]  # Maximum number of VPN IPsec phase1 interface tunnels.
-    ipsec_phase2_interface: NotRequired[int]  # Maximum number of VPN IPsec phase2 interface tunnels.
-    dialup_tunnel: NotRequired[int]  # Maximum number of dial-up tunnels.
-    firewall_policy: NotRequired[int]  # Maximum number of firewall policies
-    firewall_address: NotRequired[int]  # Maximum number of firewall addresses (IPv4, IPv6, multicast)
-    firewall_addrgrp: NotRequired[int]  # Maximum number of firewall address groups (IPv4, IPv6).
-    custom_service: NotRequired[int]  # Maximum number of firewall custom services.
-    service_group: NotRequired[int]  # Maximum number of firewall service groups.
-    onetime_schedule: NotRequired[int]  # Maximum number of firewall one-time schedules.
-    recurring_schedule: NotRequired[int]  # Maximum number of firewall recurring schedules.
-    user: NotRequired[int]  # Maximum number of local users.
-    user_group: NotRequired[int]  # Maximum number of user groups.
-    sslvpn: NotRequired[int]  # Maximum number of Agentless VPN.
-    proxy: NotRequired[int]  # Maximum number of concurrent proxy users.
-    log_disk_quota: NotRequired[int]  # Log disk quota in megabytes (MB).
+    session: int  # Maximum number of sessions. | Min: 0 | Max: 4294967295
+    ipsec_phase1: int  # Maximum number of VPN IPsec phase1 tunnels. | Min: 0 | Max: 4294967295
+    ipsec_phase2: int  # Maximum number of VPN IPsec phase2 tunnels. | Min: 0 | Max: 4294967295
+    ipsec_phase1_interface: int  # Maximum number of VPN IPsec phase1 interface tunne | Min: 0 | Max: 4294967295
+    ipsec_phase2_interface: int  # Maximum number of VPN IPsec phase2 interface tunne | Min: 0 | Max: 4294967295
+    dialup_tunnel: int  # Maximum number of dial-up tunnels. | Min: 0 | Max: 4294967295
+    firewall_policy: int  # Maximum number of firewall policies | Min: 0 | Max: 4294967295
+    firewall_address: int  # Maximum number of firewall addresses | Min: 0 | Max: 4294967295
+    firewall_addrgrp: int  # Maximum number of firewall address groups | Min: 0 | Max: 4294967295
+    custom_service: int  # Maximum number of firewall custom services. | Min: 0 | Max: 4294967295
+    service_group: int  # Maximum number of firewall service groups. | Min: 0 | Max: 4294967295
+    onetime_schedule: int  # Maximum number of firewall one-time schedules. | Min: 0 | Max: 4294967295
+    recurring_schedule: int  # Maximum number of firewall recurring schedules. | Min: 0 | Max: 4294967295
+    user: int  # Maximum number of local users. | Min: 0 | Max: 4294967295
+    user_group: int  # Maximum number of user groups. | Min: 0 | Max: 4294967295
+    sslvpn: int  # Maximum number of Agentless VPN. | Min: 0 | Max: 4294967295
+    proxy: int  # Maximum number of concurrent proxy users. | Min: 0 | Max: 4294967295
+    log_disk_quota: int  # Log disk quota in megabytes (MB). | Default: 0 | Min: 0 | Max: 4294967295
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -42,24 +48,24 @@ class ResourceLimitsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    session: int
-    ipsec_phase1: int
-    ipsec_phase2: int
-    ipsec_phase1_interface: int
-    ipsec_phase2_interface: int
-    dialup_tunnel: int
-    firewall_policy: int
-    firewall_address: int
-    firewall_addrgrp: int
-    custom_service: int
-    service_group: int
-    onetime_schedule: int
-    recurring_schedule: int
-    user: int
-    user_group: int
-    sslvpn: int
-    proxy: int
-    log_disk_quota: int
+    session: int  # Maximum number of sessions. | Min: 0 | Max: 4294967295
+    ipsec_phase1: int  # Maximum number of VPN IPsec phase1 tunnels. | Min: 0 | Max: 4294967295
+    ipsec_phase2: int  # Maximum number of VPN IPsec phase2 tunnels. | Min: 0 | Max: 4294967295
+    ipsec_phase1_interface: int  # Maximum number of VPN IPsec phase1 interface tunne | Min: 0 | Max: 4294967295
+    ipsec_phase2_interface: int  # Maximum number of VPN IPsec phase2 interface tunne | Min: 0 | Max: 4294967295
+    dialup_tunnel: int  # Maximum number of dial-up tunnels. | Min: 0 | Max: 4294967295
+    firewall_policy: int  # Maximum number of firewall policies | Min: 0 | Max: 4294967295
+    firewall_address: int  # Maximum number of firewall addresses | Min: 0 | Max: 4294967295
+    firewall_addrgrp: int  # Maximum number of firewall address groups | Min: 0 | Max: 4294967295
+    custom_service: int  # Maximum number of firewall custom services. | Min: 0 | Max: 4294967295
+    service_group: int  # Maximum number of firewall service groups. | Min: 0 | Max: 4294967295
+    onetime_schedule: int  # Maximum number of firewall one-time schedules. | Min: 0 | Max: 4294967295
+    recurring_schedule: int  # Maximum number of firewall recurring schedules. | Min: 0 | Max: 4294967295
+    user: int  # Maximum number of local users. | Min: 0 | Max: 4294967295
+    user_group: int  # Maximum number of user groups. | Min: 0 | Max: 4294967295
+    sslvpn: int  # Maximum number of Agentless VPN. | Min: 0 | Max: 4294967295
+    proxy: int  # Maximum number of concurrent proxy users. | Min: 0 | Max: 4294967295
+    log_disk_quota: int  # Log disk quota in megabytes (MB). | Default: 0 | Min: 0 | Max: 4294967295
 
 
 @final
@@ -70,41 +76,41 @@ class ResourceLimitsObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Maximum number of sessions.
+    # Maximum number of sessions. | Min: 0 | Max: 4294967295
     session: int
-    # Maximum number of VPN IPsec phase1 tunnels.
+    # Maximum number of VPN IPsec phase1 tunnels. | Min: 0 | Max: 4294967295
     ipsec_phase1: int
-    # Maximum number of VPN IPsec phase2 tunnels.
+    # Maximum number of VPN IPsec phase2 tunnels. | Min: 0 | Max: 4294967295
     ipsec_phase2: int
-    # Maximum number of VPN IPsec phase1 interface tunnels.
+    # Maximum number of VPN IPsec phase1 interface tunnels. | Min: 0 | Max: 4294967295
     ipsec_phase1_interface: int
-    # Maximum number of VPN IPsec phase2 interface tunnels.
+    # Maximum number of VPN IPsec phase2 interface tunnels. | Min: 0 | Max: 4294967295
     ipsec_phase2_interface: int
-    # Maximum number of dial-up tunnels.
+    # Maximum number of dial-up tunnels. | Min: 0 | Max: 4294967295
     dialup_tunnel: int
-    # Maximum number of firewall policies
+    # Maximum number of firewall policies | Min: 0 | Max: 4294967295
     firewall_policy: int
-    # Maximum number of firewall addresses (IPv4, IPv6, multicast).
+    # Maximum number of firewall addresses (IPv4, IPv6, multicast) | Min: 0 | Max: 4294967295
     firewall_address: int
-    # Maximum number of firewall address groups (IPv4, IPv6).
+    # Maximum number of firewall address groups (IPv4, IPv6). | Min: 0 | Max: 4294967295
     firewall_addrgrp: int
-    # Maximum number of firewall custom services.
+    # Maximum number of firewall custom services. | Min: 0 | Max: 4294967295
     custom_service: int
-    # Maximum number of firewall service groups.
+    # Maximum number of firewall service groups. | Min: 0 | Max: 4294967295
     service_group: int
-    # Maximum number of firewall one-time schedules.
+    # Maximum number of firewall one-time schedules. | Min: 0 | Max: 4294967295
     onetime_schedule: int
-    # Maximum number of firewall recurring schedules.
+    # Maximum number of firewall recurring schedules. | Min: 0 | Max: 4294967295
     recurring_schedule: int
-    # Maximum number of local users.
+    # Maximum number of local users. | Min: 0 | Max: 4294967295
     user: int
-    # Maximum number of user groups.
+    # Maximum number of user groups. | Min: 0 | Max: 4294967295
     user_group: int
-    # Maximum number of Agentless VPN.
+    # Maximum number of Agentless VPN. | Min: 0 | Max: 4294967295
     sslvpn: int
-    # Maximum number of concurrent proxy users.
+    # Maximum number of concurrent proxy users. | Min: 0 | Max: 4294967295
     proxy: int
-    # Log disk quota in megabytes (MB).
+    # Log disk quota in megabytes (MB). | Default: 0 | Min: 0 | Max: 4294967295
     log_disk_quota: int
     
     # Common API response fields
@@ -130,8 +136,66 @@ class ResourceLimits:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ResourceLimitsResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ResourceLimitsResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ResourceLimitsResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -146,11 +210,12 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -166,11 +231,11 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -185,10 +250,11 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -205,7 +271,7 @@ class ResourceLimits:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -265,7 +331,7 @@ class ResourceLimits:
         **kwargs: Any,
     ) -> ResourceLimitsResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -280,9 +346,9 @@ class ResourceLimits:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -332,7 +398,7 @@ class ResourceLimits:
         log_disk_quota: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ResourceLimitsObject: ...
     
@@ -362,8 +428,9 @@ class ResourceLimits:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -389,7 +456,34 @@ class ResourceLimits:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -416,7 +510,7 @@ class ResourceLimits:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -449,7 +543,7 @@ class ResourceLimits:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -474,8 +568,589 @@ class ResourceLimits:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ResourceLimitsDictMode:
+    """ResourceLimits endpoint for dict response mode (default for this client).
+    
+    By default returns ResourceLimitsResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ResourceLimitsObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ResourceLimitsResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ResourceLimitsResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ResourceLimitsObjectMode:
+    """ResourceLimits endpoint for object response mode (default for this client).
+    
+    By default returns ResourceLimitsObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ResourceLimitsResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ResourceLimitsResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ResourceLimitsResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ResourceLimitsObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ResourceLimitsPayload | None = ...,
+        session: int | None = ...,
+        ipsec_phase1: int | None = ...,
+        ipsec_phase2: int | None = ...,
+        ipsec_phase1_interface: int | None = ...,
+        ipsec_phase2_interface: int | None = ...,
+        dialup_tunnel: int | None = ...,
+        firewall_policy: int | None = ...,
+        firewall_address: int | None = ...,
+        firewall_addrgrp: int | None = ...,
+        custom_service: int | None = ...,
+        service_group: int | None = ...,
+        onetime_schedule: int | None = ...,
+        recurring_schedule: int | None = ...,
+        user: int | None = ...,
+        user_group: int | None = ...,
+        sslvpn: int | None = ...,
+        proxy: int | None = ...,
+        log_disk_quota: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ResourceLimits",
+    "ResourceLimitsDictMode",
+    "ResourceLimitsObjectMode",
     "ResourceLimitsPayload",
     "ResourceLimitsObject",
 ]

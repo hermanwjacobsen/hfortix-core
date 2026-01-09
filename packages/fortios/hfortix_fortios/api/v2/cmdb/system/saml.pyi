@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class SamlPayload(TypedDict, total=False):
     """
     Type hints for system/saml payload fields.
@@ -20,27 +24,50 @@ class SamlPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable SAML authentication (default = disable).
-    role: NotRequired[Literal["identity-provider", "service-provider"]]  # SAML role.
-    default_login_page: Literal["normal", "sso"]  # Choose default login page.
-    default_profile: str  # Default profile for new SSO admin.
-    cert: NotRequired[str]  # Certificate to sign SAML messages.
-    binding_protocol: NotRequired[Literal["post", "redirect"]]  # IdP Binding protocol.
-    portal_url: NotRequired[str]  # SP portal URL.
-    entity_id: str  # SP entity ID.
-    single_sign_on_url: NotRequired[str]  # SP single sign-on URL.
-    single_logout_url: NotRequired[str]  # SP single logout URL.
-    idp_entity_id: NotRequired[str]  # IDP entity ID.
-    idp_single_sign_on_url: NotRequired[str]  # IDP single sign-on URL.
-    idp_single_logout_url: NotRequired[str]  # IDP single logout URL.
-    idp_cert: str  # IDP certificate name.
-    server_address: str  # Server address.
-    require_signed_resp_and_asrt: NotRequired[Literal["enable", "disable"]]  # Require both response and assertion from IDP to be signed wh
-    tolerance: NotRequired[int]  # Tolerance to the range of time when the assertion is valid
-    life: NotRequired[int]  # Length of the range of time when the assertion is valid
-    service_providers: NotRequired[list[dict[str, Any]]]  # Authorized service providers.
+    status: Literal["enable", "disable"]  # Enable/disable SAML authentication | Default: disable
+    role: Literal["identity-provider", "service-provider"]  # SAML role. | Default: service-provider
+    default_login_page: Literal["normal", "sso"]  # Choose default login page. | Default: normal
+    default_profile: str  # Default profile for new SSO admin. | MaxLen: 35
+    cert: str  # Certificate to sign SAML messages. | MaxLen: 35
+    binding_protocol: Literal["post", "redirect"]  # IdP Binding protocol. | Default: redirect
+    portal_url: str  # SP portal URL. | MaxLen: 255
+    entity_id: str  # SP entity ID. | MaxLen: 255
+    single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
+    single_logout_url: str  # SP single logout URL. | MaxLen: 255
+    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
+    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
+    idp_single_logout_url: str  # IDP single logout URL. | MaxLen: 255
+    idp_cert: str  # IDP certificate name. | MaxLen: 35
+    server_address: str  # Server address. | MaxLen: 63
+    require_signed_resp_and_asrt: Literal["enable", "disable"]  # Require both response and assertion from IDP to be | Default: disable
+    tolerance: int  # Tolerance to the range of time when the assertion | Default: 5 | Min: 0 | Max: 4294967295
+    life: int  # Length of the range of time when the assertion is | Default: 30 | Min: 0 | Max: 4294967295
+    service_providers: list[dict[str, Any]]  # Authorized service providers.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class SamlServiceprovidersItem(TypedDict):
+    """Type hints for service-providers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Name. | MaxLen: 35
+    prefix: str  # Prefix. | MaxLen: 35
+    sp_binding_protocol: Literal["post", "redirect"]  # SP binding protocol. | Default: post
+    sp_cert: str  # SP certificate name. | MaxLen: 35
+    sp_entity_id: str  # SP entity ID. | MaxLen: 255
+    sp_single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
+    sp_single_logout_url: str  # SP single logout URL. | MaxLen: 255
+    sp_portal_url: str  # SP portal URL. | MaxLen: 255
+    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
+    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
+    idp_single_logout_url: str  # IDP single logout URL. | MaxLen: 255
+    assertion_attributes: str  # Customized SAML attributes to send along with asse
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class SamlServiceprovidersObject:
@@ -50,27 +77,27 @@ class SamlServiceprovidersObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Prefix.
+    # Prefix. | MaxLen: 35
     prefix: str
-    # SP binding protocol.
+    # SP binding protocol. | Default: post
     sp_binding_protocol: Literal["post", "redirect"]
-    # SP certificate name.
+    # SP certificate name. | MaxLen: 35
     sp_cert: str
-    # SP entity ID.
+    # SP entity ID. | MaxLen: 255
     sp_entity_id: str
-    # SP single sign-on URL.
+    # SP single sign-on URL. | MaxLen: 255
     sp_single_sign_on_url: str
-    # SP single logout URL.
+    # SP single logout URL. | MaxLen: 255
     sp_single_logout_url: str
-    # SP portal URL.
+    # SP portal URL. | MaxLen: 255
     sp_portal_url: str
-    # IDP entity ID.
+    # IDP entity ID. | MaxLen: 255
     idp_entity_id: str
-    # IDP single sign-on URL.
+    # IDP single sign-on URL. | MaxLen: 255
     idp_single_sign_on_url: str
-    # IDP single logout URL.
+    # IDP single logout URL. | MaxLen: 255
     idp_single_logout_url: str
     # Customized SAML attributes to send along with assertion.
     assertion_attributes: str
@@ -93,25 +120,25 @@ class SamlResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    status: Literal["enable", "disable"]
-    role: Literal["identity-provider", "service-provider"]
-    default_login_page: Literal["normal", "sso"]
-    default_profile: str
-    cert: str
-    binding_protocol: Literal["post", "redirect"]
-    portal_url: str
-    entity_id: str
-    single_sign_on_url: str
-    single_logout_url: str
-    idp_entity_id: str
-    idp_single_sign_on_url: str
-    idp_single_logout_url: str
-    idp_cert: str
-    server_address: str
-    require_signed_resp_and_asrt: Literal["enable", "disable"]
-    tolerance: int
-    life: int
-    service_providers: list[dict[str, Any]]
+    status: Literal["enable", "disable"]  # Enable/disable SAML authentication | Default: disable
+    role: Literal["identity-provider", "service-provider"]  # SAML role. | Default: service-provider
+    default_login_page: Literal["normal", "sso"]  # Choose default login page. | Default: normal
+    default_profile: str  # Default profile for new SSO admin. | MaxLen: 35
+    cert: str  # Certificate to sign SAML messages. | MaxLen: 35
+    binding_protocol: Literal["post", "redirect"]  # IdP Binding protocol. | Default: redirect
+    portal_url: str  # SP portal URL. | MaxLen: 255
+    entity_id: str  # SP entity ID. | MaxLen: 255
+    single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
+    single_logout_url: str  # SP single logout URL. | MaxLen: 255
+    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
+    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
+    idp_single_logout_url: str  # IDP single logout URL. | MaxLen: 255
+    idp_cert: str  # IDP certificate name. | MaxLen: 35
+    server_address: str  # Server address. | MaxLen: 63
+    require_signed_resp_and_asrt: Literal["enable", "disable"]  # Require both response and assertion from IDP to be | Default: disable
+    tolerance: int  # Tolerance to the range of time when the assertion | Default: 5 | Min: 0 | Max: 4294967295
+    life: int  # Length of the range of time when the assertion is | Default: 30 | Min: 0 | Max: 4294967295
+    service_providers: list[SamlServiceprovidersItem]  # Authorized service providers.
 
 
 @final
@@ -122,44 +149,44 @@ class SamlObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable SAML authentication (default = disable).
+    # Enable/disable SAML authentication (default = disable). | Default: disable
     status: Literal["enable", "disable"]
-    # SAML role.
+    # SAML role. | Default: service-provider
     role: Literal["identity-provider", "service-provider"]
-    # Choose default login page.
+    # Choose default login page. | Default: normal
     default_login_page: Literal["normal", "sso"]
-    # Default profile for new SSO admin.
+    # Default profile for new SSO admin. | MaxLen: 35
     default_profile: str
-    # Certificate to sign SAML messages.
+    # Certificate to sign SAML messages. | MaxLen: 35
     cert: str
-    # IdP Binding protocol.
+    # IdP Binding protocol. | Default: redirect
     binding_protocol: Literal["post", "redirect"]
-    # SP portal URL.
+    # SP portal URL. | MaxLen: 255
     portal_url: str
-    # SP entity ID.
+    # SP entity ID. | MaxLen: 255
     entity_id: str
-    # SP single sign-on URL.
+    # SP single sign-on URL. | MaxLen: 255
     single_sign_on_url: str
-    # SP single logout URL.
+    # SP single logout URL. | MaxLen: 255
     single_logout_url: str
-    # IDP entity ID.
+    # IDP entity ID. | MaxLen: 255
     idp_entity_id: str
-    # IDP single sign-on URL.
+    # IDP single sign-on URL. | MaxLen: 255
     idp_single_sign_on_url: str
-    # IDP single logout URL.
+    # IDP single logout URL. | MaxLen: 255
     idp_single_logout_url: str
-    # IDP certificate name.
+    # IDP certificate name. | MaxLen: 35
     idp_cert: str
-    # Server address.
+    # Server address. | MaxLen: 63
     server_address: str
-    # Require both response and assertion from IDP to be signed when FGT acts as SP
+    # Require both response and assertion from IDP to be signed wh | Default: disable
     require_signed_resp_and_asrt: Literal["enable", "disable"]
-    # Tolerance to the range of time when the assertion is valid (in minutes).
+    # Tolerance to the range of time when the assertion is valid | Default: 5 | Min: 0 | Max: 4294967295
     tolerance: int
-    # Length of the range of time when the assertion is valid (in minutes).
+    # Length of the range of time when the assertion is valid | Default: 30 | Min: 0 | Max: 4294967295
     life: int
     # Authorized service providers.
-    service_providers: list[SamlServiceprovidersObject]  # Table field - list of typed objects
+    service_providers: list[SamlServiceprovidersObject]
     
     # Common API response fields
     status: str
@@ -184,8 +211,66 @@ class Saml:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SamlResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SamlResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SamlResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -200,11 +285,12 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SamlObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -220,11 +306,11 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SamlObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -239,10 +325,11 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SamlObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -259,7 +346,7 @@ class Saml:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -319,7 +406,7 @@ class Saml:
         **kwargs: Any,
     ) -> SamlResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -334,9 +421,9 @@ class Saml:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -387,7 +474,7 @@ class Saml:
         service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SamlObject: ...
     
@@ -418,8 +505,9 @@ class Saml:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -446,7 +534,35 @@ class Saml:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -474,7 +590,7 @@ class Saml:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -508,7 +624,7 @@ class Saml:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -533,8 +649,600 @@ class Saml:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class SamlDictMode:
+    """Saml endpoint for dict response mode (default for this client).
+    
+    By default returns SamlResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return SamlObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SamlResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SamlResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class SamlObjectMode:
+    """Saml endpoint for object response mode (default for this client).
+    
+    By default returns SamlObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return SamlResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SamlResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SamlResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SamlObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SamlObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SamlPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        role: Literal["identity-provider", "service-provider"] | None = ...,
+        default_login_page: Literal["normal", "sso"] | None = ...,
+        default_profile: str | None = ...,
+        cert: str | None = ...,
+        binding_protocol: Literal["post", "redirect"] | None = ...,
+        portal_url: str | None = ...,
+        entity_id: str | None = ...,
+        single_sign_on_url: str | None = ...,
+        single_logout_url: str | None = ...,
+        idp_entity_id: str | None = ...,
+        idp_single_sign_on_url: str | None = ...,
+        idp_single_logout_url: str | None = ...,
+        idp_cert: str | None = ...,
+        server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
+        tolerance: int | None = ...,
+        life: int | None = ...,
+        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Saml",
+    "SamlDictMode",
+    "SamlObjectMode",
     "SamlPayload",
     "SamlObject",
 ]

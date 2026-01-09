@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class RadiusPayload(TypedDict, total=False):
     """
     Type hints for user/radius payload fields.
@@ -20,69 +24,99 @@ class RadiusPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # RADIUS server entry name.
-    server: str  # Primary RADIUS server CN domain name or IP address.
-    secret: str  # Pre-shared secret key used to access the primary RADIUS serv
-    secondary_server: NotRequired[str]  # Secondary RADIUS CN domain name or IP address.
-    secondary_secret: NotRequired[str]  # Secret key to access the secondary server.
-    tertiary_server: NotRequired[str]  # Tertiary RADIUS CN domain name or IP address.
-    tertiary_secret: NotRequired[str]  # Secret key to access the tertiary server.
-    timeout: NotRequired[int]  # Time in seconds to retry connecting server.
-    status_ttl: NotRequired[int]  # Time for which server reachability is cached so that when a
-    all_usergroup: NotRequired[Literal["disable", "enable"]]  # Enable/disable automatically including this RADIUS server in
-    use_management_vdom: NotRequired[Literal["enable", "disable"]]  # Enable/disable using management VDOM to send requests.
-    switch_controller_nas_ip_dynamic: NotRequired[Literal["enable", "disable"]]  # Enable/Disable switch-controller nas-ip dynamic to dynamical
-    nas_ip: NotRequired[str]  # IP address used to communicate with the RADIUS server and us
-    nas_id_type: NotRequired[Literal["legacy", "custom", "hostname"]]  # NAS identifier type configuration (default = legacy).
-    call_station_id_type: NotRequired[Literal["legacy", "IP", "MAC"]]  # Calling & Called station identifier type configuration
-    nas_id: NotRequired[str]  # Custom NAS identifier.
-    acct_interim_interval: NotRequired[int]  # Time in seconds between each accounting interim update messa
-    radius_coa: NotRequired[Literal["enable", "disable"]]  # Enable to allow a mechanism to change the attributes of an a
-    radius_port: NotRequired[int]  # RADIUS service port number.
-    h3c_compatibility: NotRequired[Literal["enable", "disable"]]  # Enable/disable compatibility with the H3C, a mechanism that
-    auth_type: NotRequired[Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]]  # Authentication methods/protocols permitted for this RADIUS s
-    source_ip: NotRequired[str]  # Source IP address for communications to the RADIUS server.
-    source_ip_interface: NotRequired[str]  # Source interface for communication with the RADIUS server.
-    username_case_sensitive: NotRequired[Literal["enable", "disable"]]  # Enable/disable case sensitive user names.
-    group_override_attr_type: NotRequired[Literal["filter-Id", "class"]]  # RADIUS attribute type to override user group information.
-    password_renewal: NotRequired[Literal["enable", "disable"]]  # Enable/disable password renewal.
-    require_message_authenticator: NotRequired[Literal["enable", "disable"]]  # Require message authenticator in authentication response.
-    password_encoding: NotRequired[Literal["auto", "ISO-8859-1"]]  # Password encoding.
-    mac_username_delimiter: NotRequired[Literal["hyphen", "single-hyphen", "colon", "none"]]  # MAC authentication username delimiter (default = hyphen).
-    mac_password_delimiter: NotRequired[Literal["hyphen", "single-hyphen", "colon", "none"]]  # MAC authentication password delimiter (default = hyphen).
-    mac_case: NotRequired[Literal["uppercase", "lowercase"]]  # MAC authentication case (default = lowercase).
-    acct_all_servers: NotRequired[Literal["enable", "disable"]]  # Enable/disable sending of accounting messages to all configu
-    switch_controller_acct_fast_framedip_detect: NotRequired[int]  # Switch controller accounting message Framed-IP detection fro
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
-    interface: str  # Specify outgoing interface to reach server.
-    vrf_select: NotRequired[int]  # VRF ID used for connection to server.
-    switch_controller_service_type: NotRequired[Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"]]  # RADIUS service type.
-    transport_protocol: NotRequired[Literal["udp", "tcp", "tls"]]  # Transport protocol to be used (default = udp).
-    tls_min_proto_version: NotRequired[Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]]  # Minimum supported protocol version for TLS connections
-    ca_cert: NotRequired[str]  # CA of server to trust under TLS.
-    client_cert: NotRequired[str]  # Client certificate to use under TLS.
-    server_identity_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable RADIUS server identity check
-    account_key_processing: NotRequired[Literal["same", "strip"]]  # Account key processing operation. The FortiGate will keep ei
-    account_key_cert_field: NotRequired[Literal["othername", "rfc822name", "dnsname", "cn"]]  # Define subject identity field in certificate for user access
-    rsso: Literal["enable", "disable"]  # Enable/disable RADIUS based single sign on feature.
-    rsso_radius_server_port: int  # UDP port to listen on for RADIUS Start and Stop records.
-    rsso_radius_response: Literal["enable", "disable"]  # Enable/disable sending RADIUS response packets after receivi
-    rsso_validate_request_secret: Literal["enable", "disable"]  # Enable/disable validating the RADIUS request shared secret i
-    rsso_secret: str  # RADIUS secret used by the RADIUS accounting server.
-    rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attributes used to extract the user end point identif
+    name: str  # RADIUS server entry name. | MaxLen: 35
+    server: str  # Primary RADIUS server CN domain name or IP address | MaxLen: 63
+    secret: str  # Pre-shared secret key used to access the primary R | MaxLen: 128
+    secondary_server: str  # Secondary RADIUS CN domain name or IP address. | MaxLen: 63
+    secondary_secret: str  # Secret key to access the secondary server. | MaxLen: 128
+    tertiary_server: str  # Tertiary RADIUS CN domain name or IP address. | MaxLen: 63
+    tertiary_secret: str  # Secret key to access the tertiary server. | MaxLen: 128
+    timeout: int  # Time in seconds to retry connecting server. | Default: 5 | Min: 1 | Max: 300
+    status_ttl: int  # Time for which server reachability is cached so th | Default: 300 | Min: 0 | Max: 600
+    all_usergroup: Literal["disable", "enable"]  # Enable/disable automatically including this RADIUS | Default: disable
+    use_management_vdom: Literal["enable", "disable"]  # Enable/disable using management VDOM to send reque | Default: disable
+    switch_controller_nas_ip_dynamic: Literal["enable", "disable"]  # Enable/Disable switch-controller nas-ip dynamic to | Default: disable
+    nas_ip: str  # IP address used to communicate with the RADIUS ser | Default: 0.0.0.0
+    nas_id_type: Literal["legacy", "custom", "hostname"]  # NAS identifier type configuration | Default: legacy
+    call_station_id_type: Literal["legacy", "IP", "MAC"]  # Calling & Called station identifier type configura | Default: legacy
+    nas_id: str  # Custom NAS identifier. | MaxLen: 255
+    acct_interim_interval: int  # Time in seconds between each accounting interim up | Default: 0 | Min: 60 | Max: 86400
+    radius_coa: Literal["enable", "disable"]  # Enable to allow a mechanism to change the attribut | Default: disable
+    radius_port: int  # RADIUS service port number. | Default: 0 | Min: 0 | Max: 65535
+    h3c_compatibility: Literal["enable", "disable"]  # Enable/disable compatibility with the H3C, a mecha | Default: disable
+    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]  # Authentication methods/protocols permitted for thi | Default: auto
+    source_ip: str  # Source IP address for communications to the RADIUS | MaxLen: 63
+    source_ip_interface: str  # Source interface for communication with the RADIUS | MaxLen: 15
+    username_case_sensitive: Literal["enable", "disable"]  # Enable/disable case sensitive user names. | Default: disable
+    group_override_attr_type: Literal["filter-Id", "class"]  # RADIUS attribute type to override user group infor
+    password_renewal: Literal["enable", "disable"]  # Enable/disable password renewal. | Default: enable
+    require_message_authenticator: Literal["enable", "disable"]  # Require message authenticator in authentication re | Default: enable
+    password_encoding: Literal["auto", "ISO-8859-1"]  # Password encoding. | Default: auto
+    mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]  # MAC authentication username delimiter | Default: hyphen
+    mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]  # MAC authentication password delimiter | Default: hyphen
+    mac_case: Literal["uppercase", "lowercase"]  # MAC authentication case (default = lowercase). | Default: lowercase
+    acct_all_servers: Literal["enable", "disable"]  # Enable/disable sending of accounting messages to a | Default: disable
+    switch_controller_acct_fast_framedip_detect: int  # Switch controller accounting message Framed-IP det | Default: 2 | Min: 2 | Max: 600
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+    switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"]  # RADIUS service type.
+    transport_protocol: Literal["udp", "tcp", "tls"]  # Transport protocol to be used (default = udp). | Default: udp
+    tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for TLS connect | Default: default
+    ca_cert: str  # CA of server to trust under TLS. | MaxLen: 79
+    client_cert: str  # Client certificate to use under TLS. | MaxLen: 35
+    server_identity_check: Literal["enable", "disable"]  # Enable/disable RADIUS server identity check | Default: enable
+    account_key_processing: Literal["same", "strip"]  # Account key processing operation. The FortiGate wi | Default: same
+    account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]  # Define subject identity field in certificate for u | Default: othername
+    rsso: Literal["enable", "disable"]  # Enable/disable RADIUS based single sign on feature | Default: disable
+    rsso_radius_server_port: int  # UDP port to listen on for RADIUS Start and Stop re | Default: 1813 | Min: 0 | Max: 65535
+    rsso_radius_response: Literal["enable", "disable"]  # Enable/disable sending RADIUS response packets aft | Default: disable
+    rsso_validate_request_secret: Literal["enable", "disable"]  # Enable/disable validating the RADIUS request share | Default: disable
+    rsso_secret: str  # RADIUS secret used by the RADIUS accounting server | MaxLen: 31
+    rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attributes used to extract the user end poi | Default: Calling-Station-Id
     rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attributes used to block a user.
-    sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attribute that contains the profile group name to be
-    sso_attribute_key: NotRequired[str]  # Key prefix for SSO group value in the SSO attribute.
-    sso_attribute_value_override: Literal["enable", "disable"]  # Enable/disable override old attribute value with new value f
-    rsso_context_timeout: int  # Time in seconds before the logged out user is removed from t
-    rsso_log_period: int  # Time interval in seconds that group event log messages will
-    rsso_log_flags: NotRequired[Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]]  # Events to log.
-    rsso_flush_ip_session: NotRequired[Literal["enable", "disable"]]  # Enable/disable flushing user IP sessions on RADIUS accountin
-    rsso_ep_one_ip_only: NotRequired[Literal["enable", "disable"]]  # Enable/disable the replacement of old IP addresses with new
-    delimiter: NotRequired[Literal["plus", "comma"]]  # Configure delimiter to be used for separating profile group
-    accounting_server: NotRequired[list[dict[str, Any]]]  # Additional accounting servers.
+    sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attribute that contains the profile group n | Default: Class
+    sso_attribute_key: str  # Key prefix for SSO group value in the SSO attribut | MaxLen: 35
+    sso_attribute_value_override: Literal["enable", "disable"]  # Enable/disable override old attribute value with n | Default: enable
+    rsso_context_timeout: int  # Time in seconds before the logged out user is remo | Default: 28800 | Min: 0 | Max: 4294967295
+    rsso_log_period: int  # Time interval in seconds that group event log mess | Default: 0 | Min: 0 | Max: 4294967295
+    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
+    rsso_flush_ip_session: Literal["enable", "disable"]  # Enable/disable flushing user IP sessions on RADIUS | Default: disable
+    rsso_ep_one_ip_only: Literal["enable", "disable"]  # Enable/disable the replacement of old IP addresses | Default: disable
+    delimiter: Literal["plus", "comma"]  # Configure delimiter to be used for separating prof | Default: plus
+    accounting_server: list[dict[str, Any]]  # Additional accounting servers.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class RadiusClassItem(TypedDict):
+    """Type hints for class table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Class name. | MaxLen: 79
+
+
+class RadiusAccountingserverItem(TypedDict):
+    """Type hints for accounting-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Status. | Default: disable
+    server: str  # Server CN domain name or IP address. | MaxLen: 63
+    secret: str  # Secret key. | MaxLen: 128
+    port: int  # RADIUS accounting port number. | Default: 0 | Min: 0 | Max: 65535
+    source_ip: str  # Source IP address for communications to the RADIUS | MaxLen: 63
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class RadiusClassObject:
@@ -92,7 +126,7 @@ class RadiusClassObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Class name.
+    # Class name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -113,23 +147,23 @@ class RadiusAccountingserverObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID (0 - 4294967295).
+    # ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Status.
+    # Status. | Default: disable
     status: Literal["enable", "disable"]
-    # Server CN domain name or IP address.
+    # Server CN domain name or IP address. | MaxLen: 63
     server: str
-    # Secret key.
+    # Secret key. | MaxLen: 128
     secret: str
-    # RADIUS accounting port number.
+    # RADIUS accounting port number. | Default: 0 | Min: 0 | Max: 65535
     port: int
-    # Source IP address for communications to the RADIUS server.
+    # Source IP address for communications to the RADIUS server. | MaxLen: 63
     source_ip: str
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server.
+    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
     # Methods from FortiObject
@@ -150,67 +184,67 @@ class RadiusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    server: str
-    secret: str
-    secondary_server: str
-    secondary_secret: str
-    tertiary_server: str
-    tertiary_secret: str
-    timeout: int
-    status_ttl: int
-    all_usergroup: Literal["disable", "enable"]
-    use_management_vdom: Literal["enable", "disable"]
-    switch_controller_nas_ip_dynamic: Literal["enable", "disable"]
-    nas_ip: str
-    nas_id_type: Literal["legacy", "custom", "hostname"]
-    call_station_id_type: Literal["legacy", "IP", "MAC"]
-    nas_id: str
-    acct_interim_interval: int
-    radius_coa: Literal["enable", "disable"]
-    radius_port: int
-    h3c_compatibility: Literal["enable", "disable"]
-    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]
-    source_ip: str
-    source_ip_interface: str
-    username_case_sensitive: Literal["enable", "disable"]
-    group_override_attr_type: Literal["filter-Id", "class"]
-    password_renewal: Literal["enable", "disable"]
-    require_message_authenticator: Literal["enable", "disable"]
-    password_encoding: Literal["auto", "ISO-8859-1"]
-    mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]
-    mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]
-    mac_case: Literal["uppercase", "lowercase"]
-    acct_all_servers: Literal["enable", "disable"]
-    switch_controller_acct_fast_framedip_detect: int
-    interface_select_method: Literal["auto", "sdwan", "specify"]
-    interface: str
-    vrf_select: int
-    switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"]
-    transport_protocol: Literal["udp", "tcp", "tls"]
-    tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    ca_cert: str
-    client_cert: str
-    server_identity_check: Literal["enable", "disable"]
-    account_key_processing: Literal["same", "strip"]
-    account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]
-    rsso: Literal["enable", "disable"]
-    rsso_radius_server_port: int
-    rsso_radius_response: Literal["enable", "disable"]
-    rsso_validate_request_secret: Literal["enable", "disable"]
-    rsso_secret: str
-    rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
-    rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
-    sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
-    sso_attribute_key: str
-    sso_attribute_value_override: Literal["enable", "disable"]
-    rsso_context_timeout: int
-    rsso_log_period: int
-    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]
-    rsso_flush_ip_session: Literal["enable", "disable"]
-    rsso_ep_one_ip_only: Literal["enable", "disable"]
-    delimiter: Literal["plus", "comma"]
-    accounting_server: list[dict[str, Any]]
+    name: str  # RADIUS server entry name. | MaxLen: 35
+    server: str  # Primary RADIUS server CN domain name or IP address | MaxLen: 63
+    secret: str  # Pre-shared secret key used to access the primary R | MaxLen: 128
+    secondary_server: str  # Secondary RADIUS CN domain name or IP address. | MaxLen: 63
+    secondary_secret: str  # Secret key to access the secondary server. | MaxLen: 128
+    tertiary_server: str  # Tertiary RADIUS CN domain name or IP address. | MaxLen: 63
+    tertiary_secret: str  # Secret key to access the tertiary server. | MaxLen: 128
+    timeout: int  # Time in seconds to retry connecting server. | Default: 5 | Min: 1 | Max: 300
+    status_ttl: int  # Time for which server reachability is cached so th | Default: 300 | Min: 0 | Max: 600
+    all_usergroup: Literal["disable", "enable"]  # Enable/disable automatically including this RADIUS | Default: disable
+    use_management_vdom: Literal["enable", "disable"]  # Enable/disable using management VDOM to send reque | Default: disable
+    switch_controller_nas_ip_dynamic: Literal["enable", "disable"]  # Enable/Disable switch-controller nas-ip dynamic to | Default: disable
+    nas_ip: str  # IP address used to communicate with the RADIUS ser | Default: 0.0.0.0
+    nas_id_type: Literal["legacy", "custom", "hostname"]  # NAS identifier type configuration | Default: legacy
+    call_station_id_type: Literal["legacy", "IP", "MAC"]  # Calling & Called station identifier type configura | Default: legacy
+    nas_id: str  # Custom NAS identifier. | MaxLen: 255
+    acct_interim_interval: int  # Time in seconds between each accounting interim up | Default: 0 | Min: 60 | Max: 86400
+    radius_coa: Literal["enable", "disable"]  # Enable to allow a mechanism to change the attribut | Default: disable
+    radius_port: int  # RADIUS service port number. | Default: 0 | Min: 0 | Max: 65535
+    h3c_compatibility: Literal["enable", "disable"]  # Enable/disable compatibility with the H3C, a mecha | Default: disable
+    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]  # Authentication methods/protocols permitted for thi | Default: auto
+    source_ip: str  # Source IP address for communications to the RADIUS | MaxLen: 63
+    source_ip_interface: str  # Source interface for communication with the RADIUS | MaxLen: 15
+    username_case_sensitive: Literal["enable", "disable"]  # Enable/disable case sensitive user names. | Default: disable
+    group_override_attr_type: Literal["filter-Id", "class"]  # RADIUS attribute type to override user group infor
+    password_renewal: Literal["enable", "disable"]  # Enable/disable password renewal. | Default: enable
+    require_message_authenticator: Literal["enable", "disable"]  # Require message authenticator in authentication re | Default: enable
+    password_encoding: Literal["auto", "ISO-8859-1"]  # Password encoding. | Default: auto
+    mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]  # MAC authentication username delimiter | Default: hyphen
+    mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]  # MAC authentication password delimiter | Default: hyphen
+    mac_case: Literal["uppercase", "lowercase"]  # MAC authentication case (default = lowercase). | Default: lowercase
+    acct_all_servers: Literal["enable", "disable"]  # Enable/disable sending of accounting messages to a | Default: disable
+    switch_controller_acct_fast_framedip_detect: int  # Switch controller accounting message Framed-IP det | Default: 2 | Min: 2 | Max: 600
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+    switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"]  # RADIUS service type.
+    transport_protocol: Literal["udp", "tcp", "tls"]  # Transport protocol to be used (default = udp). | Default: udp
+    tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for TLS connect | Default: default
+    ca_cert: str  # CA of server to trust under TLS. | MaxLen: 79
+    client_cert: str  # Client certificate to use under TLS. | MaxLen: 35
+    server_identity_check: Literal["enable", "disable"]  # Enable/disable RADIUS server identity check | Default: enable
+    account_key_processing: Literal["same", "strip"]  # Account key processing operation. The FortiGate wi | Default: same
+    account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]  # Define subject identity field in certificate for u | Default: othername
+    rsso: Literal["enable", "disable"]  # Enable/disable RADIUS based single sign on feature | Default: disable
+    rsso_radius_server_port: int  # UDP port to listen on for RADIUS Start and Stop re | Default: 1813 | Min: 0 | Max: 65535
+    rsso_radius_response: Literal["enable", "disable"]  # Enable/disable sending RADIUS response packets aft | Default: disable
+    rsso_validate_request_secret: Literal["enable", "disable"]  # Enable/disable validating the RADIUS request share | Default: disable
+    rsso_secret: str  # RADIUS secret used by the RADIUS accounting server | MaxLen: 31
+    rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attributes used to extract the user end poi | Default: Calling-Station-Id
+    rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attributes used to block a user.
+    sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]  # RADIUS attribute that contains the profile group n | Default: Class
+    sso_attribute_key: str  # Key prefix for SSO group value in the SSO attribut | MaxLen: 35
+    sso_attribute_value_override: Literal["enable", "disable"]  # Enable/disable override old attribute value with n | Default: enable
+    rsso_context_timeout: int  # Time in seconds before the logged out user is remo | Default: 28800 | Min: 0 | Max: 4294967295
+    rsso_log_period: int  # Time interval in seconds that group event log mess | Default: 0 | Min: 0 | Max: 4294967295
+    rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]  # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
+    rsso_flush_ip_session: Literal["enable", "disable"]  # Enable/disable flushing user IP sessions on RADIUS | Default: disable
+    rsso_ep_one_ip_only: Literal["enable", "disable"]  # Enable/disable the replacement of old IP addresses | Default: disable
+    delimiter: Literal["plus", "comma"]  # Configure delimiter to be used for separating prof | Default: plus
+    accounting_server: list[RadiusAccountingserverItem]  # Additional accounting servers.
 
 
 @final
@@ -221,128 +255,128 @@ class RadiusObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # RADIUS server entry name.
+    # RADIUS server entry name. | MaxLen: 35
     name: str
-    # Primary RADIUS server CN domain name or IP address.
+    # Primary RADIUS server CN domain name or IP address. | MaxLen: 63
     server: str
-    # Pre-shared secret key used to access the primary RADIUS server.
+    # Pre-shared secret key used to access the primary RADIUS serv | MaxLen: 128
     secret: str
-    # Secondary RADIUS CN domain name or IP address.
+    # Secondary RADIUS CN domain name or IP address. | MaxLen: 63
     secondary_server: str
-    # Secret key to access the secondary server.
+    # Secret key to access the secondary server. | MaxLen: 128
     secondary_secret: str
-    # Tertiary RADIUS CN domain name or IP address.
+    # Tertiary RADIUS CN domain name or IP address. | MaxLen: 63
     tertiary_server: str
-    # Secret key to access the tertiary server.
+    # Secret key to access the tertiary server. | MaxLen: 128
     tertiary_secret: str
-    # Time in seconds to retry connecting server.
+    # Time in seconds to retry connecting server. | Default: 5 | Min: 1 | Max: 300
     timeout: int
-    # Time for which server reachability is cached so that when a server is unreachabl
+    # Time for which server reachability is cached so that when a | Default: 300 | Min: 0 | Max: 600
     status_ttl: int
-    # Enable/disable automatically including this RADIUS server in all user groups.
+    # Enable/disable automatically including this RADIUS server in | Default: disable
     all_usergroup: Literal["disable", "enable"]
-    # Enable/disable using management VDOM to send requests.
+    # Enable/disable using management VDOM to send requests. | Default: disable
     use_management_vdom: Literal["enable", "disable"]
-    # Enable/Disable switch-controller nas-ip dynamic to dynamically set nas-ip.
+    # Enable/Disable switch-controller nas-ip dynamic to dynamical | Default: disable
     switch_controller_nas_ip_dynamic: Literal["enable", "disable"]
-    # IP address used to communicate with the RADIUS server and used as NAS-IP-Address
+    # IP address used to communicate with the RADIUS server and us | Default: 0.0.0.0
     nas_ip: str
-    # NAS identifier type configuration (default = legacy).
+    # NAS identifier type configuration (default = legacy). | Default: legacy
     nas_id_type: Literal["legacy", "custom", "hostname"]
-    # Calling & Called station identifier type configuration (default = legacy), this
+    # Calling & Called station identifier type configuration | Default: legacy
     call_station_id_type: Literal["legacy", "IP", "MAC"]
-    # Custom NAS identifier.
+    # Custom NAS identifier. | MaxLen: 255
     nas_id: str
-    # Time in seconds between each accounting interim update message.
+    # Time in seconds between each accounting interim update messa | Default: 0 | Min: 60 | Max: 86400
     acct_interim_interval: int
-    # Enable to allow a mechanism to change the attributes of an authentication, autho
+    # Enable to allow a mechanism to change the attributes of an a | Default: disable
     radius_coa: Literal["enable", "disable"]
-    # RADIUS service port number.
+    # RADIUS service port number. | Default: 0 | Min: 0 | Max: 65535
     radius_port: int
-    # Enable/disable compatibility with the H3C, a mechanism that performs security ch
+    # Enable/disable compatibility with the H3C, a mechanism that | Default: disable
     h3c_compatibility: Literal["enable", "disable"]
-    # Authentication methods/protocols permitted for this RADIUS server.
+    # Authentication methods/protocols permitted for this RADIUS s | Default: auto
     auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]
-    # Source IP address for communications to the RADIUS server.
+    # Source IP address for communications to the RADIUS server. | MaxLen: 63
     source_ip: str
-    # Source interface for communication with the RADIUS server.
+    # Source interface for communication with the RADIUS server. | MaxLen: 15
     source_ip_interface: str
-    # Enable/disable case sensitive user names.
+    # Enable/disable case sensitive user names. | Default: disable
     username_case_sensitive: Literal["enable", "disable"]
     # RADIUS attribute type to override user group information.
     group_override_attr_type: Literal["filter-Id", "class"]
-    # Enable/disable password renewal.
+    # Enable/disable password renewal. | Default: enable
     password_renewal: Literal["enable", "disable"]
-    # Require message authenticator in authentication response.
+    # Require message authenticator in authentication response. | Default: enable
     require_message_authenticator: Literal["enable", "disable"]
-    # Password encoding.
+    # Password encoding. | Default: auto
     password_encoding: Literal["auto", "ISO-8859-1"]
-    # MAC authentication username delimiter (default = hyphen).
+    # MAC authentication username delimiter (default = hyphen). | Default: hyphen
     mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]
-    # MAC authentication password delimiter (default = hyphen).
+    # MAC authentication password delimiter (default = hyphen). | Default: hyphen
     mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"]
-    # MAC authentication case (default = lowercase).
+    # MAC authentication case (default = lowercase). | Default: lowercase
     mac_case: Literal["uppercase", "lowercase"]
-    # Enable/disable sending of accounting messages to all configured servers
+    # Enable/disable sending of accounting messages to all configu | Default: disable
     acct_all_servers: Literal["enable", "disable"]
-    # Switch controller accounting message Framed-IP detection from DHCP snooping
+    # Switch controller accounting message Framed-IP detection fro | Default: 2 | Min: 2 | Max: 600
     switch_controller_acct_fast_framedip_detect: int
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server.
+    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     # RADIUS service type.
     switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"]
-    # Transport protocol to be used (default = udp).
+    # Transport protocol to be used (default = udp). | Default: udp
     transport_protocol: Literal["udp", "tcp", "tls"]
-    # Minimum supported protocol version for TLS connections
+    # Minimum supported protocol version for TLS connections | Default: default
     tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    # CA of server to trust under TLS.
+    # CA of server to trust under TLS. | MaxLen: 79
     ca_cert: str
-    # Client certificate to use under TLS.
+    # Client certificate to use under TLS. | MaxLen: 35
     client_cert: str
-    # Enable/disable RADIUS server identity check
+    # Enable/disable RADIUS server identity check | Default: enable
     server_identity_check: Literal["enable", "disable"]
-    # Account key processing operation. The FortiGate will keep either the whole domai
+    # Account key processing operation. The FortiGate will keep ei | Default: same
     account_key_processing: Literal["same", "strip"]
-    # Define subject identity field in certificate for user access right checking.
+    # Define subject identity field in certificate for user access | Default: othername
     account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"]
-    # Enable/disable RADIUS based single sign on feature.
+    # Enable/disable RADIUS based single sign on feature. | Default: disable
     rsso: Literal["enable", "disable"]
-    # UDP port to listen on for RADIUS Start and Stop records.
+    # UDP port to listen on for RADIUS Start and Stop records. | Default: 1813 | Min: 0 | Max: 65535
     rsso_radius_server_port: int
-    # Enable/disable sending RADIUS response packets after receiving Start and Stop re
+    # Enable/disable sending RADIUS response packets after receivi | Default: disable
     rsso_radius_response: Literal["enable", "disable"]
-    # Enable/disable validating the RADIUS request shared secret in the Start or End r
+    # Enable/disable validating the RADIUS request shared secret i | Default: disable
     rsso_validate_request_secret: Literal["enable", "disable"]
-    # RADIUS secret used by the RADIUS accounting server.
+    # RADIUS secret used by the RADIUS accounting server. | MaxLen: 31
     rsso_secret: str
-    # RADIUS attributes used to extract the user end point identifier from the RADIUS
+    # RADIUS attributes used to extract the user end point identif | Default: Calling-Station-Id
     rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
     # RADIUS attributes used to block a user.
     rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
-    # RADIUS attribute that contains the profile group name to be extracted from the R
+    # RADIUS attribute that contains the profile group name to be | Default: Class
     sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
-    # Key prefix for SSO group value in the SSO attribute.
+    # Key prefix for SSO group value in the SSO attribute. | MaxLen: 35
     sso_attribute_key: str
-    # Enable/disable override old attribute value with new value for the same endpoint
+    # Enable/disable override old attribute value with new value f | Default: enable
     sso_attribute_value_override: Literal["enable", "disable"]
-    # Time in seconds before the logged out user is removed from the "user context lis
+    # Time in seconds before the logged out user is removed from t | Default: 28800 | Min: 0 | Max: 4294967295
     rsso_context_timeout: int
-    # Time interval in seconds that group event log messages will be generated for dyn
+    # Time interval in seconds that group event log messages will | Default: 0 | Min: 0 | Max: 4294967295
     rsso_log_period: int
-    # Events to log.
+    # Events to log. | Default: protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other
     rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"]
-    # Enable/disable flushing user IP sessions on RADIUS accounting Stop messages.
+    # Enable/disable flushing user IP sessions on RADIUS accountin | Default: disable
     rsso_flush_ip_session: Literal["enable", "disable"]
-    # Enable/disable the replacement of old IP addresses with new ones for the same en
+    # Enable/disable the replacement of old IP addresses with new | Default: disable
     rsso_ep_one_ip_only: Literal["enable", "disable"]
-    # Configure delimiter to be used for separating profile group names in the SSO att
+    # Configure delimiter to be used for separating profile group | Default: plus
     delimiter: Literal["plus", "comma"]
     # Additional accounting servers.
-    accounting_server: list[RadiusAccountingserverObject]  # Table field - list of typed objects
+    accounting_server: list[RadiusAccountingserverObject]
     
     # Common API response fields
     status: str
@@ -368,8 +402,66 @@ class Radius:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> RadiusResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> RadiusResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[RadiusResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -384,11 +476,12 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -404,11 +497,11 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -423,10 +516,11 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[RadiusObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -443,7 +537,7 @@ class Radius:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -503,7 +597,7 @@ class Radius:
         **kwargs: Any,
     ) -> list[RadiusResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -518,9 +612,9 @@ class Radius:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -613,7 +707,7 @@ class Radius:
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
     
@@ -686,8 +780,9 @@ class Radius:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -756,7 +851,77 @@ class Radius:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -826,7 +991,7 @@ class Radius:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -896,7 +1061,7 @@ class Radius:
         accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
     
@@ -969,8 +1134,9 @@ class Radius:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -1039,7 +1205,77 @@ class Radius:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -1109,7 +1345,7 @@ class Radius:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -1118,7 +1354,7 @@ class Radius:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> RadiusObject: ...
     
@@ -1130,8 +1366,9 @@ class Radius:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -1139,7 +1376,16 @@ class Radius:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -1147,7 +1393,7 @@ class Radius:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -1223,7 +1469,7 @@ class Radius:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -1248,8 +1494,1785 @@ class Radius:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class RadiusDictMode:
+    """Radius endpoint for dict response mode (default for this client).
+    
+    By default returns RadiusResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return RadiusObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[RadiusObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> RadiusResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[RadiusResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class RadiusObjectMode:
+    """Radius endpoint for object response mode (default for this client).
+    
+    By default returns RadiusObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return RadiusResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> RadiusResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[RadiusResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[RadiusObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> RadiusObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: RadiusPayload | None = ...,
+        name: str | None = ...,
+        server: str | None = ...,
+        secret: str | None = ...,
+        secondary_server: str | None = ...,
+        secondary_secret: str | None = ...,
+        tertiary_server: str | None = ...,
+        tertiary_secret: str | None = ...,
+        timeout: int | None = ...,
+        status_ttl: int | None = ...,
+        all_usergroup: Literal["disable", "enable"] | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        switch_controller_nas_ip_dynamic: Literal["enable", "disable"] | None = ...,
+        nas_ip: str | None = ...,
+        nas_id_type: Literal["legacy", "custom", "hostname"] | None = ...,
+        call_station_id_type: Literal["legacy", "IP", "MAC"] | None = ...,
+        nas_id: str | None = ...,
+        acct_interim_interval: int | None = ...,
+        radius_coa: Literal["enable", "disable"] | None = ...,
+        radius_port: int | None = ...,
+        h3c_compatibility: Literal["enable", "disable"] | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
+        source_ip: str | None = ...,
+        source_ip_interface: str | None = ...,
+        username_case_sensitive: Literal["enable", "disable"] | None = ...,
+        group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
+        password_renewal: Literal["enable", "disable"] | None = ...,
+        require_message_authenticator: Literal["enable", "disable"] | None = ...,
+        password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
+        mac_username_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_password_delimiter: Literal["hyphen", "single-hyphen", "colon", "none"] | None = ...,
+        mac_case: Literal["uppercase", "lowercase"] | None = ...,
+        acct_all_servers: Literal["enable", "disable"] | None = ...,
+        switch_controller_acct_fast_framedip_detect: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        switch_controller_service_type: Literal["login", "framed", "callback-login", "callback-framed", "outbound", "administrative", "nas-prompt", "authenticate-only", "callback-nas-prompt", "call-check", "callback-administrative"] | list[str] | None = ...,
+        transport_protocol: Literal["udp", "tcp", "tls"] | None = ...,
+        tls_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        ca_cert: str | None = ...,
+        client_cert: str | None = ...,
+        server_identity_check: Literal["enable", "disable"] | None = ...,
+        account_key_processing: Literal["same", "strip"] | None = ...,
+        account_key_cert_field: Literal["othername", "rfc822name", "dnsname", "cn"] | None = ...,
+        rsso: Literal["enable", "disable"] | None = ...,
+        rsso_radius_server_port: int | None = ...,
+        rsso_radius_response: Literal["enable", "disable"] | None = ...,
+        rsso_validate_request_secret: Literal["enable", "disable"] | None = ...,
+        rsso_secret: str | None = ...,
+        rsso_endpoint_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        rsso_endpoint_block_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"] | None = ...,
+        sso_attribute_key: str | None = ...,
+        sso_attribute_value_override: Literal["enable", "disable"] | None = ...,
+        rsso_context_timeout: int | None = ...,
+        rsso_log_period: int | None = ...,
+        rsso_log_flags: Literal["protocol-error", "profile-missing", "accounting-stop-missed", "accounting-event", "endpoint-block", "radiusd-other", "none"] | list[str] | None = ...,
+        rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
+        rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
+        delimiter: Literal["plus", "comma"] | None = ...,
+        accounting_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Radius",
+    "RadiusDictMode",
+    "RadiusObjectMode",
     "RadiusPayload",
     "RadiusObject",
 ]

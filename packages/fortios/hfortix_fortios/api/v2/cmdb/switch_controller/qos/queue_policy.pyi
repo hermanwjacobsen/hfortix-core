@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class QueuePolicyPayload(TypedDict, total=False):
     """
     Type hints for switch_controller/qos/queue_policy payload fields.
@@ -13,12 +17,32 @@ class QueuePolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # QoS policy name.
-    schedule: Literal["strict", "round-robin", "weighted"]  # COS queue scheduling.
-    rate_by: Literal["kbps", "percent"]  # COS queue rate by kbps or percent.
-    cos_queue: NotRequired[list[dict[str, Any]]]  # COS queue configuration.
+    name: str  # QoS policy name. | MaxLen: 63
+    schedule: Literal["strict", "round-robin", "weighted"]  # COS queue scheduling. | Default: round-robin
+    rate_by: Literal["kbps", "percent"]  # COS queue rate by kbps or percent. | Default: kbps
+    cos_queue: list[dict[str, Any]]  # COS queue configuration.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class QueuePolicyCosqueueItem(TypedDict):
+    """Type hints for cos-queue table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Cos queue ID. | MaxLen: 63
+    description: str  # Description of the COS queue. | MaxLen: 63
+    min_rate: int  # Minimum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
+    max_rate: int  # Maximum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
+    min_rate_percent: int  # Minimum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
+    max_rate_percent: int  # Maximum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
+    drop_policy: Literal["taildrop", "weighted-random-early-detection"]  # COS queue drop policy. | Default: taildrop
+    ecn: Literal["disable", "enable"]  # Enable/disable ECN packet marking to drop eligible | Default: disable
+    weight: int  # Weight of weighted round robin scheduling. | Default: 1 | Min: 0 | Max: 4294967295
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class QueuePolicyCosqueueObject:
@@ -28,23 +52,23 @@ class QueuePolicyCosqueueObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Cos queue ID.
+    # Cos queue ID. | MaxLen: 63
     name: str
-    # Description of the COS queue.
+    # Description of the COS queue. | MaxLen: 63
     description: str
-    # Minimum rate (0 - 4294967295 kbps, 0 to disable).
+    # Minimum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
     min_rate: int
-    # Maximum rate (0 - 4294967295 kbps, 0 to disable).
+    # Maximum rate (0 - 4294967295 kbps, 0 to disable). | Default: 0 | Min: 0 | Max: 4294967295
     max_rate: int
-    # Minimum rate (% of link speed).
+    # Minimum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
     min_rate_percent: int
-    # Maximum rate (% of link speed).
+    # Maximum rate (% of link speed). | Default: 0 | Min: 0 | Max: 4294967295
     max_rate_percent: int
-    # COS queue drop policy.
+    # COS queue drop policy. | Default: taildrop
     drop_policy: Literal["taildrop", "weighted-random-early-detection"]
-    # Enable/disable ECN packet marking to drop eligible packets.
+    # Enable/disable ECN packet marking to drop eligible packets. | Default: disable
     ecn: Literal["disable", "enable"]
-    # Weight of weighted round robin scheduling.
+    # Weight of weighted round robin scheduling. | Default: 1 | Min: 0 | Max: 4294967295
     weight: int
     
     # Methods from FortiObject
@@ -65,10 +89,10 @@ class QueuePolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    schedule: Literal["strict", "round-robin", "weighted"]
-    rate_by: Literal["kbps", "percent"]
-    cos_queue: list[dict[str, Any]]
+    name: str  # QoS policy name. | MaxLen: 63
+    schedule: Literal["strict", "round-robin", "weighted"]  # COS queue scheduling. | Default: round-robin
+    rate_by: Literal["kbps", "percent"]  # COS queue rate by kbps or percent. | Default: kbps
+    cos_queue: list[QueuePolicyCosqueueItem]  # COS queue configuration.
 
 
 @final
@@ -79,14 +103,14 @@ class QueuePolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # QoS policy name.
+    # QoS policy name. | MaxLen: 63
     name: str
-    # COS queue scheduling.
+    # COS queue scheduling. | Default: round-robin
     schedule: Literal["strict", "round-robin", "weighted"]
-    # COS queue rate by kbps or percent.
+    # COS queue rate by kbps or percent. | Default: kbps
     rate_by: Literal["kbps", "percent"]
     # COS queue configuration.
-    cos_queue: list[QueuePolicyCosqueueObject]  # Table field - list of typed objects
+    cos_queue: list[QueuePolicyCosqueueObject]
     
     # Common API response fields
     status: str
@@ -112,8 +136,66 @@ class QueuePolicy:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> QueuePolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> QueuePolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[QueuePolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -128,11 +210,12 @@ class QueuePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QueuePolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -148,11 +231,11 @@ class QueuePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QueuePolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -167,10 +250,11 @@ class QueuePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[QueuePolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -187,7 +271,7 @@ class QueuePolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -247,7 +331,7 @@ class QueuePolicy:
         **kwargs: Any,
     ) -> list[QueuePolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -262,9 +346,9 @@ class QueuePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -300,7 +384,7 @@ class QueuePolicy:
         cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QueuePolicyObject: ...
     
@@ -316,8 +400,9 @@ class QueuePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -329,7 +414,20 @@ class QueuePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -342,7 +440,7 @@ class QueuePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -355,7 +453,7 @@ class QueuePolicy:
         cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QueuePolicyObject: ...
     
@@ -371,8 +469,9 @@ class QueuePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -384,7 +483,20 @@ class QueuePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -397,7 +509,7 @@ class QueuePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -406,7 +518,7 @@ class QueuePolicy:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> QueuePolicyObject: ...
     
@@ -418,8 +530,9 @@ class QueuePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -427,7 +540,16 @@ class QueuePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -435,7 +557,7 @@ class QueuePolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -454,7 +576,7 @@ class QueuePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -479,8 +601,645 @@ class QueuePolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class QueuePolicyDictMode:
+    """QueuePolicy endpoint for dict response mode (default for this client).
+    
+    By default returns QueuePolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return QueuePolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[QueuePolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> QueuePolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[QueuePolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class QueuePolicyObjectMode:
+    """QueuePolicy endpoint for object response mode (default for this client).
+    
+    By default returns QueuePolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return QueuePolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> QueuePolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[QueuePolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[QueuePolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> QueuePolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: QueuePolicyPayload | None = ...,
+        name: str | None = ...,
+        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
+        rate_by: Literal["kbps", "percent"] | None = ...,
+        cos_queue: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "QueuePolicy",
+    "QueuePolicyDictMode",
+    "QueuePolicyObjectMode",
     "QueuePolicyPayload",
     "QueuePolicyObject",
 ]

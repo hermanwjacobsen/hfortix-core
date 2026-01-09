@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class VneInterfacePayload(TypedDict, total=False):
     """
     Type hints for system/vne_interface payload fields.
@@ -19,19 +23,21 @@ class VneInterfacePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # VNE tunnel name.
-    interface: str  # Interface name.
-    ssl_certificate: str  # Name of local certificate for SSL connections.
-    bmr_hostname: str  # BMR hostname.
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading.
-    ipv4_address: NotRequired[str]  # Tunnel IPv4 address and netmask.
-    br: str  # IPv6 address or FQDN of the border relay.
-    update_url: str  # URL of provisioning server.
-    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode.
-    http_username: NotRequired[str]  # HTTP authentication user name.
-    http_password: NotRequired[str]  # HTTP authentication password.
+    name: str  # VNE tunnel name. | MaxLen: 15
+    interface: str  # Interface name. | MaxLen: 15
+    ssl_certificate: str  # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
+    bmr_hostname: str  # BMR hostname. | MaxLen: 128
+    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading. | Default: enable
+    ipv4_address: str  # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
+    br: str  # IPv6 address or FQDN of the border relay. | MaxLen: 255
+    update_url: str  # URL of provisioning server. | MaxLen: 511
+    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode. | Default: map-e
+    http_username: str  # HTTP authentication user name. | MaxLen: 64
+    http_password: str  # HTTP authentication password. | MaxLen: 128
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -41,17 +47,17 @@ class VneInterfaceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    interface: str
-    ssl_certificate: str
-    bmr_hostname: str
-    auto_asic_offload: Literal["enable", "disable"]
-    ipv4_address: str
-    br: str
-    update_url: str
-    mode: Literal["map-e", "fixed-ip", "ds-lite"]
-    http_username: str
-    http_password: str
+    name: str  # VNE tunnel name. | MaxLen: 15
+    interface: str  # Interface name. | MaxLen: 15
+    ssl_certificate: str  # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
+    bmr_hostname: str  # BMR hostname. | MaxLen: 128
+    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading. | Default: enable
+    ipv4_address: str  # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
+    br: str  # IPv6 address or FQDN of the border relay. | MaxLen: 255
+    update_url: str  # URL of provisioning server. | MaxLen: 511
+    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode. | Default: map-e
+    http_username: str  # HTTP authentication user name. | MaxLen: 64
+    http_password: str  # HTTP authentication password. | MaxLen: 128
 
 
 @final
@@ -62,27 +68,27 @@ class VneInterfaceObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # VNE tunnel name.
+    # VNE tunnel name. | MaxLen: 15
     name: str
-    # Interface name.
+    # Interface name. | MaxLen: 15
     interface: str
-    # Name of local certificate for SSL connections.
+    # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
     ssl_certificate: str
-    # BMR hostname.
+    # BMR hostname. | MaxLen: 128
     bmr_hostname: str
-    # Enable/disable tunnel ASIC offloading.
+    # Enable/disable tunnel ASIC offloading. | Default: enable
     auto_asic_offload: Literal["enable", "disable"]
-    # Tunnel IPv4 address and netmask.
+    # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
     ipv4_address: str
-    # IPv6 address or FQDN of the border relay.
+    # IPv6 address or FQDN of the border relay. | MaxLen: 255
     br: str
-    # URL of provisioning server.
+    # URL of provisioning server. | MaxLen: 511
     update_url: str
-    # VNE tunnel mode.
+    # VNE tunnel mode. | Default: map-e
     mode: Literal["map-e", "fixed-ip", "ds-lite"]
-    # HTTP authentication user name.
+    # HTTP authentication user name. | MaxLen: 64
     http_username: str
-    # HTTP authentication password.
+    # HTTP authentication password. | MaxLen: 128
     http_password: str
     
     # Common API response fields
@@ -109,8 +115,66 @@ class VneInterface:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VneInterfaceResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> VneInterfaceResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[VneInterfaceResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -125,11 +189,12 @@ class VneInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VneInterfaceObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -145,11 +210,11 @@ class VneInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VneInterfaceObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -164,10 +229,11 @@ class VneInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[VneInterfaceObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -184,7 +250,7 @@ class VneInterface:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -244,7 +310,7 @@ class VneInterface:
         **kwargs: Any,
     ) -> list[VneInterfaceResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -259,9 +325,9 @@ class VneInterface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -304,7 +370,7 @@ class VneInterface:
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VneInterfaceObject: ...
     
@@ -327,8 +393,9 @@ class VneInterface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -347,7 +414,27 @@ class VneInterface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -367,7 +454,7 @@ class VneInterface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -387,7 +474,7 @@ class VneInterface:
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VneInterfaceObject: ...
     
@@ -410,8 +497,9 @@ class VneInterface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -430,7 +518,27 @@ class VneInterface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -450,7 +558,7 @@ class VneInterface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -459,7 +567,7 @@ class VneInterface:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> VneInterfaceObject: ...
     
@@ -471,8 +579,9 @@ class VneInterface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -480,7 +589,16 @@ class VneInterface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -488,7 +606,7 @@ class VneInterface:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -514,7 +632,7 @@ class VneInterface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -539,8 +657,785 @@ class VneInterface:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class VneInterfaceDictMode:
+    """VneInterface endpoint for dict response mode (default for this client).
+    
+    By default returns VneInterfaceResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return VneInterfaceObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[VneInterfaceObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> VneInterfaceResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[VneInterfaceResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class VneInterfaceObjectMode:
+    """VneInterface endpoint for object response mode (default for this client).
+    
+    By default returns VneInterfaceObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return VneInterfaceResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> VneInterfaceResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[VneInterfaceResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[VneInterfaceObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> VneInterfaceObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: VneInterfacePayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        ssl_certificate: str | None = ...,
+        bmr_hostname: str | None = ...,
+        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        ipv4_address: str | None = ...,
+        br: str | None = ...,
+        update_url: str | None = ...,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        http_username: str | None = ...,
+        http_password: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "VneInterface",
+    "VneInterfaceDictMode",
+    "VneInterfaceObjectMode",
     "VneInterfacePayload",
     "VneInterfaceObject",
 ]

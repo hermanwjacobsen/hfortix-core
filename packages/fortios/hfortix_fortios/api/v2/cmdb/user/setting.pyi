@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class SettingPayload(TypedDict, total=False):
     """
     Type hints for user/setting payload fields.
@@ -19,32 +23,56 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    auth_type: NotRequired[Literal["http", "https", "ftp", "telnet"]]  # Supported firewall policy authentication protocols/methods.
-    auth_cert: NotRequired[str]  # HTTPS server certificate for policy authentication.
-    auth_ca_cert: NotRequired[str]  # HTTPS CA certificate for policy authentication.
-    auth_secure_http: NotRequired[Literal["enable", "disable"]]  # Enable/disable redirecting HTTP user authentication to more
-    auth_http_basic: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of HTTP basic authentication for identity
-    auth_ssl_allow_renegotiation: NotRequired[Literal["enable", "disable"]]  # Allow/forbid SSL re-negotiation for HTTPS authentication.
-    auth_src_mac: NotRequired[Literal["enable", "disable"]]  # Enable/disable source MAC for user identity.
-    auth_on_demand: NotRequired[Literal["always", "implicitly"]]  # Always/implicitly trigger firewall authentication on demand.
-    auth_timeout: NotRequired[int]  # Time in minutes before the firewall user authentication time
-    auth_timeout_type: NotRequired[Literal["idle-timeout", "hard-timeout", "new-session"]]  # Control if authenticated users have to login again after a h
-    auth_portal_timeout: NotRequired[int]  # Time in minutes before captive portal user have to re-authen
-    radius_ses_timeout_act: NotRequired[Literal["hard-timeout", "ignore-timeout"]]  # Set the RADIUS session timeout to a hard timeout or to ignor
-    auth_blackout_time: NotRequired[int]  # Time in seconds an IP address is denied access after failing
-    auth_invalid_max: NotRequired[int]  # Maximum number of failed authentication attempts before the
-    auth_lockout_threshold: NotRequired[int]  # Maximum number of failed login attempts before login lockout
-    auth_lockout_duration: NotRequired[int]  # Lockout period in seconds after too many login failures.
-    per_policy_disclaimer: NotRequired[Literal["enable", "disable"]]  # Enable/disable per policy disclaimer.
-    auth_ports: NotRequired[list[dict[str, Any]]]  # Set up non-standard ports for authentication with HTTP, HTTP
-    auth_ssl_min_proto_version: NotRequired[Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]]  # Minimum supported protocol version for SSL/TLS connections
-    auth_ssl_max_proto_version: NotRequired[Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]]  # Maximum supported protocol version for SSL/TLS connections
-    auth_ssl_sigalgs: NotRequired[Literal["no-rsa-pss", "all"]]  # Set signature algorithms related to HTTPS authentication
-    default_user_password_policy: NotRequired[str]  # Default password policy to apply to all local users unless o
-    cors: NotRequired[Literal["disable", "enable"]]  # Enable/disable allowed origins white list for CORS.
-    cors_allowed_origins: NotRequired[list[dict[str, Any]]]  # Allowed origins white list for CORS.
+    auth_type: Literal["http", "https", "ftp", "telnet"]  # Supported firewall policy authentication protocols | Default: http https ftp telnet
+    auth_cert: str  # HTTPS server certificate for policy authentication | MaxLen: 35
+    auth_ca_cert: str  # HTTPS CA certificate for policy authentication. | MaxLen: 35
+    auth_secure_http: Literal["enable", "disable"]  # Enable/disable redirecting HTTP user authenticatio | Default: disable
+    auth_http_basic: Literal["enable", "disable"]  # Enable/disable use of HTTP basic authentication fo | Default: disable
+    auth_ssl_allow_renegotiation: Literal["enable", "disable"]  # Allow/forbid SSL re-negotiation for HTTPS authenti | Default: disable
+    auth_src_mac: Literal["enable", "disable"]  # Enable/disable source MAC for user identity. | Default: enable
+    auth_on_demand: Literal["always", "implicitly"]  # Always/implicitly trigger firewall authentication | Default: implicitly
+    auth_timeout: int  # Time in minutes before the firewall user authentic | Default: 5 | Min: 1 | Max: 1440
+    auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"]  # Control if authenticated users have to login again | Default: idle-timeout
+    auth_portal_timeout: int  # Time in minutes before captive portal user have to | Default: 3 | Min: 1 | Max: 30
+    radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"]  # Set the RADIUS session timeout to a hard timeout o | Default: hard-timeout
+    auth_blackout_time: int  # Time in seconds an IP address is denied access aft | Default: 0 | Min: 0 | Max: 3600
+    auth_invalid_max: int  # Maximum number of failed authentication attempts b | Default: 5 | Min: 1 | Max: 100
+    auth_lockout_threshold: int  # Maximum number of failed login attempts before log | Default: 3 | Min: 1 | Max: 10
+    auth_lockout_duration: int  # Lockout period in seconds after too many login fai | Default: 0 | Min: 0 | Max: 4294967295
+    per_policy_disclaimer: Literal["enable", "disable"]  # Enable/disable per policy disclaimer. | Default: disable
+    auth_ports: list[dict[str, Any]]  # Set up non-standard ports for authentication with
+    auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
+    auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]  # Maximum supported protocol version for SSL/TLS con
+    auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]  # Set signature algorithms related to HTTPS authenti | Default: all
+    default_user_password_policy: str  # Default password policy to apply to all local user | MaxLen: 35
+    cors: Literal["disable", "enable"]  # Enable/disable allowed origins white list for CORS | Default: disable
+    cors_allowed_origins: list[dict[str, Any]]  # Allowed origins white list for CORS.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class SettingAuthportsItem(TypedDict):
+    """Type hints for auth-ports table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["http", "https", "ftp", "telnet"]  # Service type. | Default: http
+    port: int  # Non-standard port for firewall user authentication | Default: 1024 | Min: 1 | Max: 65535
+
+
+class SettingCorsallowedoriginsItem(TypedDict):
+    """Type hints for cors-allowed-origins table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Allowed origin for CORS. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class SettingAuthportsObject:
@@ -54,11 +82,11 @@ class SettingAuthportsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Service type.
+    # Service type. | Default: http
     type: Literal["http", "https", "ftp", "telnet"]
-    # Non-standard port for firewall user authentication.
+    # Non-standard port for firewall user authentication. | Default: 1024 | Min: 1 | Max: 65535
     port: int
     
     # Methods from FortiObject
@@ -79,7 +107,7 @@ class SettingCorsallowedoriginsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Allowed origin for CORS.
+    # Allowed origin for CORS. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -100,30 +128,30 @@ class SettingResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    auth_type: Literal["http", "https", "ftp", "telnet"]
-    auth_cert: str
-    auth_ca_cert: str
-    auth_secure_http: Literal["enable", "disable"]
-    auth_http_basic: Literal["enable", "disable"]
-    auth_ssl_allow_renegotiation: Literal["enable", "disable"]
-    auth_src_mac: Literal["enable", "disable"]
-    auth_on_demand: Literal["always", "implicitly"]
-    auth_timeout: int
-    auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"]
-    auth_portal_timeout: int
-    radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"]
-    auth_blackout_time: int
-    auth_invalid_max: int
-    auth_lockout_threshold: int
-    auth_lockout_duration: int
-    per_policy_disclaimer: Literal["enable", "disable"]
-    auth_ports: list[dict[str, Any]]
-    auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]
-    auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]
-    default_user_password_policy: str
-    cors: Literal["disable", "enable"]
-    cors_allowed_origins: list[dict[str, Any]]
+    auth_type: Literal["http", "https", "ftp", "telnet"]  # Supported firewall policy authentication protocols | Default: http https ftp telnet
+    auth_cert: str  # HTTPS server certificate for policy authentication | MaxLen: 35
+    auth_ca_cert: str  # HTTPS CA certificate for policy authentication. | MaxLen: 35
+    auth_secure_http: Literal["enable", "disable"]  # Enable/disable redirecting HTTP user authenticatio | Default: disable
+    auth_http_basic: Literal["enable", "disable"]  # Enable/disable use of HTTP basic authentication fo | Default: disable
+    auth_ssl_allow_renegotiation: Literal["enable", "disable"]  # Allow/forbid SSL re-negotiation for HTTPS authenti | Default: disable
+    auth_src_mac: Literal["enable", "disable"]  # Enable/disable source MAC for user identity. | Default: enable
+    auth_on_demand: Literal["always", "implicitly"]  # Always/implicitly trigger firewall authentication | Default: implicitly
+    auth_timeout: int  # Time in minutes before the firewall user authentic | Default: 5 | Min: 1 | Max: 1440
+    auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"]  # Control if authenticated users have to login again | Default: idle-timeout
+    auth_portal_timeout: int  # Time in minutes before captive portal user have to | Default: 3 | Min: 1 | Max: 30
+    radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"]  # Set the RADIUS session timeout to a hard timeout o | Default: hard-timeout
+    auth_blackout_time: int  # Time in seconds an IP address is denied access aft | Default: 0 | Min: 0 | Max: 3600
+    auth_invalid_max: int  # Maximum number of failed authentication attempts b | Default: 5 | Min: 1 | Max: 100
+    auth_lockout_threshold: int  # Maximum number of failed login attempts before log | Default: 3 | Min: 1 | Max: 10
+    auth_lockout_duration: int  # Lockout period in seconds after too many login fai | Default: 0 | Min: 0 | Max: 4294967295
+    per_policy_disclaimer: Literal["enable", "disable"]  # Enable/disable per policy disclaimer. | Default: disable
+    auth_ports: list[SettingAuthportsItem]  # Set up non-standard ports for authentication with
+    auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
+    auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]  # Maximum supported protocol version for SSL/TLS con
+    auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]  # Set signature algorithms related to HTTPS authenti | Default: all
+    default_user_password_policy: str  # Default password policy to apply to all local user | MaxLen: 35
+    cors: Literal["disable", "enable"]  # Enable/disable allowed origins white list for CORS | Default: disable
+    cors_allowed_origins: list[SettingCorsallowedoriginsItem]  # Allowed origins white list for CORS.
 
 
 @final
@@ -134,54 +162,54 @@ class SettingObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Supported firewall policy authentication protocols/methods.
+    # Supported firewall policy authentication protocols/methods. | Default: http https ftp telnet
     auth_type: Literal["http", "https", "ftp", "telnet"]
-    # HTTPS server certificate for policy authentication.
+    # HTTPS server certificate for policy authentication. | MaxLen: 35
     auth_cert: str
-    # HTTPS CA certificate for policy authentication.
+    # HTTPS CA certificate for policy authentication. | MaxLen: 35
     auth_ca_cert: str
-    # Enable/disable redirecting HTTP user authentication to more secure HTTPS.
+    # Enable/disable redirecting HTTP user authentication to more | Default: disable
     auth_secure_http: Literal["enable", "disable"]
-    # Enable/disable use of HTTP basic authentication for identity-based firewall poli
+    # Enable/disable use of HTTP basic authentication for identity | Default: disable
     auth_http_basic: Literal["enable", "disable"]
-    # Allow/forbid SSL re-negotiation for HTTPS authentication.
+    # Allow/forbid SSL re-negotiation for HTTPS authentication. | Default: disable
     auth_ssl_allow_renegotiation: Literal["enable", "disable"]
-    # Enable/disable source MAC for user identity.
+    # Enable/disable source MAC for user identity. | Default: enable
     auth_src_mac: Literal["enable", "disable"]
-    # Always/implicitly trigger firewall authentication on demand.
+    # Always/implicitly trigger firewall authentication on demand. | Default: implicitly
     auth_on_demand: Literal["always", "implicitly"]
-    # Time in minutes before the firewall user authentication timeout requires the use
+    # Time in minutes before the firewall user authentication time | Default: 5 | Min: 1 | Max: 1440
     auth_timeout: int
-    # Control if authenticated users have to login again after a hard timeout, after a
+    # Control if authenticated users have to login again after a h | Default: idle-timeout
     auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"]
-    # Time in minutes before captive portal user have to re-authenticate
+    # Time in minutes before captive portal user have to re-authen | Default: 3 | Min: 1 | Max: 30
     auth_portal_timeout: int
-    # Set the RADIUS session timeout to a hard timeout or to ignore RADIUS server sess
+    # Set the RADIUS session timeout to a hard timeout or to ignor | Default: hard-timeout
     radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"]
-    # Time in seconds an IP address is denied access after failing to authenticate fiv
+    # Time in seconds an IP address is denied access after failing | Default: 0 | Min: 0 | Max: 3600
     auth_blackout_time: int
-    # Maximum number of failed authentication attempts before the user is blocked.
+    # Maximum number of failed authentication attempts before the | Default: 5 | Min: 1 | Max: 100
     auth_invalid_max: int
-    # Maximum number of failed login attempts before login lockout is triggered.
+    # Maximum number of failed login attempts before login lockout | Default: 3 | Min: 1 | Max: 10
     auth_lockout_threshold: int
-    # Lockout period in seconds after too many login failures.
+    # Lockout period in seconds after too many login failures. | Default: 0 | Min: 0 | Max: 4294967295
     auth_lockout_duration: int
-    # Enable/disable per policy disclaimer.
+    # Enable/disable per policy disclaimer. | Default: disable
     per_policy_disclaimer: Literal["enable", "disable"]
-    # Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.
-    auth_ports: list[SettingAuthportsObject]  # Table field - list of typed objects
-    # Minimum supported protocol version for SSL/TLS connections
+    # Set up non-standard ports for authentication with HTTP, HTTP
+    auth_ports: list[SettingAuthportsObject]
+    # Minimum supported protocol version for SSL/TLS connections | Default: default
     auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    # Maximum supported protocol version for SSL/TLS connections (default is no limit)
+    # Maximum supported protocol version for SSL/TLS connections
     auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]
-    # Set signature algorithms related to HTTPS authentication
+    # Set signature algorithms related to HTTPS authentication | Default: all
     auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]
-    # Default password policy to apply to all local users unless otherwise specified,
+    # Default password policy to apply to all local users unless o | MaxLen: 35
     default_user_password_policy: str
-    # Enable/disable allowed origins white list for CORS.
+    # Enable/disable allowed origins white list for CORS. | Default: disable
     cors: Literal["disable", "enable"]
     # Allowed origins white list for CORS.
-    cors_allowed_origins: list[SettingCorsallowedoriginsObject]  # Table field - list of typed objects
+    cors_allowed_origins: list[SettingCorsallowedoriginsObject]
     
     # Common API response fields
     status: str
@@ -206,8 +234,66 @@ class Setting:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> SettingResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -222,11 +308,12 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -242,11 +329,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -261,10 +348,11 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -281,7 +369,7 @@ class Setting:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -341,7 +429,7 @@ class Setting:
         **kwargs: Any,
     ) -> SettingResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -356,9 +444,9 @@ class Setting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -414,7 +502,7 @@ class Setting:
         cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> SettingObject: ...
     
@@ -450,8 +538,9 @@ class Setting:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -483,7 +572,40 @@ class Setting:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -516,7 +638,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -555,7 +677,7 @@ class Setting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -580,8 +702,655 @@ class Setting:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class SettingDictMode:
+    """Setting endpoint for dict response mode (default for this client).
+    
+    By default returns SettingResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return SettingObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class SettingObjectMode:
+    """Setting endpoint for object response mode (default for this client).
+    
+    By default returns SettingObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return SettingResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> SettingResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> SettingObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: SettingPayload | None = ...,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = ...,
+        auth_cert: str | None = ...,
+        auth_ca_cert: str | None = ...,
+        auth_secure_http: Literal["enable", "disable"] | None = ...,
+        auth_http_basic: Literal["enable", "disable"] | None = ...,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = ...,
+        auth_src_mac: Literal["enable", "disable"] | None = ...,
+        auth_on_demand: Literal["always", "implicitly"] | None = ...,
+        auth_timeout: int | None = ...,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = ...,
+        auth_portal_timeout: int | None = ...,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = ...,
+        auth_blackout_time: int | None = ...,
+        auth_invalid_max: int | None = ...,
+        auth_lockout_threshold: int | None = ...,
+        auth_lockout_duration: int | None = ...,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
+        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
+        default_user_password_policy: str | None = ...,
+        cors: Literal["disable", "enable"] | None = ...,
+        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Setting",
+    "SettingDictMode",
+    "SettingObjectMode",
     "SettingPayload",
     "SettingObject",
 ]

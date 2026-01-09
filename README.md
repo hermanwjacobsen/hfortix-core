@@ -9,11 +9,11 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.6**
+> **⚠️ BETA STATUS - Version 0.5.32**
 >
-> - **Current Version**: 0.5.6 (Released - January 7, 2026)
+> - **Current Version**: 0.5.32 (Released - January 24, 2025)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
-> - **Package Size**: ~45 MB (includes Pydantic models)
+> - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
@@ -51,49 +51,67 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.6 - Major IDE improvements with enhanced query parameters and schema introspection
+**Latest Release:** v0.5.32 - Major improvements in object mode with nested table field wrapping and single object returns
 
 **Test Coverage:** **All 1,065 endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
-**� Latest Improvement (January 6, 2026):**
+**🔥 Latest Improvement (January 24, 2025):**
 
-**Enhanced LOG Endpoints with Modern Patterns:**
-- ✨ **Better Documentation**: Comprehensive docstrings with detailed parameter documentation
-- 🎯 **Modern Type Hints**: Union types for sync/async support
-- 📝 **Query Parameter Docs**: Full documentation for rows, session_id, filter, serial_no parameters
-- 🏗️ **Specialized Generator**: Kept for proper path parameter handling
-- ✅ **Proper Stub Organization**: All .pyi files correctly placed in stubs package only
-- 📊 **Coverage**: 6 log endpoint modules with 38 total endpoints (disk, memory, fortianalyzer, forticloud, search)
+**Enhanced Object Response Mode with Smart Behavior:**
+- ✨ **Single Object Returns**: Querying by mkey now returns single `FortiObject` instead of list
+  - `group = fgt.api.cmdb.firewall.service.group.get(name="test")` → returns `FortiObject` (not `list[FortiObject]`)
+  - Cleaner code: `group.name` instead of `group[0].name`
+- 🎯 **Nested Table Field Wrapping**: Table field members now wrapped in `FortiObject` for attribute access
+  - `group.member[0].name` now works (was: `AttributeError: 'str' object has no attribute 'name'`)
+  - Full attribute access on nested objects while maintaining clean string representation
+- 📝 **Clean String Representation**: Simple objects show user-friendly output
+  - `['port3', 'port4']` instead of `[FortiObject(port3), FortiObject(port4)]`
+  - Improved readability when printing lists of members
+- �️ **Better Type Annotations**: Enhanced IDE support with explicit type hints
+  - `self._api: API = API(wrapped_client)` for better autocomplete
+  - Improved Pylance reliability after sys.path manipulation
 
-**🔥 Recent Highlights (January 2026):**
+**🔥 Recent Highlights (January 2025):**
 
-- � **MAJOR IDE IMPROVEMENTS**: Enhanced query parameters & schema introspection! (January 7, 2026 - v0.5.6)
+- 🚀 **AUTO-NORMALIZATION FOR LIST FIELDS** (v0.5.11): Major usability improvement!
+  - ⚡ **Automatic conversion**: `srcintf="port1"` → `[{'name': 'port1'}]` automatically
+  - 📋 **70+ common fields supported**: srcintf, dstintf, srcaddr, dstaddr, service, poolname, member, etc.
+  - ✨ **Flexible input formats**: Accepts strings, lists of strings, or pre-formatted dicts
+  - 🎯 **Zero learning curve**: Write natural Python code, we handle FortiOS format
+  - Example: `fgt.api.cmdb.firewall.policy.post(name="test", srcintf="any", dstintf="wan1")`
+- 🎨 **INTERACTIVE HELP SYSTEM** (v0.5.22): Discover API capabilities instantly!
+  - 📚 **endpoint.help()**: Shows capabilities, operations, and available methods
+  - 🔍 **endpoint.help("field_name")**: Field-specific help with types, constraints, and options
+  - ✨ **Package-level help**: `from hfortix_fortios import help; help(endpoint)`
+  - Context-aware documentation for CMDB, Monitor, Log, and Service endpoints
+- 🛠️ **FORMATTING UTILITIES** (v0.5.21): Type-agnostic data conversion
+  - 📊 **to_json(data)**: Convert any data to formatted JSON string
+  - 📝 **to_csv(data)**: Convert to comma-separated string
+  - 🔄 **to_dict(data)**: Convert any data to dictionary
+  - 📄 **to_multiline(data)**: Convert to newline-separated string
+  - Available from package root: `from hfortix_fortios import to_csv, to_json`
+  - Available from package root: `from hfortix_fortios import to_csv, to_json`
+- 🔍 **MAJOR IDE IMPROVEMENTS**: Enhanced query parameters & schema introspection! (v0.5.11)
   - ⚡ **get_schema() method**: Runtime access to endpoint schema metadata
   - 🔍 **Advanced filtering**: 18+ operators (==, !=, =@, !@, <=, >=, etc.) with type-safe lists
   - 📊 **Pagination support**: count and start parameters for result limiting
   - 💡 **Enhanced autocomplete**: Full IDE support with inline documentation
   - ✅ 561/561 CMDB endpoints updated with new capabilities
-  - 📚 Comprehensive documentation with 40+ examples
-- �🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (January 7, 2026)
+-  **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (v0.5.11)
   - ⚡ See what resources each endpoint depends on (forward dependencies)
   - 🔍 Field-level mappings: Know which fields reference which endpoints
   - 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
   - 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
   - ✅ All 562 CMDB endpoints include relationship documentation
-- 🎨 **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (January 6, 2026)
+- 🎨 **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (v0.5.18)
   - ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
   - 🛡️ Type safety: Invalid values caught at type-check time
   - 📚 Self-documenting: See all valid options in IDE tooltips
   - ✅ 100% backward compatible - no breaking changes
-- 🎉 **v0.5.4 METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)!
+- 🎉 **METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)! (v0.5.4)
 - ♻️ **CODE DEDUPLICATION**: Eliminated ~160K lines of duplicate metadata methods
 - 📦 **OPTIMIZED PACKAGE**: Two-phase optimization (stub separation + mixin refactoring)
-- 🚀 **v0.5.0 COMPLETE REGENERATION**: All 1,219 endpoints regenerated from scratch!
-- ⚡ **Advanced Generator**: Swagger fallback, smart path conversion, comprehensive error handling
-- 📋 **Log Endpoint Support**: Native parameterized log queries for all 5 destinations
-- 🏗️ **Clean Architecture**: 100% auto-generated code, no hand-written wrappers
-- ✨ **Type Safety**: Complete `.pyi` stub files for all endpoints (perfect autocomplete)
 
 **📖 Documentation:**
 
@@ -511,50 +529,72 @@ fgt.api.cmdb.firewall.address.clone(
 #### **Object Response Mode - Clean Attribute Access** ✨
 - **FortiObject wrapper** for cleaner, more Pythonic code
 - **Attribute access** instead of dict keys: `obj.name` vs `obj["name"]`
-- **Auto-flattening** of member_table fields (list of names instead of list of dicts)
+- **Nested table field wrapping** (v0.5.32) - Full attribute access on nested objects
+- **Single object returns** (v0.5.32) - Querying by mkey returns single object/dict, not list
+- **Dictionary-style access** (v0.5.26) - Both `obj.field` and `obj['field']` work
 - **Full IDE autocomplete** with type stubs for all FortiObject methods
 - **Zero maintenance** - works with any FortiOS version, no schemas required
 
 ```python
 # Traditional dict mode (default)
 fgt = FortiOS(host="...", token="...")
+
+# Query all addresses - returns list of dicts
 addresses = fgt.api.cmdb.firewall.address.get()
 for addr in addresses:
     print(addr["name"])  # Dictionary access - no autocomplete ❌
-    print(addr["subnet"])
+
+# Query by name - returns SINGLE dict (not list) ✨ NEW in v0.5.32!
+addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")
+print(addr["name"])  # Direct access - no need for addr[0]["name"]
 
 # Object mode - Clean attribute access with autocomplete ✨
 fgt = FortiOS(host="...", token="...", response_mode="object")
+
+# Query all - returns list of FortiObjects
 addresses = fgt.api.cmdb.firewall.address.get()
 for addr in addresses:
     print(addr.name)     # Attribute access - full autocomplete ✅
     print(addr.subnet)   # IDE suggests all available fields!
+
+# Query by name - returns SINGLE FortiObject (not list) ✨ NEW in v0.5.32!
+addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")
+print(addr.name)      # Direct access - no need for addr[0].name
+print(addr.subnet)    # Clean and intuitive!
+
+# Nested table field wrapping ✨ NEW in v0.5.32!
+group = fgt.api.cmdb.firewall.service.group.get(name="MyGroup")
+# Access nested members with full attribute support
+for member in group.member:
+    print(member.name)  # ✅ Works! (was: AttributeError before v0.5.32)
     
-    # Member table fields are auto-flattened
-    if hasattr(addr, 'associated_interface'):
-        print(f"Interfaces: {addr.associated_interface}")  # ['port1', 'port2']
+# Both attribute and bracket notation work (v0.5.26)
+print(addr.name)      # ✅ Attribute access
+print(addr['name'])   # ✅ Dictionary-style access
     
-    # Get full structure when needed
-    full_data = addr.get_full('associated_interface')  # [{'name': 'port1'}, ...]
+# Convert back to dict (two ways)
+addr_dict = addr.to_dict()  # Full method
+addr_dict = addr.json       # Shortcut property (v0.5.17+)
     
-    # Convert back to dict (two ways)
-    addr_dict = addr.to_dict()  # Full method
-    addr_dict = addr.json       # Shortcut property (v0.5.17+)
-    
-# Override response_mode per request
+# Override response_mode per request (v0.5.14)
 fgt = FortiOS(host="...", token="...", response_mode="dict")  # Default dict
 addr = fgt.api.cmdb.firewall.address.get(
     name="MyAddress",
     response_mode="object"  # Use object mode for this call
 )
 print(addr.name)  # Attribute access works!
+
+# Keyword argument support (v0.5.31)
+addr = fgt.api.cmdb.firewall.address.get(name="MyAddress")  # ✅ Works
+addr = fgt.api.cmdb.firewall.address.get("MyAddress")        # ✅ Also works
 ```
 
 **Benefits:**
 - ✨ **Full IDE autocomplete** for all FortiObject methods (get_full(), to_dict(), keys(), etc.)
 - 🛡️ **Type safety** - IDE knows exact return types based on response_mode parameter
 - 📝 **Cleaner code** - `addr.name` is more readable than `addr["name"]`
-- 🔄 **Auto-flattening** - Member tables simplified to list of names
+- 🎯 **Consistent behavior** - Both dict and object modes return single item when querying by mkey
+- 🔗 **Nested access** - Full attribute access on table field members
 - 🎯 **Zero maintenance** - No code generation, works with all endpoints
 
 See [examples/fortiobject_autocomplete_demo.py](examples/fortiobject_autocomplete_demo.py) for complete examples.

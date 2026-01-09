@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class InterfacePayload(TypedDict, total=False):
     """
     Type hints for system/interface payload fields.
@@ -27,230 +31,340 @@ class InterfacePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Name.
-    vdom: str  # Interface is in this virtual domain (VDOM).
-    vrf: NotRequired[int]  # Virtual Routing Forwarding ID.
-    cli_conn_status: NotRequired[int]  # CLI connection status.
-    fortilink: NotRequired[Literal["enable", "disable"]]  # Enable FortiLink to dedicate this interface to manage other
-    switch_controller_source_ip: NotRequired[Literal["outbound", "fixed"]]  # Source IP address used in FortiLink over L3 connections.
-    mode: NotRequired[Literal["static", "dhcp", "pppoe"]]  # Addressing mode (static, DHCP, PPPoE).
-    client_options: NotRequired[list[dict[str, Any]]]  # DHCP client options.
-    distance: NotRequired[int]  # Distance for routes learned through PPPoE or DHCP, lower dis
-    priority: NotRequired[int]  # Priority of learned routes.
-    dhcp_relay_interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
-    dhcp_relay_interface: str  # Specify outgoing interface to reach server.
-    dhcp_relay_vrf_select: NotRequired[int]  # VRF ID used for connection to server.
-    dhcp_broadcast_flag: NotRequired[Literal["disable", "enable"]]  # Enable/disable setting of the broadcast flag in messages sen
-    dhcp_relay_service: NotRequired[Literal["disable", "enable"]]  # Enable/disable allowing this interface to act as a DHCP rela
-    dhcp_relay_ip: NotRequired[list[dict[str, Any]]]  # DHCP relay IP address.
-    dhcp_relay_source_ip: NotRequired[str]  # IP address used by the DHCP relay as its source IP.
-    dhcp_relay_circuit_id: NotRequired[str]  # DHCP relay circuit ID.
-    dhcp_relay_link_selection: NotRequired[str]  # DHCP relay link selection.
-    dhcp_relay_request_all_server: NotRequired[Literal["disable", "enable"]]  # Enable/disable sending of DHCP requests to all servers.
-    dhcp_relay_allow_no_end_option: NotRequired[Literal["disable", "enable"]]  # Enable/disable relaying DHCP messages with no end option.
-    dhcp_relay_type: NotRequired[Literal["regular", "ipsec"]]  # DHCP relay type (regular or IPsec).
-    dhcp_smart_relay: NotRequired[Literal["disable", "enable"]]  # Enable/disable DHCP smart relay.
-    dhcp_relay_agent_option: NotRequired[Literal["enable", "disable"]]  # Enable/disable DHCP relay agent option.
-    dhcp_classless_route_addition: NotRequired[Literal["enable", "disable"]]  # Enable/disable addition of classless static routes retrieved
-    management_ip: NotRequired[str]  # High Availability in-band management IP address of this inte
-    ip: NotRequired[str]  # Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.
-    allowaccess: NotRequired[Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]]  # Permitted types of management access to this interface.
-    gwdetect: NotRequired[Literal["enable", "disable"]]  # Enable/disable detect gateway alive for first.
-    ping_serv_status: NotRequired[int]  # PING server status.
-    detectserver: NotRequired[str]  # Gateway's ping server for this IP.
-    detectprotocol: NotRequired[Literal["ping", "tcp-echo", "udp-echo"]]  # Protocols used to detect the server.
-    ha_priority: NotRequired[int]  # HA election priority for the PING server.
-    fail_detect: NotRequired[Literal["enable", "disable"]]  # Enable/disable fail detection features for this interface.
-    fail_detect_option: NotRequired[Literal["detectserver", "link-down"]]  # Options for detecting that this interface has failed.
-    fail_alert_method: NotRequired[Literal["link-failed-signal", "link-down"]]  # Select link-failed-signal or link-down method to alert about
-    fail_action_on_extender: NotRequired[Literal["soft-restart", "hard-restart", "reboot"]]  # Action on FortiExtender when interface fail.
-    fail_alert_interfaces: NotRequired[list[dict[str, Any]]]  # Names of the FortiGate interfaces to which the link failure
-    dhcp_client_identifier: NotRequired[str]  # DHCP client identifier.
-    dhcp_renew_time: NotRequired[int]  # DHCP renew time in seconds (300-604800), 0 means use the ren
-    ipunnumbered: NotRequired[str]  # Unnumbered IP used for PPPoE interfaces for which no unique
-    username: NotRequired[str]  # Username of the PPPoE account, provided by your ISP.
-    pppoe_egress_cos: NotRequired[Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]]  # CoS in VLAN tag for outgoing PPPoE/PPP packets.
-    pppoe_unnumbered_negotiate: NotRequired[Literal["enable", "disable"]]  # Enable/disable PPPoE unnumbered negotiation.
-    password: NotRequired[str]  # PPPoE account's password.
-    idle_timeout: NotRequired[int]  # PPPoE auto disconnect after idle timeout seconds, 0 means no
-    multilink: NotRequired[Literal["enable", "disable"]]  # Enable/disable PPP multilink support.
-    mrru: NotRequired[int]  # PPP MRRU (296 - 65535, default = 1500).
-    detected_peer_mtu: NotRequired[int]  # MTU of detected peer (0 - 4294967295).
-    disc_retry_timeout: NotRequired[int]  # Time in seconds to wait before retrying to start a PPPoE dis
-    padt_retry_timeout: NotRequired[int]  # PPPoE Active Discovery Terminate (PADT) used to terminate se
-    service_name: NotRequired[str]  # PPPoE service name.
-    ac_name: NotRequired[str]  # PPPoE server name.
-    lcp_echo_interval: NotRequired[int]  # Time in seconds between PPPoE Link Control Protocol (LCP) ec
-    lcp_max_echo_fails: NotRequired[int]  # Maximum missed LCP echo messages before disconnect.
-    defaultgw: NotRequired[Literal["enable", "disable"]]  # Enable to get the gateway IP from the DHCP or PPPoE server.
-    dns_server_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable use DNS acquired by DHCP or PPPoE.
-    dns_server_protocol: NotRequired[Literal["cleartext", "dot", "doh"]]  # DNS transport protocols.
-    auth_type: NotRequired[Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]]  # PPP authentication type to use.
-    pptp_client: NotRequired[Literal["enable", "disable"]]  # Enable/disable PPTP client.
-    pptp_user: NotRequired[str]  # PPTP user name.
-    pptp_password: NotRequired[str]  # PPTP password.
-    pptp_server_ip: NotRequired[str]  # PPTP server IP address.
-    pptp_auth_type: NotRequired[Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]]  # PPTP authentication type.
-    pptp_timeout: NotRequired[int]  # Idle timer in minutes (0 for disabled).
-    arpforward: NotRequired[Literal["enable", "disable"]]  # Enable/disable ARP forwarding.
-    ndiscforward: NotRequired[Literal["enable", "disable"]]  # Enable/disable NDISC forwarding.
-    broadcast_forward: NotRequired[Literal["enable", "disable"]]  # Enable/disable broadcast forwarding.
-    bfd: NotRequired[Literal["global", "enable", "disable"]]  # Bidirectional Forwarding Detection (BFD) settings.
-    bfd_desired_min_tx: NotRequired[int]  # BFD desired minimal transmit interval.
-    bfd_detect_mult: NotRequired[int]  # BFD detection multiplier.
-    bfd_required_min_rx: NotRequired[int]  # BFD required minimal receive interval.
-    l2forward: NotRequired[Literal["enable", "disable"]]  # Enable/disable l2 forwarding.
-    icmp_send_redirect: NotRequired[Literal["enable", "disable"]]  # Enable/disable sending of ICMP redirects.
-    icmp_accept_redirect: NotRequired[Literal["enable", "disable"]]  # Enable/disable ICMP accept redirect.
-    reachable_time: NotRequired[int]  # IPv4 reachable time in milliseconds
-    vlanforward: NotRequired[Literal["enable", "disable"]]  # Enable/disable traffic forwarding between VLANs on this inte
-    stpforward: NotRequired[Literal["enable", "disable"]]  # Enable/disable STP forwarding.
-    stpforward_mode: NotRequired[Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"]]  # Configure STP forwarding mode.
-    ips_sniffer_mode: NotRequired[Literal["enable", "disable"]]  # Enable/disable the use of this interface as a one-armed snif
-    ident_accept: NotRequired[Literal["enable", "disable"]]  # Enable/disable authentication for this interface.
-    ipmac: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP/MAC binding.
-    subst: NotRequired[Literal["enable", "disable"]]  # Enable to always send packets from this interface to a desti
-    macaddr: NotRequired[str]  # Change the interface's MAC address.
-    virtual_mac: NotRequired[str]  # Change the interface's virtual MAC address.
-    substitute_dst_mac: NotRequired[str]  # Destination MAC address that all packets are sent to from th
-    speed: NotRequired[Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"]]  # Interface speed. The default setting and the options availab
-    status: NotRequired[Literal["up", "down"]]  # Bring the interface up or shut the interface down.
-    netbios_forward: NotRequired[Literal["disable", "enable"]]  # Enable/disable NETBIOS forwarding.
-    wins_ip: NotRequired[str]  # WINS server IP.
-    type: NotRequired[Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]]  # Interface type.
-    dedicated_to: NotRequired[Literal["none", "management"]]  # Configure interface for single purpose.
-    trust_ip_1: NotRequired[str]  # Trusted host for dedicated management traffic
-    trust_ip_2: NotRequired[str]  # Trusted host for dedicated management traffic
-    trust_ip_3: NotRequired[str]  # Trusted host for dedicated management traffic
-    trust_ip6_1: NotRequired[str]  # Trusted IPv6 host for dedicated management traffic
-    trust_ip6_2: NotRequired[str]  # Trusted IPv6 host for dedicated management traffic
-    trust_ip6_3: NotRequired[str]  # Trusted IPv6 host for dedicated management traffic
-    ring_rx: NotRequired[int]  # RX ring size.
-    ring_tx: NotRequired[int]  # TX ring size.
-    wccp: NotRequired[Literal["enable", "disable"]]  # Enable/disable WCCP on this interface. Used for encapsulated
-    netflow_sampler: NotRequired[Literal["disable", "tx", "rx", "both"]]  # Enable/disable NetFlow on this interface and set the data th
-    netflow_sample_rate: NotRequired[int]  # NetFlow sample rate.  Sample one packet every configured num
-    netflow_sampler_id: NotRequired[int]  # Netflow sampler ID.
-    sflow_sampler: NotRequired[Literal["enable", "disable"]]  # Enable/disable sFlow on this interface.
-    drop_fragment: NotRequired[Literal["enable", "disable"]]  # Enable/disable drop fragment packets.
-    src_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable source IP check.
-    sample_rate: NotRequired[int]  # sFlow sample rate (10 - 99999).
-    polling_interval: NotRequired[int]  # sFlow polling interval in seconds (1 - 255).
-    sample_direction: NotRequired[Literal["tx", "rx", "both"]]  # Data that NetFlow collects (rx, tx, or both).
-    explicit_web_proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable the explicit web proxy on this interface.
-    explicit_ftp_proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable the explicit FTP proxy on this interface.
-    proxy_captive_portal: NotRequired[Literal["enable", "disable"]]  # Enable/disable proxy captive portal on this interface.
-    tcp_mss: NotRequired[int]  # TCP maximum segment size. 0 means do not change segment size
-    inbandwidth: NotRequired[int]  # Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0
-    outbandwidth: NotRequired[int]  # Bandwidth limit for outgoing traffic (0 - 80000000 kbps).
-    egress_shaping_profile: NotRequired[str]  # Outgoing traffic shaping profile.
-    ingress_shaping_profile: NotRequired[str]  # Incoming traffic shaping profile.
-    spillover_threshold: NotRequired[int]  # Egress Spillover threshold (0 - 16776000 kbps), 0 means unli
-    ingress_spillover_threshold: NotRequired[int]  # Ingress Spillover threshold (0 - 16776000 kbps), 0 means unl
-    weight: NotRequired[int]  # Default weight for static routes
-    interface: str  # Interface name.
-    external: NotRequired[Literal["enable", "disable"]]  # Enable/disable identifying the interface as an external inte
-    mtu_override: NotRequired[Literal["enable", "disable"]]  # Enable to set a custom MTU for this interface.
-    mtu: NotRequired[int]  # MTU value for this interface.
-    vlan_protocol: NotRequired[Literal["8021q", "8021ad"]]  # Ethernet protocol of VLAN.
-    vlanid: NotRequired[int]  # VLAN ID (1 - 4094).
-    forward_domain: NotRequired[int]  # Transparent mode forward domain.
-    remote_ip: NotRequired[str]  # Remote IP address of tunnel.
-    member: NotRequired[list[dict[str, Any]]]  # Physical interfaces that belong to the aggregate or redundan
-    lacp_mode: NotRequired[Literal["static", "passive", "active"]]  # LACP mode.
-    lacp_ha_secondary: NotRequired[Literal["enable", "disable"]]  # LACP HA secondary member.
-    system_id_type: NotRequired[Literal["auto", "user"]]  # Method in which system ID is generated.
-    system_id: str  # Define a system ID for the aggregate interface.
-    lacp_speed: NotRequired[Literal["slow", "fast"]]  # How often the interface sends LACP messages.
-    min_links: NotRequired[int]  # Minimum number of aggregated ports that must be up.
-    min_links_down: NotRequired[Literal["operational", "administrative"]]  # Action to take when less than the configured minimum number
-    algorithm: NotRequired[Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]]  # Frame distribution algorithm.
-    link_up_delay: NotRequired[int]  # Number of milliseconds to wait before considering a link is
-    aggregate_type: NotRequired[Literal["physical", "vxlan"]]  # Type of aggregation.
-    priority_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable fail back to higher priority port once recove
-    aggregate: NotRequired[str]  # Aggregate interface.
-    redundant_interface: NotRequired[str]  # Redundant interface.
-    devindex: NotRequired[int]  # Device Index.
-    vindex: NotRequired[int]  # Switch control interface VLAN ID.
-    switch: NotRequired[str]  # Contained in switch.
-    description: NotRequired[str]  # Description.
-    alias: NotRequired[str]  # Alias will be displayed with the interface name to make it e
-    security_mode: NotRequired[Literal["none", "captive-portal", "802.1X"]]  # Turn on captive portal authentication for this interface.
-    security_mac_auth_bypass: NotRequired[Literal["mac-auth-only", "enable", "disable"]]  # Enable/disable MAC authentication bypass.
-    security_ip_auth_bypass: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP authentication bypass.
-    security_external_web: NotRequired[str]  # URL of external authentication web server.
-    security_external_logout: NotRequired[str]  # URL of external authentication logout server.
-    replacemsg_override_group: NotRequired[str]  # Replacement message override group.
-    security_redirect_url: NotRequired[str]  # URL redirection after disclaimer/authentication.
-    auth_cert: NotRequired[str]  # HTTPS server certificate.
-    auth_portal_addr: NotRequired[str]  # Address of captive portal.
-    security_exempt_list: NotRequired[str]  # Name of security-exempt-list.
-    security_groups: NotRequired[list[dict[str, Any]]]  # User groups that can authenticate with the captive portal.
-    ike_saml_server: NotRequired[str]  # Configure IKE authentication SAML server.
-    device_identification: NotRequired[Literal["enable", "disable"]]  # Enable/disable passively gathering of device identity inform
-    exclude_signatures: NotRequired[Literal["iot", "ot"]]  # Exclude IOT or OT application signatures.
-    device_user_identification: NotRequired[Literal["enable", "disable"]]  # Enable/disable passive gathering of user identity informatio
-    lldp_reception: NotRequired[Literal["enable", "disable", "vdom"]]  # Enable/disable Link Layer Discovery Protocol (LLDP) receptio
-    lldp_transmission: NotRequired[Literal["enable", "disable", "vdom"]]  # Enable/disable Link Layer Discovery Protocol (LLDP) transmis
-    lldp_network_policy: NotRequired[str]  # LLDP-MED network policy profile.
-    estimated_upstream_bandwidth: NotRequired[int]  # Estimated maximum upstream bandwidth (kbps). Used to estimat
-    estimated_downstream_bandwidth: NotRequired[int]  # Estimated maximum downstream bandwidth (kbps). Used to estim
-    measured_upstream_bandwidth: NotRequired[int]  # Measured upstream bandwidth (kbps).
-    measured_downstream_bandwidth: NotRequired[int]  # Measured downstream bandwidth (kbps).
-    bandwidth_measure_time: NotRequired[int]  # Bandwidth measure time.
-    monitor_bandwidth: NotRequired[Literal["enable", "disable"]]  # Enable monitoring bandwidth on this interface.
-    vrrp_virtual_mac: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of virtual MAC for VRRP.
-    vrrp: NotRequired[list[dict[str, Any]]]  # VRRP configuration.
-    phy_setting: NotRequired[str]  # PHY settings
-    role: NotRequired[Literal["lan", "wan", "dmz", "undefined"]]  # Interface role.
-    snmp_index: NotRequired[int]  # Permanent SNMP Index of the interface.
-    secondary_IP: NotRequired[Literal["enable", "disable"]]  # Enable/disable adding a secondary IP to this interface.
-    secondaryip: NotRequired[list[dict[str, Any]]]  # Second IP address of interface.
-    preserve_session_route: NotRequired[Literal["enable", "disable"]]  # Enable/disable preservation of session route when dirty.
-    auto_auth_extension_device: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic authorization of dedicated Fortinet
-    ap_discover: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic registration of unknown FortiAP dev
-    fortilink_neighbor_detect: NotRequired[Literal["lldp", "fortilink"]]  # Protocol for FortiGate neighbor discovery.
-    ip_managed_by_fortiipam: NotRequired[Literal["inherit-global", "enable", "disable"]]  # Enable/disable automatic IP address assignment of this inter
-    managed_subnetwork_size: NotRequired[Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"]]  # Number of IP addresses to be allocated by FortiIPAM and used
-    fortilink_split_interface: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiLink split interface to connect member l
-    internal: NotRequired[int]  # Implicitly created.
-    fortilink_backup_link: NotRequired[int]  # FortiLink split interface backup link.
-    switch_controller_access_vlan: NotRequired[Literal["enable", "disable"]]  # Block FortiSwitch port-to-port traffic.
-    switch_controller_traffic_policy: NotRequired[str]  # Switch controller traffic policy for the VLAN.
-    switch_controller_rspan_mode: NotRequired[Literal["disable", "enable"]]  # Stop Layer2 MAC learning and interception of BPDUs and other
-    switch_controller_netflow_collect: NotRequired[Literal["disable", "enable"]]  # NetFlow collection and processing.
-    switch_controller_mgmt_vlan: NotRequired[int]  # VLAN to use for FortiLink management purposes.
-    switch_controller_igmp_snooping: NotRequired[Literal["enable", "disable"]]  # Switch controller IGMP snooping.
-    switch_controller_igmp_snooping_proxy: NotRequired[Literal["enable", "disable"]]  # Switch controller IGMP snooping proxy.
-    switch_controller_igmp_snooping_fast_leave: NotRequired[Literal["enable", "disable"]]  # Switch controller IGMP snooping fast-leave.
-    switch_controller_dhcp_snooping: NotRequired[Literal["enable", "disable"]]  # Switch controller DHCP snooping.
-    switch_controller_dhcp_snooping_verify_mac: NotRequired[Literal["enable", "disable"]]  # Switch controller DHCP snooping verify MAC.
-    switch_controller_dhcp_snooping_option82: NotRequired[Literal["enable", "disable"]]  # Switch controller DHCP snooping option82.
-    dhcp_snooping_server_list: NotRequired[list[dict[str, Any]]]  # Configure DHCP server access list.
-    switch_controller_arp_inspection: NotRequired[Literal["enable", "disable", "monitor"]]  # Enable/disable/Monitor FortiSwitch ARP inspection.
-    switch_controller_learning_limit: NotRequired[int]  # Limit the number of dynamic MAC addresses on this VLAN
-    switch_controller_nac: NotRequired[str]  # Integrated FortiLink settings for managed FortiSwitch.
-    switch_controller_dynamic: NotRequired[str]  # Integrated FortiLink settings for managed FortiSwitch.
-    switch_controller_feature: NotRequired[Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"]]  # Interface's purpose when assigning traffic (read only).
-    switch_controller_iot_scanning: NotRequired[Literal["enable", "disable"]]  # Enable/disable managed FortiSwitch IoT scanning.
-    switch_controller_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable managed FortiSwitch routing offload.
-    switch_controller_offload_ip: NotRequired[str]  # IP for routing offload on FortiSwitch.
-    switch_controller_offload_gw: NotRequired[Literal["enable", "disable"]]  # Enable/disable managed FortiSwitch routing offload gateway.
-    swc_vlan: NotRequired[int]  # Creation status for switch-controller VLANs.
-    swc_first_create: NotRequired[int]  # Initial create for switch-controller VLANs.
-    color: NotRequired[int]  # Color of icon on the GUI.
-    tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
-    eap_supplicant: NotRequired[Literal["enable", "disable"]]  # Enable/disable EAP-Supplicant.
-    eap_method: NotRequired[Literal["tls", "peap"]]  # EAP method.
-    eap_identity: NotRequired[str]  # EAP identity.
-    eap_password: NotRequired[str]  # EAP password.
-    eap_ca_cert: NotRequired[str]  # EAP CA certificate name.
-    eap_user_cert: NotRequired[str]  # EAP user certificate name.
-    default_purdue_level: NotRequired[Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]]  # default purdue level of device detected on this interface.
-    ipv6: NotRequired[str]  # IPv6 of interface.
-    physical: NotRequired[str]  # Print physical interface information.
+    name: str  # Name. | MaxLen: 15
+    vdom: str  # Interface is in this virtual domain (VDOM). | MaxLen: 31
+    vrf: int  # Virtual Routing Forwarding ID. | Default: 0 | Min: 0 | Max: 511
+    cli_conn_status: int  # CLI connection status. | Default: 0 | Min: 0 | Max: 4294967295
+    fortilink: Literal["enable", "disable"]  # Enable FortiLink to dedicate this interface to man | Default: disable
+    switch_controller_source_ip: Literal["outbound", "fixed"]  # Source IP address used in FortiLink over L3 connec | Default: outbound
+    mode: Literal["static", "dhcp", "pppoe"]  # Addressing mode (static, DHCP, PPPoE). | Default: static
+    client_options: list[dict[str, Any]]  # DHCP client options.
+    distance: int  # Distance for routes learned through PPPoE or DHCP, | Default: 5 | Min: 1 | Max: 255
+    priority: int  # Priority of learned routes. | Default: 1 | Min: 1 | Max: 65535
+    dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    dhcp_relay_interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    dhcp_relay_vrf_select: int  # VRF ID used for connection to server. | Default: -1 | Min: 0 | Max: 511
+    dhcp_broadcast_flag: Literal["disable", "enable"]  # Enable/disable setting of the broadcast flag in me | Default: enable
+    dhcp_relay_service: Literal["disable", "enable"]  # Enable/disable allowing this interface to act as a | Default: disable
+    dhcp_relay_ip: list[dict[str, Any]]  # DHCP relay IP address.
+    dhcp_relay_source_ip: str  # IP address used by the DHCP relay as its source IP | Default: 0.0.0.0
+    dhcp_relay_circuit_id: str  # DHCP relay circuit ID. | MaxLen: 64
+    dhcp_relay_link_selection: str  # DHCP relay link selection. | Default: 0.0.0.0
+    dhcp_relay_request_all_server: Literal["disable", "enable"]  # Enable/disable sending of DHCP requests to all ser | Default: disable
+    dhcp_relay_allow_no_end_option: Literal["disable", "enable"]  # Enable/disable relaying DHCP messages with no end | Default: disable
+    dhcp_relay_type: Literal["regular", "ipsec"]  # DHCP relay type (regular or IPsec). | Default: regular
+    dhcp_smart_relay: Literal["disable", "enable"]  # Enable/disable DHCP smart relay. | Default: disable
+    dhcp_relay_agent_option: Literal["enable", "disable"]  # Enable/disable DHCP relay agent option. | Default: enable
+    dhcp_classless_route_addition: Literal["enable", "disable"]  # Enable/disable addition of classless static routes | Default: enable
+    management_ip: str  # High Availability in-band management IP address of | Default: 0.0.0.0 0.0.0.0
+    ip: str  # Interface IPv4 address and subnet mask, syntax: X. | Default: 0.0.0.0 0.0.0.0
+    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]  # Permitted types of management access to this inter
+    gwdetect: Literal["enable", "disable"]  # Enable/disable detect gateway alive for first. | Default: disable
+    ping_serv_status: int  # PING server status. | Default: 0 | Min: 0 | Max: 255
+    detectserver: str  # Gateway's ping server for this IP.
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]  # Protocols used to detect the server. | Default: ping
+    ha_priority: int  # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
+    fail_detect: Literal["enable", "disable"]  # Enable/disable fail detection features for this in | Default: disable
+    fail_detect_option: Literal["detectserver", "link-down"]  # Options for detecting that this interface has fail | Default: link-down
+    fail_alert_method: Literal["link-failed-signal", "link-down"]  # Select link-failed-signal or link-down method to a | Default: link-down
+    fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]  # Action on FortiExtender when interface fail. | Default: soft-restart
+    fail_alert_interfaces: list[dict[str, Any]]  # Names of the FortiGate interfaces to which the lin
+    dhcp_client_identifier: str  # DHCP client identifier. | MaxLen: 48
+    dhcp_renew_time: int  # DHCP renew time in seconds (300-604800), 0 means u | Default: 0 | Min: 300 | Max: 604800
+    ipunnumbered: str  # Unnumbered IP used for PPPoE interfaces for which | Default: 0.0.0.0
+    username: str  # Username of the PPPoE account, provided by your IS | MaxLen: 64
+    pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]  # CoS in VLAN tag for outgoing PPPoE/PPP packets. | Default: cos0
+    pppoe_unnumbered_negotiate: Literal["enable", "disable"]  # Enable/disable PPPoE unnumbered negotiation. | Default: enable
+    password: str  # PPPoE account's password. | MaxLen: 128
+    idle_timeout: int  # PPPoE auto disconnect after idle timeout seconds, | Default: 0 | Min: 0 | Max: 32767
+    multilink: Literal["enable", "disable"]  # Enable/disable PPP multilink support. | Default: disable
+    mrru: int  # PPP MRRU (296 - 65535, default = 1500). | Default: 1500 | Min: 296 | Max: 65535
+    detected_peer_mtu: int  # MTU of detected peer (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    disc_retry_timeout: int  # Time in seconds to wait before retrying to start a | Default: 1 | Min: 0 | Max: 4294967295
+    padt_retry_timeout: int  # PPPoE Active Discovery Terminate (PADT) used to te | Default: 1 | Min: 0 | Max: 4294967295
+    service_name: str  # PPPoE service name. | MaxLen: 63
+    ac_name: str  # PPPoE server name. | MaxLen: 63
+    lcp_echo_interval: int  # Time in seconds between PPPoE Link Control Protoco | Default: 5 | Min: 0 | Max: 32767
+    lcp_max_echo_fails: int  # Maximum missed LCP echo messages before disconnect | Default: 3 | Min: 0 | Max: 32767
+    defaultgw: Literal["enable", "disable"]  # Enable to get the gateway IP from the DHCP or PPPo | Default: enable
+    dns_server_override: Literal["enable", "disable"]  # Enable/disable use DNS acquired by DHCP or PPPoE. | Default: enable
+    dns_server_protocol: Literal["cleartext", "dot", "doh"]  # DNS transport protocols. | Default: cleartext
+    auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]  # PPP authentication type to use. | Default: auto
+    pptp_client: Literal["enable", "disable"]  # Enable/disable PPTP client. | Default: disable
+    pptp_user: str  # PPTP user name. | MaxLen: 64
+    pptp_password: str  # PPTP password. | MaxLen: 128
+    pptp_server_ip: str  # PPTP server IP address. | Default: 0.0.0.0
+    pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]  # PPTP authentication type. | Default: auto
+    pptp_timeout: int  # Idle timer in minutes (0 for disabled). | Default: 0 | Min: 0 | Max: 65535
+    arpforward: Literal["enable", "disable"]  # Enable/disable ARP forwarding. | Default: enable
+    ndiscforward: Literal["enable", "disable"]  # Enable/disable NDISC forwarding. | Default: enable
+    broadcast_forward: Literal["enable", "disable"]  # Enable/disable broadcast forwarding. | Default: disable
+    bfd: Literal["global", "enable", "disable"]  # Bidirectional Forwarding Detection (BFD) settings. | Default: global
+    bfd_desired_min_tx: int  # BFD desired minimal transmit interval. | Default: 250 | Min: 1 | Max: 100000
+    bfd_detect_mult: int  # BFD detection multiplier. | Default: 3 | Min: 1 | Max: 50
+    bfd_required_min_rx: int  # BFD required minimal receive interval. | Default: 250 | Min: 1 | Max: 100000
+    l2forward: Literal["enable", "disable"]  # Enable/disable l2 forwarding. | Default: disable
+    icmp_send_redirect: Literal["enable", "disable"]  # Enable/disable sending of ICMP redirects. | Default: enable
+    icmp_accept_redirect: Literal["enable", "disable"]  # Enable/disable ICMP accept redirect. | Default: enable
+    reachable_time: int  # IPv4 reachable time in milliseconds | Default: 30000 | Min: 30000 | Max: 3600000
+    vlanforward: Literal["enable", "disable"]  # Enable/disable traffic forwarding between VLANs on | Default: disable
+    stpforward: Literal["enable", "disable"]  # Enable/disable STP forwarding. | Default: disable
+    stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"]  # Configure STP forwarding mode. | Default: rpl-all-ext-id
+    ips_sniffer_mode: Literal["enable", "disable"]  # Enable/disable the use of this interface as a one- | Default: disable
+    ident_accept: Literal["enable", "disable"]  # Enable/disable authentication for this interface. | Default: disable
+    ipmac: Literal["enable", "disable"]  # Enable/disable IP/MAC binding. | Default: disable
+    subst: Literal["enable", "disable"]  # Enable to always send packets from this interface | Default: disable
+    macaddr: str  # Change the interface's MAC address. | Default: 00:00:00:00:00:00
+    virtual_mac: str  # Change the interface's virtual MAC address. | Default: 00:00:00:00:00:00
+    substitute_dst_mac: str  # Destination MAC address that all packets are sent | Default: 00:00:00:00:00:00
+    speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"]  # Interface speed. The default setting and the optio | Default: auto
+    status: Literal["up", "down"]  # Bring the interface up or shut the interface down. | Default: up
+    netbios_forward: Literal["disable", "enable"]  # Enable/disable NETBIOS forwarding. | Default: disable
+    wins_ip: str  # WINS server IP. | Default: 0.0.0.0
+    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
+    dedicated_to: Literal["none", "management"]  # Configure interface for single purpose. | Default: none
+    trust_ip_1: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip_2: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip_3: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip6_1: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    trust_ip6_2: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    trust_ip6_3: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    ring_rx: int  # RX ring size. | Default: 0 | Min: 0 | Max: 4294967295
+    ring_tx: int  # TX ring size. | Default: 0 | Min: 0 | Max: 4294967295
+    wccp: Literal["enable", "disable"]  # Enable/disable WCCP on this interface. Used for en | Default: disable
+    netflow_sampler: Literal["disable", "tx", "rx", "both"]  # Enable/disable NetFlow on this interface and set t | Default: disable
+    netflow_sample_rate: int  # NetFlow sample rate.  Sample one packet every conf | Default: 1 | Min: 1 | Max: 65535
+    netflow_sampler_id: int  # Netflow sampler ID. | Default: 0 | Min: 1 | Max: 254
+    sflow_sampler: Literal["enable", "disable"]  # Enable/disable sFlow on this interface. | Default: disable
+    drop_fragment: Literal["enable", "disable"]  # Enable/disable drop fragment packets. | Default: disable
+    src_check: Literal["enable", "disable"]  # Enable/disable source IP check. | Default: enable
+    sample_rate: int  # sFlow sample rate (10 - 99999). | Default: 2000 | Min: 10 | Max: 99999
+    polling_interval: int  # sFlow polling interval in seconds (1 - 255). | Default: 20 | Min: 1 | Max: 255
+    sample_direction: Literal["tx", "rx", "both"]  # Data that NetFlow collects (rx, tx, or both). | Default: both
+    explicit_web_proxy: Literal["enable", "disable"]  # Enable/disable the explicit web proxy on this inte | Default: disable
+    explicit_ftp_proxy: Literal["enable", "disable"]  # Enable/disable the explicit FTP proxy on this inte | Default: disable
+    proxy_captive_portal: Literal["enable", "disable"]  # Enable/disable proxy captive portal on this interf | Default: disable
+    tcp_mss: int  # TCP maximum segment size. 0 means do not change se | Default: 0 | Min: 48 | Max: 65535
+    inbandwidth: int  # Bandwidth limit for incoming traffic | Default: 0 | Min: 0 | Max: 80000000
+    outbandwidth: int  # Bandwidth limit for outgoing traffic | Default: 0 | Min: 0 | Max: 80000000
+    egress_shaping_profile: str  # Outgoing traffic shaping profile. | MaxLen: 35
+    ingress_shaping_profile: str  # Incoming traffic shaping profile. | MaxLen: 35
+    spillover_threshold: int  # Egress Spillover threshold (0 - 16776000 kbps), 0 | Default: 0 | Min: 0 | Max: 16776000
+    ingress_spillover_threshold: int  # Ingress Spillover threshold (0 - 16776000 kbps), 0 | Default: 0 | Min: 0 | Max: 16776000
+    weight: int  # Default weight for static routes | Default: 0 | Min: 0 | Max: 255
+    interface: str  # Interface name. | MaxLen: 15
+    external: Literal["enable", "disable"]  # Enable/disable identifying the interface as an ext | Default: disable
+    mtu_override: Literal["enable", "disable"]  # Enable to set a custom MTU for this interface. | Default: disable
+    mtu: int  # MTU value for this interface. | Default: 1500 | Min: 0 | Max: 4294967295
+    vlan_protocol: Literal["8021q", "8021ad"]  # Ethernet protocol of VLAN. | Default: 8021q
+    vlanid: int  # VLAN ID (1 - 4094). | Default: 0 | Min: 1 | Max: 4094
+    forward_domain: int  # Transparent mode forward domain. | Default: 0 | Min: 0 | Max: 2147483647
+    remote_ip: str  # Remote IP address of tunnel. | Default: 0.0.0.0 0.0.0.0
+    member: list[dict[str, Any]]  # Physical interfaces that belong to the aggregate o
+    lacp_mode: Literal["static", "passive", "active"]  # LACP mode. | Default: active
+    lacp_ha_secondary: Literal["enable", "disable"]  # LACP HA secondary member. | Default: enable
+    system_id_type: Literal["auto", "user"]  # Method in which system ID is generated. | Default: auto
+    system_id: str  # Define a system ID for the aggregate interface. | Default: 00:00:00:00:00:00
+    lacp_speed: Literal["slow", "fast"]  # How often the interface sends LACP messages. | Default: slow
+    min_links: int  # Minimum number of aggregated ports that must be up | Default: 1 | Min: 1 | Max: 32
+    min_links_down: Literal["operational", "administrative"]  # Action to take when less than the configured minim | Default: operational
+    algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]  # Frame distribution algorithm. | Default: L4
+    link_up_delay: int  # Number of milliseconds to wait before considering | Default: 50 | Min: 50 | Max: 3600000
+    aggregate_type: Literal["physical", "vxlan"]  # Type of aggregation. | Default: physical
+    priority_override: Literal["enable", "disable"]  # Enable/disable fail back to higher priority port o | Default: enable
+    aggregate: str  # Aggregate interface. | MaxLen: 15
+    redundant_interface: str  # Redundant interface. | MaxLen: 15
+    devindex: int  # Device Index. | Default: 0 | Min: 0 | Max: 4294967295
+    vindex: int  # Switch control interface VLAN ID. | Default: 0 | Min: 0 | Max: 65535
+    switch: str  # Contained in switch. | MaxLen: 15
+    description: str  # Description. | MaxLen: 255
+    alias: str  # Alias will be displayed with the interface name to | MaxLen: 25
+    security_mode: Literal["none", "captive-portal", "802.1X"]  # Turn on captive portal authentication for this int | Default: none
+    security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"]  # Enable/disable MAC authentication bypass. | Default: disable
+    security_ip_auth_bypass: Literal["enable", "disable"]  # Enable/disable IP authentication bypass. | Default: disable
+    security_external_web: str  # URL of external authentication web server. | MaxLen: 1023
+    security_external_logout: str  # URL of external authentication logout server. | MaxLen: 127
+    replacemsg_override_group: str  # Replacement message override group. | MaxLen: 35
+    security_redirect_url: str  # URL redirection after disclaimer/authentication. | MaxLen: 1023
+    auth_cert: str  # HTTPS server certificate. | MaxLen: 35
+    auth_portal_addr: str  # Address of captive portal. | MaxLen: 63
+    security_exempt_list: str  # Name of security-exempt-list. | MaxLen: 35
+    security_groups: list[dict[str, Any]]  # User groups that can authenticate with the captive
+    ike_saml_server: str  # Configure IKE authentication SAML server. | MaxLen: 35
+    device_identification: Literal["enable", "disable"]  # Enable/disable passively gathering of device ident | Default: disable
+    exclude_signatures: Literal["iot", "ot"]  # Exclude IOT or OT application signatures.
+    device_user_identification: Literal["enable", "disable"]  # Enable/disable passive gathering of user identity | Default: enable
+    lldp_reception: Literal["enable", "disable", "vdom"]  # Enable/disable Link Layer Discovery Protocol | Default: vdom
+    lldp_transmission: Literal["enable", "disable", "vdom"]  # Enable/disable Link Layer Discovery Protocol | Default: vdom
+    lldp_network_policy: str  # LLDP-MED network policy profile. | MaxLen: 35
+    estimated_upstream_bandwidth: int  # Estimated maximum upstream bandwidth (kbps). Used | Default: 0 | Min: 0 | Max: 4294967295
+    estimated_downstream_bandwidth: int  # Estimated maximum downstream bandwidth (kbps). Use | Default: 0 | Min: 0 | Max: 4294967295
+    measured_upstream_bandwidth: int  # Measured upstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
+    measured_downstream_bandwidth: int  # Measured downstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
+    bandwidth_measure_time: int  # Bandwidth measure time. | Default: 0 | Min: 0 | Max: 4294967295
+    monitor_bandwidth: Literal["enable", "disable"]  # Enable monitoring bandwidth on this interface. | Default: disable
+    vrrp_virtual_mac: Literal["enable", "disable"]  # Enable/disable use of virtual MAC for VRRP. | Default: disable
+    vrrp: list[dict[str, Any]]  # VRRP configuration.
+    phy_setting: str  # PHY settings
+    role: Literal["lan", "wan", "dmz", "undefined"]  # Interface role. | Default: undefined
+    snmp_index: int  # Permanent SNMP Index of the interface. | Default: 0 | Min: 0 | Max: 2147483647
+    secondary_IP: Literal["enable", "disable"]  # Enable/disable adding a secondary IP to this inter | Default: disable
+    secondaryip: list[dict[str, Any]]  # Second IP address of interface.
+    preserve_session_route: Literal["enable", "disable"]  # Enable/disable preservation of session route when | Default: disable
+    auto_auth_extension_device: Literal["enable", "disable"]  # Enable/disable automatic authorization of dedicate | Default: disable
+    ap_discover: Literal["enable", "disable"]  # Enable/disable automatic registration of unknown F | Default: enable
+    fortilink_neighbor_detect: Literal["lldp", "fortilink"]  # Protocol for FortiGate neighbor discovery. | Default: lldp
+    ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"]  # Enable/disable automatic IP address assignment of | Default: inherit-global
+    managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"]  # Number of IP addresses to be allocated by FortiIPA | Default: 256
+    fortilink_split_interface: Literal["enable", "disable"]  # Enable/disable FortiLink split interface to connec | Default: enable
+    internal: int  # Implicitly created. | Default: 0 | Min: 0 | Max: 255
+    fortilink_backup_link: int  # FortiLink split interface backup link. | Default: 0 | Min: 0 | Max: 255
+    switch_controller_access_vlan: Literal["enable", "disable"]  # Block FortiSwitch port-to-port traffic. | Default: disable
+    switch_controller_traffic_policy: str  # Switch controller traffic policy for the VLAN. | MaxLen: 63
+    switch_controller_rspan_mode: Literal["disable", "enable"]  # Stop Layer2 MAC learning and interception of BPDUs | Default: disable
+    switch_controller_netflow_collect: Literal["disable", "enable"]  # NetFlow collection and processing. | Default: disable
+    switch_controller_mgmt_vlan: int  # VLAN to use for FortiLink management purposes. | Default: 4094 | Min: 1 | Max: 4094
+    switch_controller_igmp_snooping: Literal["enable", "disable"]  # Switch controller IGMP snooping. | Default: disable
+    switch_controller_igmp_snooping_proxy: Literal["enable", "disable"]  # Switch controller IGMP snooping proxy. | Default: disable
+    switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"]  # Switch controller IGMP snooping fast-leave. | Default: disable
+    switch_controller_dhcp_snooping: Literal["enable", "disable"]  # Switch controller DHCP snooping. | Default: disable
+    switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]  # Switch controller DHCP snooping verify MAC. | Default: disable
+    switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]  # Switch controller DHCP snooping option82. | Default: disable
+    dhcp_snooping_server_list: list[dict[str, Any]]  # Configure DHCP server access list.
+    switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]  # Enable/disable/Monitor FortiSwitch ARP inspection. | Default: disable
+    switch_controller_learning_limit: int  # Limit the number of dynamic MAC addresses on this | Default: 0 | Min: 0 | Max: 128
+    switch_controller_nac: str  # Integrated FortiLink settings for managed FortiSwi | MaxLen: 35
+    switch_controller_dynamic: str  # Integrated FortiLink settings for managed FortiSwi | MaxLen: 35
+    switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"]  # Interface's purpose when assigning traffic | Default: none
+    switch_controller_iot_scanning: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch IoT scanning. | Default: disable
+    switch_controller_offload: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch routing offload | Default: disable
+    switch_controller_offload_ip: str  # IP for routing offload on FortiSwitch. | Default: 0.0.0.0
+    switch_controller_offload_gw: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch routing offload | Default: disable
+    swc_vlan: int  # Creation status for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
+    swc_first_create: int  # Initial create for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
+    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
+    tagging: list[dict[str, Any]]  # Config object tagging.
+    eap_supplicant: Literal["enable", "disable"]  # Enable/disable EAP-Supplicant. | Default: disable
+    eap_method: Literal["tls", "peap"]  # EAP method.
+    eap_identity: str  # EAP identity. | MaxLen: 35
+    eap_password: str  # EAP password. | MaxLen: 128
+    eap_ca_cert: str  # EAP CA certificate name. | MaxLen: 79
+    eap_user_cert: str  # EAP user certificate name. | MaxLen: 35
+    default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]  # default purdue level of device detected on this in | Default: 3
+    ipv6: str  # IPv6 of interface.
+    physical: str  # Print physical interface information.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class InterfaceClientoptionsItem(TypedDict):
+    """Type hints for client-options table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    code: int  # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
+    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP client option type. | Default: hex
+    value: str  # DHCP client option value. | MaxLen: 312
+    ip: str  # DHCP option IPs.
+
+
+class InterfaceFailalertinterfacesItem(TypedDict):
+    """Type hints for fail-alert-interfaces table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Names of the non-virtual interface. | MaxLen: 15
+
+
+class InterfaceMemberItem(TypedDict):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    interface_name: str  # Physical interface name. | MaxLen: 79
+
+
+class InterfaceSecuritygroupsItem(TypedDict):
+    """Type hints for security-groups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Names of user groups that can authenticate with th | MaxLen: 79
+
+
+class InterfaceVrrpItem(TypedDict):
+    """Type hints for vrrp table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    vrid: int  # Virtual router identifier (1 - 255). | Default: 0 | Min: 1 | Max: 255
+    version: Literal["2", "3"]  # VRRP version. | Default: 2
+    vrgrp: int  # VRRP group ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
+    vrip: str  # IP address of the virtual router. | Default: 0.0.0.0
+    priority: int  # Priority of the virtual router (1 - 255). | Default: 100 | Min: 1 | Max: 255
+    adv_interval: int  # Advertisement interval (250 - 255000 milliseconds) | Default: 1000 | Min: 250 | Max: 255000
+    start_time: int  # Startup time (1 - 255 seconds). | Default: 3 | Min: 1 | Max: 255
+    preempt: Literal["enable", "disable"]  # Enable/disable preempt mode. | Default: enable
+    accept_mode: Literal["enable", "disable"]  # Enable/disable accept mode. | Default: enable
+    vrdst: str  # Monitor the route to this destination.
+    vrdst_priority: int  # Priority of the virtual router when the virtual ro | Default: 0 | Min: 0 | Max: 254
+    ignore_default_route: Literal["enable", "disable"]  # Enable/disable ignoring of default route when chec | Default: disable
+    status: Literal["enable", "disable"]  # Enable/disable this VRRP configuration. | Default: enable
+    proxy_arp: str  # VRRP Proxy ARP configuration.
+
+
+class InterfaceSecondaryipItem(TypedDict):
+    """Type hints for secondaryip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # Secondary IP address of the interface. | Default: 0.0.0.0 0.0.0.0
+    secip_relay_ip: str  # DHCP relay IP address.
+    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]  # Management access settings for the secondary IP ad
+    gwdetect: Literal["enable", "disable"]  # Enable/disable detect gateway alive for first. | Default: disable
+    ping_serv_status: int  # PING server status. | Default: 0 | Min: 0 | Max: 255
+    detectserver: str  # Gateway's ping server for this IP.
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]  # Protocols used to detect the server. | Default: ping
+    ha_priority: int  # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
+
+
+class InterfaceDhcpsnoopingserverlistItem(TypedDict):
+    """Type hints for dhcp-snooping-server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # DHCP server name. | Default: default | MaxLen: 35
+    server_ip: str  # IP address for DHCP server. | Default: 0.0.0.0
+
+
+class InterfaceTaggingItem(TypedDict):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class InterfaceClientoptionsObject:
@@ -260,13 +374,13 @@ class InterfaceClientoptionsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # DHCP client option code.
+    # DHCP client option code. | Default: 0 | Min: 0 | Max: 255
     code: int
-    # DHCP client option type.
+    # DHCP client option type. | Default: hex
     type: Literal["hex", "string", "ip", "fqdn"]
-    # DHCP client option value.
+    # DHCP client option value. | MaxLen: 312
     value: str
     # DHCP option IPs.
     ip: str
@@ -289,7 +403,7 @@ class InterfaceFailalertinterfacesObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Names of the non-virtual interface.
+    # Names of the non-virtual interface. | MaxLen: 15
     name: str
     
     # Methods from FortiObject
@@ -310,7 +424,7 @@ class InterfaceMemberObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Physical interface name.
+    # Physical interface name. | MaxLen: 79
     interface_name: str
     
     # Methods from FortiObject
@@ -331,7 +445,7 @@ class InterfaceSecuritygroupsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Names of user groups that can authenticate with the captive portal.
+    # Names of user groups that can authenticate with the captive | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -352,31 +466,31 @@ class InterfaceVrrpObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Virtual router identifier (1 - 255).
+    # Virtual router identifier (1 - 255). | Default: 0 | Min: 1 | Max: 255
     vrid: int
-    # VRRP version.
+    # VRRP version. | Default: 2
     version: Literal["2", "3"]
-    # VRRP group ID (1 - 65535).
+    # VRRP group ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
     vrgrp: int
-    # IP address of the virtual router.
+    # IP address of the virtual router. | Default: 0.0.0.0
     vrip: str
-    # Priority of the virtual router (1 - 255).
+    # Priority of the virtual router (1 - 255). | Default: 100 | Min: 1 | Max: 255
     priority: int
-    # Advertisement interval (250 - 255000 milliseconds).
+    # Advertisement interval (250 - 255000 milliseconds). | Default: 1000 | Min: 250 | Max: 255000
     adv_interval: int
-    # Startup time (1 - 255 seconds).
+    # Startup time (1 - 255 seconds). | Default: 3 | Min: 1 | Max: 255
     start_time: int
-    # Enable/disable preempt mode.
+    # Enable/disable preempt mode. | Default: enable
     preempt: Literal["enable", "disable"]
-    # Enable/disable accept mode.
+    # Enable/disable accept mode. | Default: enable
     accept_mode: Literal["enable", "disable"]
     # Monitor the route to this destination.
     vrdst: str
-    # Priority of the virtual router when the virtual router destination becomes unrea
+    # Priority of the virtual router when the virtual router desti | Default: 0 | Min: 0 | Max: 254
     vrdst_priority: int
-    # Enable/disable ignoring of default route when checking destination.
+    # Enable/disable ignoring of default route when checking desti | Default: disable
     ignore_default_route: Literal["enable", "disable"]
-    # Enable/disable this VRRP configuration.
+    # Enable/disable this VRRP configuration. | Default: enable
     status: Literal["enable", "disable"]
     # VRRP Proxy ARP configuration.
     proxy_arp: str
@@ -399,23 +513,23 @@ class InterfaceSecondaryipObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Secondary IP address of the interface.
+    # Secondary IP address of the interface. | Default: 0.0.0.0 0.0.0.0
     ip: str
     # DHCP relay IP address.
     secip_relay_ip: str
     # Management access settings for the secondary IP address.
     allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]
-    # Enable/disable detect gateway alive for first.
+    # Enable/disable detect gateway alive for first. | Default: disable
     gwdetect: Literal["enable", "disable"]
-    # PING server status.
+    # PING server status. | Default: 0 | Min: 0 | Max: 255
     ping_serv_status: int
     # Gateway's ping server for this IP.
     detectserver: str
-    # Protocols used to detect the server.
+    # Protocols used to detect the server. | Default: ping
     detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]
-    # HA election priority for the PING server.
+    # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
     ha_priority: int
     
     # Methods from FortiObject
@@ -436,9 +550,9 @@ class InterfaceDhcpsnoopingserverlistObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # DHCP server name.
+    # DHCP server name. | Default: default | MaxLen: 35
     name: str
-    # IP address for DHCP server.
+    # IP address for DHCP server. | Default: 0.0.0.0
     server_ip: str
     
     # Methods from FortiObject
@@ -459,9 +573,9 @@ class InterfaceTaggingObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Tagging entry name.
+    # Tagging entry name. | MaxLen: 63
     name: str
-    # Tag category.
+    # Tag category. | MaxLen: 63
     category: str
     # Tags.
     tags: str
@@ -484,228 +598,228 @@ class InterfaceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    vdom: str
-    vrf: int
-    cli_conn_status: int
-    fortilink: Literal["enable", "disable"]
-    switch_controller_source_ip: Literal["outbound", "fixed"]
-    mode: Literal["static", "dhcp", "pppoe"]
-    client_options: list[dict[str, Any]]
-    distance: int
-    priority: int
-    dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]
-    dhcp_relay_interface: str
-    dhcp_relay_vrf_select: int
-    dhcp_broadcast_flag: Literal["disable", "enable"]
-    dhcp_relay_service: Literal["disable", "enable"]
-    dhcp_relay_ip: list[dict[str, Any]]
-    dhcp_relay_source_ip: str
-    dhcp_relay_circuit_id: str
-    dhcp_relay_link_selection: str
-    dhcp_relay_request_all_server: Literal["disable", "enable"]
-    dhcp_relay_allow_no_end_option: Literal["disable", "enable"]
-    dhcp_relay_type: Literal["regular", "ipsec"]
-    dhcp_smart_relay: Literal["disable", "enable"]
-    dhcp_relay_agent_option: Literal["enable", "disable"]
-    dhcp_classless_route_addition: Literal["enable", "disable"]
-    management_ip: str
-    ip: str
-    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]
-    gwdetect: Literal["enable", "disable"]
-    ping_serv_status: int
-    detectserver: str
-    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]
-    ha_priority: int
-    fail_detect: Literal["enable", "disable"]
-    fail_detect_option: Literal["detectserver", "link-down"]
-    fail_alert_method: Literal["link-failed-signal", "link-down"]
-    fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]
-    fail_alert_interfaces: list[dict[str, Any]]
-    dhcp_client_identifier: str
-    dhcp_renew_time: int
-    ipunnumbered: str
-    username: str
-    pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]
-    pppoe_unnumbered_negotiate: Literal["enable", "disable"]
-    password: str
-    idle_timeout: int
-    multilink: Literal["enable", "disable"]
-    mrru: int
-    detected_peer_mtu: int
-    disc_retry_timeout: int
-    padt_retry_timeout: int
-    service_name: str
-    ac_name: str
-    lcp_echo_interval: int
-    lcp_max_echo_fails: int
-    defaultgw: Literal["enable", "disable"]
-    dns_server_override: Literal["enable", "disable"]
-    dns_server_protocol: Literal["cleartext", "dot", "doh"]
-    auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]
-    pptp_client: Literal["enable", "disable"]
-    pptp_user: str
-    pptp_password: str
-    pptp_server_ip: str
-    pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]
-    pptp_timeout: int
-    arpforward: Literal["enable", "disable"]
-    ndiscforward: Literal["enable", "disable"]
-    broadcast_forward: Literal["enable", "disable"]
-    bfd: Literal["global", "enable", "disable"]
-    bfd_desired_min_tx: int
-    bfd_detect_mult: int
-    bfd_required_min_rx: int
-    l2forward: Literal["enable", "disable"]
-    icmp_send_redirect: Literal["enable", "disable"]
-    icmp_accept_redirect: Literal["enable", "disable"]
-    reachable_time: int
-    vlanforward: Literal["enable", "disable"]
-    stpforward: Literal["enable", "disable"]
-    stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"]
-    ips_sniffer_mode: Literal["enable", "disable"]
-    ident_accept: Literal["enable", "disable"]
-    ipmac: Literal["enable", "disable"]
-    subst: Literal["enable", "disable"]
-    macaddr: str
-    virtual_mac: str
-    substitute_dst_mac: str
-    speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"]
-    status: Literal["up", "down"]
-    netbios_forward: Literal["disable", "enable"]
-    wins_ip: str
-    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]
-    dedicated_to: Literal["none", "management"]
-    trust_ip_1: str
-    trust_ip_2: str
-    trust_ip_3: str
-    trust_ip6_1: str
-    trust_ip6_2: str
-    trust_ip6_3: str
-    ring_rx: int
-    ring_tx: int
-    wccp: Literal["enable", "disable"]
-    netflow_sampler: Literal["disable", "tx", "rx", "both"]
-    netflow_sample_rate: int
-    netflow_sampler_id: int
-    sflow_sampler: Literal["enable", "disable"]
-    drop_fragment: Literal["enable", "disable"]
-    src_check: Literal["enable", "disable"]
-    sample_rate: int
-    polling_interval: int
-    sample_direction: Literal["tx", "rx", "both"]
-    explicit_web_proxy: Literal["enable", "disable"]
-    explicit_ftp_proxy: Literal["enable", "disable"]
-    proxy_captive_portal: Literal["enable", "disable"]
-    tcp_mss: int
-    inbandwidth: int
-    outbandwidth: int
-    egress_shaping_profile: str
-    ingress_shaping_profile: str
-    spillover_threshold: int
-    ingress_spillover_threshold: int
-    weight: int
-    interface: str
-    external: Literal["enable", "disable"]
-    mtu_override: Literal["enable", "disable"]
-    mtu: int
-    vlan_protocol: Literal["8021q", "8021ad"]
-    vlanid: int
-    forward_domain: int
-    remote_ip: str
-    member: list[dict[str, Any]]
-    lacp_mode: Literal["static", "passive", "active"]
-    lacp_ha_secondary: Literal["enable", "disable"]
-    system_id_type: Literal["auto", "user"]
-    system_id: str
-    lacp_speed: Literal["slow", "fast"]
-    min_links: int
-    min_links_down: Literal["operational", "administrative"]
-    algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]
-    link_up_delay: int
-    aggregate_type: Literal["physical", "vxlan"]
-    priority_override: Literal["enable", "disable"]
-    aggregate: str
-    redundant_interface: str
-    devindex: int
-    vindex: int
-    switch: str
-    description: str
-    alias: str
-    security_mode: Literal["none", "captive-portal", "802.1X"]
-    security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"]
-    security_ip_auth_bypass: Literal["enable", "disable"]
-    security_external_web: str
-    security_external_logout: str
-    replacemsg_override_group: str
-    security_redirect_url: str
-    auth_cert: str
-    auth_portal_addr: str
-    security_exempt_list: str
-    security_groups: list[dict[str, Any]]
-    ike_saml_server: str
-    device_identification: Literal["enable", "disable"]
-    exclude_signatures: Literal["iot", "ot"]
-    device_user_identification: Literal["enable", "disable"]
-    lldp_reception: Literal["enable", "disable", "vdom"]
-    lldp_transmission: Literal["enable", "disable", "vdom"]
-    lldp_network_policy: str
-    estimated_upstream_bandwidth: int
-    estimated_downstream_bandwidth: int
-    measured_upstream_bandwidth: int
-    measured_downstream_bandwidth: int
-    bandwidth_measure_time: int
-    monitor_bandwidth: Literal["enable", "disable"]
-    vrrp_virtual_mac: Literal["enable", "disable"]
-    vrrp: list[dict[str, Any]]
-    phy_setting: str
-    role: Literal["lan", "wan", "dmz", "undefined"]
-    snmp_index: int
-    secondary_IP: Literal["enable", "disable"]
-    secondaryip: list[dict[str, Any]]
-    preserve_session_route: Literal["enable", "disable"]
-    auto_auth_extension_device: Literal["enable", "disable"]
-    ap_discover: Literal["enable", "disable"]
-    fortilink_neighbor_detect: Literal["lldp", "fortilink"]
-    ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"]
-    managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"]
-    fortilink_split_interface: Literal["enable", "disable"]
-    internal: int
-    fortilink_backup_link: int
-    switch_controller_access_vlan: Literal["enable", "disable"]
-    switch_controller_traffic_policy: str
-    switch_controller_rspan_mode: Literal["disable", "enable"]
-    switch_controller_netflow_collect: Literal["disable", "enable"]
-    switch_controller_mgmt_vlan: int
-    switch_controller_igmp_snooping: Literal["enable", "disable"]
-    switch_controller_igmp_snooping_proxy: Literal["enable", "disable"]
-    switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"]
-    switch_controller_dhcp_snooping: Literal["enable", "disable"]
-    switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]
-    switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]
-    dhcp_snooping_server_list: list[dict[str, Any]]
-    switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]
-    switch_controller_learning_limit: int
-    switch_controller_nac: str
-    switch_controller_dynamic: str
-    switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"]
-    switch_controller_iot_scanning: Literal["enable", "disable"]
-    switch_controller_offload: Literal["enable", "disable"]
-    switch_controller_offload_ip: str
-    switch_controller_offload_gw: Literal["enable", "disable"]
-    swc_vlan: int
-    swc_first_create: int
-    color: int
-    tagging: list[dict[str, Any]]
-    eap_supplicant: Literal["enable", "disable"]
-    eap_method: Literal["tls", "peap"]
-    eap_identity: str
-    eap_password: str
-    eap_ca_cert: str
-    eap_user_cert: str
-    default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
-    ipv6: str
-    physical: str
+    name: str  # Name. | MaxLen: 15
+    vdom: str  # Interface is in this virtual domain (VDOM). | MaxLen: 31
+    vrf: int  # Virtual Routing Forwarding ID. | Default: 0 | Min: 0 | Max: 511
+    cli_conn_status: int  # CLI connection status. | Default: 0 | Min: 0 | Max: 4294967295
+    fortilink: Literal["enable", "disable"]  # Enable FortiLink to dedicate this interface to man | Default: disable
+    switch_controller_source_ip: Literal["outbound", "fixed"]  # Source IP address used in FortiLink over L3 connec | Default: outbound
+    mode: Literal["static", "dhcp", "pppoe"]  # Addressing mode (static, DHCP, PPPoE). | Default: static
+    client_options: list[InterfaceClientoptionsItem]  # DHCP client options.
+    distance: int  # Distance for routes learned through PPPoE or DHCP, | Default: 5 | Min: 1 | Max: 255
+    priority: int  # Priority of learned routes. | Default: 1 | Min: 1 | Max: 65535
+    dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    dhcp_relay_interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    dhcp_relay_vrf_select: int  # VRF ID used for connection to server. | Default: -1 | Min: 0 | Max: 511
+    dhcp_broadcast_flag: Literal["disable", "enable"]  # Enable/disable setting of the broadcast flag in me | Default: enable
+    dhcp_relay_service: Literal["disable", "enable"]  # Enable/disable allowing this interface to act as a | Default: disable
+    dhcp_relay_ip: list[dict[str, Any]]  # DHCP relay IP address.
+    dhcp_relay_source_ip: str  # IP address used by the DHCP relay as its source IP | Default: 0.0.0.0
+    dhcp_relay_circuit_id: str  # DHCP relay circuit ID. | MaxLen: 64
+    dhcp_relay_link_selection: str  # DHCP relay link selection. | Default: 0.0.0.0
+    dhcp_relay_request_all_server: Literal["disable", "enable"]  # Enable/disable sending of DHCP requests to all ser | Default: disable
+    dhcp_relay_allow_no_end_option: Literal["disable", "enable"]  # Enable/disable relaying DHCP messages with no end | Default: disable
+    dhcp_relay_type: Literal["regular", "ipsec"]  # DHCP relay type (regular or IPsec). | Default: regular
+    dhcp_smart_relay: Literal["disable", "enable"]  # Enable/disable DHCP smart relay. | Default: disable
+    dhcp_relay_agent_option: Literal["enable", "disable"]  # Enable/disable DHCP relay agent option. | Default: enable
+    dhcp_classless_route_addition: Literal["enable", "disable"]  # Enable/disable addition of classless static routes | Default: enable
+    management_ip: str  # High Availability in-band management IP address of | Default: 0.0.0.0 0.0.0.0
+    ip: str  # Interface IPv4 address and subnet mask, syntax: X. | Default: 0.0.0.0 0.0.0.0
+    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]  # Permitted types of management access to this inter
+    gwdetect: Literal["enable", "disable"]  # Enable/disable detect gateway alive for first. | Default: disable
+    ping_serv_status: int  # PING server status. | Default: 0 | Min: 0 | Max: 255
+    detectserver: str  # Gateway's ping server for this IP.
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]  # Protocols used to detect the server. | Default: ping
+    ha_priority: int  # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
+    fail_detect: Literal["enable", "disable"]  # Enable/disable fail detection features for this in | Default: disable
+    fail_detect_option: Literal["detectserver", "link-down"]  # Options for detecting that this interface has fail | Default: link-down
+    fail_alert_method: Literal["link-failed-signal", "link-down"]  # Select link-failed-signal or link-down method to a | Default: link-down
+    fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]  # Action on FortiExtender when interface fail. | Default: soft-restart
+    fail_alert_interfaces: list[InterfaceFailalertinterfacesItem]  # Names of the FortiGate interfaces to which the lin
+    dhcp_client_identifier: str  # DHCP client identifier. | MaxLen: 48
+    dhcp_renew_time: int  # DHCP renew time in seconds (300-604800), 0 means u | Default: 0 | Min: 300 | Max: 604800
+    ipunnumbered: str  # Unnumbered IP used for PPPoE interfaces for which | Default: 0.0.0.0
+    username: str  # Username of the PPPoE account, provided by your IS | MaxLen: 64
+    pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]  # CoS in VLAN tag for outgoing PPPoE/PPP packets. | Default: cos0
+    pppoe_unnumbered_negotiate: Literal["enable", "disable"]  # Enable/disable PPPoE unnumbered negotiation. | Default: enable
+    password: str  # PPPoE account's password. | MaxLen: 128
+    idle_timeout: int  # PPPoE auto disconnect after idle timeout seconds, | Default: 0 | Min: 0 | Max: 32767
+    multilink: Literal["enable", "disable"]  # Enable/disable PPP multilink support. | Default: disable
+    mrru: int  # PPP MRRU (296 - 65535, default = 1500). | Default: 1500 | Min: 296 | Max: 65535
+    detected_peer_mtu: int  # MTU of detected peer (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    disc_retry_timeout: int  # Time in seconds to wait before retrying to start a | Default: 1 | Min: 0 | Max: 4294967295
+    padt_retry_timeout: int  # PPPoE Active Discovery Terminate (PADT) used to te | Default: 1 | Min: 0 | Max: 4294967295
+    service_name: str  # PPPoE service name. | MaxLen: 63
+    ac_name: str  # PPPoE server name. | MaxLen: 63
+    lcp_echo_interval: int  # Time in seconds between PPPoE Link Control Protoco | Default: 5 | Min: 0 | Max: 32767
+    lcp_max_echo_fails: int  # Maximum missed LCP echo messages before disconnect | Default: 3 | Min: 0 | Max: 32767
+    defaultgw: Literal["enable", "disable"]  # Enable to get the gateway IP from the DHCP or PPPo | Default: enable
+    dns_server_override: Literal["enable", "disable"]  # Enable/disable use DNS acquired by DHCP or PPPoE. | Default: enable
+    dns_server_protocol: Literal["cleartext", "dot", "doh"]  # DNS transport protocols. | Default: cleartext
+    auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]  # PPP authentication type to use. | Default: auto
+    pptp_client: Literal["enable", "disable"]  # Enable/disable PPTP client. | Default: disable
+    pptp_user: str  # PPTP user name. | MaxLen: 64
+    pptp_password: str  # PPTP password. | MaxLen: 128
+    pptp_server_ip: str  # PPTP server IP address. | Default: 0.0.0.0
+    pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]  # PPTP authentication type. | Default: auto
+    pptp_timeout: int  # Idle timer in minutes (0 for disabled). | Default: 0 | Min: 0 | Max: 65535
+    arpforward: Literal["enable", "disable"]  # Enable/disable ARP forwarding. | Default: enable
+    ndiscforward: Literal["enable", "disable"]  # Enable/disable NDISC forwarding. | Default: enable
+    broadcast_forward: Literal["enable", "disable"]  # Enable/disable broadcast forwarding. | Default: disable
+    bfd: Literal["global", "enable", "disable"]  # Bidirectional Forwarding Detection (BFD) settings. | Default: global
+    bfd_desired_min_tx: int  # BFD desired minimal transmit interval. | Default: 250 | Min: 1 | Max: 100000
+    bfd_detect_mult: int  # BFD detection multiplier. | Default: 3 | Min: 1 | Max: 50
+    bfd_required_min_rx: int  # BFD required minimal receive interval. | Default: 250 | Min: 1 | Max: 100000
+    l2forward: Literal["enable", "disable"]  # Enable/disable l2 forwarding. | Default: disable
+    icmp_send_redirect: Literal["enable", "disable"]  # Enable/disable sending of ICMP redirects. | Default: enable
+    icmp_accept_redirect: Literal["enable", "disable"]  # Enable/disable ICMP accept redirect. | Default: enable
+    reachable_time: int  # IPv4 reachable time in milliseconds | Default: 30000 | Min: 30000 | Max: 3600000
+    vlanforward: Literal["enable", "disable"]  # Enable/disable traffic forwarding between VLANs on | Default: disable
+    stpforward: Literal["enable", "disable"]  # Enable/disable STP forwarding. | Default: disable
+    stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"]  # Configure STP forwarding mode. | Default: rpl-all-ext-id
+    ips_sniffer_mode: Literal["enable", "disable"]  # Enable/disable the use of this interface as a one- | Default: disable
+    ident_accept: Literal["enable", "disable"]  # Enable/disable authentication for this interface. | Default: disable
+    ipmac: Literal["enable", "disable"]  # Enable/disable IP/MAC binding. | Default: disable
+    subst: Literal["enable", "disable"]  # Enable to always send packets from this interface | Default: disable
+    macaddr: str  # Change the interface's MAC address. | Default: 00:00:00:00:00:00
+    virtual_mac: str  # Change the interface's virtual MAC address. | Default: 00:00:00:00:00:00
+    substitute_dst_mac: str  # Destination MAC address that all packets are sent | Default: 00:00:00:00:00:00
+    speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"]  # Interface speed. The default setting and the optio | Default: auto
+    status: Literal["up", "down"]  # Bring the interface up or shut the interface down. | Default: up
+    netbios_forward: Literal["disable", "enable"]  # Enable/disable NETBIOS forwarding. | Default: disable
+    wins_ip: str  # WINS server IP. | Default: 0.0.0.0
+    type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]  # Interface type. | Default: vlan
+    dedicated_to: Literal["none", "management"]  # Configure interface for single purpose. | Default: none
+    trust_ip_1: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip_2: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip_3: str  # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
+    trust_ip6_1: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    trust_ip6_2: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    trust_ip6_3: str  # Trusted IPv6 host for dedicated management traffic | Default: ::/0
+    ring_rx: int  # RX ring size. | Default: 0 | Min: 0 | Max: 4294967295
+    ring_tx: int  # TX ring size. | Default: 0 | Min: 0 | Max: 4294967295
+    wccp: Literal["enable", "disable"]  # Enable/disable WCCP on this interface. Used for en | Default: disable
+    netflow_sampler: Literal["disable", "tx", "rx", "both"]  # Enable/disable NetFlow on this interface and set t | Default: disable
+    netflow_sample_rate: int  # NetFlow sample rate.  Sample one packet every conf | Default: 1 | Min: 1 | Max: 65535
+    netflow_sampler_id: int  # Netflow sampler ID. | Default: 0 | Min: 1 | Max: 254
+    sflow_sampler: Literal["enable", "disable"]  # Enable/disable sFlow on this interface. | Default: disable
+    drop_fragment: Literal["enable", "disable"]  # Enable/disable drop fragment packets. | Default: disable
+    src_check: Literal["enable", "disable"]  # Enable/disable source IP check. | Default: enable
+    sample_rate: int  # sFlow sample rate (10 - 99999). | Default: 2000 | Min: 10 | Max: 99999
+    polling_interval: int  # sFlow polling interval in seconds (1 - 255). | Default: 20 | Min: 1 | Max: 255
+    sample_direction: Literal["tx", "rx", "both"]  # Data that NetFlow collects (rx, tx, or both). | Default: both
+    explicit_web_proxy: Literal["enable", "disable"]  # Enable/disable the explicit web proxy on this inte | Default: disable
+    explicit_ftp_proxy: Literal["enable", "disable"]  # Enable/disable the explicit FTP proxy on this inte | Default: disable
+    proxy_captive_portal: Literal["enable", "disable"]  # Enable/disable proxy captive portal on this interf | Default: disable
+    tcp_mss: int  # TCP maximum segment size. 0 means do not change se | Default: 0 | Min: 48 | Max: 65535
+    inbandwidth: int  # Bandwidth limit for incoming traffic | Default: 0 | Min: 0 | Max: 80000000
+    outbandwidth: int  # Bandwidth limit for outgoing traffic | Default: 0 | Min: 0 | Max: 80000000
+    egress_shaping_profile: str  # Outgoing traffic shaping profile. | MaxLen: 35
+    ingress_shaping_profile: str  # Incoming traffic shaping profile. | MaxLen: 35
+    spillover_threshold: int  # Egress Spillover threshold (0 - 16776000 kbps), 0 | Default: 0 | Min: 0 | Max: 16776000
+    ingress_spillover_threshold: int  # Ingress Spillover threshold (0 - 16776000 kbps), 0 | Default: 0 | Min: 0 | Max: 16776000
+    weight: int  # Default weight for static routes | Default: 0 | Min: 0 | Max: 255
+    interface: str  # Interface name. | MaxLen: 15
+    external: Literal["enable", "disable"]  # Enable/disable identifying the interface as an ext | Default: disable
+    mtu_override: Literal["enable", "disable"]  # Enable to set a custom MTU for this interface. | Default: disable
+    mtu: int  # MTU value for this interface. | Default: 1500 | Min: 0 | Max: 4294967295
+    vlan_protocol: Literal["8021q", "8021ad"]  # Ethernet protocol of VLAN. | Default: 8021q
+    vlanid: int  # VLAN ID (1 - 4094). | Default: 0 | Min: 1 | Max: 4094
+    forward_domain: int  # Transparent mode forward domain. | Default: 0 | Min: 0 | Max: 2147483647
+    remote_ip: str  # Remote IP address of tunnel. | Default: 0.0.0.0 0.0.0.0
+    member: list[InterfaceMemberItem]  # Physical interfaces that belong to the aggregate o
+    lacp_mode: Literal["static", "passive", "active"]  # LACP mode. | Default: active
+    lacp_ha_secondary: Literal["enable", "disable"]  # LACP HA secondary member. | Default: enable
+    system_id_type: Literal["auto", "user"]  # Method in which system ID is generated. | Default: auto
+    system_id: str  # Define a system ID for the aggregate interface. | Default: 00:00:00:00:00:00
+    lacp_speed: Literal["slow", "fast"]  # How often the interface sends LACP messages. | Default: slow
+    min_links: int  # Minimum number of aggregated ports that must be up | Default: 1 | Min: 1 | Max: 32
+    min_links_down: Literal["operational", "administrative"]  # Action to take when less than the configured minim | Default: operational
+    algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]  # Frame distribution algorithm. | Default: L4
+    link_up_delay: int  # Number of milliseconds to wait before considering | Default: 50 | Min: 50 | Max: 3600000
+    aggregate_type: Literal["physical", "vxlan"]  # Type of aggregation. | Default: physical
+    priority_override: Literal["enable", "disable"]  # Enable/disable fail back to higher priority port o | Default: enable
+    aggregate: str  # Aggregate interface. | MaxLen: 15
+    redundant_interface: str  # Redundant interface. | MaxLen: 15
+    devindex: int  # Device Index. | Default: 0 | Min: 0 | Max: 4294967295
+    vindex: int  # Switch control interface VLAN ID. | Default: 0 | Min: 0 | Max: 65535
+    switch: str  # Contained in switch. | MaxLen: 15
+    description: str  # Description. | MaxLen: 255
+    alias: str  # Alias will be displayed with the interface name to | MaxLen: 25
+    security_mode: Literal["none", "captive-portal", "802.1X"]  # Turn on captive portal authentication for this int | Default: none
+    security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"]  # Enable/disable MAC authentication bypass. | Default: disable
+    security_ip_auth_bypass: Literal["enable", "disable"]  # Enable/disable IP authentication bypass. | Default: disable
+    security_external_web: str  # URL of external authentication web server. | MaxLen: 1023
+    security_external_logout: str  # URL of external authentication logout server. | MaxLen: 127
+    replacemsg_override_group: str  # Replacement message override group. | MaxLen: 35
+    security_redirect_url: str  # URL redirection after disclaimer/authentication. | MaxLen: 1023
+    auth_cert: str  # HTTPS server certificate. | MaxLen: 35
+    auth_portal_addr: str  # Address of captive portal. | MaxLen: 63
+    security_exempt_list: str  # Name of security-exempt-list. | MaxLen: 35
+    security_groups: list[InterfaceSecuritygroupsItem]  # User groups that can authenticate with the captive
+    ike_saml_server: str  # Configure IKE authentication SAML server. | MaxLen: 35
+    device_identification: Literal["enable", "disable"]  # Enable/disable passively gathering of device ident | Default: disable
+    exclude_signatures: Literal["iot", "ot"]  # Exclude IOT or OT application signatures.
+    device_user_identification: Literal["enable", "disable"]  # Enable/disable passive gathering of user identity | Default: enable
+    lldp_reception: Literal["enable", "disable", "vdom"]  # Enable/disable Link Layer Discovery Protocol | Default: vdom
+    lldp_transmission: Literal["enable", "disable", "vdom"]  # Enable/disable Link Layer Discovery Protocol | Default: vdom
+    lldp_network_policy: str  # LLDP-MED network policy profile. | MaxLen: 35
+    estimated_upstream_bandwidth: int  # Estimated maximum upstream bandwidth (kbps). Used | Default: 0 | Min: 0 | Max: 4294967295
+    estimated_downstream_bandwidth: int  # Estimated maximum downstream bandwidth (kbps). Use | Default: 0 | Min: 0 | Max: 4294967295
+    measured_upstream_bandwidth: int  # Measured upstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
+    measured_downstream_bandwidth: int  # Measured downstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
+    bandwidth_measure_time: int  # Bandwidth measure time. | Default: 0 | Min: 0 | Max: 4294967295
+    monitor_bandwidth: Literal["enable", "disable"]  # Enable monitoring bandwidth on this interface. | Default: disable
+    vrrp_virtual_mac: Literal["enable", "disable"]  # Enable/disable use of virtual MAC for VRRP. | Default: disable
+    vrrp: list[InterfaceVrrpItem]  # VRRP configuration.
+    phy_setting: str  # PHY settings
+    role: Literal["lan", "wan", "dmz", "undefined"]  # Interface role. | Default: undefined
+    snmp_index: int  # Permanent SNMP Index of the interface. | Default: 0 | Min: 0 | Max: 2147483647
+    secondary_IP: Literal["enable", "disable"]  # Enable/disable adding a secondary IP to this inter | Default: disable
+    secondaryip: list[InterfaceSecondaryipItem]  # Second IP address of interface.
+    preserve_session_route: Literal["enable", "disable"]  # Enable/disable preservation of session route when | Default: disable
+    auto_auth_extension_device: Literal["enable", "disable"]  # Enable/disable automatic authorization of dedicate | Default: disable
+    ap_discover: Literal["enable", "disable"]  # Enable/disable automatic registration of unknown F | Default: enable
+    fortilink_neighbor_detect: Literal["lldp", "fortilink"]  # Protocol for FortiGate neighbor discovery. | Default: lldp
+    ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"]  # Enable/disable automatic IP address assignment of | Default: inherit-global
+    managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"]  # Number of IP addresses to be allocated by FortiIPA | Default: 256
+    fortilink_split_interface: Literal["enable", "disable"]  # Enable/disable FortiLink split interface to connec | Default: enable
+    internal: int  # Implicitly created. | Default: 0 | Min: 0 | Max: 255
+    fortilink_backup_link: int  # FortiLink split interface backup link. | Default: 0 | Min: 0 | Max: 255
+    switch_controller_access_vlan: Literal["enable", "disable"]  # Block FortiSwitch port-to-port traffic. | Default: disable
+    switch_controller_traffic_policy: str  # Switch controller traffic policy for the VLAN. | MaxLen: 63
+    switch_controller_rspan_mode: Literal["disable", "enable"]  # Stop Layer2 MAC learning and interception of BPDUs | Default: disable
+    switch_controller_netflow_collect: Literal["disable", "enable"]  # NetFlow collection and processing. | Default: disable
+    switch_controller_mgmt_vlan: int  # VLAN to use for FortiLink management purposes. | Default: 4094 | Min: 1 | Max: 4094
+    switch_controller_igmp_snooping: Literal["enable", "disable"]  # Switch controller IGMP snooping. | Default: disable
+    switch_controller_igmp_snooping_proxy: Literal["enable", "disable"]  # Switch controller IGMP snooping proxy. | Default: disable
+    switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"]  # Switch controller IGMP snooping fast-leave. | Default: disable
+    switch_controller_dhcp_snooping: Literal["enable", "disable"]  # Switch controller DHCP snooping. | Default: disable
+    switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]  # Switch controller DHCP snooping verify MAC. | Default: disable
+    switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]  # Switch controller DHCP snooping option82. | Default: disable
+    dhcp_snooping_server_list: list[InterfaceDhcpsnoopingserverlistItem]  # Configure DHCP server access list.
+    switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]  # Enable/disable/Monitor FortiSwitch ARP inspection. | Default: disable
+    switch_controller_learning_limit: int  # Limit the number of dynamic MAC addresses on this | Default: 0 | Min: 0 | Max: 128
+    switch_controller_nac: str  # Integrated FortiLink settings for managed FortiSwi | MaxLen: 35
+    switch_controller_dynamic: str  # Integrated FortiLink settings for managed FortiSwi | MaxLen: 35
+    switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"]  # Interface's purpose when assigning traffic | Default: none
+    switch_controller_iot_scanning: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch IoT scanning. | Default: disable
+    switch_controller_offload: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch routing offload | Default: disable
+    switch_controller_offload_ip: str  # IP for routing offload on FortiSwitch. | Default: 0.0.0.0
+    switch_controller_offload_gw: Literal["enable", "disable"]  # Enable/disable managed FortiSwitch routing offload | Default: disable
+    swc_vlan: int  # Creation status for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
+    swc_first_create: int  # Initial create for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
+    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
+    tagging: list[InterfaceTaggingItem]  # Config object tagging.
+    eap_supplicant: Literal["enable", "disable"]  # Enable/disable EAP-Supplicant. | Default: disable
+    eap_method: Literal["tls", "peap"]  # EAP method.
+    eap_identity: str  # EAP identity. | MaxLen: 35
+    eap_password: str  # EAP password. | MaxLen: 128
+    eap_ca_cert: str  # EAP CA certificate name. | MaxLen: 79
+    eap_user_cert: str  # EAP user certificate name. | MaxLen: 35
+    default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]  # default purdue level of device detected on this in | Default: 3
+    ipv6: str  # IPv6 of interface.
+    physical: str  # Print physical interface information.
 
 
 @final
@@ -716,445 +830,445 @@ class InterfaceObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 15
     name: str
-    # Interface is in this virtual domain (VDOM).
+    # Interface is in this virtual domain (VDOM). | MaxLen: 31
     vdom: str
-    # Virtual Routing Forwarding ID.
+    # Virtual Routing Forwarding ID. | Default: 0 | Min: 0 | Max: 511
     vrf: int
-    # CLI connection status.
+    # CLI connection status. | Default: 0 | Min: 0 | Max: 4294967295
     cli_conn_status: int
-    # Enable FortiLink to dedicate this interface to manage other Fortinet devices.
+    # Enable FortiLink to dedicate this interface to manage other | Default: disable
     fortilink: Literal["enable", "disable"]
-    # Source IP address used in FortiLink over L3 connections.
+    # Source IP address used in FortiLink over L3 connections. | Default: outbound
     switch_controller_source_ip: Literal["outbound", "fixed"]
-    # Addressing mode (static, DHCP, PPPoE).
+    # Addressing mode (static, DHCP, PPPoE). | Default: static
     mode: Literal["static", "dhcp", "pppoe"]
     # DHCP client options.
-    client_options: list[InterfaceClientoptionsObject]  # Table field - list of typed objects
-    # Distance for routes learned through PPPoE or DHCP, lower distance indicates pref
+    client_options: list[InterfaceClientoptionsObject]
+    # Distance for routes learned through PPPoE or DHCP, lower dis | Default: 5 | Min: 1 | Max: 255
     distance: int
-    # Priority of learned routes.
+    # Priority of learned routes. | Default: 1 | Min: 1 | Max: 65535
     priority: int
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     dhcp_relay_interface: str
-    # VRF ID used for connection to server.
+    # VRF ID used for connection to server. | Default: -1 | Min: 0 | Max: 511
     dhcp_relay_vrf_select: int
-    # Enable/disable setting of the broadcast flag in messages sent by the DHCP client
+    # Enable/disable setting of the broadcast flag in messages sen | Default: enable
     dhcp_broadcast_flag: Literal["disable", "enable"]
-    # Enable/disable allowing this interface to act as a DHCP relay.
+    # Enable/disable allowing this interface to act as a DHCP rela | Default: disable
     dhcp_relay_service: Literal["disable", "enable"]
     # DHCP relay IP address.
-    dhcp_relay_ip: list[dict[str, Any]]  # Multi-value field
-    # IP address used by the DHCP relay as its source IP.
+    dhcp_relay_ip: list[dict[str, Any]]
+    # IP address used by the DHCP relay as its source IP. | Default: 0.0.0.0
     dhcp_relay_source_ip: str
-    # DHCP relay circuit ID.
+    # DHCP relay circuit ID. | MaxLen: 64
     dhcp_relay_circuit_id: str
-    # DHCP relay link selection.
+    # DHCP relay link selection. | Default: 0.0.0.0
     dhcp_relay_link_selection: str
-    # Enable/disable sending of DHCP requests to all servers.
+    # Enable/disable sending of DHCP requests to all servers. | Default: disable
     dhcp_relay_request_all_server: Literal["disable", "enable"]
-    # Enable/disable relaying DHCP messages with no end option.
+    # Enable/disable relaying DHCP messages with no end option. | Default: disable
     dhcp_relay_allow_no_end_option: Literal["disable", "enable"]
-    # DHCP relay type (regular or IPsec).
+    # DHCP relay type (regular or IPsec). | Default: regular
     dhcp_relay_type: Literal["regular", "ipsec"]
-    # Enable/disable DHCP smart relay.
+    # Enable/disable DHCP smart relay. | Default: disable
     dhcp_smart_relay: Literal["disable", "enable"]
-    # Enable/disable DHCP relay agent option.
+    # Enable/disable DHCP relay agent option. | Default: enable
     dhcp_relay_agent_option: Literal["enable", "disable"]
-    # Enable/disable addition of classless static routes retrieved from DHCP server.
+    # Enable/disable addition of classless static routes retrieved | Default: enable
     dhcp_classless_route_addition: Literal["enable", "disable"]
-    # High Availability in-band management IP address of this interface.
+    # High Availability in-band management IP address of this inte | Default: 0.0.0.0 0.0.0.0
     management_ip: str
-    # Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.
+    # Interface IPv4 address and subnet mask, syntax: X.X.X.X/24. | Default: 0.0.0.0 0.0.0.0
     ip: str
     # Permitted types of management access to this interface.
     allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]
-    # Enable/disable detect gateway alive for first.
+    # Enable/disable detect gateway alive for first. | Default: disable
     gwdetect: Literal["enable", "disable"]
-    # PING server status.
+    # PING server status. | Default: 0 | Min: 0 | Max: 255
     ping_serv_status: int
     # Gateway's ping server for this IP.
     detectserver: str
-    # Protocols used to detect the server.
+    # Protocols used to detect the server. | Default: ping
     detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]
-    # HA election priority for the PING server.
+    # HA election priority for the PING server. | Default: 1 | Min: 1 | Max: 50
     ha_priority: int
-    # Enable/disable fail detection features for this interface.
+    # Enable/disable fail detection features for this interface. | Default: disable
     fail_detect: Literal["enable", "disable"]
-    # Options for detecting that this interface has failed.
+    # Options for detecting that this interface has failed. | Default: link-down
     fail_detect_option: Literal["detectserver", "link-down"]
-    # Select link-failed-signal or link-down method to alert about a failed link.
+    # Select link-failed-signal or link-down method to alert about | Default: link-down
     fail_alert_method: Literal["link-failed-signal", "link-down"]
-    # Action on FortiExtender when interface fail.
+    # Action on FortiExtender when interface fail. | Default: soft-restart
     fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]
-    # Names of the FortiGate interfaces to which the link failure alert is sent.
-    fail_alert_interfaces: list[InterfaceFailalertinterfacesObject]  # Table field - list of typed objects
-    # DHCP client identifier.
+    # Names of the FortiGate interfaces to which the link failure
+    fail_alert_interfaces: list[InterfaceFailalertinterfacesObject]
+    # DHCP client identifier. | MaxLen: 48
     dhcp_client_identifier: str
-    # DHCP renew time in seconds (300-604800), 0 means use the renew time provided by
+    # DHCP renew time in seconds (300-604800), 0 means use the ren | Default: 0 | Min: 300 | Max: 604800
     dhcp_renew_time: int
-    # Unnumbered IP used for PPPoE interfaces for which no unique local address is pro
+    # Unnumbered IP used for PPPoE interfaces for which no unique | Default: 0.0.0.0
     ipunnumbered: str
-    # Username of the PPPoE account, provided by your ISP.
+    # Username of the PPPoE account, provided by your ISP. | MaxLen: 64
     username: str
-    # CoS in VLAN tag for outgoing PPPoE/PPP packets.
+    # CoS in VLAN tag for outgoing PPPoE/PPP packets. | Default: cos0
     pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]
-    # Enable/disable PPPoE unnumbered negotiation.
+    # Enable/disable PPPoE unnumbered negotiation. | Default: enable
     pppoe_unnumbered_negotiate: Literal["enable", "disable"]
-    # PPPoE account's password.
+    # PPPoE account's password. | MaxLen: 128
     password: str
-    # PPPoE auto disconnect after idle timeout seconds, 0 means no timeout.
+    # PPPoE auto disconnect after idle timeout seconds, 0 means no | Default: 0 | Min: 0 | Max: 32767
     idle_timeout: int
-    # Enable/disable PPP multilink support.
+    # Enable/disable PPP multilink support. | Default: disable
     multilink: Literal["enable", "disable"]
-    # PPP MRRU (296 - 65535, default = 1500).
+    # PPP MRRU (296 - 65535, default = 1500). | Default: 1500 | Min: 296 | Max: 65535
     mrru: int
-    # MTU of detected peer (0 - 4294967295).
+    # MTU of detected peer (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     detected_peer_mtu: int
-    # Time in seconds to wait before retrying to start a PPPoE discovery, 0 means no t
+    # Time in seconds to wait before retrying to start a PPPoE dis | Default: 1 | Min: 0 | Max: 4294967295
     disc_retry_timeout: int
-    # PPPoE Active Discovery Terminate (PADT) used to terminate sessions after an idle
+    # PPPoE Active Discovery Terminate (PADT) used to terminate se | Default: 1 | Min: 0 | Max: 4294967295
     padt_retry_timeout: int
-    # PPPoE service name.
+    # PPPoE service name. | MaxLen: 63
     service_name: str
-    # PPPoE server name.
+    # PPPoE server name. | MaxLen: 63
     ac_name: str
-    # Time in seconds between PPPoE Link Control Protocol (LCP) echo requests.
+    # Time in seconds between PPPoE Link Control Protocol (LCP) ec | Default: 5 | Min: 0 | Max: 32767
     lcp_echo_interval: int
-    # Maximum missed LCP echo messages before disconnect.
+    # Maximum missed LCP echo messages before disconnect. | Default: 3 | Min: 0 | Max: 32767
     lcp_max_echo_fails: int
-    # Enable to get the gateway IP from the DHCP or PPPoE server.
+    # Enable to get the gateway IP from the DHCP or PPPoE server. | Default: enable
     defaultgw: Literal["enable", "disable"]
-    # Enable/disable use DNS acquired by DHCP or PPPoE.
+    # Enable/disable use DNS acquired by DHCP or PPPoE. | Default: enable
     dns_server_override: Literal["enable", "disable"]
-    # DNS transport protocols.
+    # DNS transport protocols. | Default: cleartext
     dns_server_protocol: Literal["cleartext", "dot", "doh"]
-    # PPP authentication type to use.
+    # PPP authentication type to use. | Default: auto
     auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]
-    # Enable/disable PPTP client.
+    # Enable/disable PPTP client. | Default: disable
     pptp_client: Literal["enable", "disable"]
-    # PPTP user name.
+    # PPTP user name. | MaxLen: 64
     pptp_user: str
-    # PPTP password.
+    # PPTP password. | MaxLen: 128
     pptp_password: str
-    # PPTP server IP address.
+    # PPTP server IP address. | Default: 0.0.0.0
     pptp_server_ip: str
-    # PPTP authentication type.
+    # PPTP authentication type. | Default: auto
     pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]
-    # Idle timer in minutes (0 for disabled).
+    # Idle timer in minutes (0 for disabled). | Default: 0 | Min: 0 | Max: 65535
     pptp_timeout: int
-    # Enable/disable ARP forwarding.
+    # Enable/disable ARP forwarding. | Default: enable
     arpforward: Literal["enable", "disable"]
-    # Enable/disable NDISC forwarding.
+    # Enable/disable NDISC forwarding. | Default: enable
     ndiscforward: Literal["enable", "disable"]
-    # Enable/disable broadcast forwarding.
+    # Enable/disable broadcast forwarding. | Default: disable
     broadcast_forward: Literal["enable", "disable"]
-    # Bidirectional Forwarding Detection (BFD) settings.
+    # Bidirectional Forwarding Detection (BFD) settings. | Default: global
     bfd: Literal["global", "enable", "disable"]
-    # BFD desired minimal transmit interval.
+    # BFD desired minimal transmit interval. | Default: 250 | Min: 1 | Max: 100000
     bfd_desired_min_tx: int
-    # BFD detection multiplier.
+    # BFD detection multiplier. | Default: 3 | Min: 1 | Max: 50
     bfd_detect_mult: int
-    # BFD required minimal receive interval.
+    # BFD required minimal receive interval. | Default: 250 | Min: 1 | Max: 100000
     bfd_required_min_rx: int
-    # Enable/disable l2 forwarding.
+    # Enable/disable l2 forwarding. | Default: disable
     l2forward: Literal["enable", "disable"]
-    # Enable/disable sending of ICMP redirects.
+    # Enable/disable sending of ICMP redirects. | Default: enable
     icmp_send_redirect: Literal["enable", "disable"]
-    # Enable/disable ICMP accept redirect.
+    # Enable/disable ICMP accept redirect. | Default: enable
     icmp_accept_redirect: Literal["enable", "disable"]
-    # IPv4 reachable time in milliseconds (30000 - 3600000, default = 30000).
+    # IPv4 reachable time in milliseconds | Default: 30000 | Min: 30000 | Max: 3600000
     reachable_time: int
-    # Enable/disable traffic forwarding between VLANs on this interface.
+    # Enable/disable traffic forwarding between VLANs on this inte | Default: disable
     vlanforward: Literal["enable", "disable"]
-    # Enable/disable STP forwarding.
+    # Enable/disable STP forwarding. | Default: disable
     stpforward: Literal["enable", "disable"]
-    # Configure STP forwarding mode.
+    # Configure STP forwarding mode. | Default: rpl-all-ext-id
     stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"]
-    # Enable/disable the use of this interface as a one-armed sniffer.
+    # Enable/disable the use of this interface as a one-armed snif | Default: disable
     ips_sniffer_mode: Literal["enable", "disable"]
-    # Enable/disable authentication for this interface.
+    # Enable/disable authentication for this interface. | Default: disable
     ident_accept: Literal["enable", "disable"]
-    # Enable/disable IP/MAC binding.
+    # Enable/disable IP/MAC binding. | Default: disable
     ipmac: Literal["enable", "disable"]
-    # Enable to always send packets from this interface to a destination MAC address.
+    # Enable to always send packets from this interface to a desti | Default: disable
     subst: Literal["enable", "disable"]
-    # Change the interface's MAC address.
+    # Change the interface's MAC address. | Default: 00:00:00:00:00:00
     macaddr: str
-    # Change the interface's virtual MAC address.
+    # Change the interface's virtual MAC address. | Default: 00:00:00:00:00:00
     virtual_mac: str
-    # Destination MAC address that all packets are sent to from this interface.
+    # Destination MAC address that all packets are sent to from th | Default: 00:00:00:00:00:00
     substitute_dst_mac: str
-    # Interface speed. The default setting and the options available depend on the int
+    # Interface speed. The default setting and the options availab | Default: auto
     speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"]
-    # Bring the interface up or shut the interface down.
+    # Bring the interface up or shut the interface down. | Default: up
     status: Literal["up", "down"]
-    # Enable/disable NETBIOS forwarding.
+    # Enable/disable NETBIOS forwarding. | Default: disable
     netbios_forward: Literal["disable", "enable"]
-    # WINS server IP.
+    # WINS server IP. | Default: 0.0.0.0
     wins_ip: str
-    # Interface type.
+    # Interface type. | Default: vlan
     type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"]
-    # Configure interface for single purpose.
+    # Configure interface for single purpose. | Default: none
     dedicated_to: Literal["none", "management"]
-    # Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
+    # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
     trust_ip_1: str
-    # Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
+    # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
     trust_ip_2: str
-    # Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).
+    # Trusted host for dedicated management traffic | Default: 0.0.0.0 0.0.0.0
     trust_ip_3: str
-    # Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).
+    # Trusted IPv6 host for dedicated management traffic | Default: ::/0
     trust_ip6_1: str
-    # Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).
+    # Trusted IPv6 host for dedicated management traffic | Default: ::/0
     trust_ip6_2: str
-    # Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).
+    # Trusted IPv6 host for dedicated management traffic | Default: ::/0
     trust_ip6_3: str
-    # RX ring size.
+    # RX ring size. | Default: 0 | Min: 0 | Max: 4294967295
     ring_rx: int
-    # TX ring size.
+    # TX ring size. | Default: 0 | Min: 0 | Max: 4294967295
     ring_tx: int
-    # Enable/disable WCCP on this interface. Used for encapsulated WCCP communication
+    # Enable/disable WCCP on this interface. Used for encapsulated | Default: disable
     wccp: Literal["enable", "disable"]
-    # Enable/disable NetFlow on this interface and set the data that NetFlow collects
+    # Enable/disable NetFlow on this interface and set the data th | Default: disable
     netflow_sampler: Literal["disable", "tx", "rx", "both"]
-    # NetFlow sample rate.  Sample one packet every configured number of packets
+    # NetFlow sample rate.  Sample one packet every configured num | Default: 1 | Min: 1 | Max: 65535
     netflow_sample_rate: int
-    # Netflow sampler ID.
+    # Netflow sampler ID. | Default: 0 | Min: 1 | Max: 254
     netflow_sampler_id: int
-    # Enable/disable sFlow on this interface.
+    # Enable/disable sFlow on this interface. | Default: disable
     sflow_sampler: Literal["enable", "disable"]
-    # Enable/disable drop fragment packets.
+    # Enable/disable drop fragment packets. | Default: disable
     drop_fragment: Literal["enable", "disable"]
-    # Enable/disable source IP check.
+    # Enable/disable source IP check. | Default: enable
     src_check: Literal["enable", "disable"]
-    # sFlow sample rate (10 - 99999).
+    # sFlow sample rate (10 - 99999). | Default: 2000 | Min: 10 | Max: 99999
     sample_rate: int
-    # sFlow polling interval in seconds (1 - 255).
+    # sFlow polling interval in seconds (1 - 255). | Default: 20 | Min: 1 | Max: 255
     polling_interval: int
-    # Data that NetFlow collects (rx, tx, or both).
+    # Data that NetFlow collects (rx, tx, or both). | Default: both
     sample_direction: Literal["tx", "rx", "both"]
-    # Enable/disable the explicit web proxy on this interface.
+    # Enable/disable the explicit web proxy on this interface. | Default: disable
     explicit_web_proxy: Literal["enable", "disable"]
-    # Enable/disable the explicit FTP proxy on this interface.
+    # Enable/disable the explicit FTP proxy on this interface. | Default: disable
     explicit_ftp_proxy: Literal["enable", "disable"]
-    # Enable/disable proxy captive portal on this interface.
+    # Enable/disable proxy captive portal on this interface. | Default: disable
     proxy_captive_portal: Literal["enable", "disable"]
-    # TCP maximum segment size. 0 means do not change segment size.
+    # TCP maximum segment size. 0 means do not change segment size | Default: 0 | Min: 48 | Max: 65535
     tcp_mss: int
-    # Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 means unlimited.
+    # Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 | Default: 0 | Min: 0 | Max: 80000000
     inbandwidth: int
-    # Bandwidth limit for outgoing traffic (0 - 80000000 kbps).
+    # Bandwidth limit for outgoing traffic (0 - 80000000 kbps). | Default: 0 | Min: 0 | Max: 80000000
     outbandwidth: int
-    # Outgoing traffic shaping profile.
+    # Outgoing traffic shaping profile. | MaxLen: 35
     egress_shaping_profile: str
-    # Incoming traffic shaping profile.
+    # Incoming traffic shaping profile. | MaxLen: 35
     ingress_shaping_profile: str
-    # Egress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.
+    # Egress Spillover threshold (0 - 16776000 kbps), 0 means unli | Default: 0 | Min: 0 | Max: 16776000
     spillover_threshold: int
-    # Ingress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.
+    # Ingress Spillover threshold (0 - 16776000 kbps), 0 means unl | Default: 0 | Min: 0 | Max: 16776000
     ingress_spillover_threshold: int
-    # Default weight for static routes (if route has no weight configured).
+    # Default weight for static routes | Default: 0 | Min: 0 | Max: 255
     weight: int
-    # Interface name.
+    # Interface name. | MaxLen: 15
     interface: str
-    # Enable/disable identifying the interface as an external interface
+    # Enable/disable identifying the interface as an external inte | Default: disable
     external: Literal["enable", "disable"]
-    # Enable to set a custom MTU for this interface.
+    # Enable to set a custom MTU for this interface. | Default: disable
     mtu_override: Literal["enable", "disable"]
-    # MTU value for this interface.
+    # MTU value for this interface. | Default: 1500 | Min: 0 | Max: 4294967295
     mtu: int
-    # Ethernet protocol of VLAN.
+    # Ethernet protocol of VLAN. | Default: 8021q
     vlan_protocol: Literal["8021q", "8021ad"]
-    # VLAN ID (1 - 4094).
+    # VLAN ID (1 - 4094). | Default: 0 | Min: 1 | Max: 4094
     vlanid: int
-    # Transparent mode forward domain.
+    # Transparent mode forward domain. | Default: 0 | Min: 0 | Max: 2147483647
     forward_domain: int
-    # Remote IP address of tunnel.
+    # Remote IP address of tunnel. | Default: 0.0.0.0 0.0.0.0
     remote_ip: str
-    # Physical interfaces that belong to the aggregate or redundant interface.
-    member: list[InterfaceMemberObject]  # Table field - list of typed objects
-    # LACP mode.
+    # Physical interfaces that belong to the aggregate or redundan
+    member: list[InterfaceMemberObject]
+    # LACP mode. | Default: active
     lacp_mode: Literal["static", "passive", "active"]
-    # LACP HA secondary member.
+    # LACP HA secondary member. | Default: enable
     lacp_ha_secondary: Literal["enable", "disable"]
-    # Method in which system ID is generated.
+    # Method in which system ID is generated. | Default: auto
     system_id_type: Literal["auto", "user"]
-    # Define a system ID for the aggregate interface.
+    # Define a system ID for the aggregate interface. | Default: 00:00:00:00:00:00
     system_id: str
-    # How often the interface sends LACP messages.
+    # How often the interface sends LACP messages. | Default: slow
     lacp_speed: Literal["slow", "fast"]
-    # Minimum number of aggregated ports that must be up.
+    # Minimum number of aggregated ports that must be up. | Default: 1 | Min: 1 | Max: 32
     min_links: int
-    # Action to take when less than the configured minimum number of links are active.
+    # Action to take when less than the configured minimum number | Default: operational
     min_links_down: Literal["operational", "administrative"]
-    # Frame distribution algorithm.
+    # Frame distribution algorithm. | Default: L4
     algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]
-    # Number of milliseconds to wait before considering a link is up.
+    # Number of milliseconds to wait before considering a link is | Default: 50 | Min: 50 | Max: 3600000
     link_up_delay: int
-    # Type of aggregation.
+    # Type of aggregation. | Default: physical
     aggregate_type: Literal["physical", "vxlan"]
-    # Enable/disable fail back to higher priority port once recovered.
+    # Enable/disable fail back to higher priority port once recove | Default: enable
     priority_override: Literal["enable", "disable"]
-    # Aggregate interface.
+    # Aggregate interface. | MaxLen: 15
     aggregate: str
-    # Redundant interface.
+    # Redundant interface. | MaxLen: 15
     redundant_interface: str
-    # Device Index.
+    # Device Index. | Default: 0 | Min: 0 | Max: 4294967295
     devindex: int
-    # Switch control interface VLAN ID.
+    # Switch control interface VLAN ID. | Default: 0 | Min: 0 | Max: 65535
     vindex: int
-    # Contained in switch.
+    # Contained in switch. | MaxLen: 15
     switch: str
-    # Description.
+    # Description. | MaxLen: 255
     description: str
-    # Alias will be displayed with the interface name to make it easier to distinguish
+    # Alias will be displayed with the interface name to make it e | MaxLen: 25
     alias: str
-    # Turn on captive portal authentication for this interface.
+    # Turn on captive portal authentication for this interface. | Default: none
     security_mode: Literal["none", "captive-portal", "802.1X"]
-    # Enable/disable MAC authentication bypass.
+    # Enable/disable MAC authentication bypass. | Default: disable
     security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"]
-    # Enable/disable IP authentication bypass.
+    # Enable/disable IP authentication bypass. | Default: disable
     security_ip_auth_bypass: Literal["enable", "disable"]
-    # URL of external authentication web server.
+    # URL of external authentication web server. | MaxLen: 1023
     security_external_web: str
-    # URL of external authentication logout server.
+    # URL of external authentication logout server. | MaxLen: 127
     security_external_logout: str
-    # Replacement message override group.
+    # Replacement message override group. | MaxLen: 35
     replacemsg_override_group: str
-    # URL redirection after disclaimer/authentication.
+    # URL redirection after disclaimer/authentication. | MaxLen: 1023
     security_redirect_url: str
-    # HTTPS server certificate.
+    # HTTPS server certificate. | MaxLen: 35
     auth_cert: str
-    # Address of captive portal.
+    # Address of captive portal. | MaxLen: 63
     auth_portal_addr: str
-    # Name of security-exempt-list.
+    # Name of security-exempt-list. | MaxLen: 35
     security_exempt_list: str
     # User groups that can authenticate with the captive portal.
-    security_groups: list[InterfaceSecuritygroupsObject]  # Table field - list of typed objects
-    # Configure IKE authentication SAML server.
+    security_groups: list[InterfaceSecuritygroupsObject]
+    # Configure IKE authentication SAML server. | MaxLen: 35
     ike_saml_server: str
-    # Enable/disable passively gathering of device identity information about the devi
+    # Enable/disable passively gathering of device identity inform | Default: disable
     device_identification: Literal["enable", "disable"]
     # Exclude IOT or OT application signatures.
     exclude_signatures: Literal["iot", "ot"]
-    # Enable/disable passive gathering of user identity information about users on thi
+    # Enable/disable passive gathering of user identity informatio | Default: enable
     device_user_identification: Literal["enable", "disable"]
-    # Enable/disable Link Layer Discovery Protocol (LLDP) reception.
+    # Enable/disable Link Layer Discovery Protocol (LLDP) receptio | Default: vdom
     lldp_reception: Literal["enable", "disable", "vdom"]
-    # Enable/disable Link Layer Discovery Protocol (LLDP) transmission.
+    # Enable/disable Link Layer Discovery Protocol (LLDP) transmis | Default: vdom
     lldp_transmission: Literal["enable", "disable", "vdom"]
-    # LLDP-MED network policy profile.
+    # LLDP-MED network policy profile. | MaxLen: 35
     lldp_network_policy: str
-    # Estimated maximum upstream bandwidth (kbps). Used to estimate link utilization.
+    # Estimated maximum upstream bandwidth (kbps). Used to estimat | Default: 0 | Min: 0 | Max: 4294967295
     estimated_upstream_bandwidth: int
-    # Estimated maximum downstream bandwidth (kbps). Used to estimate link utilization
+    # Estimated maximum downstream bandwidth (kbps). Used to estim | Default: 0 | Min: 0 | Max: 4294967295
     estimated_downstream_bandwidth: int
-    # Measured upstream bandwidth (kbps).
+    # Measured upstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
     measured_upstream_bandwidth: int
-    # Measured downstream bandwidth (kbps).
+    # Measured downstream bandwidth (kbps). | Default: 0 | Min: 0 | Max: 4294967295
     measured_downstream_bandwidth: int
-    # Bandwidth measure time.
+    # Bandwidth measure time. | Default: 0 | Min: 0 | Max: 4294967295
     bandwidth_measure_time: int
-    # Enable monitoring bandwidth on this interface.
+    # Enable monitoring bandwidth on this interface. | Default: disable
     monitor_bandwidth: Literal["enable", "disable"]
-    # Enable/disable use of virtual MAC for VRRP.
+    # Enable/disable use of virtual MAC for VRRP. | Default: disable
     vrrp_virtual_mac: Literal["enable", "disable"]
     # VRRP configuration.
-    vrrp: list[InterfaceVrrpObject]  # Table field - list of typed objects
+    vrrp: list[InterfaceVrrpObject]
     # PHY settings
     phy_setting: str
-    # Interface role.
+    # Interface role. | Default: undefined
     role: Literal["lan", "wan", "dmz", "undefined"]
-    # Permanent SNMP Index of the interface.
+    # Permanent SNMP Index of the interface. | Default: 0 | Min: 0 | Max: 2147483647
     snmp_index: int
-    # Enable/disable adding a secondary IP to this interface.
+    # Enable/disable adding a secondary IP to this interface. | Default: disable
     secondary_IP: Literal["enable", "disable"]
     # Second IP address of interface.
-    secondaryip: list[InterfaceSecondaryipObject]  # Table field - list of typed objects
-    # Enable/disable preservation of session route when dirty.
+    secondaryip: list[InterfaceSecondaryipObject]
+    # Enable/disable preservation of session route when dirty. | Default: disable
     preserve_session_route: Literal["enable", "disable"]
-    # Enable/disable automatic authorization of dedicated Fortinet extension device on
+    # Enable/disable automatic authorization of dedicated Fortinet | Default: disable
     auto_auth_extension_device: Literal["enable", "disable"]
-    # Enable/disable automatic registration of unknown FortiAP devices.
+    # Enable/disable automatic registration of unknown FortiAP dev | Default: enable
     ap_discover: Literal["enable", "disable"]
-    # Protocol for FortiGate neighbor discovery.
+    # Protocol for FortiGate neighbor discovery. | Default: lldp
     fortilink_neighbor_detect: Literal["lldp", "fortilink"]
-    # Enable/disable automatic IP address assignment of this interface by FortiIPAM.
+    # Enable/disable automatic IP address assignment of this inter | Default: inherit-global
     ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"]
-    # Number of IP addresses to be allocated by FortiIPAM and used by this FortiGate u
+    # Number of IP addresses to be allocated by FortiIPAM and used | Default: 256
     managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"]
-    # Enable/disable FortiLink split interface to connect member link to different For
+    # Enable/disable FortiLink split interface to connect member l | Default: enable
     fortilink_split_interface: Literal["enable", "disable"]
-    # Implicitly created.
+    # Implicitly created. | Default: 0 | Min: 0 | Max: 255
     internal: int
-    # FortiLink split interface backup link.
+    # FortiLink split interface backup link. | Default: 0 | Min: 0 | Max: 255
     fortilink_backup_link: int
-    # Block FortiSwitch port-to-port traffic.
+    # Block FortiSwitch port-to-port traffic. | Default: disable
     switch_controller_access_vlan: Literal["enable", "disable"]
-    # Switch controller traffic policy for the VLAN.
+    # Switch controller traffic policy for the VLAN. | MaxLen: 63
     switch_controller_traffic_policy: str
-    # Stop Layer2 MAC learning and interception of BPDUs and other packets on this int
+    # Stop Layer2 MAC learning and interception of BPDUs and other | Default: disable
     switch_controller_rspan_mode: Literal["disable", "enable"]
-    # NetFlow collection and processing.
+    # NetFlow collection and processing. | Default: disable
     switch_controller_netflow_collect: Literal["disable", "enable"]
-    # VLAN to use for FortiLink management purposes.
+    # VLAN to use for FortiLink management purposes. | Default: 4094 | Min: 1 | Max: 4094
     switch_controller_mgmt_vlan: int
-    # Switch controller IGMP snooping.
+    # Switch controller IGMP snooping. | Default: disable
     switch_controller_igmp_snooping: Literal["enable", "disable"]
-    # Switch controller IGMP snooping proxy.
+    # Switch controller IGMP snooping proxy. | Default: disable
     switch_controller_igmp_snooping_proxy: Literal["enable", "disable"]
-    # Switch controller IGMP snooping fast-leave.
+    # Switch controller IGMP snooping fast-leave. | Default: disable
     switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"]
-    # Switch controller DHCP snooping.
+    # Switch controller DHCP snooping. | Default: disable
     switch_controller_dhcp_snooping: Literal["enable", "disable"]
-    # Switch controller DHCP snooping verify MAC.
+    # Switch controller DHCP snooping verify MAC. | Default: disable
     switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]
-    # Switch controller DHCP snooping option82.
+    # Switch controller DHCP snooping option82. | Default: disable
     switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]
     # Configure DHCP server access list.
-    dhcp_snooping_server_list: list[InterfaceDhcpsnoopingserverlistObject]  # Table field - list of typed objects
-    # Enable/disable/Monitor FortiSwitch ARP inspection.
+    dhcp_snooping_server_list: list[InterfaceDhcpsnoopingserverlistObject]
+    # Enable/disable/Monitor FortiSwitch ARP inspection. | Default: disable
     switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]
-    # Limit the number of dynamic MAC addresses on this VLAN
+    # Limit the number of dynamic MAC addresses on this VLAN | Default: 0 | Min: 0 | Max: 128
     switch_controller_learning_limit: int
-    # Integrated FortiLink settings for managed FortiSwitch.
+    # Integrated FortiLink settings for managed FortiSwitch. | MaxLen: 35
     switch_controller_nac: str
-    # Integrated FortiLink settings for managed FortiSwitch.
+    # Integrated FortiLink settings for managed FortiSwitch. | MaxLen: 35
     switch_controller_dynamic: str
-    # Interface's purpose when assigning traffic (read only).
+    # Interface's purpose when assigning traffic (read only). | Default: none
     switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"]
-    # Enable/disable managed FortiSwitch IoT scanning.
+    # Enable/disable managed FortiSwitch IoT scanning. | Default: disable
     switch_controller_iot_scanning: Literal["enable", "disable"]
-    # Enable/disable managed FortiSwitch routing offload.
+    # Enable/disable managed FortiSwitch routing offload. | Default: disable
     switch_controller_offload: Literal["enable", "disable"]
-    # IP for routing offload on FortiSwitch.
+    # IP for routing offload on FortiSwitch. | Default: 0.0.0.0
     switch_controller_offload_ip: str
-    # Enable/disable managed FortiSwitch routing offload gateway.
+    # Enable/disable managed FortiSwitch routing offload gateway. | Default: disable
     switch_controller_offload_gw: Literal["enable", "disable"]
-    # Creation status for switch-controller VLANs.
+    # Creation status for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
     swc_vlan: int
-    # Initial create for switch-controller VLANs.
+    # Initial create for switch-controller VLANs. | Default: 0 | Min: 0 | Max: 4294967295
     swc_first_create: int
-    # Color of icon on the GUI.
+    # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
     color: int
     # Config object tagging.
-    tagging: list[InterfaceTaggingObject]  # Table field - list of typed objects
-    # Enable/disable EAP-Supplicant.
+    tagging: list[InterfaceTaggingObject]
+    # Enable/disable EAP-Supplicant. | Default: disable
     eap_supplicant: Literal["enable", "disable"]
     # EAP method.
     eap_method: Literal["tls", "peap"]
-    # EAP identity.
+    # EAP identity. | MaxLen: 35
     eap_identity: str
-    # EAP password.
+    # EAP password. | MaxLen: 128
     eap_password: str
-    # EAP CA certificate name.
+    # EAP CA certificate name. | MaxLen: 79
     eap_ca_cert: str
-    # EAP user certificate name.
+    # EAP user certificate name. | MaxLen: 35
     eap_user_cert: str
-    # default purdue level of device detected on this interface.
+    # default purdue level of device detected on this interface. | Default: 3
     default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
     # IPv6 of interface.
     ipv6: str
@@ -1185,8 +1299,66 @@ class Interface:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> InterfaceResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> InterfaceResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[InterfaceResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -1201,11 +1373,12 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -1221,11 +1394,11 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -1240,10 +1413,11 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[InterfaceObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -1260,7 +1434,7 @@ class Interface:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -1320,7 +1494,7 @@ class Interface:
         **kwargs: Any,
     ) -> list[InterfaceResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -1335,9 +1509,9 @@ class Interface:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -1590,7 +1764,7 @@ class Interface:
         physical: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
@@ -1823,8 +1997,9 @@ class Interface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -2053,7 +2228,237 @@ class Interface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -2283,7 +2688,7 @@ class Interface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -2513,7 +2918,7 @@ class Interface:
         physical: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
@@ -2746,8 +3151,9 @@ class Interface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -2976,7 +3382,237 @@ class Interface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -3206,7 +3842,7 @@ class Interface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -3215,7 +3851,7 @@ class Interface:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfaceObject: ...
     
@@ -3227,8 +3863,9 @@ class Interface:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -3236,7 +3873,16 @@ class Interface:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -3244,7 +3890,7 @@ class Interface:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -3480,7 +4126,7 @@ class Interface:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -3505,8 +4151,4985 @@ class Interface:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class InterfaceDictMode:
+    """Interface endpoint for dict response mode (default for this client).
+    
+    By default returns InterfaceResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return InterfaceObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[InterfaceObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> InterfaceResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[InterfaceResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class InterfaceObjectMode:
+    """Interface endpoint for object response mode (default for this client).
+    
+    By default returns InterfaceObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return InterfaceResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> InterfaceResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[InterfaceResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[InterfaceObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfaceObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: InterfacePayload | None = ...,
+        name: str | None = ...,
+        vrf: int | None = ...,
+        cli_conn_status: int | None = ...,
+        fortilink: Literal["enable", "disable"] | None = ...,
+        switch_controller_source_ip: Literal["outbound", "fixed"] | None = ...,
+        mode: Literal["static", "dhcp", "pppoe"] | None = ...,
+        client_options: str | list[str] | list[dict[str, Any]] | None = ...,
+        distance: int | None = ...,
+        priority: int | None = ...,
+        dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        dhcp_relay_interface: str | None = ...,
+        dhcp_relay_vrf_select: int | None = ...,
+        dhcp_broadcast_flag: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_service: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_ip: str | list[str] | None = ...,
+        dhcp_relay_source_ip: str | None = ...,
+        dhcp_relay_circuit_id: str | None = ...,
+        dhcp_relay_link_selection: str | None = ...,
+        dhcp_relay_request_all_server: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_allow_no_end_option: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_type: Literal["regular", "ipsec"] | None = ...,
+        dhcp_smart_relay: Literal["disable", "enable"] | None = ...,
+        dhcp_relay_agent_option: Literal["enable", "disable"] | None = ...,
+        dhcp_classless_route_addition: Literal["enable", "disable"] | None = ...,
+        management_ip: str | None = ...,
+        ip: str | None = ...,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"] | list[str] | None = ...,
+        gwdetect: Literal["enable", "disable"] | None = ...,
+        ping_serv_status: int | None = ...,
+        detectserver: str | None = ...,
+        detectprotocol: Literal["ping", "tcp-echo", "udp-echo"] | list[str] | None = ...,
+        ha_priority: int | None = ...,
+        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect_option: Literal["detectserver", "link-down"] | list[str] | None = ...,
+        fail_alert_method: Literal["link-failed-signal", "link-down"] | None = ...,
+        fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        dhcp_client_identifier: str | None = ...,
+        dhcp_renew_time: int | None = ...,
+        ipunnumbered: str | None = ...,
+        username: str | None = ...,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        password: str | None = ...,
+        idle_timeout: int | None = ...,
+        multilink: Literal["enable", "disable"] | None = ...,
+        mrru: int | None = ...,
+        detected_peer_mtu: int | None = ...,
+        disc_retry_timeout: int | None = ...,
+        padt_retry_timeout: int | None = ...,
+        service_name: str | None = ...,
+        ac_name: str | None = ...,
+        lcp_echo_interval: int | None = ...,
+        lcp_max_echo_fails: int | None = ...,
+        defaultgw: Literal["enable", "disable"] | None = ...,
+        dns_server_override: Literal["enable", "disable"] | None = ...,
+        dns_server_protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_client: Literal["enable", "disable"] | None = ...,
+        pptp_user: str | None = ...,
+        pptp_password: str | None = ...,
+        pptp_server_ip: str | None = ...,
+        pptp_auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pptp_timeout: int | None = ...,
+        arpforward: Literal["enable", "disable"] | None = ...,
+        ndiscforward: Literal["enable", "disable"] | None = ...,
+        broadcast_forward: Literal["enable", "disable"] | None = ...,
+        bfd: Literal["global", "enable", "disable"] | None = ...,
+        bfd_desired_min_tx: int | None = ...,
+        bfd_detect_mult: int | None = ...,
+        bfd_required_min_rx: int | None = ...,
+        l2forward: Literal["enable", "disable"] | None = ...,
+        icmp_send_redirect: Literal["enable", "disable"] | None = ...,
+        icmp_accept_redirect: Literal["enable", "disable"] | None = ...,
+        reachable_time: int | None = ...,
+        vlanforward: Literal["enable", "disable"] | None = ...,
+        stpforward: Literal["enable", "disable"] | None = ...,
+        stpforward_mode: Literal["rpl-all-ext-id", "rpl-bridge-ext-id", "rpl-nothing"] | None = ...,
+        ips_sniffer_mode: Literal["enable", "disable"] | None = ...,
+        ident_accept: Literal["enable", "disable"] | None = ...,
+        ipmac: Literal["enable", "disable"] | None = ...,
+        subst: Literal["enable", "disable"] | None = ...,
+        macaddr: str | None = ...,
+        virtual_mac: str | None = ...,
+        substitute_dst_mac: str | None = ...,
+        speed: Literal["auto", "10full", "10half", "100full", "100half", "100auto", "1000full", "1000auto"] | None = ...,
+        status: Literal["up", "down"] | None = ...,
+        netbios_forward: Literal["disable", "enable"] | None = ...,
+        wins_ip: str | None = ...,
+        type: Literal["physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "geneve", "switch-vlan", "emac-vlan", "lan-extension"] | None = ...,
+        dedicated_to: Literal["none", "management"] | None = ...,
+        trust_ip_1: str | None = ...,
+        trust_ip_2: str | None = ...,
+        trust_ip_3: str | None = ...,
+        trust_ip6_1: str | None = ...,
+        trust_ip6_2: str | None = ...,
+        trust_ip6_3: str | None = ...,
+        ring_rx: int | None = ...,
+        ring_tx: int | None = ...,
+        wccp: Literal["enable", "disable"] | None = ...,
+        netflow_sampler: Literal["disable", "tx", "rx", "both"] | None = ...,
+        netflow_sample_rate: int | None = ...,
+        netflow_sampler_id: int | None = ...,
+        sflow_sampler: Literal["enable", "disable"] | None = ...,
+        drop_fragment: Literal["enable", "disable"] | None = ...,
+        src_check: Literal["enable", "disable"] | None = ...,
+        sample_rate: int | None = ...,
+        polling_interval: int | None = ...,
+        sample_direction: Literal["tx", "rx", "both"] | None = ...,
+        explicit_web_proxy: Literal["enable", "disable"] | None = ...,
+        explicit_ftp_proxy: Literal["enable", "disable"] | None = ...,
+        proxy_captive_portal: Literal["enable", "disable"] | None = ...,
+        tcp_mss: int | None = ...,
+        inbandwidth: int | None = ...,
+        outbandwidth: int | None = ...,
+        egress_shaping_profile: str | None = ...,
+        ingress_shaping_profile: str | None = ...,
+        spillover_threshold: int | None = ...,
+        ingress_spillover_threshold: int | None = ...,
+        weight: int | None = ...,
+        interface: str | None = ...,
+        external: Literal["enable", "disable"] | None = ...,
+        mtu_override: Literal["enable", "disable"] | None = ...,
+        mtu: int | None = ...,
+        vlan_protocol: Literal["8021q", "8021ad"] | None = ...,
+        vlanid: int | None = ...,
+        forward_domain: int | None = ...,
+        remote_ip: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        lacp_mode: Literal["static", "passive", "active"] | None = ...,
+        lacp_ha_secondary: Literal["enable", "disable"] | None = ...,
+        system_id_type: Literal["auto", "user"] | None = ...,
+        system_id: str | None = ...,
+        lacp_speed: Literal["slow", "fast"] | None = ...,
+        min_links: int | None = ...,
+        min_links_down: Literal["operational", "administrative"] | None = ...,
+        algorithm: Literal["L2", "L3", "L4", "NPU-GRE", "Source-MAC"] | None = ...,
+        link_up_delay: int | None = ...,
+        aggregate_type: Literal["physical", "vxlan"] | None = ...,
+        priority_override: Literal["enable", "disable"] | None = ...,
+        aggregate: str | None = ...,
+        redundant_interface: str | None = ...,
+        devindex: int | None = ...,
+        vindex: int | None = ...,
+        switch: str | None = ...,
+        description: str | None = ...,
+        alias: str | None = ...,
+        security_mode: Literal["none", "captive-portal", "802.1X"] | None = ...,
+        security_mac_auth_bypass: Literal["mac-auth-only", "enable", "disable"] | None = ...,
+        security_ip_auth_bypass: Literal["enable", "disable"] | None = ...,
+        security_external_web: str | None = ...,
+        security_external_logout: str | None = ...,
+        replacemsg_override_group: str | None = ...,
+        security_redirect_url: str | None = ...,
+        auth_cert: str | None = ...,
+        auth_portal_addr: str | None = ...,
+        security_exempt_list: str | None = ...,
+        security_groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        ike_saml_server: str | None = ...,
+        device_identification: Literal["enable", "disable"] | None = ...,
+        exclude_signatures: Literal["iot", "ot"] | list[str] | None = ...,
+        device_user_identification: Literal["enable", "disable"] | None = ...,
+        lldp_reception: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_transmission: Literal["enable", "disable", "vdom"] | None = ...,
+        lldp_network_policy: str | None = ...,
+        estimated_upstream_bandwidth: int | None = ...,
+        estimated_downstream_bandwidth: int | None = ...,
+        measured_upstream_bandwidth: int | None = ...,
+        measured_downstream_bandwidth: int | None = ...,
+        bandwidth_measure_time: int | None = ...,
+        monitor_bandwidth: Literal["enable", "disable"] | None = ...,
+        vrrp_virtual_mac: Literal["enable", "disable"] | None = ...,
+        vrrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        phy_setting: str | None = ...,
+        role: Literal["lan", "wan", "dmz", "undefined"] | None = ...,
+        snmp_index: int | None = ...,
+        secondary_IP: Literal["enable", "disable"] | None = ...,
+        secondaryip: str | list[str] | list[dict[str, Any]] | None = ...,
+        preserve_session_route: Literal["enable", "disable"] | None = ...,
+        auto_auth_extension_device: Literal["enable", "disable"] | None = ...,
+        ap_discover: Literal["enable", "disable"] | None = ...,
+        fortilink_neighbor_detect: Literal["lldp", "fortilink"] | None = ...,
+        ip_managed_by_fortiipam: Literal["inherit-global", "enable", "disable"] | None = ...,
+        managed_subnetwork_size: Literal["4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "4096", "8192", "16384", "32768", "65536", "131072", "262144", "524288", "1048576", "2097152", "4194304", "8388608", "16777216"] | None = ...,
+        fortilink_split_interface: Literal["enable", "disable"] | None = ...,
+        internal: int | None = ...,
+        fortilink_backup_link: int | None = ...,
+        switch_controller_access_vlan: Literal["enable", "disable"] | None = ...,
+        switch_controller_traffic_policy: str | None = ...,
+        switch_controller_rspan_mode: Literal["disable", "enable"] | None = ...,
+        switch_controller_netflow_collect: Literal["disable", "enable"] | None = ...,
+        switch_controller_mgmt_vlan: int | None = ...,
+        switch_controller_igmp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_proxy: Literal["enable", "disable"] | None = ...,
+        switch_controller_igmp_snooping_fast_leave: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"] | None = ...,
+        switch_controller_dhcp_snooping_option82: Literal["enable", "disable"] | None = ...,
+        dhcp_snooping_server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        switch_controller_arp_inspection: Literal["enable", "disable", "monitor"] | None = ...,
+        switch_controller_learning_limit: int | None = ...,
+        switch_controller_nac: str | None = ...,
+        switch_controller_dynamic: str | None = ...,
+        switch_controller_feature: Literal["none", "default-vlan", "quarantine", "rspan", "voice", "video", "nac", "nac-segment"] | None = ...,
+        switch_controller_iot_scanning: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload: Literal["enable", "disable"] | None = ...,
+        switch_controller_offload_ip: str | None = ...,
+        switch_controller_offload_gw: Literal["enable", "disable"] | None = ...,
+        swc_vlan: int | None = ...,
+        swc_first_create: int | None = ...,
+        color: int | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        eap_supplicant: Literal["enable", "disable"] | None = ...,
+        eap_method: Literal["tls", "peap"] | None = ...,
+        eap_identity: str | None = ...,
+        eap_password: str | None = ...,
+        eap_ca_cert: str | None = ...,
+        eap_user_cert: str | None = ...,
+        default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
+        ipv6: str | None = ...,
+        physical: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Interface",
+    "InterfaceDictMode",
+    "InterfaceObjectMode",
     "InterfacePayload",
     "InterfaceObject",
 ]

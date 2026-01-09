@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class LocalInPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/local_in_policy payload fields.
@@ -20,31 +24,123 @@ class LocalInPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    policyid: NotRequired[int]  # User defined local in policy ID.
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    ha_mgmt_intf_only: NotRequired[Literal["enable", "disable"]]  # Enable/disable dedicating the HA management interface only f
+    policyid: int  # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    ha_mgmt_intf_only: Literal["enable", "disable"]  # Enable/disable dedicating the HA management interf | Default: disable
     intf: list[dict[str, Any]]  # Incoming interface name from available options.
     srcaddr: list[dict[str, Any]]  # Source address object from available options.
-    srcaddr_negate: NotRequired[Literal["enable", "disable"]]  # When enabled srcaddr specifies what the source address must
+    srcaddr_negate: Literal["enable", "disable"]  # When enabled srcaddr specifies what the source add | Default: disable
     dstaddr: list[dict[str, Any]]  # Destination address object from available options.
-    internet_service_src: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services in source for this l
-    internet_service_src_name: NotRequired[list[dict[str, Any]]]  # Internet Service source name.
-    internet_service_src_group: NotRequired[list[dict[str, Any]]]  # Internet Service source group name.
-    internet_service_src_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service source name.
-    internet_service_src_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service source group name.
-    internet_service_src_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service source name.
-    dstaddr_negate: NotRequired[Literal["enable", "disable"]]  # When enabled dstaddr specifies what the destination address
-    action: NotRequired[Literal["accept", "deny"]]  # Action performed on traffic matching the policy
+    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
+    internet_service_src_name: list[dict[str, Any]]  # Internet Service source name.
+    internet_service_src_group: list[dict[str, Any]]  # Internet Service source group name.
+    internet_service_src_custom: list[dict[str, Any]]  # Custom Internet Service source name.
+    internet_service_src_custom_group: list[dict[str, Any]]  # Custom Internet Service source group name.
+    internet_service_src_fortiguard: list[dict[str, Any]]  # FortiGuard Internet Service source name.
+    dstaddr_negate: Literal["enable", "disable"]  # When enabled dstaddr specifies what the destinatio | Default: disable
+    action: Literal["accept", "deny"]  # Action performed on traffic matching the policy | Default: deny
     service: list[dict[str, Any]]  # Service object from available options.
-    service_negate: NotRequired[Literal["enable", "disable"]]  # When enabled service specifies what the service must NOT be.
-    internet_service_src_negate: NotRequired[Literal["enable", "disable"]]  # When enabled internet-service-src specifies what the service
-    schedule: str  # Schedule object from available options.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this local-in policy.
-    virtual_patch: NotRequired[Literal["enable", "disable"]]  # Enable/disable virtual patching.
-    logtraffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable local-in traffic logging.
-    comments: NotRequired[str]  # Comment.
+    service_negate: Literal["enable", "disable"]  # When enabled service specifies what the service mu | Default: disable
+    internet_service_src_negate: Literal["enable", "disable"]  # When enabled internet-service-src specifies what t | Default: disable
+    schedule: str  # Schedule object from available options. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Enable/disable this local-in policy. | Default: enable
+    virtual_patch: Literal["enable", "disable"]  # Enable/disable virtual patching. | Default: disable
+    logtraffic: Literal["enable", "disable"]  # Enable/disable local-in traffic logging. | Default: disable
+    comments: str  # Comment. | MaxLen: 1023
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class LocalInPolicyIntfItem(TypedDict):
+    """Type hints for intf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicySrcaddrItem(TypedDict):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicyDstaddrItem(TypedDict):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcnameItem(TypedDict):
+    """Type hints for internet-service-src-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcgroupItem(TypedDict):
+    """Type hints for internet-service-src-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Internet Service group name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrccustomItem(TypedDict):
+    """Type hints for internet-service-src-custom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrccustomgroupItem(TypedDict):
+    """Type hints for internet-service-src-custom-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Custom Internet Service group name. | MaxLen: 79
+
+
+class LocalInPolicyInternetservicesrcfortiguardItem(TypedDict):
+    """Type hints for internet-service-src-fortiguard table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+
+
+class LocalInPolicyServiceItem(TypedDict):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class LocalInPolicyIntfObject:
@@ -54,7 +150,7 @@ class LocalInPolicyIntfObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -75,7 +171,7 @@ class LocalInPolicySrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -96,7 +192,7 @@ class LocalInPolicyDstaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -117,7 +213,7 @@ class LocalInPolicyInternetservicesrcnameObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service name.
+    # Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -138,7 +234,7 @@ class LocalInPolicyInternetservicesrcgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Internet Service group name.
+    # Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -159,7 +255,7 @@ class LocalInPolicyInternetservicesrccustomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service name.
+    # Custom Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -180,7 +276,7 @@ class LocalInPolicyInternetservicesrccustomgroupObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Custom Internet Service group name.
+    # Custom Internet Service group name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -201,7 +297,7 @@ class LocalInPolicyInternetservicesrcfortiguardObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # FortiGuard Internet Service name.
+    # FortiGuard Internet Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -222,7 +318,7 @@ class LocalInPolicyServiceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Service name.
+    # Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -243,29 +339,29 @@ class LocalInPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    policyid: int
-    uuid: str
-    ha_mgmt_intf_only: Literal["enable", "disable"]
-    intf: list[dict[str, Any]]
-    srcaddr: list[dict[str, Any]]
-    srcaddr_negate: Literal["enable", "disable"]
-    dstaddr: list[dict[str, Any]]
-    internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[dict[str, Any]]
-    internet_service_src_group: list[dict[str, Any]]
-    internet_service_src_custom: list[dict[str, Any]]
-    internet_service_src_custom_group: list[dict[str, Any]]
-    internet_service_src_fortiguard: list[dict[str, Any]]
-    dstaddr_negate: Literal["enable", "disable"]
-    action: Literal["accept", "deny"]
-    service: list[dict[str, Any]]
-    service_negate: Literal["enable", "disable"]
-    internet_service_src_negate: Literal["enable", "disable"]
-    schedule: str
-    status: Literal["enable", "disable"]
-    virtual_patch: Literal["enable", "disable"]
-    logtraffic: Literal["enable", "disable"]
-    comments: str
+    policyid: int  # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    ha_mgmt_intf_only: Literal["enable", "disable"]  # Enable/disable dedicating the HA management interf | Default: disable
+    intf: list[LocalInPolicyIntfItem]  # Incoming interface name from available options.
+    srcaddr: list[LocalInPolicySrcaddrItem]  # Source address object from available options.
+    srcaddr_negate: Literal["enable", "disable"]  # When enabled srcaddr specifies what the source add | Default: disable
+    dstaddr: list[LocalInPolicyDstaddrItem]  # Destination address object from available options.
+    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
+    internet_service_src_name: list[LocalInPolicyInternetservicesrcnameItem]  # Internet Service source name.
+    internet_service_src_group: list[LocalInPolicyInternetservicesrcgroupItem]  # Internet Service source group name.
+    internet_service_src_custom: list[LocalInPolicyInternetservicesrccustomItem]  # Custom Internet Service source name.
+    internet_service_src_custom_group: list[LocalInPolicyInternetservicesrccustomgroupItem]  # Custom Internet Service source group name.
+    internet_service_src_fortiguard: list[LocalInPolicyInternetservicesrcfortiguardItem]  # FortiGuard Internet Service source name.
+    dstaddr_negate: Literal["enable", "disable"]  # When enabled dstaddr specifies what the destinatio | Default: disable
+    action: Literal["accept", "deny"]  # Action performed on traffic matching the policy | Default: deny
+    service: list[LocalInPolicyServiceItem]  # Service object from available options.
+    service_negate: Literal["enable", "disable"]  # When enabled service specifies what the service mu | Default: disable
+    internet_service_src_negate: Literal["enable", "disable"]  # When enabled internet-service-src specifies what t | Default: disable
+    schedule: str  # Schedule object from available options. | MaxLen: 35
+    status: Literal["enable", "disable"]  # Enable/disable this local-in policy. | Default: enable
+    virtual_patch: Literal["enable", "disable"]  # Enable/disable virtual patching. | Default: disable
+    logtraffic: Literal["enable", "disable"]  # Enable/disable local-in traffic logging. | Default: disable
+    comments: str  # Comment. | MaxLen: 1023
 
 
 @final
@@ -276,51 +372,51 @@ class LocalInPolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # User defined local in policy ID.
+    # User defined local in policy ID. | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Enable/disable dedicating the HA management interface only for local-in policy.
+    # Enable/disable dedicating the HA management interface only f | Default: disable
     ha_mgmt_intf_only: Literal["enable", "disable"]
     # Incoming interface name from available options.
-    intf: list[LocalInPolicyIntfObject]  # Table field - list of typed objects
+    intf: list[LocalInPolicyIntfObject]
     # Source address object from available options.
-    srcaddr: list[LocalInPolicySrcaddrObject]  # Table field - list of typed objects
-    # When enabled srcaddr specifies what the source address must NOT be.
+    srcaddr: list[LocalInPolicySrcaddrObject]
+    # When enabled srcaddr specifies what the source address must | Default: disable
     srcaddr_negate: Literal["enable", "disable"]
     # Destination address object from available options.
-    dstaddr: list[LocalInPolicyDstaddrObject]  # Table field - list of typed objects
-    # Enable/disable use of Internet Services in source for this local-in policy. If e
+    dstaddr: list[LocalInPolicyDstaddrObject]
+    # Enable/disable use of Internet Services in source for this l | Default: disable
     internet_service_src: Literal["enable", "disable"]
     # Internet Service source name.
-    internet_service_src_name: list[LocalInPolicyInternetservicesrcnameObject]  # Table field - list of typed objects
+    internet_service_src_name: list[LocalInPolicyInternetservicesrcnameObject]
     # Internet Service source group name.
-    internet_service_src_group: list[LocalInPolicyInternetservicesrcgroupObject]  # Table field - list of typed objects
+    internet_service_src_group: list[LocalInPolicyInternetservicesrcgroupObject]
     # Custom Internet Service source name.
-    internet_service_src_custom: list[LocalInPolicyInternetservicesrccustomObject]  # Table field - list of typed objects
+    internet_service_src_custom: list[LocalInPolicyInternetservicesrccustomObject]
     # Custom Internet Service source group name.
-    internet_service_src_custom_group: list[LocalInPolicyInternetservicesrccustomgroupObject]  # Table field - list of typed objects
+    internet_service_src_custom_group: list[LocalInPolicyInternetservicesrccustomgroupObject]
     # FortiGuard Internet Service source name.
-    internet_service_src_fortiguard: list[LocalInPolicyInternetservicesrcfortiguardObject]  # Table field - list of typed objects
-    # When enabled dstaddr specifies what the destination address must NOT be.
+    internet_service_src_fortiguard: list[LocalInPolicyInternetservicesrcfortiguardObject]
+    # When enabled dstaddr specifies what the destination address | Default: disable
     dstaddr_negate: Literal["enable", "disable"]
-    # Action performed on traffic matching the policy (default = deny).
+    # Action performed on traffic matching the policy | Default: deny
     action: Literal["accept", "deny"]
     # Service object from available options.
-    service: list[LocalInPolicyServiceObject]  # Table field - list of typed objects
-    # When enabled service specifies what the service must NOT be.
+    service: list[LocalInPolicyServiceObject]
+    # When enabled service specifies what the service must NOT be. | Default: disable
     service_negate: Literal["enable", "disable"]
-    # When enabled internet-service-src specifies what the service must NOT be.
+    # When enabled internet-service-src specifies what the service | Default: disable
     internet_service_src_negate: Literal["enable", "disable"]
-    # Schedule object from available options.
+    # Schedule object from available options. | MaxLen: 35
     schedule: str
-    # Enable/disable this local-in policy.
+    # Enable/disable this local-in policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Enable/disable virtual patching.
+    # Enable/disable virtual patching. | Default: disable
     virtual_patch: Literal["enable", "disable"]
-    # Enable/disable local-in traffic logging.
+    # Enable/disable local-in traffic logging. | Default: disable
     logtraffic: Literal["enable", "disable"]
-    # Comment.
+    # Comment. | MaxLen: 1023
     comments: str
     
     # Common API response fields
@@ -347,8 +443,66 @@ class LocalInPolicy:
     Primary Key: policyid
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LocalInPolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> LocalInPolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        policyid: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[LocalInPolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -363,11 +517,12 @@ class LocalInPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -383,11 +538,11 @@ class LocalInPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -402,10 +557,11 @@ class LocalInPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[LocalInPolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -422,7 +578,7 @@ class LocalInPolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -482,7 +638,7 @@ class LocalInPolicy:
         **kwargs: Any,
     ) -> list[LocalInPolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -497,9 +653,9 @@ class LocalInPolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -554,7 +710,7 @@ class LocalInPolicy:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicyObject: ...
     
@@ -589,8 +745,9 @@ class LocalInPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -621,7 +778,39 @@ class LocalInPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -653,7 +842,7 @@ class LocalInPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -685,7 +874,7 @@ class LocalInPolicy:
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicyObject: ...
     
@@ -720,8 +909,9 @@ class LocalInPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -752,7 +942,39 @@ class LocalInPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -784,7 +1006,7 @@ class LocalInPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -793,7 +1015,7 @@ class LocalInPolicy:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> LocalInPolicyObject: ...
     
@@ -805,8 +1027,9 @@ class LocalInPolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -814,7 +1037,16 @@ class LocalInPolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        policyid: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -822,7 +1054,7 @@ class LocalInPolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -860,7 +1092,7 @@ class LocalInPolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -885,8 +1117,1025 @@ class LocalInPolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class LocalInPolicyDictMode:
+    """LocalInPolicy endpoint for dict response mode (default for this client).
+    
+    By default returns LocalInPolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return LocalInPolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[LocalInPolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> LocalInPolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LocalInPolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class LocalInPolicyObjectMode:
+    """LocalInPolicy endpoint for object response mode (default for this client).
+    
+    By default returns LocalInPolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return LocalInPolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> LocalInPolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[LocalInPolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[LocalInPolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> LocalInPolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: LocalInPolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        ha_mgmt_intf_only: Literal["enable", "disable"] | None = ...,
+        intf: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcaddr_negate: Literal["enable", "disable"] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr_negate: Literal["enable", "disable"] | None = ...,
+        action: Literal["accept", "deny"] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_negate: Literal["enable", "disable"] | None = ...,
+        internet_service_src_negate: Literal["enable", "disable"] | None = ...,
+        schedule: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        virtual_patch: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "LocalInPolicy",
+    "LocalInPolicyDictMode",
+    "LocalInPolicyObjectMode",
     "LocalInPolicyPayload",
     "LocalInPolicyObject",
 ]

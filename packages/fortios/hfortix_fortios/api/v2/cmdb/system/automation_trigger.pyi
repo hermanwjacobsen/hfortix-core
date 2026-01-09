@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class AutomationTriggerPayload(TypedDict, total=False):
     """
     Type hints for system/automation_trigger payload fields.
@@ -18,30 +22,64 @@ class AutomationTriggerPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Name.
-    description: NotRequired[str]  # Description.
-    trigger_type: NotRequired[Literal["event-based", "scheduled"]]  # Trigger type.
-    event_type: NotRequired[Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]]  # Event type.
-    vdom: NotRequired[list[dict[str, Any]]]  # Virtual domain(s) that this trigger is valid for.
-    license_type: NotRequired[Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]]  # License type.
-    report_type: NotRequired[Literal["posture", "coverage", "optimization", "any"]]  # Security Rating report.
-    stitch_name: str  # Triggering stitch name.
-    logid: NotRequired[list[dict[str, Any]]]  # Log IDs to trigger event.
-    trigger_frequency: NotRequired[Literal["hourly", "daily", "weekly", "monthly", "once"]]  # Scheduled trigger frequency (default = daily).
-    trigger_weekday: NotRequired[Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]]  # Day of week for trigger.
-    trigger_day: NotRequired[int]  # Day within a month to trigger.
-    trigger_hour: NotRequired[int]  # Hour of the day on which to trigger (0 - 23, default = 1).
-    trigger_minute: NotRequired[int]  # Minute of the hour on which to trigger (0 - 59, default = 0)
-    trigger_datetime: NotRequired[str]  # Trigger date and time (YYYY-MM-DD HH:MM:SS).
-    fields: NotRequired[list[dict[str, Any]]]  # Customized trigger field settings.
-    faz_event_name: str  # FortiAnalyzer event handler name.
-    faz_event_severity: NotRequired[str]  # FortiAnalyzer event severity.
-    faz_event_tags: NotRequired[str]  # FortiAnalyzer event tags.
-    serial: str  # Fabric connector serial number.
-    fabric_event_name: str  # Fabric connector event handler name.
-    fabric_event_severity: NotRequired[str]  # Fabric connector event severity.
+    name: str  # Name. | MaxLen: 35
+    description: str  # Description. | MaxLen: 255
+    trigger_type: Literal["event-based", "scheduled"]  # Trigger type. | Default: event-based
+    event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]  # Event type. | Default: ioc
+    vdom: list[dict[str, Any]]  # Virtual domain(s) that this trigger is valid for.
+    license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]  # License type. | Default: forticare-support
+    report_type: Literal["posture", "coverage", "optimization", "any"]  # Security Rating report. | Default: posture
+    stitch_name: str  # Triggering stitch name. | MaxLen: 35
+    logid: list[dict[str, Any]]  # Log IDs to trigger event.
+    trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]  # Scheduled trigger frequency (default = daily). | Default: daily
+    trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]  # Day of week for trigger.
+    trigger_day: int  # Day within a month to trigger. | Default: 1 | Min: 1 | Max: 31
+    trigger_hour: int  # Hour of the day on which to trigger | Default: 0 | Min: 0 | Max: 23
+    trigger_minute: int  # Minute of the hour on which to trigger | Default: 0 | Min: 0 | Max: 59
+    trigger_datetime: str  # Trigger date and time (YYYY-MM-DD HH:MM:SS). | Default: 0000-00-00 00:00:00
+    fields: list[dict[str, Any]]  # Customized trigger field settings.
+    faz_event_name: str  # FortiAnalyzer event handler name. | MaxLen: 255
+    faz_event_severity: str  # FortiAnalyzer event severity. | MaxLen: 255
+    faz_event_tags: str  # FortiAnalyzer event tags. | MaxLen: 255
+    serial: str  # Fabric connector serial number. | MaxLen: 255
+    fabric_event_name: str  # Fabric connector event handler name. | MaxLen: 255
+    fabric_event_severity: str  # Fabric connector event severity. | MaxLen: 255
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class AutomationTriggerVdomItem(TypedDict):
+    """Type hints for vdom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Virtual domain name. | MaxLen: 79
+
+
+class AutomationTriggerLogidItem(TypedDict):
+    """Type hints for logid table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Log ID. | Default: 0 | Min: 1 | Max: 65535
+
+
+class AutomationTriggerFieldsItem(TypedDict):
+    """Type hints for fields table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Name. | MaxLen: 35
+    value: str  # Value. | MaxLen: 63
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class AutomationTriggerVdomObject:
@@ -51,7 +89,7 @@ class AutomationTriggerVdomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Virtual domain name.
+    # Virtual domain name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -72,7 +110,7 @@ class AutomationTriggerLogidObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Log ID.
+    # Log ID. | Default: 0 | Min: 1 | Max: 65535
     id: int
     
     # Methods from FortiObject
@@ -93,11 +131,11 @@ class AutomationTriggerFieldsObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Entry ID.
+    # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Value.
+    # Value. | MaxLen: 63
     value: str
     
     # Methods from FortiObject
@@ -118,28 +156,28 @@ class AutomationTriggerResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    description: str
-    trigger_type: Literal["event-based", "scheduled"]
-    event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]
-    vdom: list[dict[str, Any]]
-    license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]
-    report_type: Literal["posture", "coverage", "optimization", "any"]
-    stitch_name: str
-    logid: list[dict[str, Any]]
-    trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]
-    trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-    trigger_day: int
-    trigger_hour: int
-    trigger_minute: int
-    trigger_datetime: str
-    fields: list[dict[str, Any]]
-    faz_event_name: str
-    faz_event_severity: str
-    faz_event_tags: str
-    serial: str
-    fabric_event_name: str
-    fabric_event_severity: str
+    name: str  # Name. | MaxLen: 35
+    description: str  # Description. | MaxLen: 255
+    trigger_type: Literal["event-based", "scheduled"]  # Trigger type. | Default: event-based
+    event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]  # Event type. | Default: ioc
+    vdom: list[AutomationTriggerVdomItem]  # Virtual domain(s) that this trigger is valid for.
+    license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]  # License type. | Default: forticare-support
+    report_type: Literal["posture", "coverage", "optimization", "any"]  # Security Rating report. | Default: posture
+    stitch_name: str  # Triggering stitch name. | MaxLen: 35
+    logid: list[AutomationTriggerLogidItem]  # Log IDs to trigger event.
+    trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]  # Scheduled trigger frequency (default = daily). | Default: daily
+    trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]  # Day of week for trigger.
+    trigger_day: int  # Day within a month to trigger. | Default: 1 | Min: 1 | Max: 31
+    trigger_hour: int  # Hour of the day on which to trigger | Default: 0 | Min: 0 | Max: 23
+    trigger_minute: int  # Minute of the hour on which to trigger | Default: 0 | Min: 0 | Max: 59
+    trigger_datetime: str  # Trigger date and time (YYYY-MM-DD HH:MM:SS). | Default: 0000-00-00 00:00:00
+    fields: list[AutomationTriggerFieldsItem]  # Customized trigger field settings.
+    faz_event_name: str  # FortiAnalyzer event handler name. | MaxLen: 255
+    faz_event_severity: str  # FortiAnalyzer event severity. | MaxLen: 255
+    faz_event_tags: str  # FortiAnalyzer event tags. | MaxLen: 255
+    serial: str  # Fabric connector serial number. | MaxLen: 255
+    fabric_event_name: str  # Fabric connector event handler name. | MaxLen: 255
+    fabric_event_severity: str  # Fabric connector event severity. | MaxLen: 255
 
 
 @final
@@ -150,49 +188,49 @@ class AutomationTriggerObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Description.
+    # Description. | MaxLen: 255
     description: str
-    # Trigger type.
+    # Trigger type. | Default: event-based
     trigger_type: Literal["event-based", "scheduled"]
-    # Event type.
+    # Event type. | Default: ioc
     event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]
     # Virtual domain(s) that this trigger is valid for.
-    vdom: list[AutomationTriggerVdomObject]  # Table field - list of typed objects
-    # License type.
+    vdom: list[AutomationTriggerVdomObject]
+    # License type. | Default: forticare-support
     license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]
-    # Security Rating report.
+    # Security Rating report. | Default: posture
     report_type: Literal["posture", "coverage", "optimization", "any"]
-    # Triggering stitch name.
+    # Triggering stitch name. | MaxLen: 35
     stitch_name: str
     # Log IDs to trigger event.
-    logid: list[AutomationTriggerLogidObject]  # Table field - list of typed objects
-    # Scheduled trigger frequency (default = daily).
+    logid: list[AutomationTriggerLogidObject]
+    # Scheduled trigger frequency (default = daily). | Default: daily
     trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]
     # Day of week for trigger.
     trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-    # Day within a month to trigger.
+    # Day within a month to trigger. | Default: 1 | Min: 1 | Max: 31
     trigger_day: int
-    # Hour of the day on which to trigger (0 - 23, default = 1).
+    # Hour of the day on which to trigger (0 - 23, default = 1). | Default: 0 | Min: 0 | Max: 23
     trigger_hour: int
-    # Minute of the hour on which to trigger (0 - 59, default = 0).
+    # Minute of the hour on which to trigger (0 - 59, default = 0) | Default: 0 | Min: 0 | Max: 59
     trigger_minute: int
-    # Trigger date and time (YYYY-MM-DD HH:MM:SS).
+    # Trigger date and time (YYYY-MM-DD HH:MM:SS). | Default: 0000-00-00 00:00:00
     trigger_datetime: str
     # Customized trigger field settings.
-    fields: list[AutomationTriggerFieldsObject]  # Table field - list of typed objects
-    # FortiAnalyzer event handler name.
+    fields: list[AutomationTriggerFieldsObject]
+    # FortiAnalyzer event handler name. | MaxLen: 255
     faz_event_name: str
-    # FortiAnalyzer event severity.
+    # FortiAnalyzer event severity. | MaxLen: 255
     faz_event_severity: str
-    # FortiAnalyzer event tags.
+    # FortiAnalyzer event tags. | MaxLen: 255
     faz_event_tags: str
-    # Fabric connector serial number.
+    # Fabric connector serial number. | MaxLen: 255
     serial: str
-    # Fabric connector event handler name.
+    # Fabric connector event handler name. | MaxLen: 255
     fabric_event_name: str
-    # Fabric connector event severity.
+    # Fabric connector event severity. | MaxLen: 255
     fabric_event_severity: str
     
     # Common API response fields
@@ -219,8 +257,66 @@ class AutomationTrigger:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> AutomationTriggerResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> AutomationTriggerResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[AutomationTriggerResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -235,11 +331,12 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -255,11 +352,11 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -274,10 +371,11 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[AutomationTriggerObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -294,7 +392,7 @@ class AutomationTrigger:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -354,7 +452,7 @@ class AutomationTrigger:
         **kwargs: Any,
     ) -> list[AutomationTriggerResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -369,9 +467,9 @@ class AutomationTrigger:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -424,7 +522,7 @@ class AutomationTrigger:
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
@@ -457,8 +555,9 @@ class AutomationTrigger:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -487,7 +586,37 @@ class AutomationTrigger:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -517,7 +646,7 @@ class AutomationTrigger:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -547,7 +676,7 @@ class AutomationTrigger:
         fabric_event_severity: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
@@ -580,8 +709,9 @@ class AutomationTrigger:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -610,7 +740,37 @@ class AutomationTrigger:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -640,7 +800,7 @@ class AutomationTrigger:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -649,7 +809,7 @@ class AutomationTrigger:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> AutomationTriggerObject: ...
     
@@ -661,8 +821,9 @@ class AutomationTrigger:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -670,7 +831,16 @@ class AutomationTrigger:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -678,7 +848,7 @@ class AutomationTrigger:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -714,7 +884,7 @@ class AutomationTrigger:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -739,8 +909,985 @@ class AutomationTrigger:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class AutomationTriggerDictMode:
+    """AutomationTrigger endpoint for dict response mode (default for this client).
+    
+    By default returns AutomationTriggerResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return AutomationTriggerObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[AutomationTriggerObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> AutomationTriggerResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[AutomationTriggerResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class AutomationTriggerObjectMode:
+    """AutomationTrigger endpoint for object response mode (default for this client).
+    
+    By default returns AutomationTriggerObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return AutomationTriggerResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> AutomationTriggerResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[AutomationTriggerResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[AutomationTriggerObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> AutomationTriggerObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: AutomationTriggerPayload | None = ...,
+        name: str | None = ...,
+        description: str | None = ...,
+        trigger_type: Literal["event-based", "scheduled"] | None = ...,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = ...,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
+        stitch_name: str | None = ...,
+        logid: str | list[str] | list[dict[str, Any]] | None = ...,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        trigger_day: int | None = ...,
+        trigger_hour: int | None = ...,
+        trigger_minute: int | None = ...,
+        trigger_datetime: str | None = ...,
+        fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        faz_event_name: str | None = ...,
+        faz_event_severity: str | None = ...,
+        faz_event_tags: str | None = ...,
+        serial: str | None = ...,
+        fabric_event_name: str | None = ...,
+        fabric_event_severity: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "AutomationTrigger",
+    "AutomationTriggerDictMode",
+    "AutomationTriggerObjectMode",
     "AutomationTriggerPayload",
     "AutomationTriggerObject",
 ]

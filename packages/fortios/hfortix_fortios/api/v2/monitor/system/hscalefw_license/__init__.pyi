@@ -6,12 +6,48 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .upload import Upload
+    from .upload import Upload, UploadDictMode, UploadObjectMode
+
+__all__ = [
+    "Upload",
+    "HscalefwlicenseDictMode",
+    "HscalefwlicenseObjectMode",
+]
+
+class HscalefwlicenseDictMode:
+    """HSCALEFW_LICENSE API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    upload: UploadDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize hscalefw_license category with HTTP client."""
+        ...
 
 
-class HscalefwLicense:
-    """Type stub for HscalefwLicense."""
+class HscalefwlicenseObjectMode:
+    """HSCALEFW_LICENSE API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    upload: UploadObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize hscalefw_license category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Hscalefwlicense:
+    """HSCALEFW_LICENSE API category."""
+    
     upload: Upload
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize hscalefw_license category with HTTP client."""
+        ...

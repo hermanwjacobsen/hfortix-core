@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class CrlPayload(TypedDict, total=False):
     """
     Type hints for vpn/certificate/crl payload fields.
@@ -19,21 +23,23 @@ class CrlPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Name.
-    crl: NotRequired[str]  # Certificate Revocation List as a PEM file.
-    range: NotRequired[Literal["global", "vdom"]]  # Either global or VDOM IP address range for the certificate.
-    source: NotRequired[Literal["factory", "user", "bundle"]]  # Certificate source type.
-    update_vdom: NotRequired[str]  # VDOM for CRL update.
-    ldap_server: NotRequired[str]  # LDAP server name for CRL auto-update.
-    ldap_username: NotRequired[str]  # LDAP server user name.
-    ldap_password: NotRequired[str]  # LDAP server user password.
-    http_url: NotRequired[str]  # HTTP server URL for CRL auto-update.
-    scep_url: NotRequired[str]  # SCEP server URL for CRL auto-update.
-    scep_cert: NotRequired[str]  # Local certificate for SCEP communication for CRL auto-update
-    update_interval: NotRequired[int]  # Time in seconds before the FortiGate checks for an updated C
-    source_ip: NotRequired[str]  # Source IP address for communications to a HTTP or SCEP CA se
+    name: str  # Name. | MaxLen: 35
+    crl: str  # Certificate Revocation List as a PEM file.
+    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
+    source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
+    update_vdom: str  # VDOM for CRL update. | Default: root | MaxLen: 31
+    ldap_server: str  # LDAP server name for CRL auto-update. | MaxLen: 35
+    ldap_username: str  # LDAP server user name. | MaxLen: 63
+    ldap_password: str  # LDAP server user password. | MaxLen: 128
+    http_url: str  # HTTP server URL for CRL auto-update. | MaxLen: 255
+    scep_url: str  # SCEP server URL for CRL auto-update. | MaxLen: 255
+    scep_cert: str  # Local certificate for SCEP communication for CRL a | Default: Fortinet_CA_SSL | MaxLen: 35
+    update_interval: int  # Time in seconds before the FortiGate checks for an | Default: 0 | Min: 0 | Max: 4294967295
+    source_ip: str  # Source IP address for communications to a HTTP or | Default: 0.0.0.0
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -43,19 +49,19 @@ class CrlResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    crl: str
-    range: Literal["global", "vdom"]
-    source: Literal["factory", "user", "bundle"]
-    update_vdom: str
-    ldap_server: str
-    ldap_username: str
-    ldap_password: str
-    http_url: str
-    scep_url: str
-    scep_cert: str
-    update_interval: int
-    source_ip: str
+    name: str  # Name. | MaxLen: 35
+    crl: str  # Certificate Revocation List as a PEM file.
+    range: Literal["global", "vdom"]  # Either global or VDOM IP address range for the cer | Default: vdom
+    source: Literal["factory", "user", "bundle"]  # Certificate source type. | Default: user
+    update_vdom: str  # VDOM for CRL update. | Default: root | MaxLen: 31
+    ldap_server: str  # LDAP server name for CRL auto-update. | MaxLen: 35
+    ldap_username: str  # LDAP server user name. | MaxLen: 63
+    ldap_password: str  # LDAP server user password. | MaxLen: 128
+    http_url: str  # HTTP server URL for CRL auto-update. | MaxLen: 255
+    scep_url: str  # SCEP server URL for CRL auto-update. | MaxLen: 255
+    scep_cert: str  # Local certificate for SCEP communication for CRL a | Default: Fortinet_CA_SSL | MaxLen: 35
+    update_interval: int  # Time in seconds before the FortiGate checks for an | Default: 0 | Min: 0 | Max: 4294967295
+    source_ip: str  # Source IP address for communications to a HTTP or | Default: 0.0.0.0
 
 
 @final
@@ -66,31 +72,31 @@ class CrlObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
     # Certificate Revocation List as a PEM file.
     crl: str
-    # Either global or VDOM IP address range for the certificate.
+    # Either global or VDOM IP address range for the certificate. | Default: vdom
     range: Literal["global", "vdom"]
-    # Certificate source type.
+    # Certificate source type. | Default: user
     source: Literal["factory", "user", "bundle"]
-    # VDOM for CRL update.
+    # VDOM for CRL update. | Default: root | MaxLen: 31
     update_vdom: str
-    # LDAP server name for CRL auto-update.
+    # LDAP server name for CRL auto-update. | MaxLen: 35
     ldap_server: str
-    # LDAP server user name.
+    # LDAP server user name. | MaxLen: 63
     ldap_username: str
-    # LDAP server user password.
+    # LDAP server user password. | MaxLen: 128
     ldap_password: str
-    # HTTP server URL for CRL auto-update.
+    # HTTP server URL for CRL auto-update. | MaxLen: 255
     http_url: str
-    # SCEP server URL for CRL auto-update.
+    # SCEP server URL for CRL auto-update. | MaxLen: 255
     scep_url: str
-    # Local certificate for SCEP communication for CRL auto-update.
+    # Local certificate for SCEP communication for CRL auto-update | Default: Fortinet_CA_SSL | MaxLen: 35
     scep_cert: str
-    # Time in seconds before the FortiGate checks for an updated CRL. Set to 0 to upda
+    # Time in seconds before the FortiGate checks for an updated C | Default: 0 | Min: 0 | Max: 4294967295
     update_interval: int
-    # Source IP address for communications to a HTTP or SCEP CA server.
+    # Source IP address for communications to a HTTP or SCEP CA se | Default: 0.0.0.0
     source_ip: str
     
     # Common API response fields
@@ -117,8 +123,66 @@ class Crl:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> CrlResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> CrlResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[CrlResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -133,11 +197,12 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -153,11 +218,11 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -172,10 +237,11 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[CrlObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -192,7 +258,7 @@ class Crl:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -252,7 +318,7 @@ class Crl:
         **kwargs: Any,
     ) -> list[CrlResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -267,9 +333,9 @@ class Crl:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -314,7 +380,7 @@ class Crl:
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
     
@@ -339,8 +405,9 @@ class Crl:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -361,7 +428,29 @@ class Crl:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -383,7 +472,7 @@ class Crl:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -405,7 +494,7 @@ class Crl:
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CrlObject: ...
     
@@ -430,8 +519,9 @@ class Crl:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -452,7 +542,29 @@ class Crl:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -474,7 +586,7 @@ class Crl:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -502,7 +614,7 @@ class Crl:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -527,8 +639,738 @@ class Crl:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class CrlDictMode:
+    """Crl endpoint for dict response mode (default for this client).
+    
+    By default returns CrlResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return CrlObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[CrlObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> CrlResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[CrlResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class CrlObjectMode:
+    """Crl endpoint for object response mode (default for this client).
+    
+    By default returns CrlObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return CrlResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> CrlResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[CrlResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[CrlObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> CrlObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: CrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Crl",
+    "CrlDictMode",
+    "CrlObjectMode",
     "CrlPayload",
     "CrlObject",
 ]

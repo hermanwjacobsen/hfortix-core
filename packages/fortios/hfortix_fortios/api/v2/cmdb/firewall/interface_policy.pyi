@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class InterfacePolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/interface_policy payload fields.
@@ -27,32 +31,64 @@ class InterfacePolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    policyid: NotRequired[int]  # Policy ID (0 - 4294967295).
-    uuid: NotRequired[str]  # Universally Unique Identifier
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy.
-    comments: NotRequired[str]  # Comments.
-    logtraffic: NotRequired[Literal["all", "utm", "disable"]]  # Logging type to be used in this policy
-    interface: str  # Monitored interface name from available interfaces.
-    srcaddr: list[dict[str, Any]]  # Address object to limit traffic monitoring to network traffi
-    dstaddr: list[dict[str, Any]]  # Address object to limit traffic monitoring to network traffi
+    policyid: int  # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
+    comments: str  # Comments. | MaxLen: 1023
+    logtraffic: Literal["all", "utm", "disable"]  # Logging type to be used in this policy | Default: utm
+    interface: str  # Monitored interface name from available interfaces | MaxLen: 35
+    srcaddr: list[dict[str, Any]]  # Address object to limit traffic monitoring to netw
+    dstaddr: list[dict[str, Any]]  # Address object to limit traffic monitoring to netw
     service: list[dict[str, Any]]  # Service object from available options.
-    application_list_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable application control.
-    application_list: str  # Application list name.
-    ips_sensor_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPS.
-    ips_sensor: str  # IPS sensor name.
-    dsri: NotRequired[Literal["enable", "disable"]]  # Enable/disable DSRI.
-    av_profile_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable antivirus.
-    av_profile: str  # Antivirus profile.
-    webfilter_profile_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable web filtering.
-    webfilter_profile: str  # Web filter profile.
-    casb_profile_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable CASB.
-    casb_profile: str  # CASB profile.
-    emailfilter_profile_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable email filter.
-    emailfilter_profile: str  # Email filter profile.
-    dlp_profile_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable DLP.
-    dlp_profile: str  # DLP profile name.
+    application_list_status: Literal["enable", "disable"]  # Enable/disable application control. | Default: disable
+    application_list: str  # Application list name. | MaxLen: 47
+    ips_sensor_status: Literal["enable", "disable"]  # Enable/disable IPS. | Default: disable
+    ips_sensor: str  # IPS sensor name. | MaxLen: 47
+    dsri: Literal["enable", "disable"]  # Enable/disable DSRI. | Default: disable
+    av_profile_status: Literal["enable", "disable"]  # Enable/disable antivirus. | Default: disable
+    av_profile: str  # Antivirus profile. | MaxLen: 47
+    webfilter_profile_status: Literal["enable", "disable"]  # Enable/disable web filtering. | Default: disable
+    webfilter_profile: str  # Web filter profile. | MaxLen: 47
+    casb_profile_status: Literal["enable", "disable"]  # Enable/disable CASB. | Default: disable
+    casb_profile: str  # CASB profile. | MaxLen: 47
+    emailfilter_profile_status: Literal["enable", "disable"]  # Enable/disable email filter. | Default: disable
+    emailfilter_profile: str  # Email filter profile. | MaxLen: 47
+    dlp_profile_status: Literal["enable", "disable"]  # Enable/disable DLP. | Default: disable
+    dlp_profile: str  # DLP profile name. | MaxLen: 47
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class InterfacePolicySrcaddrItem(TypedDict):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class InterfacePolicyDstaddrItem(TypedDict):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class InterfacePolicyServiceItem(TypedDict):
+    """Type hints for service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Service name. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class InterfacePolicySrcaddrObject:
@@ -62,7 +98,7 @@ class InterfacePolicySrcaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -83,7 +119,7 @@ class InterfacePolicyDstaddrObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Address name.
+    # Address name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -104,7 +140,7 @@ class InterfacePolicyServiceObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Service name.
+    # Service name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -125,30 +161,30 @@ class InterfacePolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    policyid: int
-    uuid: str
-    status: Literal["enable", "disable"]
-    comments: str
-    logtraffic: Literal["all", "utm", "disable"]
-    interface: str
-    srcaddr: list[dict[str, Any]]
-    dstaddr: list[dict[str, Any]]
-    service: list[dict[str, Any]]
-    application_list_status: Literal["enable", "disable"]
-    application_list: str
-    ips_sensor_status: Literal["enable", "disable"]
-    ips_sensor: str
-    dsri: Literal["enable", "disable"]
-    av_profile_status: Literal["enable", "disable"]
-    av_profile: str
-    webfilter_profile_status: Literal["enable", "disable"]
-    webfilter_profile: str
-    casb_profile_status: Literal["enable", "disable"]
-    casb_profile: str
-    emailfilter_profile_status: Literal["enable", "disable"]
-    emailfilter_profile: str
-    dlp_profile_status: Literal["enable", "disable"]
-    dlp_profile: str
+    policyid: int  # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
+    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
+    comments: str  # Comments. | MaxLen: 1023
+    logtraffic: Literal["all", "utm", "disable"]  # Logging type to be used in this policy | Default: utm
+    interface: str  # Monitored interface name from available interfaces | MaxLen: 35
+    srcaddr: list[InterfacePolicySrcaddrItem]  # Address object to limit traffic monitoring to netw
+    dstaddr: list[InterfacePolicyDstaddrItem]  # Address object to limit traffic monitoring to netw
+    service: list[InterfacePolicyServiceItem]  # Service object from available options.
+    application_list_status: Literal["enable", "disable"]  # Enable/disable application control. | Default: disable
+    application_list: str  # Application list name. | MaxLen: 47
+    ips_sensor_status: Literal["enable", "disable"]  # Enable/disable IPS. | Default: disable
+    ips_sensor: str  # IPS sensor name. | MaxLen: 47
+    dsri: Literal["enable", "disable"]  # Enable/disable DSRI. | Default: disable
+    av_profile_status: Literal["enable", "disable"]  # Enable/disable antivirus. | Default: disable
+    av_profile: str  # Antivirus profile. | MaxLen: 47
+    webfilter_profile_status: Literal["enable", "disable"]  # Enable/disable web filtering. | Default: disable
+    webfilter_profile: str  # Web filter profile. | MaxLen: 47
+    casb_profile_status: Literal["enable", "disable"]  # Enable/disable CASB. | Default: disable
+    casb_profile: str  # CASB profile. | MaxLen: 47
+    emailfilter_profile_status: Literal["enable", "disable"]  # Enable/disable email filter. | Default: disable
+    emailfilter_profile: str  # Email filter profile. | MaxLen: 47
+    dlp_profile_status: Literal["enable", "disable"]  # Enable/disable DLP. | Default: disable
+    dlp_profile: str  # DLP profile name. | MaxLen: 47
 
 
 @final
@@ -159,53 +195,53 @@ class InterfacePolicyObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Policy ID (0 - 4294967295).
+    # Policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     policyid: int
-    # Universally Unique Identifier
+    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Enable/disable this policy.
+    # Enable/disable this policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Comments.
+    # Comments. | MaxLen: 1023
     comments: str
-    # Logging type to be used in this policy
+    # Logging type to be used in this policy | Default: utm
     logtraffic: Literal["all", "utm", "disable"]
-    # Monitored interface name from available interfaces.
+    # Monitored interface name from available interfaces. | MaxLen: 35
     interface: str
-    # Address object to limit traffic monitoring to network traffic sent from the spec
-    srcaddr: list[InterfacePolicySrcaddrObject]  # Table field - list of typed objects
-    # Address object to limit traffic monitoring to network traffic sent to the specif
-    dstaddr: list[InterfacePolicyDstaddrObject]  # Table field - list of typed objects
+    # Address object to limit traffic monitoring to network traffi
+    srcaddr: list[InterfacePolicySrcaddrObject]
+    # Address object to limit traffic monitoring to network traffi
+    dstaddr: list[InterfacePolicyDstaddrObject]
     # Service object from available options.
-    service: list[InterfacePolicyServiceObject]  # Table field - list of typed objects
-    # Enable/disable application control.
+    service: list[InterfacePolicyServiceObject]
+    # Enable/disable application control. | Default: disable
     application_list_status: Literal["enable", "disable"]
-    # Application list name.
+    # Application list name. | MaxLen: 47
     application_list: str
-    # Enable/disable IPS.
+    # Enable/disable IPS. | Default: disable
     ips_sensor_status: Literal["enable", "disable"]
-    # IPS sensor name.
+    # IPS sensor name. | MaxLen: 47
     ips_sensor: str
-    # Enable/disable DSRI.
+    # Enable/disable DSRI. | Default: disable
     dsri: Literal["enable", "disable"]
-    # Enable/disable antivirus.
+    # Enable/disable antivirus. | Default: disable
     av_profile_status: Literal["enable", "disable"]
-    # Antivirus profile.
+    # Antivirus profile. | MaxLen: 47
     av_profile: str
-    # Enable/disable web filtering.
+    # Enable/disable web filtering. | Default: disable
     webfilter_profile_status: Literal["enable", "disable"]
-    # Web filter profile.
+    # Web filter profile. | MaxLen: 47
     webfilter_profile: str
-    # Enable/disable CASB.
+    # Enable/disable CASB. | Default: disable
     casb_profile_status: Literal["enable", "disable"]
-    # CASB profile.
+    # CASB profile. | MaxLen: 47
     casb_profile: str
-    # Enable/disable email filter.
+    # Enable/disable email filter. | Default: disable
     emailfilter_profile_status: Literal["enable", "disable"]
-    # Email filter profile.
+    # Email filter profile. | MaxLen: 47
     emailfilter_profile: str
-    # Enable/disable DLP.
+    # Enable/disable DLP. | Default: disable
     dlp_profile_status: Literal["enable", "disable"]
-    # DLP profile name.
+    # DLP profile name. | MaxLen: 47
     dlp_profile: str
     
     # Common API response fields
@@ -232,8 +268,66 @@ class InterfacePolicy:
     Primary Key: policyid
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> InterfacePolicyResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> InterfacePolicyResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        policyid: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[InterfacePolicyResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -248,11 +342,12 @@ class InterfacePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicyObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -268,11 +363,11 @@ class InterfacePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicyObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -287,10 +382,11 @@ class InterfacePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[InterfacePolicyObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -307,7 +403,7 @@ class InterfacePolicy:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -367,7 +463,7 @@ class InterfacePolicy:
         **kwargs: Any,
     ) -> list[InterfacePolicyResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -382,9 +478,9 @@ class InterfacePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -440,7 +536,7 @@ class InterfacePolicy:
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicyObject: ...
     
@@ -476,8 +572,9 @@ class InterfacePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -509,7 +606,40 @@ class InterfacePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -542,7 +672,7 @@ class InterfacePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -575,7 +705,7 @@ class InterfacePolicy:
         dlp_profile: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicyObject: ...
     
@@ -611,8 +741,9 @@ class InterfacePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -644,7 +775,40 @@ class InterfacePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -677,7 +841,7 @@ class InterfacePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -686,7 +850,7 @@ class InterfacePolicy:
         policyid: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> InterfacePolicyObject: ...
     
@@ -698,8 +862,9 @@ class InterfacePolicy:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -707,7 +872,16 @@ class InterfacePolicy:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        policyid: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -715,7 +889,7 @@ class InterfacePolicy:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -754,7 +928,7 @@ class InterfacePolicy:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -779,8 +953,1045 @@ class InterfacePolicy:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class InterfacePolicyDictMode:
+    """InterfacePolicy endpoint for dict response mode (default for this client).
+    
+    By default returns InterfacePolicyResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return InterfacePolicyObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[InterfacePolicyObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> InterfacePolicyResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[InterfacePolicyResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class InterfacePolicyObjectMode:
+    """InterfacePolicy endpoint for object response mode (default for this client).
+    
+    By default returns InterfacePolicyObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return InterfacePolicyResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> InterfacePolicyResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[InterfacePolicyResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        policyid: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[InterfacePolicyObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> InterfacePolicyObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: InterfacePolicyPayload | None = ...,
+        policyid: int | None = ...,
+        uuid: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        comments: str | None = ...,
+        logtraffic: Literal["all", "utm", "disable"] | None = ...,
+        interface: str | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | None = ...,
+        application_list_status: Literal["enable", "disable"] | None = ...,
+        application_list: str | None = ...,
+        ips_sensor_status: Literal["enable", "disable"] | None = ...,
+        ips_sensor: str | None = ...,
+        dsri: Literal["enable", "disable"] | None = ...,
+        av_profile_status: Literal["enable", "disable"] | None = ...,
+        av_profile: str | None = ...,
+        webfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        webfilter_profile: str | None = ...,
+        casb_profile_status: Literal["enable", "disable"] | None = ...,
+        casb_profile: str | None = ...,
+        emailfilter_profile_status: Literal["enable", "disable"] | None = ...,
+        emailfilter_profile: str | None = ...,
+        dlp_profile_status: Literal["enable", "disable"] | None = ...,
+        dlp_profile: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "InterfacePolicy",
+    "InterfacePolicyDictMode",
+    "InterfacePolicyObjectMode",
     "InterfacePolicyPayload",
     "InterfacePolicyObject",
 ]

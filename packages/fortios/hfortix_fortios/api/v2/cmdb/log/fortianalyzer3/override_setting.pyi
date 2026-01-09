@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class OverrideSettingPayload(TypedDict, total=False):
     """
     Type hints for log/fortianalyzer3/override_setting payload fields.
@@ -21,37 +25,49 @@ class OverrideSettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    use_management_vdom: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of management VDOM IP address as source I
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging to FortiAnalyzer.
-    ips_archive: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPS packet archive logging.
-    server: str  # The remote FortiAnalyzer.
-    alt_server: NotRequired[str]  # Alternate FortiAnalyzer.
-    fallback_to_primary: NotRequired[Literal["enable", "disable"]]  # Enable/disable this FortiGate unit to fallback to the primar
-    certificate_verification: NotRequired[Literal["enable", "disable"]]  # Enable/disable identity verification of FortiAnalyzer by use
-    serial: NotRequired[list[dict[str, Any]]]  # Serial numbers of the FortiAnalyzer.
-    server_cert_ca: NotRequired[str]  # Mandatory CA on FortiGate in certificate chain of server.
-    preshared_key: NotRequired[str]  # Preshared-key used for auto-authorization on FortiAnalyzer.
-    access_config: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiAnalyzer access to configuration and dat
-    hmac_algorithm: NotRequired[Literal["sha256"]]  # OFTP login hash algorithm.
-    enc_algorithm: NotRequired[Literal["high-medium", "high", "low"]]  # Configure the level of SSL protection for secure communicati
-    ssl_min_proto_version: NotRequired[Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]]  # Minimum supported protocol version for SSL/TLS connections
-    conn_timeout: NotRequired[int]  # FortiAnalyzer connection time-out in seconds
-    monitor_keepalive_period: NotRequired[int]  # Time between OFTP keepalives in seconds
-    monitor_failure_retry_period: NotRequired[int]  # Time between FortiAnalyzer connection retries in seconds
-    certificate: NotRequired[str]  # Certificate used to communicate with FortiAnalyzer.
-    source_ip: NotRequired[str]  # Source IPv4 or IPv6 address used to communicate with FortiAn
-    upload_option: NotRequired[Literal["store-and-upload", "realtime", "1-minute", "5-minute"]]  # Enable/disable logging to hard disk and then uploading to Fo
-    upload_interval: NotRequired[Literal["daily", "weekly", "monthly"]]  # Frequency to upload log files to FortiAnalyzer.
-    upload_day: NotRequired[str]  # Day of week (month) to upload logs.
-    upload_time: NotRequired[str]  # Time to upload logs (hh:mm).
-    reliable: NotRequired[Literal["enable", "disable"]]  # Enable/disable reliable logging to FortiAnalyzer.
-    priority: NotRequired[Literal["default", "low"]]  # Set log transmission priority.
-    max_log_rate: NotRequired[int]  # FortiAnalyzer maximum log rate in MBps (0 = unlimited).
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
-    interface: str  # Specify outgoing interface to reach server.
-    vrf_select: NotRequired[int]  # VRF ID used for connection to server.
+    use_management_vdom: Literal["enable", "disable"]  # Enable/disable use of management VDOM IP address a | Default: disable
+    status: Literal["enable", "disable"]  # Enable/disable logging to FortiAnalyzer. | Default: disable
+    ips_archive: Literal["enable", "disable"]  # Enable/disable IPS packet archive logging. | Default: enable
+    server: str  # The remote FortiAnalyzer. | MaxLen: 127
+    alt_server: str  # Alternate FortiAnalyzer. | MaxLen: 127
+    fallback_to_primary: Literal["enable", "disable"]  # Enable/disable this FortiGate unit to fallback to | Default: enable
+    certificate_verification: Literal["enable", "disable"]  # Enable/disable identity verification of FortiAnaly | Default: enable
+    serial: list[dict[str, Any]]  # Serial numbers of the FortiAnalyzer.
+    server_cert_ca: str  # Mandatory CA on FortiGate in certificate chain of | MaxLen: 79
+    preshared_key: str  # Preshared-key used for auto-authorization on Forti | MaxLen: 63
+    access_config: Literal["enable", "disable"]  # Enable/disable FortiAnalyzer access to configurati | Default: enable
+    hmac_algorithm: Literal["sha256"]  # OFTP login hash algorithm. | Default: sha256
+    enc_algorithm: Literal["high-medium", "high", "low"]  # Configure the level of SSL protection for secure c | Default: high
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
+    conn_timeout: int  # FortiAnalyzer connection time-out in seconds | Default: 10 | Min: 1 | Max: 3600
+    monitor_keepalive_period: int  # Time between OFTP keepalives in seconds | Default: 5 | Min: 1 | Max: 120
+    monitor_failure_retry_period: int  # Time between FortiAnalyzer connection retries in s | Default: 5 | Min: 1 | Max: 86400
+    certificate: str  # Certificate used to communicate with FortiAnalyzer | MaxLen: 35
+    source_ip: str  # Source IPv4 or IPv6 address used to communicate wi | MaxLen: 63
+    upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"]  # Enable/disable logging to hard disk and then uploa | Default: 5-minute
+    upload_interval: Literal["daily", "weekly", "monthly"]  # Frequency to upload log files to FortiAnalyzer. | Default: daily
+    upload_day: str  # Day of week (month) to upload logs.
+    upload_time: str  # Time to upload logs (hh:mm).
+    reliable: Literal["enable", "disable"]  # Enable/disable reliable logging to FortiAnalyzer. | Default: disable
+    priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
+    max_log_rate: int  # FortiAnalyzer maximum log rate in MBps | Default: 0 | Min: 0 | Max: 100000
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class OverrideSettingSerialItem(TypedDict):
+    """Type hints for serial table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Serial Number. | MaxLen: 79
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class OverrideSettingSerialObject:
@@ -61,7 +77,7 @@ class OverrideSettingSerialObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Serial Number.
+    # Serial Number. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -82,35 +98,35 @@ class OverrideSettingResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    use_management_vdom: Literal["enable", "disable"]
-    status: Literal["enable", "disable"]
-    ips_archive: Literal["enable", "disable"]
-    server: str
-    alt_server: str
-    fallback_to_primary: Literal["enable", "disable"]
-    certificate_verification: Literal["enable", "disable"]
-    serial: list[dict[str, Any]]
-    server_cert_ca: str
-    preshared_key: str
-    access_config: Literal["enable", "disable"]
-    hmac_algorithm: Literal["sha256"]
-    enc_algorithm: Literal["high-medium", "high", "low"]
-    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    conn_timeout: int
-    monitor_keepalive_period: int
-    monitor_failure_retry_period: int
-    certificate: str
-    source_ip: str
-    upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"]
-    upload_interval: Literal["daily", "weekly", "monthly"]
-    upload_day: str
-    upload_time: str
-    reliable: Literal["enable", "disable"]
-    priority: Literal["default", "low"]
-    max_log_rate: int
-    interface_select_method: Literal["auto", "sdwan", "specify"]
-    interface: str
-    vrf_select: int
+    use_management_vdom: Literal["enable", "disable"]  # Enable/disable use of management VDOM IP address a | Default: disable
+    status: Literal["enable", "disable"]  # Enable/disable logging to FortiAnalyzer. | Default: disable
+    ips_archive: Literal["enable", "disable"]  # Enable/disable IPS packet archive logging. | Default: enable
+    server: str  # The remote FortiAnalyzer. | MaxLen: 127
+    alt_server: str  # Alternate FortiAnalyzer. | MaxLen: 127
+    fallback_to_primary: Literal["enable", "disable"]  # Enable/disable this FortiGate unit to fallback to | Default: enable
+    certificate_verification: Literal["enable", "disable"]  # Enable/disable identity verification of FortiAnaly | Default: enable
+    serial: list[OverrideSettingSerialItem]  # Serial numbers of the FortiAnalyzer.
+    server_cert_ca: str  # Mandatory CA on FortiGate in certificate chain of | MaxLen: 79
+    preshared_key: str  # Preshared-key used for auto-authorization on Forti | MaxLen: 63
+    access_config: Literal["enable", "disable"]  # Enable/disable FortiAnalyzer access to configurati | Default: enable
+    hmac_algorithm: Literal["sha256"]  # OFTP login hash algorithm. | Default: sha256
+    enc_algorithm: Literal["high-medium", "high", "low"]  # Configure the level of SSL protection for secure c | Default: high
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
+    conn_timeout: int  # FortiAnalyzer connection time-out in seconds | Default: 10 | Min: 1 | Max: 3600
+    monitor_keepalive_period: int  # Time between OFTP keepalives in seconds | Default: 5 | Min: 1 | Max: 120
+    monitor_failure_retry_period: int  # Time between FortiAnalyzer connection retries in s | Default: 5 | Min: 1 | Max: 86400
+    certificate: str  # Certificate used to communicate with FortiAnalyzer | MaxLen: 35
+    source_ip: str  # Source IPv4 or IPv6 address used to communicate wi | MaxLen: 63
+    upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"]  # Enable/disable logging to hard disk and then uploa | Default: 5-minute
+    upload_interval: Literal["daily", "weekly", "monthly"]  # Frequency to upload log files to FortiAnalyzer. | Default: daily
+    upload_day: str  # Day of week (month) to upload logs.
+    upload_time: str  # Time to upload logs (hh:mm).
+    reliable: Literal["enable", "disable"]  # Enable/disable reliable logging to FortiAnalyzer. | Default: disable
+    priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
+    max_log_rate: int  # FortiAnalyzer maximum log rate in MBps | Default: 0 | Min: 0 | Max: 100000
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
 
 @final
@@ -121,63 +137,63 @@ class OverrideSettingObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable use of management VDOM IP address as source IP for logs sent to F
+    # Enable/disable use of management VDOM IP address as source I | Default: disable
     use_management_vdom: Literal["enable", "disable"]
-    # Enable/disable logging to FortiAnalyzer.
+    # Enable/disable logging to FortiAnalyzer. | Default: disable
     status: Literal["enable", "disable"]
-    # Enable/disable IPS packet archive logging.
+    # Enable/disable IPS packet archive logging. | Default: enable
     ips_archive: Literal["enable", "disable"]
-    # The remote FortiAnalyzer.
+    # The remote FortiAnalyzer. | MaxLen: 127
     server: str
-    # Alternate FortiAnalyzer.
+    # Alternate FortiAnalyzer. | MaxLen: 127
     alt_server: str
-    # Enable/disable this FortiGate unit to fallback to the primary FortiAnalyzer when
+    # Enable/disable this FortiGate unit to fallback to the primar | Default: enable
     fallback_to_primary: Literal["enable", "disable"]
-    # Enable/disable identity verification of FortiAnalyzer by use of certificate.
+    # Enable/disable identity verification of FortiAnalyzer by use | Default: enable
     certificate_verification: Literal["enable", "disable"]
     # Serial numbers of the FortiAnalyzer.
-    serial: list[OverrideSettingSerialObject]  # Table field - list of typed objects
-    # Mandatory CA on FortiGate in certificate chain of server.
+    serial: list[OverrideSettingSerialObject]
+    # Mandatory CA on FortiGate in certificate chain of server. | MaxLen: 79
     server_cert_ca: str
-    # Preshared-key used for auto-authorization on FortiAnalyzer.
+    # Preshared-key used for auto-authorization on FortiAnalyzer. | MaxLen: 63
     preshared_key: str
-    # Enable/disable FortiAnalyzer access to configuration and data.
+    # Enable/disable FortiAnalyzer access to configuration and dat | Default: enable
     access_config: Literal["enable", "disable"]
-    # OFTP login hash algorithm.
+    # OFTP login hash algorithm. | Default: sha256
     hmac_algorithm: Literal["sha256"]
-    # Configure the level of SSL protection for secure communication with FortiAnalyze
+    # Configure the level of SSL protection for secure communicati | Default: high
     enc_algorithm: Literal["high-medium", "high", "low"]
-    # Minimum supported protocol version for SSL/TLS connections
+    # Minimum supported protocol version for SSL/TLS connections | Default: default
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    # FortiAnalyzer connection time-out in seconds (for status and log buffer).
+    # FortiAnalyzer connection time-out in seconds | Default: 10 | Min: 1 | Max: 3600
     conn_timeout: int
-    # Time between OFTP keepalives in seconds (for status and log buffer).
+    # Time between OFTP keepalives in seconds | Default: 5 | Min: 1 | Max: 120
     monitor_keepalive_period: int
-    # Time between FortiAnalyzer connection retries in seconds
+    # Time between FortiAnalyzer connection retries in seconds | Default: 5 | Min: 1 | Max: 86400
     monitor_failure_retry_period: int
-    # Certificate used to communicate with FortiAnalyzer.
+    # Certificate used to communicate with FortiAnalyzer. | MaxLen: 35
     certificate: str
-    # Source IPv4 or IPv6 address used to communicate with FortiAnalyzer.
+    # Source IPv4 or IPv6 address used to communicate with FortiAn | MaxLen: 63
     source_ip: str
-    # Enable/disable logging to hard disk and then uploading to FortiAnalyzer.
+    # Enable/disable logging to hard disk and then uploading to Fo | Default: 5-minute
     upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"]
-    # Frequency to upload log files to FortiAnalyzer.
+    # Frequency to upload log files to FortiAnalyzer. | Default: daily
     upload_interval: Literal["daily", "weekly", "monthly"]
     # Day of week (month) to upload logs.
     upload_day: str
     # Time to upload logs (hh:mm).
     upload_time: str
-    # Enable/disable reliable logging to FortiAnalyzer.
+    # Enable/disable reliable logging to FortiAnalyzer. | Default: disable
     reliable: Literal["enable", "disable"]
-    # Set log transmission priority.
+    # Set log transmission priority. | Default: default
     priority: Literal["default", "low"]
-    # FortiAnalyzer maximum log rate in MBps (0 = unlimited).
+    # FortiAnalyzer maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
     max_log_rate: int
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server.
+    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
     # Common API response fields
@@ -203,8 +219,66 @@ class OverrideSetting:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OverrideSettingResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OverrideSettingResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> OverrideSettingResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -219,11 +293,12 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -239,11 +314,11 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -258,10 +333,11 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -278,7 +354,7 @@ class OverrideSetting:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -338,7 +414,7 @@ class OverrideSetting:
         **kwargs: Any,
     ) -> OverrideSettingResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -353,9 +429,9 @@ class OverrideSetting:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -416,7 +492,7 @@ class OverrideSetting:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> OverrideSettingObject: ...
     
@@ -457,8 +533,9 @@ class OverrideSetting:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -495,7 +572,45 @@ class OverrideSetting:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -533,7 +648,7 @@ class OverrideSetting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -577,7 +692,7 @@ class OverrideSetting:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -602,8 +717,710 @@ class OverrideSetting:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class OverrideSettingDictMode:
+    """OverrideSetting endpoint for dict response mode (default for this client).
+    
+    By default returns OverrideSettingResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return OverrideSettingObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> OverrideSettingResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> OverrideSettingResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class OverrideSettingObjectMode:
+    """OverrideSetting endpoint for object response mode (default for this client).
+    
+    By default returns OverrideSettingObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return OverrideSettingResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> OverrideSettingResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> OverrideSettingResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> OverrideSettingObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: OverrideSettingPayload | None = ...,
+        use_management_vdom: Literal["enable", "disable"] | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        ips_archive: Literal["enable", "disable"] | None = ...,
+        server: str | None = ...,
+        alt_server: str | None = ...,
+        fallback_to_primary: Literal["enable", "disable"] | None = ...,
+        certificate_verification: Literal["enable", "disable"] | None = ...,
+        serial: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert_ca: str | None = ...,
+        preshared_key: str | None = ...,
+        access_config: Literal["enable", "disable"] | None = ...,
+        hmac_algorithm: Literal["sha256"] | None = ...,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        conn_timeout: int | None = ...,
+        monitor_keepalive_period: int | None = ...,
+        monitor_failure_retry_period: int | None = ...,
+        certificate: str | None = ...,
+        source_ip: str | None = ...,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        upload_day: str | None = ...,
+        upload_time: str | None = ...,
+        reliable: Literal["enable", "disable"] | None = ...,
+        priority: Literal["default", "low"] | None = ...,
+        max_log_rate: int | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "OverrideSetting",
+    "OverrideSettingDictMode",
+    "OverrideSettingObjectMode",
     "OverrideSettingPayload",
     "OverrideSettingObject",
 ]

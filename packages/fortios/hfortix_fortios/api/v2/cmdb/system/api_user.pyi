@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class ApiUserPayload(TypedDict, total=False):
     """
     Type hints for system/api_user payload fields.
@@ -18,18 +22,43 @@ class ApiUserPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # User name.
-    comments: NotRequired[str]  # Comment.
-    api_key: NotRequired[str]  # Admin user password.
-    accprofile: str  # Admin user access profile.
-    vdom: NotRequired[list[dict[str, Any]]]  # Virtual domains.
-    schedule: NotRequired[str]  # Schedule name.
-    cors_allow_origin: NotRequired[str]  # Value for Access-Control-Allow-Origin on API responses. Avoi
-    peer_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable peer authentication.
-    peer_group: str  # Peer group name.
-    trusthost: NotRequired[list[dict[str, Any]]]  # Trusthost.
+    name: str  # User name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 255
+    api_key: str  # Admin user password. | MaxLen: 128
+    accprofile: str  # Admin user access profile. | MaxLen: 35
+    vdom: list[dict[str, Any]]  # Virtual domains.
+    schedule: str  # Schedule name. | MaxLen: 35
+    cors_allow_origin: str  # Value for Access-Control-Allow-Origin on API respo | MaxLen: 269
+    peer_auth: Literal["enable", "disable"]  # Enable/disable peer authentication. | Default: disable
+    peer_group: str  # Peer group name. | MaxLen: 35
+    trusthost: list[dict[str, Any]]  # Trusthost.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class ApiUserVdomItem(TypedDict):
+    """Type hints for vdom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Virtual domain name. | MaxLen: 79
+
+
+class ApiUserTrusthostItem(TypedDict):
+    """Type hints for trusthost table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["ipv4-trusthost", "ipv6-trusthost"]  # Trusthost type. | Default: ipv4-trusthost
+    ipv4_trusthost: str  # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
+    ipv6_trusthost: str  # IPv6 trusted host address. | Default: ::/0
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class ApiUserVdomObject:
@@ -39,7 +68,7 @@ class ApiUserVdomObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Virtual domain name.
+    # Virtual domain name. | MaxLen: 79
     name: str
     
     # Methods from FortiObject
@@ -60,13 +89,13 @@ class ApiUserTrusthostObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Trusthost type.
+    # Trusthost type. | Default: ipv4-trusthost
     type: Literal["ipv4-trusthost", "ipv6-trusthost"]
-    # IPv4 trusted host address.
+    # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
     ipv4_trusthost: str
-    # IPv6 trusted host address.
+    # IPv6 trusted host address. | Default: ::/0
     ipv6_trusthost: str
     
     # Methods from FortiObject
@@ -87,16 +116,16 @@ class ApiUserResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    comments: str
-    api_key: str
-    accprofile: str
-    vdom: list[dict[str, Any]]
-    schedule: str
-    cors_allow_origin: str
-    peer_auth: Literal["enable", "disable"]
-    peer_group: str
-    trusthost: list[dict[str, Any]]
+    name: str  # User name. | MaxLen: 35
+    comments: str  # Comment. | MaxLen: 255
+    api_key: str  # Admin user password. | MaxLen: 128
+    accprofile: str  # Admin user access profile. | MaxLen: 35
+    vdom: list[ApiUserVdomItem]  # Virtual domains.
+    schedule: str  # Schedule name. | MaxLen: 35
+    cors_allow_origin: str  # Value for Access-Control-Allow-Origin on API respo | MaxLen: 269
+    peer_auth: Literal["enable", "disable"]  # Enable/disable peer authentication. | Default: disable
+    peer_group: str  # Peer group name. | MaxLen: 35
+    trusthost: list[ApiUserTrusthostItem]  # Trusthost.
 
 
 @final
@@ -107,26 +136,26 @@ class ApiUserObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # User name.
+    # User name. | MaxLen: 35
     name: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comments: str
-    # Admin user password.
+    # Admin user password. | MaxLen: 128
     api_key: str
-    # Admin user access profile.
+    # Admin user access profile. | MaxLen: 35
     accprofile: str
     # Virtual domains.
-    vdom: list[ApiUserVdomObject]  # Table field - list of typed objects
-    # Schedule name.
+    vdom: list[ApiUserVdomObject]
+    # Schedule name. | MaxLen: 35
     schedule: str
-    # Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possi
+    # Value for Access-Control-Allow-Origin on API responses. Avoi | MaxLen: 269
     cors_allow_origin: str
-    # Enable/disable peer authentication.
+    # Enable/disable peer authentication. | Default: disable
     peer_auth: Literal["enable", "disable"]
-    # Peer group name.
+    # Peer group name. | MaxLen: 35
     peer_group: str
     # Trusthost.
-    trusthost: list[ApiUserTrusthostObject]  # Table field - list of typed objects
+    trusthost: list[ApiUserTrusthostObject]
     
     # Common API response fields
     status: str
@@ -152,8 +181,66 @@ class ApiUser:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ApiUserResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> ApiUserResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[ApiUserResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -168,11 +255,12 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -188,11 +276,11 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -207,10 +295,11 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[ApiUserObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -227,7 +316,7 @@ class ApiUser:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -287,7 +376,7 @@ class ApiUser:
         **kwargs: Any,
     ) -> list[ApiUserResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -302,9 +391,9 @@ class ApiUser:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -345,7 +434,7 @@ class ApiUser:
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
@@ -366,8 +455,9 @@ class ApiUser:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -384,7 +474,25 @@ class ApiUser:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -402,7 +510,7 @@ class ApiUser:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -420,7 +528,7 @@ class ApiUser:
         trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
@@ -441,8 +549,9 @@ class ApiUser:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -459,7 +568,25 @@ class ApiUser:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -477,7 +604,7 @@ class ApiUser:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -486,7 +613,7 @@ class ApiUser:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> ApiUserObject: ...
     
@@ -498,8 +625,9 @@ class ApiUser:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -507,7 +635,16 @@ class ApiUser:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -515,7 +652,7 @@ class ApiUser:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -539,7 +676,7 @@ class ApiUser:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -564,8 +701,745 @@ class ApiUser:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class ApiUserDictMode:
+    """ApiUser endpoint for dict response mode (default for this client).
+    
+    By default returns ApiUserResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return ApiUserObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[ApiUserObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> ApiUserResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ApiUserResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class ApiUserObjectMode:
+    """ApiUser endpoint for object response mode (default for this client).
+    
+    By default returns ApiUserObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return ApiUserResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> ApiUserResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[ApiUserResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[ApiUserObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> ApiUserObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: ApiUserPayload | None = ...,
+        name: str | None = ...,
+        comments: str | None = ...,
+        api_key: str | None = ...,
+        accprofile: str | None = ...,
+        schedule: str | None = ...,
+        cors_allow_origin: str | None = ...,
+        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_group: str | None = ...,
+        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "ApiUser",
+    "ApiUserDictMode",
+    "ApiUserObjectMode",
     "ApiUserPayload",
     "ApiUserObject",
 ]

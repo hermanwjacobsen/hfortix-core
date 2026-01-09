@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class CsfPayload(TypedDict, total=False):
     """
     Type hints for system/csf payload fields.
@@ -20,34 +24,66 @@ class CsfPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: Literal["enable", "disable"]  # Enable/disable Security Fabric.
-    uid: NotRequired[str]  # Unique ID of the current CSF node
-    upstream: NotRequired[str]  # IP/FQDN of the FortiGate upstream from this FortiGate in the
-    source_ip: NotRequired[str]  # Source IP address for communication with the upstream FortiG
-    upstream_interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
-    upstream_interface: str  # Specify outgoing interface to reach server.
-    upstream_port: NotRequired[int]  # The port number to use to communicate with the FortiGate ups
-    group_name: NotRequired[str]  # Security Fabric group name. All FortiGates in a Security Fab
-    group_password: NotRequired[str]  # Security Fabric group password. For legacy authentication, f
-    accept_auth_by_cert: NotRequired[Literal["disable", "enable"]]  # Accept connections with unknown certificates and ask admin f
-    log_unification: NotRequired[Literal["disable", "enable"]]  # Enable/disable broadcast of discovery messages for log unifi
-    authorization_request_type: NotRequired[Literal["serial", "certificate"]]  # Authorization request type.
-    certificate: NotRequired[str]  # Certificate.
-    fabric_workers: NotRequired[int]  # Number of worker processes for Security Fabric daemon.
-    downstream_access: NotRequired[Literal["enable", "disable"]]  # Enable/disable downstream device access to this device's con
-    legacy_authentication: NotRequired[Literal["disable", "enable"]]  # Enable/disable legacy authentication.
-    downstream_accprofile: str  # Default access profile for requests from downstream devices.
-    configuration_sync: Literal["default", "local"]  # Configuration sync mode.
-    fabric_object_unification: NotRequired[Literal["default", "local"]]  # Fabric CMDB Object Unification.
-    saml_configuration_sync: NotRequired[Literal["default", "local"]]  # SAML setting configuration synchronization.
-    trusted_list: NotRequired[list[dict[str, Any]]]  # Pre-authorized and blocked security fabric nodes.
-    fabric_connector: NotRequired[list[dict[str, Any]]]  # Fabric connector configuration.
-    forticloud_account_enforcement: NotRequired[Literal["enable", "disable"]]  # Fabric FortiCloud account unification.
-    file_mgmt: NotRequired[Literal["enable", "disable"]]  # Enable/disable Security Fabric daemon file management.
-    file_quota: NotRequired[int]  # Maximum amount of memory that can be used by the daemon file
-    file_quota_warning: NotRequired[int]  # Warn when the set percentage of quota has been used.
+    status: Literal["enable", "disable"]  # Enable/disable Security Fabric. | Default: disable
+    uid: str  # Unique ID of the current CSF node | MaxLen: 35
+    upstream: str  # IP/FQDN of the FortiGate upstream from this FortiG | MaxLen: 255
+    source_ip: str  # Source IP address for communication with the upstr | Default: 0.0.0.0
+    upstream_interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    upstream_interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    upstream_port: int  # The port number to use to communicate with the For | Default: 8013 | Min: 1 | Max: 65535
+    group_name: str  # Security Fabric group name. All FortiGates in a Se | MaxLen: 35
+    group_password: str  # Security Fabric group password. For legacy authent | MaxLen: 128
+    accept_auth_by_cert: Literal["disable", "enable"]  # Accept connections with unknown certificates and a | Default: enable
+    log_unification: Literal["disable", "enable"]  # Enable/disable broadcast of discovery messages for | Default: enable
+    authorization_request_type: Literal["serial", "certificate"]  # Authorization request type. | Default: serial
+    certificate: str  # Certificate. | MaxLen: 35
+    fabric_workers: int  # Number of worker processes for Security Fabric dae | Default: 2 | Min: 1 | Max: 4
+    downstream_access: Literal["enable", "disable"]  # Enable/disable downstream device access to this de | Default: disable
+    legacy_authentication: Literal["disable", "enable"]  # Enable/disable legacy authentication. | Default: disable
+    downstream_accprofile: str  # Default access profile for requests from downstrea | MaxLen: 35
+    configuration_sync: Literal["default", "local"]  # Configuration sync mode. | Default: default
+    fabric_object_unification: Literal["default", "local"]  # Fabric CMDB Object Unification. | Default: default
+    saml_configuration_sync: Literal["default", "local"]  # SAML setting configuration synchronization. | Default: default
+    trusted_list: list[dict[str, Any]]  # Pre-authorized and blocked security fabric nodes.
+    fabric_connector: list[dict[str, Any]]  # Fabric connector configuration.
+    forticloud_account_enforcement: Literal["enable", "disable"]  # Fabric FortiCloud account unification. | Default: enable
+    file_mgmt: Literal["enable", "disable"]  # Enable/disable Security Fabric daemon file managem | Default: enable
+    file_quota: int  # Maximum amount of memory that can be used by the d | Default: 0 | Min: 0 | Max: 4294967295
+    file_quota_warning: int  # Warn when the set percentage of quota has been use | Default: 90 | Min: 1 | Max: 99
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class CsfTrustedlistItem(TypedDict):
+    """Type hints for trusted-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Name. | MaxLen: 35
+    authorization_type: Literal["serial", "certificate"]  # Authorization type. | Default: serial
+    serial: str  # Serial. | MaxLen: 19
+    certificate: str  # Certificate. | MaxLen: 32767
+    action: Literal["accept", "deny"]  # Security fabric authorization action. | Default: accept
+    ha_members: str  # HA members. | MaxLen: 19
+    downstream_authorization: Literal["enable", "disable"]  # Trust authorizations by this node's administrator. | Default: disable
+    index: int  # Index of the downstream in tree. | Default: 0 | Min: 1 | Max: 1024
+
+
+class CsfFabricconnectorItem(TypedDict):
+    """Type hints for fabric-connector table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    serial: str  # Serial. | MaxLen: 19
+    accprofile: str  # Override access profile. | MaxLen: 35
+    configuration_write_access: Literal["enable", "disable"]  # Enable/disable downstream device write access to c | Default: disable
+    vdom: str  # Virtual domains that the connector has access to.
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class CsfTrustedlistObject:
@@ -57,21 +93,21 @@ class CsfTrustedlistObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Authorization type.
+    # Authorization type. | Default: serial
     authorization_type: Literal["serial", "certificate"]
-    # Serial.
+    # Serial. | MaxLen: 19
     serial: str
-    # Certificate.
+    # Certificate. | MaxLen: 32767
     certificate: str
-    # Security fabric authorization action.
+    # Security fabric authorization action. | Default: accept
     action: Literal["accept", "deny"]
-    # HA members.
+    # HA members. | MaxLen: 19
     ha_members: str
-    # Trust authorizations by this node's administrator.
+    # Trust authorizations by this node's administrator. | Default: disable
     downstream_authorization: Literal["enable", "disable"]
-    # Index of the downstream in tree.
+    # Index of the downstream in tree. | Default: 0 | Min: 1 | Max: 1024
     index: int
     
     # Methods from FortiObject
@@ -92,13 +128,13 @@ class CsfFabricconnectorObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Serial.
+    # Serial. | MaxLen: 19
     serial: str
-    # Override access profile.
+    # Override access profile. | MaxLen: 35
     accprofile: str
-    # Enable/disable downstream device write access to configuration.
+    # Enable/disable downstream device write access to configurati | Default: disable
     configuration_write_access: Literal["enable", "disable"]
-    # Virtual domains that the connector has access to. If none are set, the connector
+    # Virtual domains that the connector has access to. If none ar
     vdom: str
     
     # Methods from FortiObject
@@ -119,32 +155,32 @@ class CsfResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    status: Literal["enable", "disable"]
-    uid: str
-    upstream: str
-    source_ip: str
-    upstream_interface_select_method: Literal["auto", "sdwan", "specify"]
-    upstream_interface: str
-    upstream_port: int
-    group_name: str
-    group_password: str
-    accept_auth_by_cert: Literal["disable", "enable"]
-    log_unification: Literal["disable", "enable"]
-    authorization_request_type: Literal["serial", "certificate"]
-    certificate: str
-    fabric_workers: int
-    downstream_access: Literal["enable", "disable"]
-    legacy_authentication: Literal["disable", "enable"]
-    downstream_accprofile: str
-    configuration_sync: Literal["default", "local"]
-    fabric_object_unification: Literal["default", "local"]
-    saml_configuration_sync: Literal["default", "local"]
-    trusted_list: list[dict[str, Any]]
-    fabric_connector: list[dict[str, Any]]
-    forticloud_account_enforcement: Literal["enable", "disable"]
-    file_mgmt: Literal["enable", "disable"]
-    file_quota: int
-    file_quota_warning: int
+    status: Literal["enable", "disable"]  # Enable/disable Security Fabric. | Default: disable
+    uid: str  # Unique ID of the current CSF node | MaxLen: 35
+    upstream: str  # IP/FQDN of the FortiGate upstream from this FortiG | MaxLen: 255
+    source_ip: str  # Source IP address for communication with the upstr | Default: 0.0.0.0
+    upstream_interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    upstream_interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    upstream_port: int  # The port number to use to communicate with the For | Default: 8013 | Min: 1 | Max: 65535
+    group_name: str  # Security Fabric group name. All FortiGates in a Se | MaxLen: 35
+    group_password: str  # Security Fabric group password. For legacy authent | MaxLen: 128
+    accept_auth_by_cert: Literal["disable", "enable"]  # Accept connections with unknown certificates and a | Default: enable
+    log_unification: Literal["disable", "enable"]  # Enable/disable broadcast of discovery messages for | Default: enable
+    authorization_request_type: Literal["serial", "certificate"]  # Authorization request type. | Default: serial
+    certificate: str  # Certificate. | MaxLen: 35
+    fabric_workers: int  # Number of worker processes for Security Fabric dae | Default: 2 | Min: 1 | Max: 4
+    downstream_access: Literal["enable", "disable"]  # Enable/disable downstream device access to this de | Default: disable
+    legacy_authentication: Literal["disable", "enable"]  # Enable/disable legacy authentication. | Default: disable
+    downstream_accprofile: str  # Default access profile for requests from downstrea | MaxLen: 35
+    configuration_sync: Literal["default", "local"]  # Configuration sync mode. | Default: default
+    fabric_object_unification: Literal["default", "local"]  # Fabric CMDB Object Unification. | Default: default
+    saml_configuration_sync: Literal["default", "local"]  # SAML setting configuration synchronization. | Default: default
+    trusted_list: list[CsfTrustedlistItem]  # Pre-authorized and blocked security fabric nodes.
+    fabric_connector: list[CsfFabricconnectorItem]  # Fabric connector configuration.
+    forticloud_account_enforcement: Literal["enable", "disable"]  # Fabric FortiCloud account unification. | Default: enable
+    file_mgmt: Literal["enable", "disable"]  # Enable/disable Security Fabric daemon file managem | Default: enable
+    file_quota: int  # Maximum amount of memory that can be used by the d | Default: 0 | Min: 0 | Max: 4294967295
+    file_quota_warning: int  # Warn when the set percentage of quota has been use | Default: 90 | Min: 1 | Max: 99
 
 
 @final
@@ -155,57 +191,57 @@ class CsfObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable Security Fabric.
+    # Enable/disable Security Fabric. | Default: disable
     status: Literal["enable", "disable"]
-    # Unique ID of the current CSF node
+    # Unique ID of the current CSF node | MaxLen: 35
     uid: str
-    # IP/FQDN of the FortiGate upstream from this FortiGate in the Security Fabric.
+    # IP/FQDN of the FortiGate upstream from this FortiGate in the | MaxLen: 255
     upstream: str
-    # Source IP address for communication with the upstream FortiGate.
+    # Source IP address for communication with the upstream FortiG | Default: 0.0.0.0
     source_ip: str
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     upstream_interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     upstream_interface: str
-    # The port number to use to communicate with the FortiGate upstream from this Fort
+    # The port number to use to communicate with the FortiGate ups | Default: 8013 | Min: 1 | Max: 65535
     upstream_port: int
-    # Security Fabric group name. All FortiGates in a Security Fabric must have the sa
+    # Security Fabric group name. All FortiGates in a Security Fab | MaxLen: 35
     group_name: str
-    # Security Fabric group password. For legacy authentication, fabric members must h
+    # Security Fabric group password. For legacy authentication, f | MaxLen: 128
     group_password: str
-    # Accept connections with unknown certificates and ask admin for approval.
+    # Accept connections with unknown certificates and ask admin f | Default: enable
     accept_auth_by_cert: Literal["disable", "enable"]
-    # Enable/disable broadcast of discovery messages for log unification.
+    # Enable/disable broadcast of discovery messages for log unifi | Default: enable
     log_unification: Literal["disable", "enable"]
-    # Authorization request type.
+    # Authorization request type. | Default: serial
     authorization_request_type: Literal["serial", "certificate"]
-    # Certificate.
+    # Certificate. | MaxLen: 35
     certificate: str
-    # Number of worker processes for Security Fabric daemon.
+    # Number of worker processes for Security Fabric daemon. | Default: 2 | Min: 1 | Max: 4
     fabric_workers: int
-    # Enable/disable downstream device access to this device's configuration and data.
+    # Enable/disable downstream device access to this device's con | Default: disable
     downstream_access: Literal["enable", "disable"]
-    # Enable/disable legacy authentication.
+    # Enable/disable legacy authentication. | Default: disable
     legacy_authentication: Literal["disable", "enable"]
-    # Default access profile for requests from downstream devices.
+    # Default access profile for requests from downstream devices. | MaxLen: 35
     downstream_accprofile: str
-    # Configuration sync mode.
+    # Configuration sync mode. | Default: default
     configuration_sync: Literal["default", "local"]
-    # Fabric CMDB Object Unification.
+    # Fabric CMDB Object Unification. | Default: default
     fabric_object_unification: Literal["default", "local"]
-    # SAML setting configuration synchronization.
+    # SAML setting configuration synchronization. | Default: default
     saml_configuration_sync: Literal["default", "local"]
     # Pre-authorized and blocked security fabric nodes.
-    trusted_list: list[CsfTrustedlistObject]  # Table field - list of typed objects
+    trusted_list: list[CsfTrustedlistObject]
     # Fabric connector configuration.
-    fabric_connector: list[CsfFabricconnectorObject]  # Table field - list of typed objects
-    # Fabric FortiCloud account unification.
+    fabric_connector: list[CsfFabricconnectorObject]
+    # Fabric FortiCloud account unification. | Default: enable
     forticloud_account_enforcement: Literal["enable", "disable"]
-    # Enable/disable Security Fabric daemon file management.
+    # Enable/disable Security Fabric daemon file management. | Default: enable
     file_mgmt: Literal["enable", "disable"]
-    # Maximum amount of memory that can be used by the daemon files (in bytes).
+    # Maximum amount of memory that can be used by the daemon file | Default: 0 | Min: 0 | Max: 4294967295
     file_quota: int
-    # Warn when the set percentage of quota has been used.
+    # Warn when the set percentage of quota has been used. | Default: 90 | Min: 1 | Max: 99
     file_quota_warning: int
     
     # Common API response fields
@@ -231,8 +267,66 @@ class Csf:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> CsfResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> CsfResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> CsfResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -247,11 +341,12 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CsfObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -267,11 +362,11 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CsfObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -286,10 +381,11 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CsfObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -306,7 +402,7 @@ class Csf:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -366,7 +462,7 @@ class Csf:
         **kwargs: Any,
     ) -> CsfResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -381,9 +477,9 @@ class Csf:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -441,7 +537,7 @@ class Csf:
         file_quota_warning: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> CsfObject: ...
     
@@ -479,8 +575,9 @@ class Csf:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -514,7 +611,42 @@ class Csf:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -549,7 +681,7 @@ class Csf:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -590,7 +722,7 @@ class Csf:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -615,8 +747,677 @@ class Csf:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class CsfDictMode:
+    """Csf endpoint for dict response mode (default for this client).
+    
+    By default returns CsfResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return CsfObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> CsfResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> CsfResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class CsfObjectMode:
+    """Csf endpoint for object response mode (default for this client).
+    
+    By default returns CsfObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return CsfResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> CsfResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> CsfResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> CsfObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> CsfObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: CsfPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        uid: str | None = ...,
+        upstream: str | None = ...,
+        source_ip: str | None = ...,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        upstream_interface: str | None = ...,
+        upstream_port: int | None = ...,
+        group_name: str | None = ...,
+        group_password: str | None = ...,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = ...,
+        log_unification: Literal["disable", "enable"] | None = ...,
+        authorization_request_type: Literal["serial", "certificate"] | None = ...,
+        certificate: str | None = ...,
+        fabric_workers: int | None = ...,
+        downstream_access: Literal["enable", "disable"] | None = ...,
+        legacy_authentication: Literal["disable", "enable"] | None = ...,
+        downstream_accprofile: str | None = ...,
+        configuration_sync: Literal["default", "local"] | None = ...,
+        fabric_object_unification: Literal["default", "local"] | None = ...,
+        saml_configuration_sync: Literal["default", "local"] | None = ...,
+        trusted_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        fabric_connector: str | list[str] | list[dict[str, Any]] | None = ...,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
+        file_mgmt: Literal["enable", "disable"] | None = ...,
+        file_quota: int | None = ...,
+        file_quota_warning: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Csf",
+    "CsfDictMode",
+    "CsfObjectMode",
     "CsfPayload",
     "CsfObject",
 ]

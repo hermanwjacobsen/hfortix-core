@@ -57,7 +57,7 @@ class FortiObject:
         """
         self._data = data
     
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         """
         Dynamic attribute access with automatic member_table flattening.
         
@@ -211,7 +211,7 @@ class FortiObject:
         """
         return key in self._data
     
-    def __getitem__(self, key: str):
+    def __getitem__(self, key: str) -> Any:
         """
         Dictionary-style access to fields.
         
@@ -360,8 +360,10 @@ def process_response(
     if mode is None:
         mode = 'dict'
     
-    # If dict mode, return as-is
+    # If dict mode, apply unwrap_single if needed
     if mode == 'dict':
+        if unwrap_single and isinstance(result, list) and len(result) == 1:
+            return result[0]
         return result
     
     # Object mode - wrap in FortiObject

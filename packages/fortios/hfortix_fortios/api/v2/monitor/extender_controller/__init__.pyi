@@ -8,10 +8,45 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .extender import Extender
 
+__all__ = [
+    "ExtendercontrollerDictMode",
+    "ExtendercontrollerObjectMode",
+]
 
-class ExtenderController:
-    """Type stub for ExtenderController."""
-
+class ExtendercontrollerDictMode:
+    """EXTENDER_CONTROLLER API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
     extender: Extender
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extender_controller category with HTTP client."""
+        ...
+
+
+class ExtendercontrollerObjectMode:
+    """EXTENDER_CONTROLLER API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    extender: Extender
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extender_controller category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Extendercontroller:
+    """EXTENDER_CONTROLLER API category."""
+    
+    extender: Extender
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extender_controller category with HTTP client."""
+        ...

@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class GroupPayload(TypedDict, total=False):
     """
     Type hints for user/group payload fields.
@@ -18,32 +22,75 @@ class GroupPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: NotRequired[str]  # Group name.
-    id: NotRequired[int]  # Group ID.
-    group_type: NotRequired[Literal["firewall", "fsso-service", "rsso", "guest"]]  # Set the group to be for firewall authentication, FSSO, RSSO,
-    authtimeout: NotRequired[int]  # Authentication timeout in minutes for this user group. 0 to
-    auth_concurrent_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable overriding the global number of concurrent au
-    auth_concurrent_value: NotRequired[int]  # Maximum number of concurrent authenticated connections per u
-    http_digest_realm: NotRequired[str]  # Realm attribute for MD5-digest authentication.
-    sso_attribute_value: NotRequired[str]  # RADIUS attribute value.
-    member: NotRequired[list[dict[str, Any]]]  # Names of users, peers, LDAP severs, RADIUS servers or extern
-    match: NotRequired[list[dict[str, Any]]]  # Group matches.
-    user_id: NotRequired[Literal["email", "auto-generate", "specify"]]  # Guest user ID type.
-    password: NotRequired[Literal["auto-generate", "specify", "disable"]]  # Guest user password type.
-    user_name: NotRequired[Literal["disable", "enable"]]  # Enable/disable the guest user name entry.
-    sponsor: NotRequired[Literal["optional", "mandatory", "disabled"]]  # Set the action for the sponsor guest user field.
-    company: NotRequired[Literal["optional", "mandatory", "disabled"]]  # Set the action for the company guest user field.
-    email: NotRequired[Literal["disable", "enable"]]  # Enable/disable the guest user email address field.
-    mobile_phone: NotRequired[Literal["disable", "enable"]]  # Enable/disable the guest user mobile phone number field.
-    sms_server: NotRequired[Literal["fortiguard", "custom"]]  # Send SMS through FortiGuard or other external server.
-    sms_custom_server: NotRequired[str]  # SMS server.
-    expire_type: NotRequired[Literal["immediately", "first-successful-login"]]  # Determine when the expiration countdown begins.
-    expire: NotRequired[int]  # Time in seconds before guest user accounts expire
-    max_accounts: NotRequired[int]  # Maximum number of guest accounts that can be created for thi
-    multiple_guest_add: NotRequired[Literal["disable", "enable"]]  # Enable/disable addition of multiple guests.
-    guest: NotRequired[list[dict[str, Any]]]  # Guest User.
+    name: str  # Group name. | MaxLen: 35
+    id: int  # Group ID. | Default: 0 | Min: 0 | Max: 4294967295
+    group_type: Literal["firewall", "fsso-service", "rsso", "guest"]  # Set the group to be for firewall authentication, F | Default: firewall
+    authtimeout: int  # Authentication timeout in minutes for this user gr | Default: 0 | Min: 0 | Max: 43200
+    auth_concurrent_override: Literal["enable", "disable"]  # Enable/disable overriding the global number of con | Default: disable
+    auth_concurrent_value: int  # Maximum number of concurrent authenticated connect | Default: 0 | Min: 0 | Max: 100
+    http_digest_realm: str  # Realm attribute for MD5-digest authentication. | MaxLen: 35
+    sso_attribute_value: str  # RADIUS attribute value. | MaxLen: 511
+    member: list[dict[str, Any]]  # Names of users, peers, LDAP severs, RADIUS servers
+    match: list[dict[str, Any]]  # Group matches.
+    user_id: Literal["email", "auto-generate", "specify"]  # Guest user ID type. | Default: email
+    password: Literal["auto-generate", "specify", "disable"]  # Guest user password type. | Default: auto-generate
+    user_name: Literal["disable", "enable"]  # Enable/disable the guest user name entry. | Default: disable
+    sponsor: Literal["optional", "mandatory", "disabled"]  # Set the action for the sponsor guest user field. | Default: optional
+    company: Literal["optional", "mandatory", "disabled"]  # Set the action for the company guest user field. | Default: optional
+    email: Literal["disable", "enable"]  # Enable/disable the guest user email address field. | Default: enable
+    mobile_phone: Literal["disable", "enable"]  # Enable/disable the guest user mobile phone number | Default: disable
+    sms_server: Literal["fortiguard", "custom"]  # Send SMS through FortiGuard or other external serv | Default: fortiguard
+    sms_custom_server: str  # SMS server. | MaxLen: 35
+    expire_type: Literal["immediately", "first-successful-login"]  # Determine when the expiration countdown begins. | Default: immediately
+    expire: int  # Time in seconds before guest user accounts expire | Default: 14400 | Min: 1 | Max: 31536000
+    max_accounts: int  # Maximum number of guest accounts that can be creat | Default: 0 | Min: 0 | Max: 500
+    multiple_guest_add: Literal["disable", "enable"]  # Enable/disable addition of multiple guests. | Default: disable
+    guest: list[dict[str, Any]]  # Guest User.
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+class GroupMemberItem(TypedDict):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    name: str  # Group member name. | MaxLen: 511
+
+
+class GroupMatchItem(TypedDict):
+    """Type hints for match table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    server_name: str  # Name of remote auth server. | MaxLen: 35
+    group_name: str  # Name of matching user or group on remote authentic | MaxLen: 511
+
+
+class GroupGuestItem(TypedDict):
+    """Type hints for guest table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    All fields are present in API responses.
+    """
+    
+    id: int  # Guest ID. | Default: 0 | Min: 0 | Max: 4294967295
+    user_id: str  # Guest ID. | MaxLen: 64
+    name: str  # Guest name. | MaxLen: 64
+    password: str  # Guest password. | MaxLen: 128
+    mobile_phone: str  # Mobile phone. | MaxLen: 35
+    sponsor: str  # Set the action for the sponsor guest user field. | MaxLen: 35
+    company: str  # Set the action for the company guest user field. | MaxLen: 35
+    email: str  # Email. | MaxLen: 64
+    expiration: str  # Expire time.
+    comment: str  # Comment. | MaxLen: 255
+
+
+# Nested classes for table field children (object mode)
 
 @final
 class GroupMemberObject:
@@ -53,7 +100,7 @@ class GroupMemberObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Group member name.
+    # Group member name. | MaxLen: 511
     name: str
     
     # Methods from FortiObject
@@ -74,11 +121,11 @@ class GroupMatchObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # ID.
+    # ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Name of remote auth server.
+    # Name of remote auth server. | MaxLen: 35
     server_name: str
-    # Name of matching user or group on remote authentication server or SCIM.
+    # Name of matching user or group on remote authentication serv | MaxLen: 511
     group_name: str
     
     # Methods from FortiObject
@@ -99,25 +146,25 @@ class GroupGuestObject:
     At runtime, this is a FortiObject instance.
     """
     
-    # Guest ID.
+    # Guest ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Guest ID.
+    # Guest ID. | MaxLen: 64
     user_id: str
-    # Guest name.
+    # Guest name. | MaxLen: 64
     name: str
-    # Guest password.
+    # Guest password. | MaxLen: 128
     password: str
-    # Mobile phone.
+    # Mobile phone. | MaxLen: 35
     mobile_phone: str
-    # Set the action for the sponsor guest user field.
+    # Set the action for the sponsor guest user field. | MaxLen: 35
     sponsor: str
-    # Set the action for the company guest user field.
+    # Set the action for the company guest user field. | MaxLen: 35
     company: str
-    # Email.
+    # Email. | MaxLen: 64
     email: str
     # Expire time.
     expiration: str
-    # Comment.
+    # Comment. | MaxLen: 255
     comment: str
     
     # Methods from FortiObject
@@ -138,30 +185,30 @@ class GroupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    id: int
-    group_type: Literal["firewall", "fsso-service", "rsso", "guest"]
-    authtimeout: int
-    auth_concurrent_override: Literal["enable", "disable"]
-    auth_concurrent_value: int
-    http_digest_realm: str
-    sso_attribute_value: str
-    member: list[dict[str, Any]]
-    match: list[dict[str, Any]]
-    user_id: Literal["email", "auto-generate", "specify"]
-    password: Literal["auto-generate", "specify", "disable"]
-    user_name: Literal["disable", "enable"]
-    sponsor: Literal["optional", "mandatory", "disabled"]
-    company: Literal["optional", "mandatory", "disabled"]
-    email: Literal["disable", "enable"]
-    mobile_phone: Literal["disable", "enable"]
-    sms_server: Literal["fortiguard", "custom"]
-    sms_custom_server: str
-    expire_type: Literal["immediately", "first-successful-login"]
-    expire: int
-    max_accounts: int
-    multiple_guest_add: Literal["disable", "enable"]
-    guest: list[dict[str, Any]]
+    name: str  # Group name. | MaxLen: 35
+    id: int  # Group ID. | Default: 0 | Min: 0 | Max: 4294967295
+    group_type: Literal["firewall", "fsso-service", "rsso", "guest"]  # Set the group to be for firewall authentication, F | Default: firewall
+    authtimeout: int  # Authentication timeout in minutes for this user gr | Default: 0 | Min: 0 | Max: 43200
+    auth_concurrent_override: Literal["enable", "disable"]  # Enable/disable overriding the global number of con | Default: disable
+    auth_concurrent_value: int  # Maximum number of concurrent authenticated connect | Default: 0 | Min: 0 | Max: 100
+    http_digest_realm: str  # Realm attribute for MD5-digest authentication. | MaxLen: 35
+    sso_attribute_value: str  # RADIUS attribute value. | MaxLen: 511
+    member: list[GroupMemberItem]  # Names of users, peers, LDAP severs, RADIUS servers
+    match: list[GroupMatchItem]  # Group matches.
+    user_id: Literal["email", "auto-generate", "specify"]  # Guest user ID type. | Default: email
+    password: Literal["auto-generate", "specify", "disable"]  # Guest user password type. | Default: auto-generate
+    user_name: Literal["disable", "enable"]  # Enable/disable the guest user name entry. | Default: disable
+    sponsor: Literal["optional", "mandatory", "disabled"]  # Set the action for the sponsor guest user field. | Default: optional
+    company: Literal["optional", "mandatory", "disabled"]  # Set the action for the company guest user field. | Default: optional
+    email: Literal["disable", "enable"]  # Enable/disable the guest user email address field. | Default: enable
+    mobile_phone: Literal["disable", "enable"]  # Enable/disable the guest user mobile phone number | Default: disable
+    sms_server: Literal["fortiguard", "custom"]  # Send SMS through FortiGuard or other external serv | Default: fortiguard
+    sms_custom_server: str  # SMS server. | MaxLen: 35
+    expire_type: Literal["immediately", "first-successful-login"]  # Determine when the expiration countdown begins. | Default: immediately
+    expire: int  # Time in seconds before guest user accounts expire | Default: 14400 | Min: 1 | Max: 31536000
+    max_accounts: int  # Maximum number of guest accounts that can be creat | Default: 0 | Min: 0 | Max: 500
+    multiple_guest_add: Literal["disable", "enable"]  # Enable/disable addition of multiple guests. | Default: disable
+    guest: list[GroupGuestItem]  # Guest User.
 
 
 @final
@@ -172,54 +219,54 @@ class GroupObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Group name.
+    # Group name. | MaxLen: 35
     name: str
-    # Group ID.
+    # Group ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Set the group to be for firewall authentication, FSSO, RSSO, or guest users.
+    # Set the group to be for firewall authentication, FSSO, RSSO, | Default: firewall
     group_type: Literal["firewall", "fsso-service", "rsso", "guest"]
-    # Authentication timeout in minutes for this user group. 0 to use the global user
+    # Authentication timeout in minutes for this user group. 0 to | Default: 0 | Min: 0 | Max: 43200
     authtimeout: int
-    # Enable/disable overriding the global number of concurrent authentication session
+    # Enable/disable overriding the global number of concurrent au | Default: disable
     auth_concurrent_override: Literal["enable", "disable"]
-    # Maximum number of concurrent authenticated connections per user (0 - 100).
+    # Maximum number of concurrent authenticated connections per u | Default: 0 | Min: 0 | Max: 100
     auth_concurrent_value: int
-    # Realm attribute for MD5-digest authentication.
+    # Realm attribute for MD5-digest authentication. | MaxLen: 35
     http_digest_realm: str
-    # RADIUS attribute value.
+    # RADIUS attribute value. | MaxLen: 511
     sso_attribute_value: str
-    # Names of users, peers, LDAP severs, RADIUS servers or external idp servers to ad
-    member: list[GroupMemberObject]  # Table field - list of typed objects
+    # Names of users, peers, LDAP severs, RADIUS servers or extern
+    member: list[GroupMemberObject]
     # Group matches.
-    match: list[GroupMatchObject]  # Table field - list of typed objects
-    # Guest user ID type.
+    match: list[GroupMatchObject]
+    # Guest user ID type. | Default: email
     user_id: Literal["email", "auto-generate", "specify"]
-    # Guest user password type.
+    # Guest user password type. | Default: auto-generate
     password: Literal["auto-generate", "specify", "disable"]
-    # Enable/disable the guest user name entry.
+    # Enable/disable the guest user name entry. | Default: disable
     user_name: Literal["disable", "enable"]
-    # Set the action for the sponsor guest user field.
+    # Set the action for the sponsor guest user field. | Default: optional
     sponsor: Literal["optional", "mandatory", "disabled"]
-    # Set the action for the company guest user field.
+    # Set the action for the company guest user field. | Default: optional
     company: Literal["optional", "mandatory", "disabled"]
-    # Enable/disable the guest user email address field.
+    # Enable/disable the guest user email address field. | Default: enable
     email: Literal["disable", "enable"]
-    # Enable/disable the guest user mobile phone number field.
+    # Enable/disable the guest user mobile phone number field. | Default: disable
     mobile_phone: Literal["disable", "enable"]
-    # Send SMS through FortiGuard or other external server.
+    # Send SMS through FortiGuard or other external server. | Default: fortiguard
     sms_server: Literal["fortiguard", "custom"]
-    # SMS server.
+    # SMS server. | MaxLen: 35
     sms_custom_server: str
-    # Determine when the expiration countdown begins.
+    # Determine when the expiration countdown begins. | Default: immediately
     expire_type: Literal["immediately", "first-successful-login"]
-    # Time in seconds before guest user accounts expire (1 - 31536000).
+    # Time in seconds before guest user accounts expire | Default: 14400 | Min: 1 | Max: 31536000
     expire: int
-    # Maximum number of guest accounts that can be created for this group
+    # Maximum number of guest accounts that can be created for thi | Default: 0 | Min: 0 | Max: 500
     max_accounts: int
-    # Enable/disable addition of multiple guests.
+    # Enable/disable addition of multiple guests. | Default: disable
     multiple_guest_add: Literal["disable", "enable"]
     # Guest User.
-    guest: list[GroupGuestObject]  # Table field - list of typed objects
+    guest: list[GroupGuestObject]
     
     # Common API response fields
     status: str
@@ -245,8 +292,66 @@ class Group:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GroupResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> GroupResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[GroupResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -261,11 +366,12 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -281,11 +387,11 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -300,10 +406,11 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[GroupObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -320,7 +427,7 @@ class Group:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -380,7 +487,7 @@ class Group:
         **kwargs: Any,
     ) -> list[GroupResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -395,9 +502,9 @@ class Group:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -453,7 +560,7 @@ class Group:
         guest: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
     
@@ -489,8 +596,9 @@ class Group:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -522,7 +630,40 @@ class Group:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -555,7 +696,7 @@ class Group:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -588,7 +729,7 @@ class Group:
         guest: str | list[str] | list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
     
@@ -624,8 +765,9 @@ class Group:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -657,7 +799,40 @@ class Group:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -690,7 +865,7 @@ class Group:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -699,7 +874,7 @@ class Group:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> GroupObject: ...
     
@@ -711,8 +886,9 @@ class Group:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -720,7 +896,16 @@ class Group:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -728,7 +913,7 @@ class Group:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -767,7 +952,7 @@ class Group:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -792,8 +977,1045 @@ class Group:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class GroupDictMode:
+    """Group endpoint for dict response mode (default for this client).
+    
+    By default returns GroupResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return GroupObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[GroupObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> GroupResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[GroupResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class GroupObjectMode:
+    """Group endpoint for object response mode (default for this client).
+    
+    By default returns GroupObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return GroupResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> GroupResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[GroupResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[GroupObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> GroupObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: GroupPayload | None = ...,
+        name: str | None = ...,
+        id: int | None = ...,
+        group_type: Literal["firewall", "fsso-service", "rsso", "guest"] | None = ...,
+        authtimeout: int | None = ...,
+        auth_concurrent_override: Literal["enable", "disable"] | None = ...,
+        auth_concurrent_value: int | None = ...,
+        http_digest_realm: str | None = ...,
+        sso_attribute_value: str | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_id: Literal["email", "auto-generate", "specify"] | None = ...,
+        password: Literal["auto-generate", "specify", "disable"] | None = ...,
+        user_name: Literal["disable", "enable"] | None = ...,
+        sponsor: Literal["optional", "mandatory", "disabled"] | None = ...,
+        company: Literal["optional", "mandatory", "disabled"] | None = ...,
+        email: Literal["disable", "enable"] | None = ...,
+        mobile_phone: Literal["disable", "enable"] | None = ...,
+        sms_server: Literal["fortiguard", "custom"] | None = ...,
+        sms_custom_server: str | None = ...,
+        expire_type: Literal["immediately", "first-successful-login"] | None = ...,
+        expire: int | None = ...,
+        max_accounts: int | None = ...,
+        multiple_guest_add: Literal["disable", "enable"] | None = ...,
+        guest: str | list[str] | list[dict[str, Any]] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Group",
+    "GroupDictMode",
+    "GroupObjectMode",
     "GroupPayload",
     "GroupObject",
 ]

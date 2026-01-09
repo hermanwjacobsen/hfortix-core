@@ -6,16 +6,58 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .custom import Custom
-    from .default import Default
-    from .policy import Policy
+    from .custom import Custom, CustomDictMode, CustomObjectMode
+    from .default import Default, DefaultDictMode, DefaultObjectMode
+    from .policy import Policy, PolicyDictMode, PolicyObjectMode
+
+__all__ = [
+    "Custom",
+    "Default",
+    "Policy",
+    "AutoconfigDictMode",
+    "AutoconfigObjectMode",
+]
+
+class AutoconfigDictMode:
+    """AUTO_CONFIG API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    custom: CustomDictMode
+    default: DefaultDictMode
+    policy: PolicyDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize auto_config category with HTTP client."""
+        ...
 
 
-class AutoConfig:
-    """Type stub for AutoConfig."""
+class AutoconfigObjectMode:
+    """AUTO_CONFIG API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    custom: CustomObjectMode
+    default: DefaultObjectMode
+    policy: PolicyObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize auto_config category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Autoconfig:
+    """AUTO_CONFIG API category."""
+    
     custom: Custom
     default: Default
     policy: Policy
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize auto_config category with HTTP client."""
+        ...

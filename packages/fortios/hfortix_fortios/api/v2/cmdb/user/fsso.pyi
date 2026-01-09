@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class FssoPayload(TypedDict, total=False):
     """
     Type hints for user/fsso payload fields.
@@ -21,41 +25,43 @@ class FssoPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    name: str  # Name.
-    type: NotRequired[Literal["default", "fortinac"]]  # Server type.
-    server: str  # Domain name or IP address of the first FSSO collector agent.
-    port: int  # Port of the first FSSO collector agent.
-    password: NotRequired[str]  # Password of the first FSSO collector agent.
-    server2: NotRequired[str]  # Domain name or IP address of the second FSSO collector agent
-    port2: NotRequired[int]  # Port of the second FSSO collector agent.
-    password2: NotRequired[str]  # Password of the second FSSO collector agent.
-    server3: NotRequired[str]  # Domain name or IP address of the third FSSO collector agent.
-    port3: NotRequired[int]  # Port of the third FSSO collector agent.
-    password3: NotRequired[str]  # Password of the third FSSO collector agent.
-    server4: NotRequired[str]  # Domain name or IP address of the fourth FSSO collector agent
-    port4: NotRequired[int]  # Port of the fourth FSSO collector agent.
-    password4: NotRequired[str]  # Password of the fourth FSSO collector agent.
-    server5: NotRequired[str]  # Domain name or IP address of the fifth FSSO collector agent.
-    port5: NotRequired[int]  # Port of the fifth FSSO collector agent.
-    password5: NotRequired[str]  # Password of the fifth FSSO collector agent.
-    logon_timeout: NotRequired[int]  # Interval in minutes to keep logons after FSSO server down.
-    ldap_server: NotRequired[str]  # LDAP server to get group information.
-    group_poll_interval: NotRequired[int]  # Interval in minutes within to fetch groups from FSSO server,
-    ldap_poll: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic fetching of groups from LDAP server
-    ldap_poll_interval: NotRequired[int]  # Interval in minutes within to fetch groups from LDAP server.
-    ldap_poll_filter: NotRequired[str]  # Filter used to fetch groups.
-    user_info_server: NotRequired[str]  # LDAP server to get user information.
-    ssl: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of SSL.
-    sni: NotRequired[str]  # Server Name Indication.
-    ssl_server_host_ip_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable server host/IP verification.
-    ssl_trusted_cert: NotRequired[str]  # Trusted server certificate or CA certificate.
-    source_ip: NotRequired[str]  # Source IP for communications to FSSO agent.
-    source_ip6: NotRequired[str]  # IPv6 source for communications to FSSO agent.
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
-    interface: str  # Specify outgoing interface to reach server.
-    vrf_select: NotRequired[int]  # VRF ID used for connection to server.
+    name: str  # Name. | MaxLen: 35
+    type: Literal["default", "fortinac"]  # Server type. | Default: default
+    server: str  # Domain name or IP address of the first FSSO collec | MaxLen: 63
+    port: int  # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password: str  # Password of the first FSSO collector agent. | MaxLen: 128
+    server2: str  # Domain name or IP address of the second FSSO colle | MaxLen: 63
+    port2: int  # Port of the second FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password2: str  # Password of the second FSSO collector agent. | MaxLen: 128
+    server3: str  # Domain name or IP address of the third FSSO collec | MaxLen: 63
+    port3: int  # Port of the third FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password3: str  # Password of the third FSSO collector agent. | MaxLen: 128
+    server4: str  # Domain name or IP address of the fourth FSSO colle | MaxLen: 63
+    port4: int  # Port of the fourth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password4: str  # Password of the fourth FSSO collector agent. | MaxLen: 128
+    server5: str  # Domain name or IP address of the fifth FSSO collec | MaxLen: 63
+    port5: int  # Port of the fifth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password5: str  # Password of the fifth FSSO collector agent. | MaxLen: 128
+    logon_timeout: int  # Interval in minutes to keep logons after FSSO serv | Default: 5 | Min: 1 | Max: 2880
+    ldap_server: str  # LDAP server to get group information. | MaxLen: 35
+    group_poll_interval: int  # Interval in minutes within to fetch groups from FS | Default: 0 | Min: 1 | Max: 2880
+    ldap_poll: Literal["enable", "disable"]  # Enable/disable automatic fetching of groups from L | Default: disable
+    ldap_poll_interval: int  # Interval in minutes within to fetch groups from LD | Default: 180 | Min: 1 | Max: 2880
+    ldap_poll_filter: str  # Filter used to fetch groups. | Default: (objectCategory=group) | MaxLen: 2047
+    user_info_server: str  # LDAP server to get user information. | MaxLen: 35
+    ssl: Literal["enable", "disable"]  # Enable/disable use of SSL. | Default: disable
+    sni: str  # Server Name Indication. | MaxLen: 255
+    ssl_server_host_ip_check: Literal["enable", "disable"]  # Enable/disable server host/IP verification. | Default: disable
+    ssl_trusted_cert: str  # Trusted server certificate or CA certificate. | MaxLen: 79
+    source_ip: str  # Source IP for communications to FSSO agent. | Default: 0.0.0.0
+    source_ip6: str  # IPv6 source for communications to FSSO agent. | Default: ::
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -65,39 +71,39 @@ class FssoResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    name: str
-    type: Literal["default", "fortinac"]
-    server: str
-    port: int
-    password: str
-    server2: str
-    port2: int
-    password2: str
-    server3: str
-    port3: int
-    password3: str
-    server4: str
-    port4: int
-    password4: str
-    server5: str
-    port5: int
-    password5: str
-    logon_timeout: int
-    ldap_server: str
-    group_poll_interval: int
-    ldap_poll: Literal["enable", "disable"]
-    ldap_poll_interval: int
-    ldap_poll_filter: str
-    user_info_server: str
-    ssl: Literal["enable", "disable"]
-    sni: str
-    ssl_server_host_ip_check: Literal["enable", "disable"]
-    ssl_trusted_cert: str
-    source_ip: str
-    source_ip6: str
-    interface_select_method: Literal["auto", "sdwan", "specify"]
-    interface: str
-    vrf_select: int
+    name: str  # Name. | MaxLen: 35
+    type: Literal["default", "fortinac"]  # Server type. | Default: default
+    server: str  # Domain name or IP address of the first FSSO collec | MaxLen: 63
+    port: int  # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password: str  # Password of the first FSSO collector agent. | MaxLen: 128
+    server2: str  # Domain name or IP address of the second FSSO colle | MaxLen: 63
+    port2: int  # Port of the second FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password2: str  # Password of the second FSSO collector agent. | MaxLen: 128
+    server3: str  # Domain name or IP address of the third FSSO collec | MaxLen: 63
+    port3: int  # Port of the third FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password3: str  # Password of the third FSSO collector agent. | MaxLen: 128
+    server4: str  # Domain name or IP address of the fourth FSSO colle | MaxLen: 63
+    port4: int  # Port of the fourth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password4: str  # Password of the fourth FSSO collector agent. | MaxLen: 128
+    server5: str  # Domain name or IP address of the fifth FSSO collec | MaxLen: 63
+    port5: int  # Port of the fifth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
+    password5: str  # Password of the fifth FSSO collector agent. | MaxLen: 128
+    logon_timeout: int  # Interval in minutes to keep logons after FSSO serv | Default: 5 | Min: 1 | Max: 2880
+    ldap_server: str  # LDAP server to get group information. | MaxLen: 35
+    group_poll_interval: int  # Interval in minutes within to fetch groups from FS | Default: 0 | Min: 1 | Max: 2880
+    ldap_poll: Literal["enable", "disable"]  # Enable/disable automatic fetching of groups from L | Default: disable
+    ldap_poll_interval: int  # Interval in minutes within to fetch groups from LD | Default: 180 | Min: 1 | Max: 2880
+    ldap_poll_filter: str  # Filter used to fetch groups. | Default: (objectCategory=group) | MaxLen: 2047
+    user_info_server: str  # LDAP server to get user information. | MaxLen: 35
+    ssl: Literal["enable", "disable"]  # Enable/disable use of SSL. | Default: disable
+    sni: str  # Server Name Indication. | MaxLen: 255
+    ssl_server_host_ip_check: Literal["enable", "disable"]  # Enable/disable server host/IP verification. | Default: disable
+    ssl_trusted_cert: str  # Trusted server certificate or CA certificate. | MaxLen: 79
+    source_ip: str  # Source IP for communications to FSSO agent. | Default: 0.0.0.0
+    source_ip6: str  # IPv6 source for communications to FSSO agent. | Default: ::
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
 
 @final
@@ -108,71 +114,71 @@ class FssoObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Name.
+    # Name. | MaxLen: 35
     name: str
-    # Server type.
+    # Server type. | Default: default
     type: Literal["default", "fortinac"]
-    # Domain name or IP address of the first FSSO collector agent.
+    # Domain name or IP address of the first FSSO collector agent. | MaxLen: 63
     server: str
-    # Port of the first FSSO collector agent.
+    # Port of the first FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     port: int
-    # Password of the first FSSO collector agent.
+    # Password of the first FSSO collector agent. | MaxLen: 128
     password: str
-    # Domain name or IP address of the second FSSO collector agent.
+    # Domain name or IP address of the second FSSO collector agent | MaxLen: 63
     server2: str
-    # Port of the second FSSO collector agent.
+    # Port of the second FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     port2: int
-    # Password of the second FSSO collector agent.
+    # Password of the second FSSO collector agent. | MaxLen: 128
     password2: str
-    # Domain name or IP address of the third FSSO collector agent.
+    # Domain name or IP address of the third FSSO collector agent. | MaxLen: 63
     server3: str
-    # Port of the third FSSO collector agent.
+    # Port of the third FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     port3: int
-    # Password of the third FSSO collector agent.
+    # Password of the third FSSO collector agent. | MaxLen: 128
     password3: str
-    # Domain name or IP address of the fourth FSSO collector agent.
+    # Domain name or IP address of the fourth FSSO collector agent | MaxLen: 63
     server4: str
-    # Port of the fourth FSSO collector agent.
+    # Port of the fourth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     port4: int
-    # Password of the fourth FSSO collector agent.
+    # Password of the fourth FSSO collector agent. | MaxLen: 128
     password4: str
-    # Domain name or IP address of the fifth FSSO collector agent.
+    # Domain name or IP address of the fifth FSSO collector agent. | MaxLen: 63
     server5: str
-    # Port of the fifth FSSO collector agent.
+    # Port of the fifth FSSO collector agent. | Default: 8000 | Min: 1 | Max: 65535
     port5: int
-    # Password of the fifth FSSO collector agent.
+    # Password of the fifth FSSO collector agent. | MaxLen: 128
     password5: str
-    # Interval in minutes to keep logons after FSSO server down.
+    # Interval in minutes to keep logons after FSSO server down. | Default: 5 | Min: 1 | Max: 2880
     logon_timeout: int
-    # LDAP server to get group information.
+    # LDAP server to get group information. | MaxLen: 35
     ldap_server: str
-    # Interval in minutes within to fetch groups from FSSO server, or unset to disable
+    # Interval in minutes within to fetch groups from FSSO server, | Default: 0 | Min: 1 | Max: 2880
     group_poll_interval: int
-    # Enable/disable automatic fetching of groups from LDAP server.
+    # Enable/disable automatic fetching of groups from LDAP server | Default: disable
     ldap_poll: Literal["enable", "disable"]
-    # Interval in minutes within to fetch groups from LDAP server.
+    # Interval in minutes within to fetch groups from LDAP server. | Default: 180 | Min: 1 | Max: 2880
     ldap_poll_interval: int
-    # Filter used to fetch groups.
+    # Filter used to fetch groups. | Default: (objectCategory=group) | MaxLen: 2047
     ldap_poll_filter: str
-    # LDAP server to get user information.
+    # LDAP server to get user information. | MaxLen: 35
     user_info_server: str
-    # Enable/disable use of SSL.
+    # Enable/disable use of SSL. | Default: disable
     ssl: Literal["enable", "disable"]
-    # Server Name Indication.
+    # Server Name Indication. | MaxLen: 255
     sni: str
-    # Enable/disable server host/IP verification.
+    # Enable/disable server host/IP verification. | Default: disable
     ssl_server_host_ip_check: Literal["enable", "disable"]
-    # Trusted server certificate or CA certificate.
+    # Trusted server certificate or CA certificate. | MaxLen: 79
     ssl_trusted_cert: str
-    # Source IP for communications to FSSO agent.
+    # Source IP for communications to FSSO agent. | Default: 0.0.0.0
     source_ip: str
-    # IPv6 source for communications to FSSO agent.
+    # IPv6 source for communications to FSSO agent. | Default: ::
     source_ip6: str
-    # Specify how to select outgoing interface to reach server.
+    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server.
+    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server.
+    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
     
     # Common API response fields
@@ -199,8 +205,66 @@ class Fsso:
     Primary Key: name
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FssoResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FssoResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> list[FssoResponse]: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -215,11 +279,12 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -235,11 +300,11 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -254,10 +319,11 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> list[FssoObject]: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -274,7 +340,7 @@ class Fsso:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -334,7 +400,7 @@ class Fsso:
         **kwargs: Any,
     ) -> list[FssoResponse]: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -349,9 +415,9 @@ class Fsso:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
         self,
@@ -416,7 +482,7 @@ class Fsso:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
     
@@ -461,8 +527,9 @@ class Fsso:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def post(
         self,
@@ -503,7 +570,49 @@ class Fsso:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def post(
         self,
@@ -545,7 +654,7 @@ class Fsso:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # PUT overloads
     @overload
@@ -587,7 +696,7 @@ class Fsso:
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
     
@@ -632,8 +741,9 @@ class Fsso:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -674,7 +784,49 @@ class Fsso:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -716,7 +868,7 @@ class Fsso:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # DELETE overloads
     @overload
@@ -725,7 +877,7 @@ class Fsso:
         name: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FssoObject: ...
     
@@ -737,8 +889,9 @@ class Fsso:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def delete(
         self,
@@ -746,7 +899,16 @@ class Fsso:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def delete(
         self,
@@ -754,7 +916,7 @@ class Fsso:
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -802,7 +964,7 @@ class Fsso:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -827,8 +989,1225 @@ class Fsso:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class FssoDictMode:
+    """Fsso endpoint for dict response mode (default for this client).
+    
+    By default returns FssoResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return FssoObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> list[FssoObject]: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> FssoResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> list[FssoResponse]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Object mode override
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # POST - Default overload (returns MutationResponse)
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Dict mode (default for DictMode class)
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Object mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # DELETE - Default overload (returns MutationResponse)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Dict mode (default for DictMode class)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class FssoObjectMode:
+    """Fsso endpoint for object response mode (default for this client).
+    
+    By default returns FssoObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return FssoResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> FssoResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> list[FssoResponse]: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> list[FssoObject]: ...
+
+    # raw_json=True returns RawAPIResponse for POST
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # POST - Dict mode override
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # POST - Object mode override (requires explicit response_mode="object")
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # POST - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # POST - Default for ObjectMode (returns MutationResponse like DictMode)
+    def post(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # raw_json=True returns RawAPIResponse for DELETE
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # DELETE - Dict mode override
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # DELETE - Object mode override (requires explicit response_mode="object")
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # DELETE - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> FssoObject: ...
+    
+    # DELETE - Default for ObjectMode (returns MutationResponse like DictMode)
+    def delete(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FssoPayload | None = ...,
+        name: str | None = ...,
+        type: Literal["default", "fortinac"] | None = ...,
+        server: str | None = ...,
+        port: int | None = ...,
+        password: str | None = ...,
+        server2: str | None = ...,
+        port2: int | None = ...,
+        password2: str | None = ...,
+        server3: str | None = ...,
+        port3: int | None = ...,
+        password3: str | None = ...,
+        server4: str | None = ...,
+        port4: int | None = ...,
+        password4: str | None = ...,
+        server5: str | None = ...,
+        port5: int | None = ...,
+        password5: str | None = ...,
+        logon_timeout: int | None = ...,
+        ldap_server: str | None = ...,
+        group_poll_interval: int | None = ...,
+        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll_interval: int | None = ...,
+        ldap_poll_filter: str | None = ...,
+        user_info_server: str | None = ...,
+        ssl: Literal["enable", "disable"] | None = ...,
+        sni: str | None = ...,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_trusted_cert: str | None = ...,
+        source_ip: str | None = ...,
+        source_ip6: str | None = ...,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface: str | None = ...,
+        vrf_select: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "Fsso",
+    "FssoDictMode",
+    "FssoObjectMode",
     "FssoPayload",
     "FssoObject",
 ]

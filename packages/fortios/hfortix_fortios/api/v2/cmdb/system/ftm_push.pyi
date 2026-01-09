@@ -1,7 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
 from hfortix_fortios.models import FortiObject
+from hfortix_core.types import MutationResponse, RawAPIResponse
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
 class FtmPushPayload(TypedDict, total=False):
     """
     Type hints for system/ftm_push payload fields.
@@ -19,15 +23,17 @@ class FtmPushPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable communication to the proxy server in FortiGua
-    interface: NotRequired[str]  # Interface of FortiToken Mobile push services server.
-    server: NotRequired[str]  # IPv4 address or domain name of FortiToken Mobile push servic
-    server_port: NotRequired[int]  # Port to communicate with FortiToken Mobile push services ser
-    server_cert: NotRequired[str]  # Name of the server certificate to be used for SSL.
-    server_ip: NotRequired[str]  # IPv4 address of FortiToken Mobile push services server
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the use of FortiToken Mobile push services.
+    proxy: Literal["enable", "disable"]  # Enable/disable communication to the proxy server i | Default: enable
+    interface: str  # Interface of FortiToken Mobile push services serve | MaxLen: 35
+    server: str  # IPv4 address or domain name of FortiToken Mobile p | MaxLen: 127
+    server_port: int  # Port to communicate with FortiToken Mobile push se | Default: 4433 | Min: 1 | Max: 65535
+    server_cert: str  # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
+    server_ip: str  # IPv4 address of FortiToken Mobile push services se | Default: 0.0.0.0
+    status: Literal["enable", "disable"]  # Enable/disable the use of FortiToken Mobile push s | Default: disable
 
-# Nested classes for table field children
+# Nested TypedDicts for table field children (dict mode)
+
+# Nested classes for table field children (object mode)
 
 
 # Response TypedDict for GET returns (all fields present in API response)
@@ -37,13 +43,13 @@ class FtmPushResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    proxy: Literal["enable", "disable"]
-    interface: str
-    server: str
-    server_port: int
-    server_cert: str
-    server_ip: str
-    status: Literal["enable", "disable"]
+    proxy: Literal["enable", "disable"]  # Enable/disable communication to the proxy server i | Default: enable
+    interface: str  # Interface of FortiToken Mobile push services serve | MaxLen: 35
+    server: str  # IPv4 address or domain name of FortiToken Mobile p | MaxLen: 127
+    server_port: int  # Port to communicate with FortiToken Mobile push se | Default: 4433 | Min: 1 | Max: 65535
+    server_cert: str  # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
+    server_ip: str  # IPv4 address of FortiToken Mobile push services se | Default: 0.0.0.0
+    status: Literal["enable", "disable"]  # Enable/disable the use of FortiToken Mobile push s | Default: disable
 
 
 @final
@@ -54,19 +60,19 @@ class FtmPushObject:
     At runtime, this is actually a FortiObject instance.
     """
     
-    # Enable/disable communication to the proxy server in FortiGuard configuration.
+    # Enable/disable communication to the proxy server in FortiGua | Default: enable
     proxy: Literal["enable", "disable"]
-    # Interface of FortiToken Mobile push services server.
+    # Interface of FortiToken Mobile push services server. | MaxLen: 35
     interface: str
-    # IPv4 address or domain name of FortiToken Mobile push services server.
+    # IPv4 address or domain name of FortiToken Mobile push servic | MaxLen: 127
     server: str
-    # Port to communicate with FortiToken Mobile push services server
+    # Port to communicate with FortiToken Mobile push services ser | Default: 4433 | Min: 1 | Max: 65535
     server_port: int
-    # Name of the server certificate to be used for SSL.
+    # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
     server_cert: str
-    # IPv4 address of FortiToken Mobile push services server (format: xxx.xxx.xxx.xxx)
+    # IPv4 address of FortiToken Mobile push services server | Default: 0.0.0.0
     server_ip: str
-    # Enable/disable the use of FortiToken Mobile push services.
+    # Enable/disable the use of FortiToken Mobile push services. | Default: disable
     status: Literal["enable", "disable"]
     
     # Common API response fields
@@ -92,8 +98,66 @@ class FtmPush:
     Category: cmdb
     """
     
-    # Overloads for get() with response_mode="object" - MOST SPECIFIC FIRST
-    # Single object (mkey/name provided as positional arg)
+    # ================================================================
+    # DEFAULT MODE OVERLOADS (no response_mode) - MUST BE FIRST
+    # These match when response_mode is NOT passed (client default is "dict")
+    # Pylance matches overloads top-to-bottom, so these must come first!
+    # ================================================================
+    
+    # Default mode: mkey as positional arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FtmPushResponse: ...
+    
+    # Default mode: mkey as keyword arg -> returns typed dict
+    @overload
+    def get(
+        self,
+        *,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FtmPushResponse: ...
+    
+    # Default mode: no mkey -> returns list of typed dicts
+    @overload
+    def get(
+        self,
+        name: None = None,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+    ) -> FtmPushResponse: ...
+    
+    # ================================================================
+    # EXPLICIT response_mode="object" OVERLOADS
+    # ================================================================
+    
+    # Object mode: mkey as positional arg -> returns single object
     @overload
     def get(
         self,
@@ -108,11 +172,12 @@ class FtmPush:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        *,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtmPushObject: ...
     
-    # Single object (mkey/name provided as keyword arg)
+    # Object mode: mkey as keyword arg -> returns single object
     @overload
     def get(
         self,
@@ -128,11 +193,11 @@ class FtmPush:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtmPushObject: ...
     
-    # List of objects (no mkey/name provided) - keyword-only signature
+    # Object mode: no mkey -> returns list of objects
     @overload
     def get(
         self,
@@ -147,10 +212,11 @@ class FtmPush:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtmPushObject: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def get(
         self,
@@ -167,7 +233,7 @@ class FtmPush:
         raw_json: Literal[True] = ...,
         response_mode: Literal["object"] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
     @overload
@@ -227,7 +293,7 @@ class FtmPush:
         **kwargs: Any,
     ) -> FtmPushResponse: ...
     
-    # Default overload for dict mode
+    # Fallback overload for all other cases
     @overload
     def get(
         self,
@@ -242,9 +308,9 @@ class FtmPush:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
-        response_mode: Literal["dict"] | None = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any] | FortiObject: ...
     
     def get(
         self,
@@ -283,7 +349,7 @@ class FtmPush:
         status: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: Literal[False] = ...,
-        response_mode: Literal["object"] = ...,
+        response_mode: Literal["object"],
         **kwargs: Any,
     ) -> FtmPushObject: ...
     
@@ -302,8 +368,9 @@ class FtmPush:
         raw_json: Literal[False] = ...,
         response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
+    # raw_json=True returns the full API envelope
     @overload
     def put(
         self,
@@ -318,7 +385,23 @@ class FtmPush:
         vdom: str | bool | None = ...,
         raw_json: Literal[True] = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> RawAPIResponse: ...
+    
+    # Default overload (no response_mode or raw_json specified)
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
     
     def put(
         self,
@@ -334,7 +417,7 @@ class FtmPush:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     def exists(
         self,
@@ -356,7 +439,7 @@ class FtmPush:
         raw_json: bool = ...,
         response_mode: Literal["dict", "object"] | None = ...,
         **kwargs: Any,
-    ) -> dict[str, Any]: ...
+    ) -> MutationResponse: ...
     
     # Helper methods
     @staticmethod
@@ -381,8 +464,468 @@ class FtmPush:
     def schema() -> dict[str, Any]: ...
 
 
+# ================================================================
+# MODE-SPECIFIC CLASSES FOR CLIENT-LEVEL response_mode SUPPORT
+# ================================================================
+
+class FtmPushDictMode:
+    """FtmPush endpoint for dict response mode (default for this client).
+    
+    By default returns FtmPushResponse (TypedDict).
+    Can be overridden per-call with response_mode="object" to return FtmPushObject.
+    """
+    
+    # raw_json=True returns RawAPIResponse regardless of response_mode
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Object mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # Object mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # Dict mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> FtmPushResponse: ...
+    
+    # Dict mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
+        **kwargs: Any,
+    ) -> FtmPushResponse: ...
+
+
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # PUT - Default overload (returns MutationResponse)
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # PUT - Dict mode (default for DictMode class)
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+class FtmPushObjectMode:
+    """FtmPush endpoint for object response mode (default for this client).
+    
+    By default returns FtmPushObject (FortiObject).
+    Can be overridden per-call with response_mode="dict" to return FtmPushResponse (TypedDict).
+    """
+    
+    # raw_json=True returns RawAPIResponse for GET
+    @overload
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # Dict mode override with mkey (single item)
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> FtmPushResponse: ...
+    
+    # Dict mode override without mkey (list)
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> FtmPushResponse: ...
+    
+    # Object mode with mkey (single item) - default
+    @overload
+    def get(
+        self,
+        name: str,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # Object mode without mkey (list) - default
+    @overload
+    def get(
+        self,
+        name: None = ...,
+        filter: str | list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["object"] | None = ...,
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+
+
+    # PUT - Dict mode override
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["dict"],
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    # raw_json=True returns RawAPIResponse for PUT
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        raw_json: Literal[True],
+        **kwargs: Any,
+    ) -> RawAPIResponse: ...
+    
+    # PUT - Object mode override (requires explicit response_mode="object")
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        *,
+        response_mode: Literal["object"],
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # PUT - Default overload (no response_mode specified, returns Object for ObjectMode)
+    @overload
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> FtmPushObject: ...
+    
+    # PUT - Default for ObjectMode (returns MutationResponse like DictMode)
+    def put(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+
+
+    # Helper methods (inherited from base class)
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> bool: ...
+    
+    def set(
+        self,
+        payload_dict: FtmPushPayload | None = ...,
+        proxy: Literal["enable", "disable"] | None = ...,
+        interface: str | None = ...,
+        server: str | None = ...,
+        server_port: int | None = ...,
+        server_cert: str | None = ...,
+        server_ip: str | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: Literal["dict", "object"] | None = ...,
+        **kwargs: Any,
+    ) -> MutationResponse: ...
+    
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
 __all__ = [
     "FtmPush",
+    "FtmPushDictMode",
+    "FtmPushObjectMode",
     "FtmPushPayload",
     "FtmPushObject",
 ]

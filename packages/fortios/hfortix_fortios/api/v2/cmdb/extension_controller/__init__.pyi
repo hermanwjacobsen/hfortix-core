@@ -6,17 +6,66 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .dataplan import Dataplan
-    from .extender import Extender
-    from .extender_profile import ExtenderProfile
-    from .extender_vap import ExtenderVap
-    from .fortigate import Fortigate
-    from .fortigate_profile import FortigateProfile
+    from .dataplan import Dataplan, DataplanDictMode, DataplanObjectMode
+    from .extender import Extender, ExtenderDictMode, ExtenderObjectMode
+    from .extender_profile import ExtenderProfile, ExtenderProfileDictMode, ExtenderProfileObjectMode
+    from .extender_vap import ExtenderVap, ExtenderVapDictMode, ExtenderVapObjectMode
+    from .fortigate import Fortigate, FortigateDictMode, FortigateObjectMode
+    from .fortigate_profile import FortigateProfile, FortigateProfileDictMode, FortigateProfileObjectMode
+
+__all__ = [
+    "Dataplan",
+    "Extender",
+    "ExtenderProfile",
+    "ExtenderVap",
+    "Fortigate",
+    "FortigateProfile",
+    "ExtensioncontrollerDictMode",
+    "ExtensioncontrollerObjectMode",
+]
+
+class ExtensioncontrollerDictMode:
+    """EXTENSION_CONTROLLER API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    dataplan: DataplanDictMode
+    extender: ExtenderDictMode
+    extender_profile: ExtenderProfileDictMode
+    extender_vap: ExtenderVapDictMode
+    fortigate: FortigateDictMode
+    fortigate_profile: FortigateProfileDictMode
+
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extension_controller category with HTTP client."""
+        ...
 
 
-class ExtensionController:
-    """Type stub for ExtensionController."""
+class ExtensioncontrollerObjectMode:
+    """EXTENSION_CONTROLLER API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    dataplan: DataplanObjectMode
+    extender: ExtenderObjectMode
+    extender_profile: ExtenderProfileObjectMode
+    extender_vap: ExtenderVapObjectMode
+    fortigate: FortigateObjectMode
+    fortigate_profile: FortigateProfileObjectMode
 
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extension_controller category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
+class Extensioncontroller:
+    """EXTENSION_CONTROLLER API category."""
+    
     dataplan: Dataplan
     extender: Extender
     extender_profile: ExtenderProfile
@@ -24,4 +73,6 @@ class ExtensionController:
     fortigate: Fortigate
     fortigate_profile: FortigateProfile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extension_controller category with HTTP client."""
+        ...
