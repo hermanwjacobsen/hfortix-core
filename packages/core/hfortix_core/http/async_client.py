@@ -928,6 +928,11 @@ class AsyncHTTPClient(BaseHTTPClient):
                 # Parse JSON response
                 json_response = res.json()
 
+                # Normalize keys: FortiOS returns hyphenated keys (tcp-portrange)
+                # but Python/TypedDict requires underscores (tcp_portrange)
+                from hfortix_core.utils import normalize_keys
+                json_response = normalize_keys(json_response)
+
                 # Return based on raw_json flag
                 if raw_json:
                     return json_response

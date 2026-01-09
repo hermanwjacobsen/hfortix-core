@@ -20,14 +20,6 @@ def convert_boolean_to_str(value: bool | str | None) -> str | None:
 
     Returns:
         'enable', 'disable', the original string, or None
-
-    Example:
-        >>> convert_boolean_to_str(True)
-        'enable'
-        >>> convert_boolean_to_str(False)
-        'disable'
-        >>> convert_boolean_to_str('custom-value')
-        'custom-value'
     """
     if value is None:
         return None
@@ -48,15 +40,6 @@ def filter_empty_values(payload: dict[str, Any]) -> dict[str, Any]:
 
     Returns:
         Dictionary with None and empty values removed
-
-    Example:
-        >>> filter_empty_values({
-        ...     'name': 'test',
-        ...     'member': [],
-        ...     'comment': None,
-        ...     'color': 5
-        ... })
-        {'name': 'test', 'color': 5}
     """
     cleaned: dict[str, Any] = {}
 

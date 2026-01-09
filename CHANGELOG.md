@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.42] - 2026-01-09
+
+### Fixed
+- **Fixed hyphenated API response keys not matching TypedDict stubs**
+  - Added automatic key normalization to convert hyphens to underscores in API responses
+  - FortiOS returns keys like `tcp-portrange`, `cache-ttl`, `uuid-idx` with hyphens
+  - Python TypedDict and attribute access require underscores: `tcp_portrange`, `cache_ttl`, `uuid_idx`
+  - Normalization now happens automatically in HTTP client response processing
+  - Fixes autocomplete and type checking for all fields with hyphens in their names
+  - Example: `service['tcp_portrange']` now works (previously only `service['tcp-portrange']` worked)
+  - Example: `addr.cache_ttl` now works in object mode
+  - Added `normalize_keys()` utility function in `hfortix_core.utils`
+  - Applied to both sync (`HTTPClient`) and async (`AsyncHTTPClient`) response processing
+
+### Changed
+- **Optimized helper file code generation using functools.partial**
+  - Replaced ~200 lines of wrapper function definitions with ~10 lines of partial bindings in generated helper files
+  - Reduced helper file size by ~50-80 lines per file without affecting functionality
+  - Changed from pattern: `def get_field_type(field_name: str): return _get_field_type(FIELD_TYPES, field_name)`
+  - To pattern: `get_field_type = partial(get_field_type, FIELD_TYPES)`
+  - Saves ~2-3MB across 1,200+ generated helper files
+  - IDE autocomplete, type hints, and introspection remain fully functional
+  - Generator backup created in `.dev/generator/archive/pre-deduplication-20260109_113603/`
+  - Updated validator template: `.dev/generator/templates/validator.py.j2`
+
+- **Reduced helper module docstring verbosity**
+  - Removed verbose docstring examples from helper utility modules
+  - Kept concise descriptions for all public functions
+  - Affected modules: `_helpers/builders.py`, `_helpers/converters.py`, `_helpers/normalizers.py`, `_helpers/response.py`, `_helpers/validation.py`
+  - Reduced internal documentation overhead while maintaining clarity
+
 ## [0.5.41] - 2026-01-09
 
 ### Fixed

@@ -15,8 +15,7 @@ def normalize_to_name_list(
     value: Union[str, List[str], Dict[str, str], List[Dict[str, str]], None],
 ) -> List[Dict[str, str]]:
     """
-    Normalize various input formats to FortiOS API format: [{'name': 'value'},
-    ...]
+    Normalize various input formats to FortiOS API format: [{'name': 'value'}, ...]
 
     This is the most common list format used in FortiOS API for fields like:
     - srcintf, dstintf (firewall policy)
@@ -27,8 +26,7 @@ def normalize_to_name_list(
     Args:
         value: Can be:
             - String: 'port1' → [{'name': 'port1'}]
-            - List of strings: ['port1', 'port2'] → [{'name': 'port1'},
-            {'name': 'port2'}]
+            - List of strings: ['port1', 'port2'] → [{'name': 'port1'}, {'name': 'port2'}]
             - Dict: {'name': 'port1'} → [{'name': 'port1'}]
             - List of dicts: [{'name': 'port1'}, {'name': 'port2'}] → unchanged
             - None: []
@@ -37,16 +35,6 @@ def normalize_to_name_list(
 
     Returns:
         List of dicts in FortiOS format
-
-    Example:
-        >>> normalize_to_name_list('port1')
-        [{'name': 'port1'}]
-        >>> normalize_to_name_list(['port1', 'port2'])
-        [{'name': 'port1'}, {'name': 'port2'}]
-        >>> normalize_to_name_list([{'name': 'port1'}])
-        [{'name': 'port1'}]
-        >>> normalize_to_name_list(' port1 ')  # Whitespace stripped
-        [{'name': 'port1'}]
     """
     if value is None:
         return []
@@ -87,20 +75,13 @@ def normalize_member_list(
     Args:
         value: Can be:
             - String: 'addr1' → [{'name': 'addr1'}]
-            - List of strings: ['addr1', 'addr2'] → [{'name': 'addr1'},
-            {'name': 'addr2'}]
+            - List of strings: ['addr1', 'addr2'] → [{'name': 'addr1'}, {'name': 'addr2'}]
             - Dict: {'name': 'addr1'} → [{'name': 'addr1'}]
             - List of dicts: [{'name': 'addr1'}, {'name': 'addr2'}] → unchanged
             - None: []
 
     Returns:
         List of dicts in FortiOS format
-
-    Example:
-        >>> normalize_member_list('address1')
-        [{'name': 'address1'}]
-        >>> normalize_member_list(['address1', 'address2'])
-        [{'name': 'address1'}, {'name': 'address2'}]
     """
     # For now, this is identical to normalize_to_name_list
     # But we keep it separate because member lists might need
@@ -137,31 +118,6 @@ def normalize_table_field(
     
     Raises:
         ValueError: If multi-field object receives string/list of strings
-    
-    Examples:
-        # Single required field (flexible - all formats work)
-        >>> normalize_table_field("port1", mkey="name", required_fields=["name"])
-        [{'name': 'port1'}]
-        
-        >>> normalize_table_field(["port1", "port2"], mkey="interface-name", 
-        ...                       required_fields=["interface-name"])
-        [{'interface-name': 'port1'}, {'interface-name': 'port2'}]
-        
-        >>> normalize_table_field([{"name": "svc1"}], mkey="name", 
-        ...                       required_fields=["name"])
-        [{'name': 'svc1'}]
-        
-        # Multiple required fields (strict - dict only)
-        >>> normalize_table_field("server1", mkey="id", 
-        ...                       required_fields=["id", "ip"], 
-        ...                       field_name="realservers")
-        Traceback (most recent call last):
-        ...
-        ValueError: Field 'realservers' requires dict format with keys: id, ip
-        
-        >>> normalize_table_field([{"id": 1, "ip": "192.168.1.10"}], 
-        ...                       mkey="id", required_fields=["id", "ip"])
-        [{'id': 1, 'ip': '192.168.1.10'}]
     """
     if value is None:
         return []

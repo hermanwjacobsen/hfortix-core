@@ -1256,6 +1256,11 @@ class HTTPClient(BaseHTTPClient):
                 if endpoint_timeout:
                     self._client.timeout = original_timeout
 
+                # Normalize keys: FortiOS returns hyphenated keys (tcp-portrange)
+                # but Python/TypedDict requires underscores (tcp_portrange)
+                from hfortix_core.utils import normalize_keys
+                json_response = normalize_keys(json_response)
+
                 # Return full response if raw_json=True, otherwise extract
                 # results
                 if raw_json:
