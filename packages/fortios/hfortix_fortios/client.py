@@ -4,6 +4,7 @@ import logging
 import os
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union, cast, overload
 
+from hfortix_core.audit import AuditHandler
 from hfortix_core.http.client import HTTPClient
 from hfortix_core.http.interface import IHTTPClient
 
@@ -43,7 +44,7 @@ class FortiOS:
         >>> fgt = FortiOS("fortigate.example.com", token="your_token_here")
         >>>
         >>> # List firewall addresses
-        >>> addresses = fgt.api.cmdb.firewall.address.list()
+        >>> addresses = fgt.api.cmdb.firewall.address.get()
         >>>
         >>> # Create a firewall address
         >>> fgt.api.cmdb.firewall.address.create(
@@ -97,12 +98,12 @@ class FortiOS:
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
-        retry_strategy: str = "exponential",
+        retry_strategy: Literal["exponential", "linear"] = "exponential",
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         response_mode: Literal["dict", "object"] = "dict",
-        audit_handler: Optional[Any] = None,
+        audit_handler: Optional[AuditHandler] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
         trace_id: Optional[str] = None,
@@ -140,12 +141,12 @@ class FortiOS:
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
-        retry_strategy: str = "exponential",
+        retry_strategy: Literal["exponential", "linear"] = "exponential",
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         response_mode: Literal["dict", "object"] = "dict",
-        audit_handler: Optional[Any] = None,
+        audit_handler: Optional[AuditHandler] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
         trace_id: Optional[str] = None,
@@ -182,12 +183,12 @@ class FortiOS:
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
-        retry_strategy: str = "exponential",
+        retry_strategy: Literal["exponential", "linear"] = "exponential",
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         response_mode: Literal["dict", "object"] = "dict",
-        audit_handler: Optional[Any] = None,
+        audit_handler: Optional[AuditHandler] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
         trace_id: Optional[str] = None,
@@ -1324,7 +1325,7 @@ class FortiOS:
         Example:
             >>> fgt = FortiOS("192.0.2.10", token="...", max_retries=5)
             >>> # Make some requests that might retry
-            >>> fgt.api.cmdb.firewall.policy.list()
+            >>> fgt.api.cmdb.firewall.policy.get()
             >>>
             >>> stats = fgt.get_retry_stats()
             >>> print(f"Total retries: {stats['total_retries']}")
@@ -1374,7 +1375,7 @@ class FortiOS:
             ...               circuit_breaker_threshold=10)
             >>> # Make requests
             >>> try:
-            ...     fgt.api.cmdb.firewall.policy.list()
+            ...     fgt.api.cmdb.firewall.policy.get()
             ... except CircuitBreakerOpenError:
             ...     state = fgt.get_circuit_breaker_state()
             ...     print(f"Circuit is {state['state']}")
@@ -1420,7 +1421,7 @@ class FortiOS:
 
             >>> fgt = FortiOS("192.0.2.10", token="...", adaptive_retry=True)
             >>> # Make some requests
-            >>> fgt.api.cmdb.firewall.address.list()
+            >>> fgt.api.cmdb.firewall.address.get()
             >>>
             >>> # Check health
             >>> metrics = fgt.get_health_metrics()
@@ -1486,7 +1487,7 @@ class FortiOS:
         Example:
             >>> fgt = FortiOS("192.0.2.10", token="...", mode="async")
             >>> try:
-            ...     addresses = await fgt.api.cmdb.firewall.address.list()
+            ...     addresses = await fgt.api.cmdb.firewall.address.get()
             ... finally:
             ...     await fgt.aclose()
 
@@ -1494,7 +1495,7 @@ class FortiOS:
             Prefer using 'async with' statement for automatic cleanup:
             >>> async with FortiOS("192.0.2.10", token="...", mode="async") as
             fgt:
-            ...     addresses = await fgt.api.cmdb.firewall.address.list()
+            ...     addresses = await fgt.api.cmdb.firewall.address.get()
         """
         if self._mode != "async":
             raise RuntimeError("aclose() is only available in async mode")
@@ -1554,7 +1555,7 @@ class FortiOS:
 
         Example:
             >>> fgt = FortiOS("192.168.1.99", token="...")
-            >>> fgt.api.cmdb.firewall.address.list()
+            >>> fgt.api.cmdb.firewall.address.get()
             >>> info = fgt.last_request
             >>> print(f"Last request: {info['method']} {info['endpoint']}")
             >>> print(f"Response time: {info['response_time_ms']:.2f}ms")
@@ -1592,7 +1593,7 @@ class FortiOS:
         Example:
             >>> async with FortiOS("192.0.2.10", token="...", mode="async") as
             fgt:
-            ...     addresses = await fgt.api.cmdb.firewall.address.list()
+            ...     addresses = await fgt.api.cmdb.firewall.address.get()
         """
         if self._mode != "async":
             raise RuntimeError(
