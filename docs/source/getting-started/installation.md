@@ -6,8 +6,8 @@ Install HFortix packages for Fortinet product automation.
 
 HFortix is a modular Python SDK for Fortinet products:
 
-- **hfortix-core** - Core HTTP client and exception framework
-- **hfortix-fortios** - FortiOS/FortiGate API client (750+ endpoints)
+- **hfortix-core** - Core HTTP client, exception framework, and formatting utilities
+- **hfortix-fortios** - FortiOS/FortiGate API client (1,348 endpoints)
 - **hfortix-fortimanager** - FortiManager API client (coming soon)
 - **hfortix-fortianalyzer** - FortiAnalyzer API client (coming soon)
 

@@ -5,13 +5,13 @@ Core foundation for HFortix - Python SDK for Fortinet products.
 [![PyPI version](https://badge.fury.io/py/hfortix-core.svg)](https://pypi.org/project/hfortix-core/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.32 (January 24, 2025)**
+> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
 >
 > Production-ready but in beta. All packages remain in beta until v1.0 with comprehensive unit tests.
 
 ## Overview
 
-`hfortix-core` provides the shared foundation for all HFortix Fortinet SDKs. It includes exception handling, HTTP client framework, and common utilities used across FortiOS, FortiManager, and FortiAnalyzer clients.
+`hfortix-core` provides the shared foundation for all HFortix Fortinet SDKs. It includes exception handling, HTTP client framework, formatting utilities, and common types used across FortiOS, FortiManager, and FortiAnalyzer clients.
 
 **This package is typically used as a dependency.** For most users, install a product-specific package like `hfortix-fortios` or the meta-package `hfortix[all]`.
 
@@ -23,9 +23,38 @@ pip install hfortix-core
 
 ## What's Included
 
+### Formatting Utilities (`fmt` module) - NEW in v0.5.44!
+
+13 data formatting functions for converting FortiOS data:
+
+```python
+from hfortix_core import fmt
+
+# Convert to various formats
+fmt.to_json(data)           # Formatted JSON string
+fmt.to_csv(data)            # Comma-separated string  
+fmt.to_dict(data)           # Dictionary
+fmt.to_list(data)           # List (auto-splits "80 443" → ['80', '443'])
+fmt.to_multiline(data)      # Newline-separated string
+fmt.to_quoted(data)         # Quoted string representation
+fmt.to_table(data)          # ASCII table format
+fmt.to_yaml(data)           # YAML-like output (no dependencies)
+fmt.to_xml(data)            # Simple XML format
+fmt.to_key_value(data)      # Config file format
+fmt.to_markdown_table(data) # Markdown table
+fmt.to_dictlist(data)       # Columnar → row format
+fmt.to_listdict(data)       # Row → columnar format
+```
+
+**Features:**
+- Zero external dependencies
+- Handles any input gracefully (never raises exceptions)
+- Auto-split for space-delimited strings (perfect for FortiOS `tcp_portrange`)
+- Works with objects, dicts, lists, primitives
+
 ### Exception System
 
-Comprehensive exception hierarchy with 387+ FortiOS error codes:
+Comprehensive exception hierarchy with 403+ FortiOS error codes:
 
 ```python
 from hfortix_core import (
@@ -49,50 +78,30 @@ except APIError as e:
 ```
 
 **Features:**
-- 387+ specific error codes with detailed descriptions
+- 403+ specific error codes with detailed descriptions
 - Intelligent error classification
 - Built-in recovery suggestions
 - Request correlation tracking
 
-### HTTP Client Framework
-
-Enterprise-grade HTTP client with advanced features:
-
-```python
-from hfortix_core import HTTPClient
-
-# Create client
-client = HTTPClient(
-    url="https://192.168.1.99",
-    token="your-api-token",
-    verify=False
-)
-
-# Features included:
-# ✅ HTTP/2 support with connection multiplexing
-# ✅ Automatic retry with exponential backoff
-# ✅ Circuit breaker pattern (fail-fast protection)
-# ✅ Request correlation tracking
-# ✅ Configurable timeouts
-# ✅ Full async/await support
-```
-
-**Enterprise Features:**
-- **Automatic Retry**: Handles transient failures (429, 500, 502, 503, 504)
-- **Circuit Breaker**: Prevents cascade failures with automatic recovery
-- **Connection Pooling**: HTTP/2 multiplexing for better performance
-- **Async Support**: Full async/await for high-performance concurrent operations
-- **Timeout Control**: Separate connect and read timeouts
-- **Request Tracking**: Correlation IDs for distributed tracing
-
 ### Type Definitions
 
-Shared type aliases and protocols for type safety:
+Shared TypedDict definitions and protocols for type safety:
 
 ```python
-from hfortix_core import IHTTPClient
+from hfortix_core import (
+    APIResponse,
+    MutationResponse,
+    RawAPIResponse,
+    ListResponse,
+    ObjectResponse,
+    ErrorResponse,
+    ConnectionStats,
+    RequestInfo,
+)
 
 # Protocol interface for extensibility
+from hfortix_core.http.interface import IHTTPClient
+
 class MyCustomClient:
     def get(self, api_type: str, path: str, **kwargs) -> dict: ...
     def post(self, api_type: str, path: str, data: dict, **kwargs) -> dict: ...
@@ -119,7 +128,7 @@ pip install hfortix[all]
 ## Product Packages
 
 This core is used by:
-- **hfortix-fortios** - FortiOS/FortiGate API client (750+ endpoints)
+- **hfortix-fortios** - FortiOS/FortiGate API client (1,348 endpoints)
 - **hfortix-fortimanager** - FortiManager client (planned)
 - **hfortix-fortianalyzer** - FortiAnalyzer client (planned)
 
@@ -131,6 +140,7 @@ This core is used by:
 - 🎯 **Async Ready**: Full async/await support
 - 📊 **Observable**: Request tracking and structured logging
 - 🛡️ **Enterprise Grade**: Production-ready reliability features
+- 📝 **Formatting**: 13 data conversion utilities in `fmt` module
 
 ## Requirements
 

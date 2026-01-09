@@ -5,13 +5,13 @@ Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.32 (January 24, 2025)**
+> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
 >
 > **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New**: Enhanced object mode with nested table wrapping and single object returns!
+> **What's New**: Core `fmt` module with 13 formatting utilities, automatic key normalization!
 
-**Version:** 0.5.32
+**Version:** 0.5.45
 **Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
@@ -93,16 +93,17 @@ HFortix uses a modular architecture:
 ```text
 hfortix (meta-package)
 ├── hfortix-core          # Shared foundation
-│   ├── Exception system (387+ error codes)
-│   ├── HTTP client framework
-│   ├── Type definitions
-│   └── Common utilities
+│   ├── Exception system (403+ error codes)
+│   ├── HTTP client framework (sync & async)
+│   ├── fmt module (13 formatting utilities)
+│   ├── Type definitions (TypedDict, Protocols)
+│   └── Debug utilities
 │
 └── hfortix-fortios       # FortiOS/FortiGate client
-    ├── Complete API coverage (750+ endpoints)
-    ├── Convenience wrappers
+    ├── Complete API coverage (1,348 endpoints)
+    ├── 2,129 endpoint files with type stubs
     ├── Auto-generated validators
-    └── Product-specific features
+    └── FortiObject response wrapper
 ```
 
 **Future Packages:**
@@ -122,22 +123,23 @@ Install only what you need:
 
 ### ⚡ Complete FortiOS Support
 
-**API Coverage (FortiOS 7.6.5):**
-- **1,219 total endpoints** (100% auto-generated)
-- 886 CMDB endpoints (configuration)
-- 295 Monitor endpoints (real-time data)
-- 38 Log endpoints (query logs from disk, memory, FortiAnalyzer, FortiCloud)
+**API Coverage (FortiOS 7.6.5 - Schema v1.7.0):**
+- **1,348 total endpoints** (100% auto-generated)
+- 561 CMDB endpoints (configuration management)
+- 490 Monitor endpoints (real-time data)
+- 286 Log endpoints (disk, memory, FortiAnalyzer, FortiCloud)
+- 11 Service endpoints (sniffer, security rating, system)
 
 **Features:**
-- Complete `.pyi` type stubs for perfect IDE autocomplete
+- Complete `.pyi` type stubs (2,129 files) for perfect IDE autocomplete
 - Schema-based validation for all parameters
 - Auto-generated tests for all endpoints
-- Swagger fallback for 100% coverage
+- Automatic key normalization (hyphens → underscores)
 
-### �� Enterprise Features
+### 🏢 Enterprise Features
 
 - **Async/Await Support**: Full async implementation with context managers
-- **Error Handling**: 387+ specific error codes with comprehensive exception hierarchy
+- **Error Handling**: 403+ specific error codes with comprehensive exception hierarchy
 - **HTTP/2 Support**: Connection multiplexing for better performance
 - **Automatic Retry**: Handles transient failures intelligently
 - **Circuit Breaker**: Prevents cascade failures with automatic recovery
@@ -145,6 +147,7 @@ Install only what you need:
 - **Read-Only Mode**: Safe testing without accidental changes
 - **Operation Tracking**: Audit logging for all API calls
 - **Performance Testing**: Built-in tools to optimize device communication
+- **Formatting Utilities**: `fmt` module with 13 data conversion functions
 
 ## Import Patterns
 
