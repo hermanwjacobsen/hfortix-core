@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.49] - 2026-01-10
+
+### Added
+- **Comprehensive unit test suite (200+ tests across 16 test files)**
+  - Validators: generic, network, firewall, schedule, SSH/SSL validators
+  - Helpers: normalizers, converters, builders, response helpers, metadata
+  - Core modules: formatting (69 tests), models (31 tests), cache, deprecation, exceptions
+  - Full coverage of `hfortix_fortios._helpers` and `hfortix_core` utility modules
+  - Test documentation in `docs/fortios/TESTING.md`
+
+### Fixed
+- **Fixed type stubs for Pylance compatibility**
+  - Added `__all__` export list to `formatting.pyi` for all 13 formatting functions
+  - Resolves "unknown import symbol" errors for `to_list`, `to_table`, `to_json`, etc.
+  - Added fallback overload to `process_response` in `models.pyi` for non-dict/list types
+  - Allows passing strings, None, or other types without Pylance overload mismatch errors
+
+### Tested
+- **hfortix_fortios validators** (`_helpers/validators.py`)
+  - `validate_required_fields`, `validate_color`, `validate_status`, `validate_enable_disable`
+  - `validate_mac_address`, `validate_ip_address`, `validate_ipv6_address`, `validate_ip_network`
+  - `validate_policy_id`, `validate_address_pairs`, `validate_seq_num`
+  - `validate_schedule_name`, `validate_time_format`, `validate_day_names`
+  - `validate_ssh_host_key_*`, `validate_ssl_dh_bits`, `validate_ssl_cipher_action`
+- **hfortix_fortios helpers**
+  - `normalizers.py`: `normalize_to_name_list`, `normalize_member_list`, `normalize_table_field`
+  - `converters.py`: `convert_boolean_to_str`, `filter_empty_values`
+  - `builders.py`: `build_cmdb_payload`, `build_cmdb_payload_normalized`, `build_api_payload`
+  - `response.py`: `get_name`, `get_mkey`, `get_results`, `is_success`
+  - `metadata.py`: `get_field_*` functions, `validate_field_value`
+- **hfortix_fortios top-level**
+  - `formatting.py`: all 13 output formatters (`to_json`, `to_csv`, `to_table`, `to_yaml`, etc.)
+  - `models.py`: `FortiObject` class (all methods), `process_response`
+- **hfortix_core utilities**
+  - `cache.py`: `TTLCache`, `CacheEntry` classes
+  - `deprecation.py`: `warn_deprecated_field`, `check_deprecated_fields`
+  - `exceptions.py`: `raise_for_status`, `is_retryable_error`, `get_retry_delay`, full exception hierarchy
+
 ## [0.5.48] - 2026-01-10
 
 ### Fixed
