@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Stats",
-    "NacdeviceDictMode",
-    "NacdeviceObjectMode",
+    "NacDeviceDictMode",
+    "NacDeviceObjectMode",
 ]
 
-class NacdeviceDictMode:
+class NacDeviceDictMode:
     """NAC_DEVICE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class NacdeviceDictMode:
         ...
 
 
-class NacdeviceObjectMode:
+class NacDeviceObjectMode:
     """NAC_DEVICE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class NacdeviceObjectMode:
 
 
 # Base class for backwards compatibility
-class Nacdevice:
+class NacDevice:
     """NAC_DEVICE API category."""
     
     stats: Stats

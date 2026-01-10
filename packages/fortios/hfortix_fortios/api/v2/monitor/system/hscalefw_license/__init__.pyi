@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Upload",
-    "HscalefwlicenseDictMode",
-    "HscalefwlicenseObjectMode",
+    "HscalefwLicenseDictMode",
+    "HscalefwLicenseObjectMode",
 ]
 
-class HscalefwlicenseDictMode:
+class HscalefwLicenseDictMode:
     """HSCALEFW_LICENSE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class HscalefwlicenseDictMode:
         ...
 
 
-class HscalefwlicenseObjectMode:
+class HscalefwLicenseObjectMode:
     """HSCALEFW_LICENSE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class HscalefwlicenseObjectMode:
 
 
 # Base class for backwards compatibility
-class Hscalefwlicense:
+class HscalefwLicense:
     """HSCALEFW_LICENSE API category."""
     
     upload: Upload

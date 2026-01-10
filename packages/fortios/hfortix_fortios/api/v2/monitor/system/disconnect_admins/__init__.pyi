@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Select",
-    "DisconnectadminsDictMode",
-    "DisconnectadminsObjectMode",
+    "DisconnectAdminsDictMode",
+    "DisconnectAdminsObjectMode",
 ]
 
-class DisconnectadminsDictMode:
+class DisconnectAdminsDictMode:
     """DISCONNECT_ADMINS API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class DisconnectadminsDictMode:
         ...
 
 
-class DisconnectadminsObjectMode:
+class DisconnectAdminsObjectMode:
     """DISCONNECT_ADMINS API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class DisconnectadminsObjectMode:
 
 
 # Base class for backwards compatibility
-class Disconnectadmins:
+class DisconnectAdmins:
     """DISCONNECT_ADMINS API category."""
     
     select: Select

@@ -64,16 +64,16 @@ class CMDBDictMode:
     automation: automation.AutomationDictMode
     casb: casb.CasbDictMode
     certificate: certificate.CertificateDictMode
-    diameter_filter: diameter_filter.DiameterFilter  # No mode classes yet
+    diameter_filter: diameter_filter.DiameterFilterDictMode
     dlp: dlp.DlpDictMode
     dnsfilter: dnsfilter.DnsfilterDictMode
     emailfilter: emailfilter.EmailfilterDictMode
-    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
-    ethernet_oam: ethernet_oam.EthernetOam  # No mode classes yet
-    extension_controller: extension_controller.ExtensionController  # No mode classes yet
-    file_filter: file_filter.FileFilter  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControlDictMode
+    ethernet_oam: ethernet_oam.EthernetOamDictMode
+    extension_controller: extension_controller.ExtensionControllerDictMode
+    file_filter: file_filter.FileFilterDictMode
     firewall: firewall.FirewallDictMode
-    ftp_proxy: ftp_proxy.FtpProxy  # No mode classes yet
+    ftp_proxy: ftp_proxy.FtpProxyDictMode
     icap: icap.IcapDictMode
     ips: ips.IpsDictMode
     log: log.LogDictMode
@@ -81,18 +81,18 @@ class CMDBDictMode:
     report: report.ReportDictMode
     router: router.RouterDictMode
     rule: rule.RuleDictMode
-    sctp_filter: sctp_filter.SctpFilter  # No mode classes yet
-    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    sctp_filter: sctp_filter.SctpFilterDictMode
+    switch_controller: switch_controller.SwitchControllerDictMode
     system: system.SystemDictMode
     user: user.UserDictMode
     videofilter: videofilter.VideofilterDictMode
-    virtual_patch: virtual_patch.VirtualPatch  # No mode classes yet
+    virtual_patch: virtual_patch.VirtualPatchDictMode
     voip: voip.VoipDictMode
     vpn: vpn.VpnDictMode
     waf: waf.WafDictMode
-    web_proxy: web_proxy.WebProxy  # No mode classes yet
+    web_proxy: web_proxy.WebProxyDictMode
     webfilter: webfilter.WebfilterDictMode
-    wireless_controller: wireless_controller.WirelessController  # No mode classes yet
+    wireless_controller: wireless_controller.WirelessControllerDictMode
     ztna: ztna.ZtnaDictMode
 
     def __init__(self, client: IHTTPClient) -> None:
@@ -114,16 +114,16 @@ class CMDBObjectMode:
     automation: automation.AutomationObjectMode
     casb: casb.CasbObjectMode
     certificate: certificate.CertificateObjectMode
-    diameter_filter: diameter_filter.DiameterFilter  # No mode classes yet
+    diameter_filter: diameter_filter.DiameterFilterObjectMode
     dlp: dlp.DlpObjectMode
     dnsfilter: dnsfilter.DnsfilterObjectMode
     emailfilter: emailfilter.EmailfilterObjectMode
-    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
-    ethernet_oam: ethernet_oam.EthernetOam  # No mode classes yet
-    extension_controller: extension_controller.ExtensionController  # No mode classes yet
-    file_filter: file_filter.FileFilter  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControlObjectMode
+    ethernet_oam: ethernet_oam.EthernetOamObjectMode
+    extension_controller: extension_controller.ExtensionControllerObjectMode
+    file_filter: file_filter.FileFilterObjectMode
     firewall: firewall.FirewallObjectMode
-    ftp_proxy: ftp_proxy.FtpProxy  # No mode classes yet
+    ftp_proxy: ftp_proxy.FtpProxyObjectMode
     icap: icap.IcapObjectMode
     ips: ips.IpsObjectMode
     log: log.LogObjectMode
@@ -131,18 +131,18 @@ class CMDBObjectMode:
     report: report.ReportObjectMode
     router: router.RouterObjectMode
     rule: rule.RuleObjectMode
-    sctp_filter: sctp_filter.SctpFilter  # No mode classes yet
-    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    sctp_filter: sctp_filter.SctpFilterObjectMode
+    switch_controller: switch_controller.SwitchControllerObjectMode
     system: system.SystemObjectMode
     user: user.UserObjectMode
     videofilter: videofilter.VideofilterObjectMode
-    virtual_patch: virtual_patch.VirtualPatch  # No mode classes yet
+    virtual_patch: virtual_patch.VirtualPatchObjectMode
     voip: voip.VoipObjectMode
     vpn: vpn.VpnObjectMode
     waf: waf.WafObjectMode
-    web_proxy: web_proxy.WebProxy  # No mode classes yet
+    web_proxy: web_proxy.WebProxyObjectMode
     webfilter: webfilter.WebfilterObjectMode
-    wireless_controller: wireless_controller.WirelessController  # No mode classes yet
+    wireless_controller: wireless_controller.WirelessControllerObjectMode
     ztna: ztna.ZtnaObjectMode
 
     def __init__(self, client: IHTTPClient) -> None:

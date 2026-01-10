@@ -14,11 +14,11 @@ __all__ = [
     "EnableAppBandwidthTracking",
     "Interface",
     "TopApplications",
-    "TraffichistoryDictMode",
-    "TraffichistoryObjectMode",
+    "TrafficHistoryDictMode",
+    "TrafficHistoryObjectMode",
 ]
 
-class TraffichistoryDictMode:
+class TrafficHistoryDictMode:
     """TRAFFIC_HISTORY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class TraffichistoryDictMode:
         ...
 
 
-class TraffichistoryObjectMode:
+class TrafficHistoryObjectMode:
     """TRAFFIC_HISTORY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class TraffichistoryObjectMode:
 
 
 # Base class for backwards compatibility
-class Traffichistory:
+class TrafficHistory:
     """TRAFFIC_HISTORY API category."""
     
     enable_app_bandwidth_tracking: EnableAppBandwidthTracking

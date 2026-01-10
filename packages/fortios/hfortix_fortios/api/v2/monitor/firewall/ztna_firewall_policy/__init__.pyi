@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "ClearCounters",
-    "ZtnafirewallpolicyDictMode",
-    "ZtnafirewallpolicyObjectMode",
+    "ZtnaFirewallPolicyDictMode",
+    "ZtnaFirewallPolicyObjectMode",
 ]
 
-class ZtnafirewallpolicyDictMode:
+class ZtnaFirewallPolicyDictMode:
     """ZTNA_FIREWALL_POLICY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ZtnafirewallpolicyDictMode:
         ...
 
 
-class ZtnafirewallpolicyObjectMode:
+class ZtnaFirewallPolicyObjectMode:
     """ZTNA_FIREWALL_POLICY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ZtnafirewallpolicyObjectMode:
 
 
 # Base class for backwards compatibility
-class Ztnafirewallpolicy:
+class ZtnaFirewallPolicy:
     """ZTNA_FIREWALL_POLICY API category."""
     
     clear_counters: ClearCounters

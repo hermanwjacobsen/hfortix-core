@@ -14,11 +14,11 @@ __all__ = [
     "Current",
     "Exists",
     "Saved",
-    "UpgradereportDictMode",
-    "UpgradereportObjectMode",
+    "UpgradeReportDictMode",
+    "UpgradeReportObjectMode",
 ]
 
-class UpgradereportDictMode:
+class UpgradeReportDictMode:
     """UPGRADE_REPORT API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class UpgradereportDictMode:
         ...
 
 
-class UpgradereportObjectMode:
+class UpgradeReportObjectMode:
     """UPGRADE_REPORT API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class UpgradereportObjectMode:
 
 
 # Base class for backwards compatibility
-class Upgradereport:
+class UpgradeReport:
     """UPGRADE_REPORT API category."""
     
     current: Current

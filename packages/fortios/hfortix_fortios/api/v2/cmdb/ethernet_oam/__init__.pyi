@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Cfm",
-    "EthernetoamDictMode",
-    "EthernetoamObjectMode",
+    "EthernetOamDictMode",
+    "EthernetOamObjectMode",
 ]
 
-class EthernetoamDictMode:
+class EthernetOamDictMode:
     """ETHERNET_OAM API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class EthernetoamDictMode:
         ...
 
 
-class EthernetoamObjectMode:
+class EthernetOamObjectMode:
     """ETHERNET_OAM API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class EthernetoamObjectMode:
 
 
 # Base class for backwards compatibility
-class Ethernetoam:
+class EthernetOam:
     """ETHERNET_OAM API category."""
     
     cfm: Cfm

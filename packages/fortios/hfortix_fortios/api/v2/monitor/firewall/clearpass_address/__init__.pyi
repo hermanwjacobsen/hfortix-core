@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Add",
     "Delete",
-    "ClearpassaddressDictMode",
-    "ClearpassaddressObjectMode",
+    "ClearpassAddressDictMode",
+    "ClearpassAddressObjectMode",
 ]
 
-class ClearpassaddressDictMode:
+class ClearpassAddressDictMode:
     """CLEARPASS_ADDRESS API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class ClearpassaddressDictMode:
         ...
 
 
-class ClearpassaddressObjectMode:
+class ClearpassAddressObjectMode:
     """CLEARPASS_ADDRESS API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class ClearpassaddressObjectMode:
 
 
 # Base class for backwards compatibility
-class Clearpassaddress:
+class ClearpassAddress:
     """CLEARPASS_ADDRESS API category."""
     
     add: Add

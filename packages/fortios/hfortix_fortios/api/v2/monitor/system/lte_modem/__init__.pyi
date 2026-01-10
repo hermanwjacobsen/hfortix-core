@@ -14,11 +14,11 @@ __all__ = [
     "Status",
     "Upgrade",
     "Upload",
-    "LtemodemDictMode",
-    "LtemodemObjectMode",
+    "LteModemDictMode",
+    "LteModemObjectMode",
 ]
 
-class LtemodemDictMode:
+class LteModemDictMode:
     """LTE_MODEM API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class LtemodemDictMode:
         ...
 
 
-class LtemodemObjectMode:
+class LteModemObjectMode:
     """LTE_MODEM API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class LtemodemObjectMode:
 
 
 # Base class for backwards compatibility
-class Ltemodem:
+class LteModem:
     """LTE_MODEM API category."""
     
     status: Status

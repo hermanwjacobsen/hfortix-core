@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Template",
     "Vlans",
-    "InitialconfigDictMode",
-    "InitialconfigObjectMode",
+    "InitialConfigDictMode",
+    "InitialConfigObjectMode",
 ]
 
-class InitialconfigDictMode:
+class InitialConfigDictMode:
     """INITIAL_CONFIG API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class InitialconfigDictMode:
         ...
 
 
-class InitialconfigObjectMode:
+class InitialConfigObjectMode:
     """INITIAL_CONFIG API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class InitialconfigObjectMode:
 
 
 # Base class for backwards compatibility
-class Initialconfig:
+class InitialConfig:
     """INITIAL_CONFIG API category."""
     
     template: Template

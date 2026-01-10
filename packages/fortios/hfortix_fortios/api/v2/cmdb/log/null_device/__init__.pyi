@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Filter",
     "Setting",
-    "NulldeviceDictMode",
-    "NulldeviceObjectMode",
+    "NullDeviceDictMode",
+    "NullDeviceObjectMode",
 ]
 
-class NulldeviceDictMode:
+class NullDeviceDictMode:
     """NULL_DEVICE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class NulldeviceDictMode:
         ...
 
 
-class NulldeviceObjectMode:
+class NullDeviceObjectMode:
     """NULL_DEVICE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class NulldeviceObjectMode:
 
 
 # Base class for backwards compatibility
-class Nulldevice:
+class NullDevice:
     """NULL_DEVICE API category."""
     
     filter: Filter

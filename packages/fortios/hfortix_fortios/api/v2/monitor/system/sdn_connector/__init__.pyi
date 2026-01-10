@@ -16,11 +16,11 @@ __all__ = [
     "Status",
     "Update",
     "ValidateGcpKey",
-    "SdnconnectorDictMode",
-    "SdnconnectorObjectMode",
+    "SdnConnectorDictMode",
+    "SdnConnectorObjectMode",
 ]
 
-class SdnconnectorDictMode:
+class SdnConnectorDictMode:
     """SDN_CONNECTOR API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -37,7 +37,7 @@ class SdnconnectorDictMode:
         ...
 
 
-class SdnconnectorObjectMode:
+class SdnConnectorObjectMode:
     """SDN_CONNECTOR API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -55,7 +55,7 @@ class SdnconnectorObjectMode:
 
 
 # Base class for backwards compatibility
-class Sdnconnector:
+class SdnConnector:
     """SDN_CONNECTOR API category."""
     
     nsx_security_tags: NsxSecurityTags

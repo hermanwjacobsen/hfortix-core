@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Download",
-    "PolicyarchiveDictMode",
-    "PolicyarchiveObjectMode",
+    "PolicyArchiveDictMode",
+    "PolicyArchiveObjectMode",
 ]
 
-class PolicyarchiveDictMode:
+class PolicyArchiveDictMode:
     """POLICY_ARCHIVE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class PolicyarchiveDictMode:
         ...
 
 
-class PolicyarchiveObjectMode:
+class PolicyArchiveObjectMode:
     """POLICY_ARCHIVE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class PolicyarchiveObjectMode:
 
 
 # Base class for backwards compatibility
-class Policyarchive:
+class PolicyArchive:
     """POLICY_ARCHIVE API category."""
     
     download: Download

@@ -16,11 +16,11 @@ __all__ = [
     "SetTier1",
     "SetTierPlus",
     "TierPlusCandidates",
-    "MclagiclDictMode",
-    "MclagiclObjectMode",
+    "MclagIclDictMode",
+    "MclagIclObjectMode",
 ]
 
-class MclagiclDictMode:
+class MclagIclDictMode:
     """MCLAG_ICL API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -37,7 +37,7 @@ class MclagiclDictMode:
         ...
 
 
-class MclagiclObjectMode:
+class MclagIclObjectMode:
     """MCLAG_ICL API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -55,7 +55,7 @@ class MclagiclObjectMode:
 
 
 # Base class for backwards compatibility
-class Mclagicl:
+class MclagIcl:
     """MCLAG_ICL API category."""
     
     eligible_peer: EligiblePeer

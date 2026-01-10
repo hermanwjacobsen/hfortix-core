@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Download",
-    "AvarchiveDictMode",
-    "AvarchiveObjectMode",
+    "AvArchiveDictMode",
+    "AvArchiveObjectMode",
 ]
 
-class AvarchiveDictMode:
+class AvArchiveDictMode:
     """AV_ARCHIVE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class AvarchiveDictMode:
         ...
 
 
-class AvarchiveObjectMode:
+class AvArchiveObjectMode:
     """AV_ARCHIVE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class AvarchiveObjectMode:
 
 
 # Base class for backwards compatibility
-class Avarchive:
+class AvArchive:
     """AV_ARCHIVE API category."""
     
     download: Download

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Explicit",
-    "FtpproxyDictMode",
-    "FtpproxyObjectMode",
+    "FtpProxyDictMode",
+    "FtpProxyObjectMode",
 ]
 
-class FtpproxyDictMode:
+class FtpProxyDictMode:
     """FTP_PROXY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class FtpproxyDictMode:
         ...
 
 
-class FtpproxyObjectMode:
+class FtpProxyObjectMode:
     """FTP_PROXY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class FtpproxyObjectMode:
 
 
 # Base class for backwards compatibility
-class Ftpproxy:
+class FtpProxy:
     """FTP_PROXY API category."""
     
     explicit: Explicit

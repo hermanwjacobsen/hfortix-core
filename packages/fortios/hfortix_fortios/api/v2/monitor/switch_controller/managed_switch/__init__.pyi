@@ -42,11 +42,11 @@ __all__ = [
     "Transceivers",
     "TxRx",
     "Update",
-    "ManagedswitchDictMode",
-    "ManagedswitchObjectMode",
+    "ManagedSwitchDictMode",
+    "ManagedSwitchObjectMode",
 ]
 
-class ManagedswitchDictMode:
+class ManagedSwitchDictMode:
     """MANAGED_SWITCH API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -76,7 +76,7 @@ class ManagedswitchDictMode:
         ...
 
 
-class ManagedswitchObjectMode:
+class ManagedSwitchObjectMode:
     """MANAGED_SWITCH API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -107,7 +107,7 @@ class ManagedswitchObjectMode:
 
 
 # Base class for backwards compatibility
-class Managedswitch:
+class ManagedSwitch:
     """MANAGED_SWITCH API category."""
     
     bios: Bios
