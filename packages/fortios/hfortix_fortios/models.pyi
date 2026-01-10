@@ -305,6 +305,17 @@ def process_response(
     """Process dict response in dict mode - returns dict as-is."""
     ...
 
+# Fallback overload for any other types (strings, None, etc.)
+@overload
+def process_response(
+    result: Any,
+    response_mode: str | None = None,
+    client: Any = None,
+    unwrap_single: bool = False,
+) -> Any:
+    """Fallback for non-dict/list types - returns result as-is."""
+    ...
+
 def process_response(
     result: Any,
     response_mode: str | None,
