@@ -63,7 +63,7 @@ from .types import (
     StatusType,
 )
 
-__version__ = "0.5.47"
+__version__ = "0.5.48"
 
 __all__ = [
     # Main client

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Eject",
-    "UsbdeviceDictMode",
-    "UsbdeviceObjectMode",
+    "UsbDeviceDictMode",
+    "UsbDeviceObjectMode",
 ]
 
-class UsbdeviceDictMode:
+class UsbDeviceDictMode:
     """USB_DEVICE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class UsbdeviceDictMode:
         ...
 
 
-class UsbdeviceObjectMode:
+class UsbDeviceObjectMode:
     """USB_DEVICE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class UsbdeviceObjectMode:
 
 
 # Base class for backwards compatibility
-class Usbdevice:
+class UsbDevice:
     """USB_DEVICE API category."""
     
     eject: Eject

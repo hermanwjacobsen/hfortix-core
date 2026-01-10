@@ -28,11 +28,11 @@ __all__ = [
     "Profile",
     "UrlMatch",
     "Wisp",
-    "WebproxyDictMode",
-    "WebproxyObjectMode",
+    "WebProxyDictMode",
+    "WebProxyObjectMode",
 ]
 
-class WebproxyDictMode:
+class WebProxyDictMode:
     """WEB_PROXY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -55,7 +55,7 @@ class WebproxyDictMode:
         ...
 
 
-class WebproxyObjectMode:
+class WebProxyObjectMode:
     """WEB_PROXY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -79,7 +79,7 @@ class WebproxyObjectMode:
 
 
 # Base class for backwards compatibility
-class Webproxy:
+class WebProxy:
     """WEB_PROXY API category."""
     
     debug_url: DebugUrl

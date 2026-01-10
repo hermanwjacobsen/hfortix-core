@@ -14,11 +14,11 @@ __all__ = [
     "Custom",
     "Default",
     "Policy",
-    "AutoconfigDictMode",
-    "AutoconfigObjectMode",
+    "AutoConfigDictMode",
+    "AutoConfigObjectMode",
 ]
 
-class AutoconfigDictMode:
+class AutoConfigDictMode:
     """AUTO_CONFIG API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class AutoconfigDictMode:
         ...
 
 
-class AutoconfigObjectMode:
+class AutoConfigObjectMode:
     """AUTO_CONFIG API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class AutoconfigObjectMode:
 
 
 # Base class for backwards compatibility
-class Autoconfig:
+class AutoConfig:
     """AUTO_CONFIG API category."""
     
     custom: Custom

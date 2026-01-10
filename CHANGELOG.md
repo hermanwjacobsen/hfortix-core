@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.48] - 2026-01-10
+
+### Fixed
+- **Fixed `.pyi` stub class name generation for multi-word categories**
+  - Categories like `file_filter`, `endpoint_control`, `diameter_filter` now generate correct PascalCase
+  - Before: `class Filefilter:` (incorrect) → After: `class FileFilter:` (correct)
+  - Added `to_class_name` filter to pyi_generator for proper snake_case → PascalCase conversion
+  - Updated `category_init.pyi.j2` template to use new filter
+  - Regenerated all 1,064 endpoint stubs with correct class names
+  - Affected categories: diameter_filter, endpoint_control, ethernet_oam, extension_controller,
+    file_filter, ftp_proxy, sctp_filter, switch_controller, virtual_patch, web_proxy, wireless_controller
+
+### Changed
+- **Test fixes for snake_case API response keys**
+  - Fixed remaining test assertions expecting hyphenated keys (`ems-id`) to use snake_case (`ems_id`)
+  - All 3,486 tests now passing
+
+### Tested
+- **Comprehensive CMDB API endpoint testing (~115+ methods across 11 modules)**
+  - Alert Email: `setting.get()`, `setting.put()`
+  - Antivirus: `settings`, `quarantine`, `profile`, `exempt_list` (full CRUD)
+  - Application: `list`, `custom`, `group` (full CRUD)
+  - Authentication: `setting`, `scheme`, `rule` (full CRUD)
+  - Automation: `setting.get()`, `setting.put()`
+  - CASB: `saas_application`, `user_activity`, `profile` (POST/PUT)
+  - Certificate: `hsm_local`, `ca`, `crl`, `local`, `remote` (GET)
+  - Diameter Filter: `profile` (GET/POST)
+  - DLP: `settings`, `sensor`, `dictionary`, `filepattern`, `exact_data_match`, `data_type` (full CRUD)
+  - Firewall: `address` (full CRUD with filtering)
+  - All HTTP methods covered: GET, POST, PUT, DELETE, SET
+  - Special features: filtering, nested resources, ID-based and name-based operations
+
 ## [0.5.47] - 2026-01-09
 
 ### Changed

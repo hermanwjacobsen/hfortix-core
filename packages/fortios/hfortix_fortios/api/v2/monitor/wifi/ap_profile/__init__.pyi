@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "CreateDefault",
-    "ApprofileDictMode",
-    "ApprofileObjectMode",
+    "ApProfileDictMode",
+    "ApProfileObjectMode",
 ]
 
-class ApprofileDictMode:
+class ApProfileDictMode:
     """AP_PROFILE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ApprofileDictMode:
         ...
 
 
-class ApprofileObjectMode:
+class ApProfileObjectMode:
     """AP_PROFILE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ApprofileObjectMode:
 
 
 # Base class for backwards compatibility
-class Approfile:
+class ApProfile:
     """AP_PROFILE API category."""
     
     create_default: CreateDefault

@@ -14,11 +14,11 @@ __all__ = [
     "Stats",
     "Test",
     "Webhook",
-    "AutomationstitchDictMode",
-    "AutomationstitchObjectMode",
+    "AutomationStitchDictMode",
+    "AutomationStitchObjectMode",
 ]
 
-class AutomationstitchDictMode:
+class AutomationStitchDictMode:
     """AUTOMATION_STITCH API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class AutomationstitchDictMode:
         ...
 
 
-class AutomationstitchObjectMode:
+class AutomationStitchObjectMode:
     """AUTOMATION_STITCH API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class AutomationstitchObjectMode:
 
 
 # Base class for backwards compatibility
-class Automationstitch:
+class AutomationStitch:
     """AUTOMATION_STITCH API category."""
     
     stats: Stats

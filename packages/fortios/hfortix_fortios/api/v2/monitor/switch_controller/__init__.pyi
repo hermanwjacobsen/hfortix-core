@@ -20,11 +20,11 @@ __all__ = [
     "DetectedDevice",
     "KnownNacDeviceCriteriaList",
     "MatchedDevices",
-    "SwitchcontrollerDictMode",
-    "SwitchcontrollerObjectMode",
+    "SwitchControllerDictMode",
+    "SwitchControllerObjectMode",
 ]
 
-class SwitchcontrollerDictMode:
+class SwitchControllerDictMode:
     """SWITCH_CONTROLLER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -46,7 +46,7 @@ class SwitchcontrollerDictMode:
         ...
 
 
-class SwitchcontrollerObjectMode:
+class SwitchControllerObjectMode:
     """SWITCH_CONTROLLER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -69,7 +69,7 @@ class SwitchcontrollerObjectMode:
 
 
 # Base class for backwards compatibility
-class Switchcontroller:
+class SwitchController:
     """SWITCH_CONTROLLER API category."""
     
     fsw_firmware: FswFirmware

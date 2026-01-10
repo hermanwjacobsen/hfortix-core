@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Download",
-    "ForticloudreportDictMode",
-    "ForticloudreportObjectMode",
+    "ForticloudReportDictMode",
+    "ForticloudReportObjectMode",
 ]
 
-class ForticloudreportDictMode:
+class ForticloudReportDictMode:
     """FORTICLOUD_REPORT API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ForticloudreportDictMode:
         ...
 
 
-class ForticloudreportObjectMode:
+class ForticloudReportObjectMode:
     """FORTICLOUD_REPORT API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ForticloudreportObjectMode:
 
 
 # Base class for backwards compatibility
-class Forticloudreport:
+class ForticloudReport:
     """FORTICLOUD_REPORT API category."""
     
     download: Download

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Details",
-    "SaasapplicationDictMode",
-    "SaasapplicationObjectMode",
+    "SaasApplicationDictMode",
+    "SaasApplicationObjectMode",
 ]
 
-class SaasapplicationDictMode:
+class SaasApplicationDictMode:
     """SAAS_APPLICATION API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class SaasapplicationDictMode:
         ...
 
 
-class SaasapplicationObjectMode:
+class SaasApplicationObjectMode:
     """SAAS_APPLICATION API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class SaasapplicationObjectMode:
 
 
 # Base class for backwards compatibility
-class Saasapplication:
+class SaasApplication:
     """SAAS_APPLICATION API category."""
     
     details: Details

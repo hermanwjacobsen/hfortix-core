@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "CertNameAvailable",
-    "VpncertificateDictMode",
-    "VpncertificateObjectMode",
+    "VpnCertificateDictMode",
+    "VpnCertificateObjectMode",
 ]
 
-class VpncertificateDictMode:
+class VpnCertificateDictMode:
     """VPN_CERTIFICATE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -38,7 +38,7 @@ class VpncertificateDictMode:
         ...
 
 
-class VpncertificateObjectMode:
+class VpnCertificateObjectMode:
     """VPN_CERTIFICATE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -58,7 +58,7 @@ class VpncertificateObjectMode:
 
 
 # Base class for backwards compatibility
-class Vpncertificate:
+class VpnCertificate:
     """VPN_CERTIFICATE API category."""
     
     ca: Ca

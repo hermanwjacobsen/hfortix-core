@@ -20,11 +20,11 @@ __all__ = [
     "ExtenderVap",
     "Fortigate",
     "FortigateProfile",
-    "ExtensioncontrollerDictMode",
-    "ExtensioncontrollerObjectMode",
+    "ExtensionControllerDictMode",
+    "ExtensionControllerObjectMode",
 ]
 
-class ExtensioncontrollerDictMode:
+class ExtensionControllerDictMode:
     """EXTENSION_CONTROLLER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -43,7 +43,7 @@ class ExtensioncontrollerDictMode:
         ...
 
 
-class ExtensioncontrollerObjectMode:
+class ExtensionControllerObjectMode:
     """EXTENSION_CONTROLLER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -63,7 +63,7 @@ class ExtensioncontrollerObjectMode:
 
 
 # Base class for backwards compatibility
-class Extensioncontroller:
+class ExtensionController:
     """EXTENSION_CONTROLLER API category."""
     
     dataplan: Dataplan

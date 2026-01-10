@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Status",
-    "ConfigsyncDictMode",
-    "ConfigsyncObjectMode",
+    "ConfigSyncDictMode",
+    "ConfigSyncObjectMode",
 ]
 
-class ConfigsyncDictMode:
+class ConfigSyncDictMode:
     """CONFIG_SYNC API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ConfigsyncDictMode:
         ...
 
 
-class ConfigsyncObjectMode:
+class ConfigSyncObjectMode:
     """CONFIG_SYNC API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ConfigsyncObjectMode:
 
 
 # Base class for backwards compatibility
-class Configsync:
+class ConfigSync:
     """CONFIG_SYNC API category."""
     
     status: Status

@@ -9,11 +9,11 @@ if TYPE_CHECKING:
     from .extender import Extender
 
 __all__ = [
-    "ExtendercontrollerDictMode",
-    "ExtendercontrollerObjectMode",
+    "ExtenderControllerDictMode",
+    "ExtenderControllerObjectMode",
 ]
 
-class ExtendercontrollerDictMode:
+class ExtenderControllerDictMode:
     """EXTENDER_CONTROLLER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -27,7 +27,7 @@ class ExtendercontrollerDictMode:
         ...
 
 
-class ExtendercontrollerObjectMode:
+class ExtenderControllerObjectMode:
     """EXTENDER_CONTROLLER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -42,7 +42,7 @@ class ExtendercontrollerObjectMode:
 
 
 # Base class for backwards compatibility
-class Extendercontroller:
+class ExtenderController:
     """EXTENDER_CONTROLLER API category."""
     
     extender: Extender

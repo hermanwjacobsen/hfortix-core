@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Filter",
     "Setting",
-    "TacacsplusaccountingDictMode",
-    "TacacsplusaccountingObjectMode",
+    "TacacsPlusaccountingDictMode",
+    "TacacsPlusaccountingObjectMode",
 ]
 
-class TacacsplusaccountingDictMode:
+class TacacsPlusaccountingDictMode:
     """TACACS_PLUSACCOUNTING API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class TacacsplusaccountingDictMode:
         ...
 
 
-class TacacsplusaccountingObjectMode:
+class TacacsPlusaccountingObjectMode:
     """TACACS_PLUSACCOUNTING API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class TacacsplusaccountingObjectMode:
 
 
 # Base class for backwards compatibility
-class Tacacsplusaccounting:
+class TacacsPlusaccounting:
     """TACACS_PLUSACCOUNTING API category."""
     
     filter: Filter

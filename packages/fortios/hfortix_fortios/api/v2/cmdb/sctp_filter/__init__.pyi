@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Profile",
-    "SctpfilterDictMode",
-    "SctpfilterObjectMode",
+    "SctpFilterDictMode",
+    "SctpFilterObjectMode",
 ]
 
-class SctpfilterDictMode:
+class SctpFilterDictMode:
     """SCTP_FILTER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class SctpfilterDictMode:
         ...
 
 
-class SctpfilterObjectMode:
+class SctpFilterObjectMode:
     """SCTP_FILTER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class SctpfilterObjectMode:
 
 
 # Base class for backwards compatibility
-class Sctpfilter:
+class SctpFilter:
     """SCTP_FILTER API category."""
     
     profile: Profile

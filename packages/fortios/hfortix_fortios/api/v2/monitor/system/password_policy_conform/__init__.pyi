@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Select",
-    "PasswordpolicyconformDictMode",
-    "PasswordpolicyconformObjectMode",
+    "PasswordPolicyConformDictMode",
+    "PasswordPolicyConformObjectMode",
 ]
 
-class PasswordpolicyconformDictMode:
+class PasswordPolicyConformDictMode:
     """PASSWORD_POLICY_CONFORM API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class PasswordpolicyconformDictMode:
         ...
 
 
-class PasswordpolicyconformObjectMode:
+class PasswordPolicyConformObjectMode:
     """PASSWORD_POLICY_CONFORM API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class PasswordpolicyconformObjectMode:
 
 
 # Base class for backwards compatibility
-class Passwordpolicyconform:
+class PasswordPolicyConform:
     """PASSWORD_POLICY_CONFORM API category."""
     
     select: Select

@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "LocalAccess",
     "X8021x",
-    "SecuritypolicyDictMode",
-    "SecuritypolicyObjectMode",
+    "SecurityPolicyDictMode",
+    "SecurityPolicyObjectMode",
 ]
 
-class SecuritypolicyDictMode:
+class SecurityPolicyDictMode:
     """SECURITY_POLICY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class SecuritypolicyDictMode:
         ...
 
 
-class SecuritypolicyObjectMode:
+class SecurityPolicyObjectMode:
     """SECURITY_POLICY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class SecuritypolicyObjectMode:
 
 
 # Base class for backwards compatibility
-class Securitypolicy:
+class SecurityPolicy:
     """SECURITY_POLICY API category."""
     
     local_access: LocalAccess

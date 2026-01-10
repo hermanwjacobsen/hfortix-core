@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Start",
     "Stop",
-    "DebugflowDictMode",
-    "DebugflowObjectMode",
+    "DebugFlowDictMode",
+    "DebugFlowObjectMode",
 ]
 
-class DebugflowDictMode:
+class DebugFlowDictMode:
     """DEBUG_FLOW API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class DebugflowDictMode:
         ...
 
 
-class DebugflowObjectMode:
+class DebugFlowObjectMode:
     """DEBUG_FLOW API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class DebugflowObjectMode:
 
 
 # Base class for backwards compatibility
-class Debugflow:
+class DebugFlow:
     """DEBUG_FLOW API category."""
     
     start: Start

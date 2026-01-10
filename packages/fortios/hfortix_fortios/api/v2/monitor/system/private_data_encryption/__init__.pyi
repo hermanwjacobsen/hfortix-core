@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Set",
-    "PrivatedataencryptionDictMode",
-    "PrivatedataencryptionObjectMode",
+    "PrivateDataEncryptionDictMode",
+    "PrivateDataEncryptionObjectMode",
 ]
 
-class PrivatedataencryptionDictMode:
+class PrivateDataEncryptionDictMode:
     """PRIVATE_DATA_ENCRYPTION API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class PrivatedataencryptionDictMode:
         ...
 
 
-class PrivatedataencryptionObjectMode:
+class PrivateDataEncryptionObjectMode:
     """PRIVATE_DATA_ENCRYPTION API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class PrivatedataencryptionObjectMode:
 
 
 # Base class for backwards compatibility
-class Privatedataencryption:
+class PrivateDataEncryption:
     """PRIVATE_DATA_ENCRYPTION API category."""
     
     set: Set

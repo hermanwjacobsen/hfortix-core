@@ -10,11 +10,11 @@ if TYPE_CHECKING:
     from .language import LanguageDictMode, LanguageObjectMode
 
 __all__ = [
-    "WebuiDictMode",
-    "WebuiObjectMode",
+    "WebUiDictMode",
+    "WebUiObjectMode",
 ]
 
-class WebuiDictMode:
+class WebUiDictMode:
     """WEB_UI API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -29,7 +29,7 @@ class WebuiDictMode:
         ...
 
 
-class WebuiObjectMode:
+class WebUiObjectMode:
     """WEB_UI API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -45,7 +45,7 @@ class WebuiObjectMode:
 
 
 # Base class for backwards compatibility
-class Webui:
+class WebUi:
     """WEB_UI API category."""
     
     custom_language: CustomLanguage

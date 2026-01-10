@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Status",
     "Update",
-    "IsllockdownDictMode",
-    "IsllockdownObjectMode",
+    "IslLockdownDictMode",
+    "IslLockdownObjectMode",
 ]
 
-class IsllockdownDictMode:
+class IslLockdownDictMode:
     """ISL_LOCKDOWN API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class IsllockdownDictMode:
         ...
 
 
-class IsllockdownObjectMode:
+class IslLockdownObjectMode:
     """ISL_LOCKDOWN API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class IsllockdownObjectMode:
 
 
 # Base class for backwards compatibility
-class Isllockdown:
+class IslLockdown:
     """ISL_LOCKDOWN API category."""
     
     status: Status

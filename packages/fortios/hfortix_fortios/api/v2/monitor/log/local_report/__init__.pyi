@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Delete",
     "Download",
-    "LocalreportDictMode",
-    "LocalreportObjectMode",
+    "LocalReportDictMode",
+    "LocalReportObjectMode",
 ]
 
-class LocalreportDictMode:
+class LocalReportDictMode:
     """LOCAL_REPORT API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class LocalreportDictMode:
         ...
 
 
-class LocalreportObjectMode:
+class LocalReportObjectMode:
     """LOCAL_REPORT API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class LocalreportObjectMode:
 
 
 # Base class for backwards compatibility
-class Localreport:
+class LocalReport:
     """LOCAL_REPORT API category."""
     
     delete: Delete

@@ -14,11 +14,11 @@ __all__ = [
     "Create",
     "Download",
     "Update",
-    "CustomlanguageDictMode",
-    "CustomlanguageObjectMode",
+    "CustomLanguageDictMode",
+    "CustomLanguageObjectMode",
 ]
 
-class CustomlanguageDictMode:
+class CustomLanguageDictMode:
     """CUSTOM_LANGUAGE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class CustomlanguageDictMode:
         ...
 
 
-class CustomlanguageObjectMode:
+class CustomLanguageObjectMode:
     """CUSTOM_LANGUAGE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class CustomlanguageObjectMode:
 
 
 # Base class for backwards compatibility
-class Customlanguage:
+class CustomLanguage:
     """CUSTOM_LANGUAGE API category."""
     
     create: Create
