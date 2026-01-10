@@ -187,3 +187,4 @@ pip install hfortix[all]      # All products
 - [Quick Start Guide](../../QUICKSTART.md) - Get started in 5 minutes
 - [Package README](../../packages/fortios/README.md) - FortiOS package details
 - [Core Documentation](../core/README.md) - Core package (exceptions, formatting)
+- [Testing Guide](TESTING.md) - Comprehensive test suite documentation (200+ tests)
