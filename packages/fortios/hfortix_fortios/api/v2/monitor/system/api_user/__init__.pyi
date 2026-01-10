@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "GenerateKey",
-    "ApiuserDictMode",
-    "ApiuserObjectMode",
+    "ApiUserDictMode",
+    "ApiUserObjectMode",
 ]
 
-class ApiuserDictMode:
+class ApiUserDictMode:
     """API_USER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ApiuserDictMode:
         ...
 
 
-class ApiuserObjectMode:
+class ApiUserObjectMode:
     """API_USER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ApiuserObjectMode:
 
 
 # Base class for backwards compatibility
-class Apiuser:
+class ApiUser:
     """API_USER API category."""
     
     generate_key: GenerateKey

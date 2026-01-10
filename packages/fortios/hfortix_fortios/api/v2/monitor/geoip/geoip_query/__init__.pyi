@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Select",
-    "GeoipqueryDictMode",
-    "GeoipqueryObjectMode",
+    "GeoipQueryDictMode",
+    "GeoipQueryObjectMode",
 ]
 
-class GeoipqueryDictMode:
+class GeoipQueryDictMode:
     """GEOIP_QUERY API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class GeoipqueryDictMode:
         ...
 
 
-class GeoipqueryObjectMode:
+class GeoipQueryObjectMode:
     """GEOIP_QUERY API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class GeoipqueryObjectMode:
 
 
 # Base class for backwards compatibility
-class Geoipquery:
+class GeoipQuery:
     """GEOIP_QUERY API category."""
     
     select: Select

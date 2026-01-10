@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Select",
-    "RatinglookupDictMode",
-    "RatinglookupObjectMode",
+    "RatingLookupDictMode",
+    "RatingLookupObjectMode",
 ]
 
-class RatinglookupDictMode:
+class RatingLookupDictMode:
     """RATING_LOOKUP API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class RatinglookupDictMode:
         ...
 
 
-class RatinglookupObjectMode:
+class RatingLookupObjectMode:
     """RATING_LOOKUP API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class RatinglookupObjectMode:
 
 
 # Base class for backwards compatibility
-class Ratinglookup:
+class RatingLookup:
     """RATING_LOOKUP API category."""
     
     select: Select

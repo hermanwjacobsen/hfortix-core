@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Profile",
-    "FilefilterDictMode",
-    "FilefilterObjectMode",
+    "FileFilterDictMode",
+    "FileFilterObjectMode",
 ]
 
-class FilefilterDictMode:
+class FileFilterDictMode:
     """FILE_FILTER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class FilefilterDictMode:
         ...
 
 
-class FilefilterObjectMode:
+class FileFilterObjectMode:
     """FILE_FILTER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class FilefilterObjectMode:
 
 
 # Base class for backwards compatibility
-class Filefilter:
+class FileFilter:
     """FILE_FILTER API category."""
     
     profile: Profile

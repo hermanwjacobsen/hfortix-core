@@ -16,11 +16,11 @@ __all__ = [
     "OverrideFilter",
     "OverrideSetting",
     "Setting",
-    "FortianalyzercloudDictMode",
-    "FortianalyzercloudObjectMode",
+    "FortianalyzerCloudDictMode",
+    "FortianalyzerCloudObjectMode",
 ]
 
-class FortianalyzercloudDictMode:
+class FortianalyzerCloudDictMode:
     """FORTIANALYZER_CLOUD API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -37,7 +37,7 @@ class FortianalyzercloudDictMode:
         ...
 
 
-class FortianalyzercloudObjectMode:
+class FortianalyzerCloudObjectMode:
     """FORTIANALYZER_CLOUD API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -55,7 +55,7 @@ class FortianalyzercloudObjectMode:
 
 
 # Base class for backwards compatibility
-class Fortianalyzercloud:
+class FortianalyzerCloud:
     """FORTIANALYZER_CLOUD API category."""
     
     filter: Filter

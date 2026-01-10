@@ -14,11 +14,11 @@ __all__ = [
     "Fctems",
     "FctemsOverride",
     "Settings",
-    "EndpointcontrolDictMode",
-    "EndpointcontrolObjectMode",
+    "EndpointControlDictMode",
+    "EndpointControlObjectMode",
 ]
 
-class EndpointcontrolDictMode:
+class EndpointControlDictMode:
     """ENDPOINT_CONTROL API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class EndpointcontrolDictMode:
         ...
 
 
-class EndpointcontrolObjectMode:
+class EndpointControlObjectMode:
     """ENDPOINT_CONTROL API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class EndpointcontrolObjectMode:
 
 
 # Base class for backwards compatibility
-class Endpointcontrol:
+class EndpointControl:
     """ENDPOINT_CONTROL API category."""
     
     fctems: Fctems

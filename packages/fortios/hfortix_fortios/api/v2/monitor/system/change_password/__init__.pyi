@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Select",
-    "ChangepasswordDictMode",
-    "ChangepasswordObjectMode",
+    "ChangePasswordDictMode",
+    "ChangePasswordObjectMode",
 ]
 
-class ChangepasswordDictMode:
+class ChangePasswordDictMode:
     """CHANGE_PASSWORD API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ChangepasswordDictMode:
         ...
 
 
-class ChangepasswordObjectMode:
+class ChangePasswordObjectMode:
     """CHANGE_PASSWORD API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ChangepasswordObjectMode:
 
 
 # Base class for backwards compatibility
-class Changepassword:
+class ChangePassword:
     """CHANGE_PASSWORD API category."""
     
     select: Select

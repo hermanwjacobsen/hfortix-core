@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Stats",
-    "AutomationactionDictMode",
-    "AutomationactionObjectMode",
+    "AutomationActionDictMode",
+    "AutomationActionObjectMode",
 ]
 
-class AutomationactionDictMode:
+class AutomationActionDictMode:
     """AUTOMATION_ACTION API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class AutomationactionDictMode:
         ...
 
 
-class AutomationactionObjectMode:
+class AutomationActionObjectMode:
     """AUTOMATION_ACTION API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class AutomationactionObjectMode:
 
 
 # Base class for backwards compatibility
-class Automationaction:
+class AutomationAction:
     """AUTOMATION_ACTION API category."""
     
     stats: Stats

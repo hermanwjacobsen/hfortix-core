@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Download",
-    "ConfigerrorlogDictMode",
-    "ConfigerrorlogObjectMode",
+    "ConfigErrorLogDictMode",
+    "ConfigErrorLogObjectMode",
 ]
 
-class ConfigerrorlogDictMode:
+class ConfigErrorLogDictMode:
     """CONFIG_ERROR_LOG API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class ConfigerrorlogDictMode:
         ...
 
 
-class ConfigerrorlogObjectMode:
+class ConfigErrorLogObjectMode:
     """CONFIG_ERROR_LOG API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class ConfigerrorlogObjectMode:
 
 
 # Base class for backwards compatibility
-class Configerrorlog:
+class ConfigErrorLog:
     """CONFIG_ERROR_LOG API category."""
     
     download: Download

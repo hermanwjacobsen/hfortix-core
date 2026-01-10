@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Custom",
     "Group",
-    "WildcardfqdnDictMode",
-    "WildcardfqdnObjectMode",
+    "WildcardFqdnDictMode",
+    "WildcardFqdnObjectMode",
 ]
 
-class WildcardfqdnDictMode:
+class WildcardFqdnDictMode:
     """WILDCARD_FQDN API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class WildcardfqdnDictMode:
         ...
 
 
-class WildcardfqdnObjectMode:
+class WildcardFqdnObjectMode:
     """WILDCARD_FQDN API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class WildcardfqdnObjectMode:
 
 
 # Base class for backwards compatibility
-class Wildcardfqdn:
+class WildcardFqdn:
     """WILDCARD_FQDN API category."""
     
     custom: Custom

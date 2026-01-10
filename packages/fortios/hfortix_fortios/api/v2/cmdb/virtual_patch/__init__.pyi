@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Profile",
-    "VirtualpatchDictMode",
-    "VirtualpatchObjectMode",
+    "VirtualPatchDictMode",
+    "VirtualPatchObjectMode",
 ]
 
-class VirtualpatchDictMode:
+class VirtualPatchDictMode:
     """VIRTUAL_PATCH API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class VirtualpatchDictMode:
         ...
 
 
-class VirtualpatchObjectMode:
+class VirtualPatchObjectMode:
     """VIRTUAL_PATCH API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class VirtualpatchObjectMode:
 
 
 # Base class for backwards compatibility
-class Virtualpatch:
+class VirtualPatch:
     """VIRTUAL_PATCH API category."""
     
     profile: Profile

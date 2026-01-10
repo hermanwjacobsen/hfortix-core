@@ -18,11 +18,11 @@ __all__ = [
     "Members",
     "SlaLog",
     "Sladb",
-    "VirtualwanDictMode",
-    "VirtualwanObjectMode",
+    "VirtualWanDictMode",
+    "VirtualWanObjectMode",
 ]
 
-class VirtualwanDictMode:
+class VirtualWanDictMode:
     """VIRTUAL_WAN API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -40,7 +40,7 @@ class VirtualwanDictMode:
         ...
 
 
-class VirtualwanObjectMode:
+class VirtualWanObjectMode:
     """VIRTUAL_WAN API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -59,7 +59,7 @@ class VirtualwanObjectMode:
 
 
 # Base class for backwards compatibility
-class Virtualwan:
+class VirtualWan:
     """VIRTUAL_WAN API category."""
     
     health_check: HealthCheck

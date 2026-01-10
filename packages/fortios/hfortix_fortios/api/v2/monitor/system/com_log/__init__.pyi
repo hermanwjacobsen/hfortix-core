@@ -14,11 +14,11 @@ __all__ = [
     "Download",
     "Dump",
     "Update",
-    "ComlogDictMode",
-    "ComlogObjectMode",
+    "ComLogDictMode",
+    "ComLogObjectMode",
 ]
 
-class ComlogDictMode:
+class ComLogDictMode:
     """COM_LOG API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -34,7 +34,7 @@ class ComlogDictMode:
         ...
 
 
-class ComlogObjectMode:
+class ComLogObjectMode:
     """COM_LOG API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -51,7 +51,7 @@ class ComlogObjectMode:
 
 
 # Base class for backwards compatibility
-class Comlog:
+class ComLog:
     """COM_LOG API category."""
     
     download: Download

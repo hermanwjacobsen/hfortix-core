@@ -18,11 +18,11 @@ __all__ = [
     "GenericAddress",
     "Refresh",
     "ValidateJsonpath",
-    "ExternalresourceDictMode",
-    "ExternalresourceObjectMode",
+    "ExternalResourceDictMode",
+    "ExternalResourceObjectMode",
 ]
 
-class ExternalresourceDictMode:
+class ExternalResourceDictMode:
     """EXTERNAL_RESOURCE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -40,7 +40,7 @@ class ExternalresourceDictMode:
         ...
 
 
-class ExternalresourceObjectMode:
+class ExternalResourceObjectMode:
     """EXTERNAL_RESOURCE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -59,7 +59,7 @@ class ExternalresourceObjectMode:
 
 
 # Base class for backwards compatibility
-class Externalresource:
+class ExternalResource:
     """EXTERNAL_RESOURCE API category."""
     
     dynamic: Dynamic

@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Clear",
     "Download",
-    "CrashlogDictMode",
-    "CrashlogObjectMode",
+    "CrashLogDictMode",
+    "CrashLogObjectMode",
 ]
 
-class CrashlogDictMode:
+class CrashLogDictMode:
     """CRASH_LOG API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class CrashlogDictMode:
         ...
 
 
-class CrashlogObjectMode:
+class CrashLogObjectMode:
     """CRASH_LOG API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class CrashlogObjectMode:
 
 
 # Base class for backwards compatibility
-class Crashlog:
+class CrashLog:
     """CRASH_LOG API category."""
     
     clear: Clear

@@ -63,11 +63,11 @@ __all__ = [
     "Wtp",
     "WtpGroup",
     "WtpProfile",
-    "WirelesscontrollerDictMode",
-    "WirelesscontrollerObjectMode",
+    "WirelessControllerDictMode",
+    "WirelessControllerObjectMode",
 ]
 
-class WirelesscontrollerDictMode:
+class WirelessControllerDictMode:
     """WIRELESS_CONTROLLER API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -108,7 +108,7 @@ class WirelesscontrollerDictMode:
         ...
 
 
-class WirelesscontrollerObjectMode:
+class WirelessControllerObjectMode:
     """WIRELESS_CONTROLLER API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -150,7 +150,7 @@ class WirelesscontrollerObjectMode:
 
 
 # Base class for backwards compatibility
-class Wirelesscontroller:
+class WirelessController:
     """WIRELESS_CONTROLLER API category."""
     
     hotspot20: Hotspot20

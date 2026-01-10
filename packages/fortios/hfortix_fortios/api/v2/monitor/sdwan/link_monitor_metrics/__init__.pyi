@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Report",
-    "LinkmonitormetricsDictMode",
-    "LinkmonitormetricsObjectMode",
+    "LinkMonitorMetricsDictMode",
+    "LinkMonitorMetricsObjectMode",
 ]
 
-class LinkmonitormetricsDictMode:
+class LinkMonitorMetricsDictMode:
     """LINK_MONITOR_METRICS API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class LinkmonitormetricsDictMode:
         ...
 
 
-class LinkmonitormetricsObjectMode:
+class LinkMonitorMetricsObjectMode:
     """LINK_MONITOR_METRICS API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class LinkmonitormetricsObjectMode:
 
 
 # Base class for backwards compatibility
-class Linkmonitormetrics:
+class LinkMonitorMetrics:
     """LINK_MONITOR_METRICS API category."""
     
     report: Report

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Status",
-    "CentralmanagementDictMode",
-    "CentralmanagementObjectMode",
+    "CentralManagementDictMode",
+    "CentralManagementObjectMode",
 ]
 
-class CentralmanagementDictMode:
+class CentralManagementDictMode:
     """CENTRAL_MANAGEMENT API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class CentralmanagementDictMode:
         ...
 
 
-class CentralmanagementObjectMode:
+class CentralManagementObjectMode:
     """CENTRAL_MANAGEMENT API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class CentralmanagementObjectMode:
 
 
 # Base class for backwards compatibility
-class Centralmanagement:
+class CentralManagement:
     """CENTRAL_MANAGEMENT API category."""
     
     status: Status

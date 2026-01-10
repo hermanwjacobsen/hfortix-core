@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 __all__ = [
     "Test",
-    "TacacsplusDictMode",
-    "TacacsplusObjectMode",
+    "TacacsPlusDictMode",
+    "TacacsPlusObjectMode",
 ]
 
-class TacacsplusDictMode:
+class TacacsPlusDictMode:
     """TACACS_PLUS API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -28,7 +28,7 @@ class TacacsplusDictMode:
         ...
 
 
-class TacacsplusObjectMode:
+class TacacsPlusObjectMode:
     """TACACS_PLUS API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -43,7 +43,7 @@ class TacacsplusObjectMode:
 
 
 # Base class for backwards compatibility
-class Tacacsplus:
+class TacacsPlus:
     """TACACS_PLUS API category."""
     
     test: Test

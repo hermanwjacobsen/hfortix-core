@@ -12,11 +12,11 @@ if TYPE_CHECKING:
 __all__ = [
     "Recommendations",
     "Report",
-    "SecurityratingDictMode",
-    "SecurityratingObjectMode",
+    "SecurityRatingDictMode",
+    "SecurityRatingObjectMode",
 ]
 
-class SecurityratingDictMode:
+class SecurityRatingDictMode:
     """SECURITY_RATING API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -31,7 +31,7 @@ class SecurityratingDictMode:
         ...
 
 
-class SecurityratingObjectMode:
+class SecurityRatingObjectMode:
     """SECURITY_RATING API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -47,7 +47,7 @@ class SecurityratingObjectMode:
 
 
 # Base class for backwards compatibility
-class Securityrating:
+class SecurityRating:
     """SECURITY_RATING API category."""
     
     recommendations: Recommendations
