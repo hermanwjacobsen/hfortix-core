@@ -82,7 +82,7 @@ validate_mac_address(mac, allow_wildcard)     # MAC format xx:xx:xx:xx:xx:xx
 validate_ip_address(ip, allow_wildcard)       # IPv4 address validation
 validate_ipv6_address(ip, allow_wildcard)     # IPv6 address validation
 validate_ip_network(network, version)         # CIDR notation validation
-validate_port_number(port, field_name)        # Port range 0-4294967295
+validate_port_number(port, field_name)        # TCP/UDP port range 0-65535
 ```
 
 ### 3. Firewall Validators (`test_firewall_validators.py`)

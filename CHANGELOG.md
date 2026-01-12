@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.51] - 2026-01-12
+
+### Fixed
+- **BUG #5: Fixed `to_xml()` producing invalid XML with special characters** (`formatting.py`, `fmt.py`)
+  - Special characters (`<`, `>`, `&`, `"`, `'`) were not escaped, causing XML parse errors
+  - Added `_escape_xml()` helper function that properly escapes all XML special characters
+  - Fixed in both `hfortix_fortios/formatting.py` and `hfortix_core/fmt.py`
+
+- **BUG #6: Fixed `validate_port_number` allowing invalid port range** (`validators.py`)
+  - Was incorrectly allowing ports 0-4294967295 (32-bit range)
+  - Fixed to validate TCP/UDP port range 0-65535 (16-bit range)
+  - Updated docstring to clarify this is for TCP/UDP ports
+  - For FortiOS 32-bit integer fields, use `validate_integer_range()` directly
+
+- **BUG #7: Fixed `normalize_to_name_list` corrupting mixed lists** (`normalizers.py`)
+  - Mixed lists like `["port1", {"name": "port2"}]` were corrupted
+  - The dict would become `{"name": "{'name': 'port2'}"}` (stringified)
+  - Now processes each item individually based on its actual type
+  - Correctly handles any mix of strings and dicts in the same list
+
 ## [0.5.50] - 2026-01-12
 
 ### Added
