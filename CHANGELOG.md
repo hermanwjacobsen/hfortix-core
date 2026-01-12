@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The dict would become `{"name": "{'name': 'port2'}"}` (stringified)
   - Now processes each item individually based on its actual type
   - Correctly handles any mix of strings and dicts in the same list
+  - **Also fixed `normalize_table_field`** with the same mixed-list bug
 
 ## [0.5.50] - 2026-01-12
 

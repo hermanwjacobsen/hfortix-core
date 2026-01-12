@@ -149,23 +149,26 @@ def normalize_table_field(
         if not value:
             return []
 
-        # Check first item to determine type
-        if isinstance(value[0], dict):
-            # Already in dict format - pass through with filtering
-            return [item for item in value if isinstance(item, dict) and item]
-
-        # List of strings/primitives
-        if dict_only_mode:
-            req_fields = required_fields or []
-            error_msg = (
-                f"Field '{field_name}' requires dict format with keys: "
-                f"{', '.join(req_fields)}\n"
-                f"Example: {field_name}={example or '[{...}]'}"
-            )
-            raise ValueError(error_msg)
-
-        # Single required field - convert strings to dicts, strip whitespace
-        return [{mkey: str(item).strip()} for item in value]
+        # Process each item based on its actual type (handles mixed lists)
+        result: List[Dict[str, Any]] = []
+        for item in value:
+            if isinstance(item, dict):
+                # Dict - include if non-empty
+                if item:
+                    result.append(item)
+            elif dict_only_mode:
+                # Multi-field mode doesn't accept strings
+                req_fields = required_fields or []
+                error_msg = (
+                    f"Field '{field_name}' requires dict format with keys: "
+                    f"{', '.join(req_fields)}\n"
+                    f"Example: {field_name}={example or '[{...}]'}"
+                )
+                raise ValueError(error_msg)
+            else:
+                # Single-field mode - convert string/primitive to dict
+                result.append({mkey: str(item).strip()})
+        return result
 
     # Single dict - wrap in list
     if isinstance(value, dict):
