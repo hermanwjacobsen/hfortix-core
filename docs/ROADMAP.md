@@ -216,7 +216,8 @@ Have a feature request? Open an issue on GitHub or submit a PR!
 
 ## Version History
 
-- **0.5.49** (2026-01-10): Current stable release - Type stub fixes, comprehensive test suite
+- **0.5.50** (2026-01-12): Current stable release - Bug fixes (CEFFormatter, StreamHandler), expanded test suite (366 tests)
+- **0.5.49** (2026-01-10): Type stub fixes, comprehensive test suite
 - **0.5.48** (2026-01-10): Fixed `.pyi` stub class name generation for multi-word categories
 - **0.6.0** (TBD): Config templates, diff helpers
 - **0.7.0** (TBD): Backup/restore, reference finder

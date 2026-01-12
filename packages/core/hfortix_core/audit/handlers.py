@@ -311,9 +311,10 @@ class StreamHandler:
             formatter = JSONFormatter()
         self.formatter = formatter
 
+        stream_name = getattr(self.stream, "name", "<unnamed>")
         logger.debug(
-            f"StreamHandler initialized: {self.stream.name}",
-            extra={"stream": self.stream.name},
+            f"StreamHandler initialized: {stream_name}",
+            extra={"stream": stream_name},
         )
 
     def log_operation(self, operation: dict[str, Any]) -> None:
@@ -333,7 +334,7 @@ class StreamHandler:
                 f"Failed to write audit log to stream: {e}",
                 extra={
                     "error": str(e),
-                    "stream": self.stream.name,
+                    "stream": getattr(self.stream, "name", "<unnamed>"),
                     "request_id": operation.get("request_id"),
                 },
                 exc_info=True,

@@ -6,10 +6,10 @@ Comprehensive test suite for `hfortix_fortios` and `hfortix_core` Python package
 
 | Metric | Count |
 |--------|-------|
-| **Total Test Files** | 16 |
-| **Total Test Functions** | 200+ |
-| **Modules Tested** | 20+ |
-| **Functions/Classes Covered** | 100+ |
+| **Total Test Files** | 22 |
+| **Total Test Functions** | 366 |
+| **Modules Tested** | 25+ |
+| **Functions/Classes Covered** | 150+ |
 
 ## Test Files Summary
 
@@ -384,11 +384,11 @@ pytest/validators/
 ## Dependencies
 
 - Python 3.12+
-- `hfortix_fortios` >= 0.5.49
-- `hfortix_core` >= 0.5.49
+- `hfortix_fortios` >= 0.5.50
+- `hfortix_core` >= 0.5.50
 
 ---
 
 ## Last Updated
 
-January 10, 2026
+January 12, 2026

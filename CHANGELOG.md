@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.50] - 2026-01-12
+
+### Added
+- **Expanded unit test suite to 366 tests across 22 test files**
+  - New `hfortix_core` tests (88 tests in 7 files):
+    - `test_fmt.py` (14 tests) - Data formatting functions
+    - `test_audit_formatters.py` (14 tests) - JSONFormatter, SyslogFormatter, CEFFormatter
+    - `test_audit_handlers.py` (18 tests) - NullHandler, StreamHandler, FileHandler, CompositeHandler
+    - `test_logging_formatters.py` (13 tests) - StructuredFormatter, TextFormatter
+    - `test_normalize_keys.py` (10 tests) - Key normalization utilities
+    - `test_debug_timer.py` (8 tests) - Timing context manager
+    - `test_exceptions.py` (11 tests) - Full exception hierarchy
+
+### Fixed
+- **Fixed `CEFFormatter` crash when `user_context=None`** (`hfortix_core/audit/formatters.py`)
+  - `operation.get("user_context", {}).get("username")` crashes if `user_context` is explicitly `None`
+  - Changed to `(operation.get("user_context") or {}).get("username")` to handle `None` values
+- **Fixed `StreamHandler` crash with `StringIO` objects** (`hfortix_core/audit/handlers.py`)
+  - `StringIO` objects don't have a `.name` attribute, causing `AttributeError`
+  - Changed `self.stream.name` to `getattr(self.stream, "name", "<unnamed>")` (3 occurrences)
+
 ## [0.5.49] - 2026-01-10
 
 ### Added
