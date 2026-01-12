@@ -12,7 +12,14 @@ from typing import Any, Dict, List, Union
 
 
 def normalize_to_name_list(
-    value: Union[str, List[Union[str, Dict[str, str]]], Dict[str, str], None],
+    value: Union[
+        str,
+        List[str],
+        List[Dict[str, str]],
+        List[Union[str, Dict[str, str]]],
+        Dict[str, str],
+        None,
+    ],
 ) -> List[Dict[str, str]]:
     """
     Normalize various input formats to FortiOS API format: [{'name': 'value'}, ...]
@@ -64,7 +71,14 @@ def normalize_to_name_list(
 
 
 def normalize_member_list(
-    value: Union[str, List[Union[str, Dict[str, Any]]], Dict[str, Any], None],
+    value: Union[
+        str,
+        List[str],
+        List[Dict[str, Any]],
+        List[Union[str, Dict[str, Any]]],
+        Dict[str, Any],
+        None,
+    ],
 ) -> List[Dict[str, str]]:
     """
     Normalize various input formats for 'member' fields in groups.
@@ -90,7 +104,14 @@ def normalize_member_list(
 
 
 def normalize_table_field(
-    value: Union[str, List[Union[str, Dict[str, Any]]], Dict[str, Any], None],
+    value: Union[
+        str,
+        List[str],
+        List[Dict[str, Any]],
+        List[Union[str, Dict[str, Any]]],
+        Dict[str, Any],
+        None,
+    ],
     mkey: str = "name",
     required_fields: Union[List[str], None] = None,
     field_name: str = "field",
