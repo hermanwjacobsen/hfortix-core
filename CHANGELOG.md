@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Correctly handles any mix of strings and dicts in the same list
   - **Also fixed `normalize_table_field`** with the same mixed-list bug
 
+- **Type hint fixes for better IDE support** (`converters.py`, `normalizers.py`)
+  - `convert_boolean_to_str`: Added `int` to type hint (was `bool|str|None`, now `bool|str|int|None`)
+  - `normalize_to_name_list`, `normalize_member_list`, `normalize_table_field`: Changed type hints to allow mixed lists (`List[str|Dict]` instead of `List[str]|List[Dict]`)
+  - Fixes false Pylance/type checker errors when using valid inputs
+
 ## [0.5.50] - 2026-01-12
 
 ### Added
