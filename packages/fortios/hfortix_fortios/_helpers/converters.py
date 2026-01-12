@@ -9,7 +9,7 @@ Provides utilities for:
 from typing import Any
 
 
-def convert_boolean_to_str(value: bool | str | None) -> str | None:
+def convert_boolean_to_str(value: bool | str | int | None) -> str | None:
     """
     Convert Python boolean to FortiOS enable/disable string.
 
