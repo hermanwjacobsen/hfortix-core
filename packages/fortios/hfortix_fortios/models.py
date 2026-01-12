@@ -87,7 +87,14 @@ class FortiObject:
                 f"'{type(self).__name__}' object has no attribute '{name}'"
             )
 
-        value = self._data.get(name)
+        # Resolve key: try exact name first, then snake_case -> hyphen-case
+        key = name if name in self._data else name.replace("_", "-")
+
+        # If key not present, behave like previous implementation and return None
+        if key not in self._data:
+            return None
+
+        value = self._data.get(key)
 
         # Auto-wrap member_table fields (lists of dicts) in FortiObject
         if isinstance(value, list) and value:
@@ -113,7 +120,9 @@ class FortiObject:
             >>> obj.get_full('srcaddr')
             [{'name': 'addr1', 'q_origin_key': 'addr1'}]
         """
-        return self._data.get(name)
+        # Support both snake_case attribute names and hyphenated keys
+        key = name if name in self._data else name.replace("_", "-")
+        return self._data.get(key)
 
     def to_dict(self) -> dict:
         """
@@ -213,7 +222,8 @@ class FortiObject:
             >>> 'srcaddr' in obj
             True
         """
-        return key in self._data
+        # Consider both exact key and underscore->hyphen variants
+        return key in self._data or key.replace("_", "-") in self._data
 
     def __getitem__(self, key: str) -> Any:
         """
@@ -237,9 +247,19 @@ class FortiObject:
             >>> obj['action']
             'accept'
         """
-        if key not in self._data:
+        # Resolve key presence for both formats
+        if key in self._data:
+            raw_key = key
+        elif key.replace("_", "-") in self._data:
+            raw_key = key.replace("_", "-")
+        else:
             raise KeyError(key)
-        return getattr(self, key)
+
+        # Return processed value (apply same logic as attribute access)
+        value = self._data[raw_key]
+        if isinstance(value, list) and value and isinstance(value[0], dict):
+            return [FortiObject(item) for item in value]
+        return value
 
     def __len__(self) -> int:
         """
@@ -310,10 +330,15 @@ class FortiObject:
             >>> obj.get('nonexistent', 'default')
             'default'
         """
-        try:
-            return getattr(self, key)
-        except AttributeError:
+        # Resolve raw key (support snake_case attribute to hyphenated keys)
+        raw_key = key if key in self._data else key.replace("_", "-")
+        if raw_key not in self._data:
             return default
+
+        value = self._data[raw_key]
+        if isinstance(value, list) and value and isinstance(value[0], dict):
+            return [FortiObject(item) for item in value]
+        return value
 
 
 def process_response(
