@@ -271,8 +271,9 @@ class CEFFormatter:
 
         # Add username (from user_context if available)
         user = "api-token"
-        if operation.get("user_context", {}).get("username"):
-            user = operation["user_context"]["username"]
+        user_context = operation.get("user_context") or {}
+        if user_context.get("username"):
+            user = user_context["username"]
         extensions.append(f"suser={self._escape(user)}")
 
         return header + " ".join(extensions)
