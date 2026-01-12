@@ -43,17 +43,17 @@ def normalize_to_name_list(
     if isinstance(value, list):
         if not value:
             return []
-        # If first item is a dict, assume whole list is dicts
-        if isinstance(value[0], dict):
-            # Filter out empty dicts that sometimes appear in API responses
-            filtered: list[dict[str, Any]] = [
-                item
-                for item in value
-                if isinstance(item, dict) and item and "name" in item
-            ]
-            return filtered
-        # List of strings - strip whitespace from each
-        return [{"name": str(item).strip()} for item in value]
+        # Process each item based on its type (handles mixed lists)
+        result: list[dict[str, str]] = []
+        for item in value:
+            if isinstance(item, dict):
+                # Keep dict if it has 'name' key
+                if item and "name" in item:
+                    result.append(item)
+            elif item is not None:
+                # Convert string/other to dict - strip whitespace
+                result.append({"name": str(item).strip()})
+        return result
 
     # Single dict
     if isinstance(value, dict):

@@ -556,6 +556,16 @@ def to_xml(data: Any, root: str = "data", indent: int = 2) -> str:
         </policies>
     """
 
+    def _escape_xml(text: str) -> str:
+        """Escape special XML characters."""
+        # Order matters: & must be first to avoid double-escaping
+        text = text.replace("&", "&amp;")
+        text = text.replace("<", "&lt;")
+        text = text.replace(">", "&gt;")
+        text = text.replace('"', "&quot;")
+        text = text.replace("'", "&apos;")
+        return text
+
     def _format_xml(obj: Any, tag: str, level: int = 0) -> str:
         indent_str = " " * (indent * level)
 
@@ -563,7 +573,8 @@ def to_xml(data: Any, root: str = "data", indent: int = 2) -> str:
             return f"{indent_str}<{tag}/>"
 
         if isinstance(obj, (str, int, float, bool)):
-            return f"{indent_str}<{tag}>{obj}</{tag}>"
+            value = _escape_xml(str(obj)) if isinstance(obj, str) else obj
+            return f"{indent_str}<{tag}>{value}</{tag}>"
 
         if isinstance(obj, (list, tuple)):
             lines = [f"{indent_str}<{tag}>"]

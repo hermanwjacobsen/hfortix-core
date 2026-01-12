@@ -320,20 +320,25 @@ def validate_port_number(
     port: Union[int, None], field_name: str = "port"
 ) -> None:
     """
-    Validate port number is within valid range (0-4294967295).
+    Validate TCP/UDP port number is within valid range (0-65535).
+
+    This validator is for actual network port numbers used in TCP/UDP
+    protocols. For FortiOS integer fields that use 32-bit ranges,
+    use validate_integer_range() directly.
 
     Args:
         port: Port number to validate
         field_name: Name of the field (for error messages)
 
     Raises:
-        ValueError: If port is outside valid range
+        ValueError: If port is outside valid range (0-65535)
 
     Example:
         >>> validate_port_number(22, "ssh_port")  # OK
-        >>> validate_port_number(99999999, "port")  # Raises ValueError
+        >>> validate_port_number(443, "https_port")  # OK
+        >>> validate_port_number(70000, "port")  # Raises ValueError
     """
-    validate_integer_range(port, 0, 4294967295, field_name)
+    validate_integer_range(port, 0, 65535, field_name)
 
 
 # ============================================================================
