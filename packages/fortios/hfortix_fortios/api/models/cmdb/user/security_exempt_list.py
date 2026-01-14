@@ -8,28 +8,30 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional
+from typing import Any
+
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
+
 class SecurityExemptListRule(BaseModel):
     """
     Child table model for rule.
-    
+
     Configure rules for exempting users from captive portal authentication.
     """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    srcaddr: list[Srcaddr] = Field(default=None, description="Source addresses or address groups.")    
-    dstaddr: list[Dstaddr] = Field(default=None, description="Destination addresses or address groups.")    
+    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")
+    srcaddr: list[Srcaddr] = Field(default=None, description="Source addresses or address groups.")
+    dstaddr: list[Dstaddr] = Field(default=None, description="Destination addresses or address groups.")
     service: list[Service] = Field(default=None, description="Destination services.")
+
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -39,54 +41,51 @@ class SecurityExemptListRule(BaseModel):
 # Main Model
 # ============================================================================
 
+
 class SecurityExemptListModel(BaseModel):
     """
     Pydantic model for user/security_exempt_list configuration.
-    
+
     Configure security exemption list.
-    
+
     Validation Rules:        - name: max_length=35 pattern=        - description: max_length=127 pattern=        - rule: pattern=    """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-    
+
     # ========================================================================
     # Model Fields
     # ========================================================================
-    
-    name: str | None = Field(max_length=35, default="", description="Name of the exempt list.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
-    rule: list[Rule] = Field(default=None, description="Configure rules for exempting users from captive portal authentication.")    
-    # ========================================================================
+    name: str | None = Field(max_length=35, default="", description="Name of the exempt list.")    description: str | None = Field(max_length=127, default="", description="Description.")    rule: list[SecurityExemptListRule] = Field(default=None, description="Configure rules for exempting users from captive portal authentication.")    # ========================================================================
     # Custom Validators
     # ========================================================================
-    
+
     # ========================================================================
     # Helper Methods
     # ========================================================================
-    
+
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-        
+
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-    
+
     @classmethod
-    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+    def from_fortios_response(cls, data: dict[str, Any]) -> "SecurityExemptListModel":
         """
         Create model instance from FortiOS API response.
-        
+
         Args:
             data: Response data from API
-            
+
         Returns:
             Validated model instance
         """
@@ -96,7 +95,8 @@ class SecurityExemptListModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-Dict = dict[str, Any]  # For backward compatibility
+
+SecurityExemptListModelDict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -109,5 +109,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T09:38:26.508516Z
+# Generated: 2026-01-14T15:56:34.193553Z
 # ============================================================================

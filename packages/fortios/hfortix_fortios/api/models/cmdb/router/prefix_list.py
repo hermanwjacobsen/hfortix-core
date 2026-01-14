@@ -8,29 +8,31 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional
+from typing import Any
+
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
+
 class PrefixListRule(BaseModel):
     """
     Child table model for rule.
-    
+
     IPv4 prefix list rule.
     """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Rule ID.")    
-    action: Literal["permit", "deny"] | None = Field(default="permit", description="Permit or deny this IP address and netmask prefix.")    
-    prefix: str | None = Field(default="0.0.0.0 0.0.0.0", description="IPv4 prefix to define regular filter criteria, such as \"any\" or subnets.")    
-    ge: int | None = Field(ge=0, le=32, default="", description="Minimum prefix length to be matched (0 - 32).")    
+    id: int = Field(ge=0, le=4294967295, default=0, description="Rule ID.")
+    action: Literal["permit", "deny"] | None = Field(default="permit", description="Permit or deny this IP address and netmask prefix.")
+    prefix: str | None = Field(default="0.0.0.0 0.0.0.0", description="IPv4 prefix to define regular filter criteria, such as \"any\" or subnets.")
+    ge: int | None = Field(ge=0, le=32, default="", description="Minimum prefix length to be matched (0 - 32).")
     le: int | None = Field(ge=0, le=32, default="", description="Maximum prefix length to be matched (0 - 32).")
+
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -40,54 +42,51 @@ class PrefixListRule(BaseModel):
 # Main Model
 # ============================================================================
 
+
 class PrefixListModel(BaseModel):
     """
     Pydantic model for router/prefix_list configuration.
-    
+
     Configure IPv4 prefix lists.
-    
+
     Validation Rules:        - name: max_length=35 pattern=        - comments: max_length=127 pattern=        - rule: pattern=    """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-    
+
     # ========================================================================
     # Model Fields
     # ========================================================================
-    
-    name: str = Field(max_length=35, default="", description="Name.")    
-    comments: str | None = Field(max_length=127, default="", description="Comment.")    
-    rule: list[Rule] = Field(default=None, description="IPv4 prefix list rule.")    
-    # ========================================================================
+    name: str = Field(max_length=35, default="", description="Name.")    comments: str | None = Field(max_length=127, default="", description="Comment.")    rule: list[PrefixListRule] = Field(default=None, description="IPv4 prefix list rule.")    # ========================================================================
     # Custom Validators
     # ========================================================================
-    
+
     # ========================================================================
     # Helper Methods
     # ========================================================================
-    
+
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-        
+
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-    
+
     @classmethod
-    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+    def from_fortios_response(cls, data: dict[str, Any]) -> "PrefixListModel":
         """
         Create model instance from FortiOS API response.
-        
+
         Args:
             data: Response data from API
-            
+
         Returns:
             Validated model instance
         """
@@ -97,7 +96,8 @@ class PrefixListModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-Dict = dict[str, Any]  # For backward compatibility
+
+PrefixListModelDict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -110,5 +110,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T09:38:28.772795Z
+# Generated: 2026-01-14T15:56:36.362829Z
 # ============================================================================

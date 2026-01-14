@@ -8,27 +8,29 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional
+from typing import Any
+
 
 # ============================================================================
 # Child Table Models
 # ============================================================================
 
+
 class FilepatternEntries(BaseModel):
     """
     Child table model for entries.
-    
+
     Configure file patterns used by DLP blocking.
     """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
-    
-    filter_type: Literal["pattern", "type"] = Field(default="pattern", description="Filter by file name pattern or by file type.")    
-    pattern: str | None = Field(max_length=79, default="", description="Add a file name pattern.")    
+    filter_type: Literal["pattern", "type"] = Field(default="pattern", description="Filter by file name pattern or by file type.")
+    pattern: str | None = Field(max_length=79, default="", description="Add a file name pattern.")
     file_type: FileTypeEnum = Field(default="unknown", description="Select a file type.")
+
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -38,55 +40,51 @@ class FilepatternEntries(BaseModel):
 # Main Model
 # ============================================================================
 
+
 class FilepatternModel(BaseModel):
     """
     Pydantic model for dlp/filepattern configuration.
-    
+
     Configure file patterns used by DLP blocking.
-    
+
     Validation Rules:        - id: min=0 max=4294967295 pattern=        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - entries: pattern=    """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-    
+
     # ========================================================================
     # Model Fields
     # ========================================================================
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    name: str = Field(max_length=63, default="", description="Name of table containing the file pattern list.")    
-    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
-    entries: list[Entries] = Field(default=None, description="Configure file patterns used by DLP blocking.")    
-    # ========================================================================
+    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    name: str = Field(max_length=63, default="", description="Name of table containing the file pattern list.")    comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    entries: list[FilepatternEntries] = Field(default=None, description="Configure file patterns used by DLP blocking.")    # ========================================================================
     # Custom Validators
     # ========================================================================
-    
+
     # ========================================================================
     # Helper Methods
     # ========================================================================
-    
+
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-        
+
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-    
+
     @classmethod
-    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+    def from_fortios_response(cls, data: dict[str, Any]) -> "FilepatternModel":
         """
         Create model instance from FortiOS API response.
-        
+
         Args:
             data: Response data from API
-            
+
         Returns:
             Validated model instance
         """
@@ -96,7 +94,8 @@ class FilepatternModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-Dict = dict[str, Any]  # For backward compatibility
+
+FilepatternModelDict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -109,5 +108,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T09:38:29.360054Z
+# Generated: 2026-01-14T15:56:36.953425Z
 # ============================================================================

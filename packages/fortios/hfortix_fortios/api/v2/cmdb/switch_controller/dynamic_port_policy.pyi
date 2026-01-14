@@ -52,7 +52,7 @@ class DynamicPortPolicyPolicyItem(TypedDict):
     host: str  # Match policy based on host. | MaxLen: 64
     lldp_profile: str  # LLDP profile to be applied when using this policy. | MaxLen: 63
     qos_policy: str  # QoS policy to be applied when using this policy. | MaxLen: 63
-    1x_802: str  # 802.1x security policy to be applied when using th | MaxLen: 31
+    x802_1x: str  # 802.1x security policy to be applied when using th | MaxLen: 31
     vlan_policy: str  # VLAN policy to be applied when using this policy. | MaxLen: 63
     bounce_port_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: enable
     bounce_port_duration: int  # Bounce duration in seconds of a switch port where | Default: 5 | Min: 1 | Max: 30
@@ -100,7 +100,7 @@ class DynamicPortPolicyPolicyObject:
     # QoS policy to be applied when using this policy. | MaxLen: 63
     qos_policy: str
     # 802.1x security policy to be applied when using this policy. | MaxLen: 31
-    1x_802: str
+    x802_1x: str
     # VLAN policy to be applied when using this policy. | MaxLen: 63
     vlan_policy: str
     # Enable/disable bouncing | Default: enable
@@ -621,7 +621,6 @@ class DynamicPortPolicy:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -927,7 +926,6 @@ class DynamicPortPolicyDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -1270,7 +1268,6 @@ class DynamicPortPolicyObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
