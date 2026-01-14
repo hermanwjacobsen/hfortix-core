@@ -311,7 +311,6 @@ class Address6Dynamic:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -505,7 +504,6 @@ class Address6DynamicDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -706,7 +704,6 @@ class Address6DynamicObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...

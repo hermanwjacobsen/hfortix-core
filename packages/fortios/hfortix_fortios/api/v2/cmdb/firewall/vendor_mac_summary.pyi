@@ -317,7 +317,6 @@ class VendorMacSummary:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -511,7 +510,6 @@ class VendorMacSummaryDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -712,7 +710,6 @@ class VendorMacSummaryObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...

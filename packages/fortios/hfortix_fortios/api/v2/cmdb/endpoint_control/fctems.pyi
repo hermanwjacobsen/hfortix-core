@@ -835,7 +835,6 @@ class Fctems:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -1321,7 +1320,6 @@ class FctemsDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -1884,7 +1882,6 @@ class FctemsObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...

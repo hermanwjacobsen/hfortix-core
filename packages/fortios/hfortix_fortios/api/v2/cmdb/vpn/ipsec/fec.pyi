@@ -550,7 +550,6 @@ class Fec:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -838,7 +837,6 @@ class FecDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -1159,7 +1157,6 @@ class FecObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...

@@ -538,7 +538,6 @@ class AnqpNaiRealm:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -826,7 +825,6 @@ class AnqpNaiRealmDictMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...
@@ -1147,7 +1145,6 @@ class AnqpNaiRealmObjectMode:
     @staticmethod
     def help(field_name: str | None = ...) -> str: ...
     
-    @staticmethod
     @overload
     @staticmethod
     def fields(detailed: Literal[False] = ...) -> list[str]: ...

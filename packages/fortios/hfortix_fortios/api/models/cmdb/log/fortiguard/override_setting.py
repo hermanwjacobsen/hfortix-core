@@ -7,76 +7,72 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
-from typing import Any, Literal, Optional
+from pydantic import BaseModel, Field
+from typing import Any, Literal
 from enum import Enum
 
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
+
 class OverrideSettingUpload_optionEnum(str, Enum):
     """Allowed values for upload_option field."""
-    STORE_AND_UPLOAD = "store-and-upload"    REALTIME = "realtime"    1_MINUTE = "1-minute"    5_MINUTE = "5-minute"
+    STORE_AND_UPLOAD = "store-and-upload"
+    REALTIME = "realtime"
+    VALUE_1_MINUTE = "1-minute"
+    VALUE_5_MINUTE = "5-minute"
+
 
 # ============================================================================
 # Main Model
 # ============================================================================
 
+
 class OverrideSettingModel(BaseModel):
     """
     Pydantic model for log/fortiguard/override_setting configuration.
-    
+
     Override global FortiCloud logging settings for this VDOM.
-    
+
     Validation Rules:        - override: pattern=        - status: pattern=        - upload_option: pattern=        - upload_interval: pattern=        - upload_day: pattern=        - upload_time: pattern=        - priority: pattern=        - max_log_rate: min=0 max=100000 pattern=        - access_config: pattern=    """
-    
+
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
         validate_assignment = True  # Validate on attribute assignment
         use_enum_values = True  # Use enum values instead of names
-    
+
     # ========================================================================
     # Model Fields
     # ========================================================================
-    
-    override: Literal["enable", "disable"] | None = Field(default="disable", description="Overriding FortiCloud settings for this VDOM or use global settings.")    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging to FortiCloud.")    
-    upload_option: UploadOptionEnum | None = Field(default="5-minute", description="Configure how log messages are sent to FortiCloud.")    
-    upload_interval: Literal["daily", "weekly", "monthly"] | None = Field(default="daily", description="Frequency of uploading log files to FortiCloud.")    
-    upload_day: str | None = Field(default="", description="Day of week to roll logs.")    
-    upload_time: str | None = Field(default="", description="Time of day to roll logs (hh:mm).")    
-    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    
-    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="FortiCloud maximum log rate in MBps (0 = unlimited).")    
-    access_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiCloud access to configuration and data.")    
-    # ========================================================================
+    override: Literal["enable", "disable"] | None = Field(default="disable", description="Overriding FortiCloud settings for this VDOM or use global settings.")    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging to FortiCloud.")    upload_option: OverrideSettingUploadOptionEnum | None = Field(default="5-minute", description="Configure how log messages are sent to FortiCloud.")    upload_interval: Literal["daily", "weekly", "monthly"] | None = Field(default="daily", description="Frequency of uploading log files to FortiCloud.")    upload_day: str | None = Field(default="", description="Day of week to roll logs.")    upload_time: str | None = Field(default="", description="Time of day to roll logs (hh:mm).")    priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="FortiCloud maximum log rate in MBps (0 = unlimited).")    access_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiCloud access to configuration and data.")    # ========================================================================
     # Custom Validators
     # ========================================================================
-    
+
     # ========================================================================
     # Helper Methods
     # ========================================================================
-    
+
     def to_fortios_dict(self) -> dict[str, Any]:
         """
         Convert model to FortiOS API payload format.
-        
+
         Returns:
             Dict suitable for POST/PUT operations
         """
         # Export with exclude_none to avoid sending null values
         return self.model_dump(exclude_none=True, by_alias=True)
-    
+
     @classmethod
-    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+    def from_fortios_response(cls, data: dict[str, Any]) -> "OverrideSettingModel":
         """
         Create model instance from FortiOS API response.
-        
+
         Args:
             data: Response data from API
-            
+
         Returns:
             Validated model instance
         """
@@ -86,7 +82,8 @@ class OverrideSettingModel(BaseModel):
 # Type Aliases for Convenience
 # ============================================================================
 
-Dict = dict[str, Any]  # For backward compatibility
+
+OverrideSettingModelDict = dict[str, Any]  # For backward compatibility
 
 # ============================================================================
 # Module Exports
@@ -99,5 +96,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-14T09:38:27.844524Z
+# Generated: 2026-01-14T15:56:35.442063Z
 # ============================================================================

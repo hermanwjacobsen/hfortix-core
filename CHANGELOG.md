@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **Model Generator: Fixed enum syntax errors** (`pydantic_model.py.j2`, `model_generator.py`)
+  - Enum values were rendered on a single line causing syntax errors
+  - Changed `{%- endfor %}` to `{% endfor %}` to preserve newlines between enum values
+
+- **Model Generator: Fixed invalid Python identifiers** (`model_generator.py`, `utils/naming.py`)
+  - Field names with spaces (e.g., `default value`) now converted to underscores
+  - Field names with angle brackets (e.g., `<field_name>`) now stripped
+  - Field names with parentheses (e.g., `threshold(default)`) now handled
+  - Field names starting with digits (e.g., `204-size-limit`) now use consistent naming:
+    - Simple numeric prefixes moved to end: `204-size-limit` → `size_limit_204`
+    - Protocol identifiers prefixed with `x`: `802-1x` → `x802_1x`
+  - Plus signs in identifiers: `tacacs+` → `tacacs_plus` (consistent with schema parser)
+
+- **Model Generator: Fixed multi-line default values** (`model_generator.py`)
+  - Default string values containing newlines now properly escaped as `\n`
+  - Previously caused unterminated string literal syntax errors
+
+- **Model Generator: Fixed undefined child model references** (`model_generator.py`)
+  - Child table type references now include schema class prefix (e.g., `GroupApplication` not `Application`)
+  - Enum type references now include schema class prefix (e.g., `GroupPopularityEnum` not `PopularityEnum`)
+  - Only fields with actual children generate child model types (not `multiple_values` fields)
+
+- **Model Generator: Fixed empty forward annotation** (`pydantic_model.py.j2`)
+  - `from_fortios_response()` method was using undefined `schema.pydantic_class_name`
+  - Changed to `schema.class_name + "Model"` for correct forward reference
+
+### Changed
+- **Model Generator: Improved code style compliance** (`pydantic_model.py.j2`, `model_generator.py`)
+  - Added post-processing to strip trailing whitespace from generated files
+  - Ensures newline at end of file (PEP 8)
+  - Added proper blank lines between class definitions (PEP 8 E302)
+  - Conditional imports for `field_validator` (only when datasource validators present)
+  - Removed unused `Optional` import (Python 3.10+ uses `| None` syntax)
+
+- **Model Generator: Uses shared naming utility** (`model_generator.py`)
+  - Field name conversion now uses `kebab_to_snake()` from `utils/naming.py`
+  - Ensures consistent naming between endpoint files and model files
+
 ## [0.5.61] - 2026-01-14
 
 ### Fixed
