@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.50**
+> **⚠️ BETA STATUS - Version 0.5.57**
 >
-> - **Current Version**: 0.5.50 (Released - January 12, 2026)
+> - **Current Version**: 0.5.57 (Released - January 14, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!

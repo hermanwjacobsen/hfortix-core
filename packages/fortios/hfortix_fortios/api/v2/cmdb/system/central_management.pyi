@@ -1,4 +1,5 @@
-from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload, Generator, final
+from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
+from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject
 from hfortix_core.types import MutationResponse, RawAPIResponse
 

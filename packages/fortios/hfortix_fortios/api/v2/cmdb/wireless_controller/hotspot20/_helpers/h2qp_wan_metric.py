@@ -1,6 +1,7 @@
 """Validation helpers for wireless_controller/hotspot20/h2qp_wan_metric - Auto-generated"""
 
-from typing import Any, TypedDict, NotRequired, Literal
+from typing import Any, TypedDict, Literal
+from typing_extensions import NotRequired
 
 # Import common validators from central _helpers module
 from hfortix_fortios._helpers import (

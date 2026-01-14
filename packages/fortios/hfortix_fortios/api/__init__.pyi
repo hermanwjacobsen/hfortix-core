@@ -7,19 +7,19 @@ from hfortix_core.http.interface import IHTTPClient
 from .utils import Utils
 from .v2.cmdb import CMDB, CMDBDictMode, CMDBObjectMode
 from .v2.log import Log
-from .v2.monitor import Monitor
-from .v2.service import Service
+from .v2.monitor import Monitor, MonitorDictMode, MonitorObjectMode
+from .v2.service import Service, ServiceDictMode, ServiceObjectMode
 
-__all__ = ["API", "APIDictMode", "APIObjectMode"]
+__all__ = ["API", "APIDictMode", "APIObjectMode", "CMDB", "Log", "Monitor", "Service"]
 
 
 class APIDictMode:
     """API interface for dict response mode."""
     
     cmdb: CMDBDictMode
-    monitor: Monitor
+    monitor: MonitorDictMode
     log: Log
-    service: Service
+    service: ServiceDictMode
     utils: Utils
     
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None: ...
@@ -29,9 +29,9 @@ class APIObjectMode:
     """API interface for object response mode."""
     
     cmdb: CMDBObjectMode
-    monitor: Monitor
+    monitor: MonitorObjectMode
     log: Log
-    service: Service
+    service: ServiceObjectMode
     utils: Utils
     
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None: ...

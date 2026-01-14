@@ -11,17 +11,17 @@ if TYPE_CHECKING:
     from .device import DeviceDictMode, DeviceObjectMode
     from .firewall import Firewall
     from .fortitoken import Fortitoken
-    from .fortitoken_cloud import FortitokenCloud
+    from .fortitoken_cloud import FortitokenCloudDictMode, FortitokenCloudObjectMode
     from .fsso import Fsso
     from .guest import GuestDictMode, GuestObjectMode
     from .info import InfoDictMode, InfoObjectMode
     from .local import LocalDictMode, LocalObjectMode
-    from .password_policy_conform import PasswordPolicyConform
+    from .password_policy_conform import PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
     from .proxy import Proxy
     from .query import QueryDictMode, QueryObjectMode
     from .radius import RadiusDictMode, RadiusObjectMode
     from .scim import ScimDictMode, ScimObjectMode
-    from .tacacs_plus import TacacsPlus
+    from .tacacs_plus import TacacsPlusDictMode, TacacsPlusObjectMode
 
 __all__ = [
     "CollectedEmail",
@@ -40,17 +40,17 @@ class UserDictMode:
     device: DeviceDictMode
     firewall: Firewall
     fortitoken: Fortitoken
-    fortitoken_cloud: FortitokenCloud
+    fortitoken_cloud: FortitokenCloudDictMode
     fsso: Fsso
     guest: GuestDictMode
     info: InfoDictMode
     local: LocalDictMode
-    password_policy_conform: PasswordPolicyConform
+    password_policy_conform: PasswordPolicyConformDictMode
     proxy: Proxy
     query: QueryDictMode
     radius: RadiusDictMode
     scim: ScimDictMode
-    tacacs_plus: TacacsPlus
+    tacacs_plus: TacacsPlusDictMode
     collected_email: CollectedEmailDictMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
@@ -69,17 +69,17 @@ class UserObjectMode:
     device: DeviceObjectMode
     firewall: Firewall
     fortitoken: Fortitoken
-    fortitoken_cloud: FortitokenCloud
+    fortitoken_cloud: FortitokenCloudObjectMode
     fsso: Fsso
     guest: GuestObjectMode
     info: InfoObjectMode
     local: LocalObjectMode
-    password_policy_conform: PasswordPolicyConform
+    password_policy_conform: PasswordPolicyConformObjectMode
     proxy: Proxy
     query: QueryObjectMode
     radius: RadiusObjectMode
     scim: ScimObjectMode
-    tacacs_plus: TacacsPlus
+    tacacs_plus: TacacsPlusObjectMode
     collected_email: CollectedEmailObjectMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:

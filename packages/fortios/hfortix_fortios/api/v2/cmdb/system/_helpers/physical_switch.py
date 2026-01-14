@@ -1,6 +1,7 @@
 """Validation helpers for system/physical_switch - Auto-generated"""
 
-from typing import Any, TypedDict, NotRequired, Literal
+from typing import Any, TypedDict, Literal
+from typing_extensions import NotRequired
 
 # Import common validators from central _helpers module
 from hfortix_fortios._helpers import (

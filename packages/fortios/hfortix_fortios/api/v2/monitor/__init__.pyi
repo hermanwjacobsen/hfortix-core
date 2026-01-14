@@ -40,12 +40,12 @@ if TYPE_CHECKING:
     from . import wifi
 
 __all__ = [
-    "MONITOR",
-    "MONITORDictMode",
-    "MONITORObjectMode",
+    "Monitor",
+    "MonitorDictMode",
+    "MonitorObjectMode",
 ]
 
-class MONITORDictMode:
+class MonitorDictMode:
     """MONITOR API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
@@ -54,9 +54,9 @@ class MONITORDictMode:
     
     azure: azure.AzureDictMode
     casb: casb.CasbDictMode
-    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
-    extender_controller: extender_controller.ExtenderController  # No mode classes yet
-    extension_controller: extension_controller.ExtensionController  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControlDictMode
+    extender_controller: extender_controller.ExtenderControllerDictMode
+    extension_controller: extension_controller.ExtensionControllerDictMode
     firewall: firewall.FirewallDictMode
     firmware: firmware.FirmwareDictMode
     fortiguard: fortiguard.FortiguardDictMode
@@ -70,16 +70,16 @@ class MONITORDictMode:
     router: router.RouterDictMode
     sdwan: sdwan.SdwanDictMode
     service: service.ServiceDictMode
-    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    switch_controller: switch_controller.SwitchControllerDictMode
     system: system.SystemDictMode
     user: user.UserDictMode
     utm: utm.UtmDictMode
     videofilter: videofilter.VideofilterDictMode
-    virtual_wan: virtual_wan.VirtualWan  # No mode classes yet
+    virtual_wan: virtual_wan.VirtualWanDictMode
     vpn: vpn.VpnDictMode
-    vpn_certificate: vpn_certificate.VpnCertificate  # No mode classes yet
+    vpn_certificate: vpn_certificate.VpnCertificateDictMode
     wanopt: wanopt.WanoptDictMode
-    web_ui: web_ui.WebUi  # No mode classes yet
+    web_ui: web_ui.WebUiDictMode
     webcache: webcache.WebcacheDictMode
     webfilter: webfilter.WebfilterDictMode
     webproxy: webproxy.WebproxyDictMode
@@ -90,7 +90,7 @@ class MONITORDictMode:
         ...
 
 
-class MONITORObjectMode:
+class MonitorObjectMode:
     """MONITOR API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
@@ -99,9 +99,9 @@ class MONITORObjectMode:
     
     azure: azure.AzureObjectMode
     casb: casb.CasbObjectMode
-    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
-    extender_controller: extender_controller.ExtenderController  # No mode classes yet
-    extension_controller: extension_controller.ExtensionController  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControlObjectMode
+    extender_controller: extender_controller.ExtenderControllerObjectMode
+    extension_controller: extension_controller.ExtensionControllerObjectMode
     firewall: firewall.FirewallObjectMode
     firmware: firmware.FirmwareObjectMode
     fortiguard: fortiguard.FortiguardObjectMode
@@ -115,16 +115,16 @@ class MONITORObjectMode:
     router: router.RouterObjectMode
     sdwan: sdwan.SdwanObjectMode
     service: service.ServiceObjectMode
-    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    switch_controller: switch_controller.SwitchControllerObjectMode
     system: system.SystemObjectMode
     user: user.UserObjectMode
     utm: utm.UtmObjectMode
     videofilter: videofilter.VideofilterObjectMode
-    virtual_wan: virtual_wan.VirtualWan  # No mode classes yet
+    virtual_wan: virtual_wan.VirtualWanObjectMode
     vpn: vpn.VpnObjectMode
-    vpn_certificate: vpn_certificate.VpnCertificate  # No mode classes yet
+    vpn_certificate: vpn_certificate.VpnCertificateObjectMode
     wanopt: wanopt.WanoptObjectMode
-    web_ui: web_ui.WebUi  # No mode classes yet
+    web_ui: web_ui.WebUiObjectMode
     webcache: webcache.WebcacheObjectMode
     webfilter: webfilter.WebfilterObjectMode
     webproxy: webproxy.WebproxyObjectMode
@@ -136,7 +136,7 @@ class MONITORObjectMode:
 
 
 # Base class for backwards compatibility
-class MONITOR:
+class Monitor:
     """MONITOR API category."""
     
     azure: azure.Azure

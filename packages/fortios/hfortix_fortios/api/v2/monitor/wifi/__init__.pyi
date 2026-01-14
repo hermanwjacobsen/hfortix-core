@@ -15,12 +15,12 @@ if TYPE_CHECKING:
     from .station_capability import StationCapability, StationCapabilityDictMode, StationCapabilityObjectMode
     from .statistics import Statistics, StatisticsDictMode, StatisticsObjectMode
     from .unassociated_devices import UnassociatedDevices, UnassociatedDevicesDictMode, UnassociatedDevicesObjectMode
-    from .ap_profile import ApProfile
+    from .ap_profile import ApProfileDictMode, ApProfileObjectMode
     from .client_ns import Client
     from .euclid import Euclid
     from .firmware import Firmware
     from .managed_ap import ManagedAp
-    from .nac_device import NacDevice
+    from .nac_device import NacDeviceDictMode, NacDeviceObjectMode
     from .network import NetworkDictMode, NetworkObjectMode
     from .region_image import RegionImage
     from .rogue_ap import RogueAp
@@ -49,12 +49,12 @@ class WifiDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    ap_profile: ApProfile
+    ap_profile: ApProfileDictMode
     client: Client
     euclid: Euclid
     firmware: Firmware
     managed_ap: ManagedAp
-    nac_device: NacDevice
+    nac_device: NacDeviceDictMode
     network: NetworkDictMode
     region_image: RegionImage
     rogue_ap: RogueAp
@@ -83,12 +83,12 @@ class WifiObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    ap_profile: ApProfile
+    ap_profile: ApProfileObjectMode
     client: Client
     euclid: Euclid
     firmware: Firmware
     managed_ap: ManagedAp
-    nac_device: NacDevice
+    nac_device: NacDeviceObjectMode
     network: NetworkObjectMode
     region_image: RegionImage
     rogue_ap: RogueAp

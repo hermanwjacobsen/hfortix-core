@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     from .acl import Acl
     from .acl6 import Acl6
     from .central_snat_map import CentralSnatMap
-    from .clearpass_address import ClearpassAddress
+    from .clearpass_address import ClearpassAddressDictMode, ClearpassAddressObjectMode
     from .dnat import Dnat
     from .gtp import Gtp
     from .ippool import Ippool
@@ -48,7 +48,7 @@ if TYPE_CHECKING:
     from .session import SessionDictMode, SessionObjectMode
     from .session6 import Session6DictMode, Session6ObjectMode
     from .shaper import Shaper
-    from .ztna_firewall_policy import ZtnaFirewallPolicy
+    from .ztna_firewall_policy import ZtnaFirewallPolicyDictMode, ZtnaFirewallPolicyObjectMode
 
 __all__ = [
     "Address6Dynamic",
@@ -90,7 +90,7 @@ class FirewallDictMode:
     acl: Acl
     acl6: Acl6
     central_snat_map: CentralSnatMap
-    clearpass_address: ClearpassAddress
+    clearpass_address: ClearpassAddressDictMode
     dnat: Dnat
     gtp: Gtp
     ippool: Ippool
@@ -104,7 +104,7 @@ class FirewallDictMode:
     session: SessionDictMode
     session6: Session6DictMode
     shaper: Shaper
-    ztna_firewall_policy: ZtnaFirewallPolicy
+    ztna_firewall_policy: ZtnaFirewallPolicyDictMode
     address6_dynamic: Address6DynamicDictMode
     address_dynamic: AddressDynamicDictMode
     address_fqdns: AddressFqdnsDictMode
@@ -146,7 +146,7 @@ class FirewallObjectMode:
     acl: Acl
     acl6: Acl6
     central_snat_map: CentralSnatMap
-    clearpass_address: ClearpassAddress
+    clearpass_address: ClearpassAddressObjectMode
     dnat: Dnat
     gtp: Gtp
     ippool: Ippool
@@ -160,7 +160,7 @@ class FirewallObjectMode:
     session: SessionObjectMode
     session6: Session6ObjectMode
     shaper: Shaper
-    ztna_firewall_policy: ZtnaFirewallPolicy
+    ztna_firewall_policy: ZtnaFirewallPolicyObjectMode
     address6_dynamic: Address6DynamicObjectMode
     address_dynamic: AddressDynamicObjectMode
     address_fqdns: AddressFqdnsObjectMode
