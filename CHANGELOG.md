@@ -5,12 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.60] - 2026-01-14
 
-### Added
-- **Expanded test suite with 2 new test files (~30 new tests)**
-  - `test_metadata_mixin.py` - 26 tests for `MetadataMixin` methods on endpoint classes (`schema()`, `fields()`, `defaults()`, `required_fields()`, `field_info()`, `validate_field()`, `help()`)
-  - `test_forti_object.py` (updated) - +4 tests for `FortiObject.json` property
+### Fixed
+- **Bug #29: Fixed `fields()` stub return type with proper overloads** (`endpoint_class.pyi.j2`)
+  - Stub incorrectly declared return type as `Union[list[str], list[dict[str, Any]]]`
+  - Now uses `@overload` for precise typing:
+    - `fields(detailed=False)` → `list[str]`
+    - `fields(detailed=True)` → `dict[str, Any]`
+  - Fixes Pylance error when calling `.items()` on `fields(detailed=True)` result
+
+- **Bug #30: Fixed `field_info()` stub return type** (`endpoint_class.pyi.j2`)
+  - Stub incorrectly declared return type as `dict[str, Any]`
+  - Now correctly returns `dict[str, Any] | None`
+  - Fixes Pylance error when field doesn't exist
+
+### Changed
+- Updated all 1062 generated `.pyi` stub files with correct `fields()` and `field_info()` signatures
+
+## [0.5.59] - 2026-01-14
 
 ### Fixed
 - **Bug #27: Fixed `MetadataMixin.validate_field()` stub return type** (`endpoint_class.pyi.j2`)
@@ -18,6 +31,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Actual runtime returns `tuple[bool, str | None]` where second element is error message
   - Updated all 1062 generated `.pyi` stub files with correct signature
   - Fixes Pylance error "bool is not iterable" when unpacking validation result
+
+- **Bug #28: Added `FortiObject.json` property to stub** (`models.pyi`)
+  - Property was missing from type stubs
+  - Added `@property def json(self) -> dict[str, Any]: ...`
+
+### Added
+- **Expanded test suite with 2 new test files (~30 new tests)**
+  - `test_metadata_mixin.py` - 26 tests for `MetadataMixin` methods on endpoint classes
+  - `test_forti_object.py` (updated) - +4 tests for `FortiObject.json` property
 
 ## [0.5.57] - 2026-01-14
 
