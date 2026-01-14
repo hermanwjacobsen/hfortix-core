@@ -53,7 +53,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          # Uses .flake8 config file (79 chars, ignores E501 for api/* folders)
+          # Uses .flake8 config file (120 chars, ignores E501 for line length since black handles it)
           flake8 packages/core/hfortix_core packages/fortios/hfortix_fortios packages/meta/hfortix --statistics
 
   type-check:

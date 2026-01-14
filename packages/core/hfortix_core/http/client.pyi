@@ -165,7 +165,6 @@ class HTTPClient:
     def close(self) -> None:
         """Close HTTP client and release resources."""
         ...
-
     # Static validation helper methods
     @staticmethod
     def validate_mkey(mkey: Any, parameter_name: str = "mkey") -> str:
