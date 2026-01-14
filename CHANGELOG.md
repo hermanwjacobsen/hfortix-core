@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Expanded test suite with 2 new test files (~30 new tests)**
+  - `test_metadata_mixin.py` - 26 tests for `MetadataMixin` methods on endpoint classes (`schema()`, `fields()`, `defaults()`, `required_fields()`, `field_info()`, `validate_field()`, `help()`)
+  - `test_forti_object.py` (updated) - +4 tests for `FortiObject.json` property
+
+### Fixed
+- **Bug #27: Fixed `MetadataMixin.validate_field()` stub return type** (`endpoint_class.pyi.j2`)
+  - Stub incorrectly declared return type as `bool`
+  - Actual runtime returns `tuple[bool, str | None]` where second element is error message
+  - Updated all 1062 generated `.pyi` stub files with correct signature
+  - Fixes Pylance error "bool is not iterable" when unpacking validation result
+
 ## [0.5.57] - 2026-01-14
 
 ### Added

@@ -146,6 +146,26 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
+    @property
+    def json(self) -> dict[str, Any]:
+        """
+        Get the raw JSON data as a dictionary.
+
+        This is an alias for to_dict() providing a more intuitive interface.
+        Use this when you need the complete API response structure.
+
+        Returns:
+            Original API response dictionary
+
+        Examples:
+            >>> delete = fgt.api.cmdb.firewall.policy.delete(policyid=1, response_mode="object")
+            >>> delete.json
+            {'http_method': 'DELETE', 'status': 'success', 'http_status': 200, ...}
+            >>> delete.json['status']
+            'success'
+        """
+        ...
+
     def __repr__(self) -> str:
         """
         String representation of the object.
