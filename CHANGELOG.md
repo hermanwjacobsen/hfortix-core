@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.61] - 2026-01-14
+
+### Fixed
+- **Bug #31: Fixed deprecated `datetime.utcnow()` warning** (`hfortix_core/audit/formatters.py`)
+  - `SyslogFormatter` was using deprecated `datetime.utcnow()` (deprecated in Python 3.12+)
+  - Changed to `datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")`
+  - Eliminates deprecation warnings on Python 3.12+
+
 ## [0.5.60] - 2026-01-14
 
 ### Fixed
@@ -212,7 +220,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.51] - 2026-01-12
 
 ### Fixed
-- **BUG #5: Fixed `to_xml()` producing invalid XML with special characters** (`formatting.py`, `fmt.py`)
+- **Bug #3: Fixed `FortiObject` hyphen-to-underscore attribute access** (`models.py`)
+  - `obj.list_data` returned `None` when key was `"list-data"`
+  - `__getattr__` now tries both `name` and `name.replace('_', '-')` for lookup
+  - Enables Pythonic snake_case access to FortiOS hyphenated field names
+
+- **Bug #4: Fixed `FortiObject.get()` ignoring default value** (`models.py`)
+  - `obj.get("missing", "default")` returned `None` instead of `"default"`
+  - Now checks `if key in self._data` before using attribute access
+  - Returns default when key is not present in data
+
+- **Bug #5: Fixed `to_xml()` producing invalid XML with special characters** (`formatting.py`, `fmt.py`)
   - Special characters (`<`, `>`, `&`, `"`, `'`) were not escaped, causing XML parse errors
   - Added `_escape_xml()` helper function that properly escapes all XML special characters
   - Fixed in both `hfortix_fortios/formatting.py` and `hfortix_core/fmt.py`
@@ -249,10 +267,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `test_exceptions.py` (11 tests) - Full exception hierarchy
 
 ### Fixed
-- **Fixed `CEFFormatter` crash when `user_context=None`** (`hfortix_core/audit/formatters.py`)
+- **Bug #1: Fixed `CEFFormatter` crash when `user_context=None`** (`hfortix_core/audit/formatters.py`)
   - `operation.get("user_context", {}).get("username")` crashes if `user_context` is explicitly `None`
   - Changed to `(operation.get("user_context") or {}).get("username")` to handle `None` values
-- **Fixed `StreamHandler` crash with `StringIO` objects** (`hfortix_core/audit/handlers.py`)
+- **Bug #2: Fixed `StreamHandler` crash with `StringIO` objects** (`hfortix_core/audit/handlers.py`)
   - `StringIO` objects don't have a `.name` attribute, causing `AttributeError`
   - Changed `self.stream.name` to `getattr(self.stream, "name", "<unnamed>")` (3 occurrences)
 
