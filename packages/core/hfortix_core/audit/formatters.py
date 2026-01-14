@@ -154,7 +154,8 @@ class SyslogFormatter:
 
         # Get timestamp (use operation timestamp or current time)
         timestamp = operation.get(
-            "timestamp", datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            "timestamp",
+            datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         )
 
         # Message is the full operation as JSON

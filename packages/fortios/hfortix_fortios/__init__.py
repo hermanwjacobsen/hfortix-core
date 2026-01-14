@@ -54,18 +54,18 @@ from .models import FortiObject
 # Import type definitions for IDE support
 from .types import (
     ActionType,
+    FortiOSDictResponse,
     FortiOSErrorResponse,
+    FortiOSListResponse,
     FortiOSResponse,
     FortiOSSuccessResponse,
-    FortiOSListResponse,
-    FortiOSDictResponse,
     LogSeverity,
     ProtocolType,
     ScheduleType,
     StatusType,
 )
 
-__version__ = "0.5.61"
+__version__ = "0.5.62"
 
 __all__ = [
     # Main client

@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Changed to `datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")`
   - Eliminates deprecation warnings on Python 3.12+
 
+### Changed
+- **Linting configuration updates**
+  - Added `E501` (line too long) to `.flake8` `extend-ignore` - line length handled by black
+  - Added `packages/fortios/hfortix_fortios/api` to bandit `exclude_dirs` in `pyproject.toml`
+  - Added `X` and `Tests` directories to `.flake8` excludes for consistency
+  - Updated CI workflow comment to reflect actual flake8 configuration (120 chars)
+
+- **Code formatting fixes** (isort + black)
+  - Fixed import sorting in 4 files (`.pyi` stubs and `__init__.py`)
+  - Reformatted 8 files with black (line length, spacing)
+  - All packages now pass isort, black, flake8, and bandit checks
+
 ## [0.5.60] - 2026-01-14
 
 ### Fixed
