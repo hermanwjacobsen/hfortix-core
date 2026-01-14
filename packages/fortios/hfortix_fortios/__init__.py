@@ -57,13 +57,15 @@ from .types import (
     FortiOSErrorResponse,
     FortiOSResponse,
     FortiOSSuccessResponse,
+    FortiOSListResponse,
+    FortiOSDictResponse,
     LogSeverity,
     ProtocolType,
     ScheduleType,
     StatusType,
 )
 
-__version__ = "0.5.50"
+__version__ = "0.5.57"
 
 __all__ = [
     # Main client
@@ -80,6 +82,8 @@ __all__ = [
     "help",
     # Type definitions for IDE support
     "FortiOSSuccessResponse",
+    "FortiOSListResponse",
+    "FortiOSDictResponse",
     "FortiOSErrorResponse",
     "FortiOSResponse",
     "ActionType",

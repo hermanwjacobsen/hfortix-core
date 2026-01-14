@@ -7,6 +7,174 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.57] - 2026-01-14
+
+### Added
+- **Expanded test suite with 8 new test files (~78 new tests)**
+  - `test_readonly_cache.py` - 9 tests for module-level cache functions (`hfortix_core.readonly_cache`)
+  - `test_debug_session.py` - 6 tests for `DebugSession` class (request tracking)
+  - `test_configure_logging.py` - 9 tests for `configure_logging()` function
+  - `test_request_logger.py` - 7 tests for `RequestLogger` class
+  - `test_http_client_advanced.py` - 10 tests for HTTPClient/FortiOS advanced methods
+  - `test_syslog_handler.py` - 6 tests for `SyslogHandler` audit logging
+  - `test_core_types.py` - 15 tests for `hfortix_core` TypedDicts (`ConnectionStats`, `RequestInfo`, `APIResponse`, etc.)
+  - `test_fortios_types.py` - 16 tests for `hfortix_fortios` response types and Literal types (`ActionType`, `StatusType`, etc.)
+
+### Fixed
+- **Generator: Fixed `NotRequired` import for Python <3.11 compatibility**
+  - Changed `from typing import NotRequired` to `from typing_extensions import NotRequired`
+  - `NotRequired` was added to `typing` in Python 3.11, but hfortix supports Python 3.10+
+  - Updated templates: `endpoint_class.pyi.j2`, `validator.py.j2`
+  - Updated manual files: `types.py`, `types.pyi`
+  - Fixes Pylance error: `"NotRequired" is unknown import symbol`
+
+- **Generator: Fixed Monitor/Service class names in stub files**
+  - Template `toplevel_init.pyi.j2` was generating `MONITOR`/`SERVICE` class names
+  - But Python classes use `Monitor`/`Service` (matching `regenerate_init_files.py`)
+  - Added class name mapping: `{'cmdb': 'CMDB', 'monitor': 'Monitor', 'log': 'Log', 'service': 'Service'}`
+  - Fixes Pylance import errors for `.monitor` and `.service` in stub files
+
+- **Stub files: Fixed import chain for Monitor/Service/Log categories**
+  - `api/__init__.pyi`: Now imports `Monitor`, `MonitorDictMode`, etc. directly
+  - `api/v2/__init__.pyi`: Exports proper class names
+  - `api/v2/monitor/__init__.pyi`: Uses `Monitor`, `MonitorDictMode`, `MonitorObjectMode`
+
+- **Generator: Fixed auto-generated tests using kebab-case keys for response dictionary access**
+  - Test template `test_basic.py.j2` was using `{{ schema.mkey }}` (kebab-case) for dict access
+  - But API responses are normalized to snake_case by `normalize_keys()` in HTTPClient
+  - Changed dictionary key access to use `{{ schema.mkey|kebab_to_snake }}` filter
+  - Fixes 21 test failures like: `assert "ems-id" in item` → `assert "ems_id" in item`
+  - `api/v2/service/__init__.pyi`: Uses `Service`, `ServiceDictMode`, `ServiceObjectMode`
+
+- **Bug #21: CompositeHandler.error_summary now tracks handler errors** (`hfortix_core/audit/handlers.py`)
+  - Added `propagate_errors` parameter to `CallbackHandler` (default: `False`)
+  - When `True`, exceptions from callback are re-raised, enabling CompositeHandler error tracking
+  - Previously, `CallbackHandler` swallowed exceptions, so `error_summary['total_errors']` stayed at 0
+  - Set `propagate_errors=True` when using `CallbackHandler` inside `CompositeHandler`
+
+- **Bug #22: process_response no longer crashes on list of non-dicts** (`hfortix_fortios/models.py`)
+  - `process_response()` with `response_mode='object'` now handles lists of strings/integers
+  - Previously crashed with `AttributeError: 'str' object has no attribute 'get'`
+  - Now only wraps dict items in `FortiObject`; non-dict items pass through unchanged
+
+- **Bug #23: make_exists_method returns False for error responses** (`hfortix_core/http/client.py`)
+  - `HTTPClient.make_exists_method()` now checks for API error responses
+  - Returns `False` when response has `status='error'` or `http_status=404`
+  - Previously returned `True` for all non-exception responses, including errors
+
+- **Bug #24: Utils.performance_test() now works correctly** (`hfortix_fortios/api/__init__.py`)
+  - Fixed `AttributeError: 'FortiOS' object has no attribute '_url'`
+  - `API` class now unwraps `ResponseProcessingClient` to get underlying `HTTPClient`
+  - `Utils` now receives the actual `HTTPClient` with access to `_url` and other internals
+
+- **Bug #26: Fixed log_operation stub signature** (`hfortix_core/__init__.pyi`)
+  - Stub incorrectly defined `log_operation` as a decorator returning `Callable`
+  - Actual function signature: `log_operation(logger_name, operation, level='INFO', **kwargs) -> None`
+  - Fixes Pylance error: `Expected 1 positional argument` when calling with multiple args
+
+## [0.5.56] - 2026-01-13
+
+### Fixed
+- **BUG #18: Added `hfortix_core/__init__.pyi` type stubs** (`hfortix_core/__init__.pyi`)
+  - Created comprehensive type stubs for hfortix_core package
+  - Fixes Pylance errors for `format_connection_stats`, `format_request_info`, `print_debug_info`
+  - These functions were exported at runtime but Pylance couldn't resolve them from hfortix_core
+  - Added type stubs for all exceptions, debug utilities, cache, logging, and type definitions
+  - Updated `__version__` in `hfortix_fortios/__init__.py` to match package version
+
+## [0.5.55] - 2026-01-13
+
+### Fixed
+- **BUG #17: Fixed monitor/service/log categories showing as Unknown types** (`api/__init__.pyi`)
+  - `APIDictMode.monitor` was typed as `Monitor` instead of `MONITORDictMode`
+  - `APIObjectMode.monitor` was typed as `Monitor` instead of `MONITORObjectMode`
+  - `APIDictMode.service` was typed as `Service` instead of `SERVICEDictMode`
+  - `APIObjectMode.service` was typed as `Service` instead of `SERVICEObjectMode`
+  - Fixed imports to use proper DictMode/ObjectMode variants for all categories
+  - Fixes `fgt.api.monitor.system.status` and similar paths showing as Unknown in Pylance
+
+## [0.5.54] - 2026-01-13
+
+### Fixed
+- **BUG #15: Added `utils.pyi` type stub for direct Utils instantiation** (`api/utils.pyi`)
+  - Created new type stub file for `Utils` class
+  - Type hint now accepts `FortiOS | FortiOSDictMode | FortiOSObjectMode | HTTPClient | IHTTPClient`
+  - Fixes Pylance errors when instantiating `Utils(fgt)` directly with FortiOS clients
+  - Added type stubs for `PerformanceTestResults` class
+
+- **BUG #16: Added `_validate_credentials` static method to FortiOS type stubs** (`client.pyi`)
+  - Added `@staticmethod _validate_credentials(token, username, password) -> None`
+  - Fixes "Cannot access attribute '_validate_credentials'" Pylance errors
+  - Enables type checking when calling `FortiOS._validate_credentials()` directly
+
+## [0.5.53] - 2026-01-12
+
+### Fixed
+- **BUG #11: Fixed `Utils.__init__` type hint rejecting FortiOS client** (`api/utils.py`)
+  - Type hint was `HTTPClient` but `Utils` is initialized with `FortiOS._client`
+  - Changed to `Union[HTTPClient, IHTTPClient]` to accept any HTTP client interface
+  - Fixes Pylance type mismatch errors when using `fgt.api.utils`
+
+- **BUG #12: Added missing async context manager methods to FortiOS type stubs** (`client.pyi`)
+  - Added `__aenter__`, `__aexit__`, `aclose` to `FortiOS`, `FortiOSDictMode`, `FortiOSObjectMode`
+  - Enables proper type checking for `async with FortiOS(..., mode="async") as fgt:`
+  - Fixes "Cannot access attribute" Pylance errors when using async context manager
+
+- **BUG #13: Added missing FortiOS methods to type stubs** (`client.pyi`)
+  - Added `get_health_metrics()`, `get_retry_stats()`, `get_operations()`
+  - Added `get_circuit_breaker_state()`, `export_audit_logs()`, `request()`
+  - Fixes "Cannot access attribute" Pylance errors when using these methods
+
+## [0.5.52] - 2026-01-12
+
+### Added
+- **Expanded test suite with 27 new test files (400+ new tests)**
+  - **Unit tests** (9 files):
+    - `test_api_utils.py` - `api.utils.Utils` class tests
+    - `test_async_client.py` - Async FortiOS client (`mode="async"`)
+    - `test_encode_path.py` - `encode_path_component()` URL encoding
+    - `test_format_utils.py` - `format_connection_stats()`, `format_request_info()`
+    - `test_http_client_utils.py` - HTTPClient utility methods
+    - `test_log_operation.py` - `log_operation` decorator
+    - `test_print_debug.py` - `print_debug_info()` debug output
+    - `test_process_response.py` - `process_response()` function
+    - `test_response_types.py` - Response type handling
+  - **Integration tests** (3 files):
+    - `test_fortios_client.py` - FortiOS client integration
+    - `test_hooks.py` - Hook system tests
+    - `test_http_client_stats.py` - HTTP client statistics
+  - **Validator tests** (14 files):
+    - `test_audit_formatters.py` - Audit log formatters
+    - `test_audit_handlers.py` - Audit handlers
+    - `test_credential_validation.py` - Credential validation
+    - `test_debug_formatters.py` - Debug formatters
+    - `test_debug_timer.py` - `debug_timer` decorator
+    - `test_exceptions.py` - Exception classes
+    - `test_fmt.py` - String formatting utilities
+    - `test_forti_object.py` - `FortiObject` class
+    - `test_fortios_formatting.py` - FortiOS formatting
+    - `test_helpers.py` - Helper functions
+    - `test_logging_formatters.py` - Logging formatters
+    - `test_normalize_keys.py` - Key normalization
+    - `test_ttl_cache.py` - TTL cache
+    - `test_validators.py` - Validation functions
+
+### Fixed
+- **BUG #8: Fixed `normalize_*` type hints rejecting homogeneous lists** (`normalizers.py`)
+  - Type hints now accept `List[str]`, `List[Dict]`, and mixed lists separately
+  - Added separate Union options: `List[str] | List[Dict[str, Any]] | List[str | Dict[str, Any]]`
+  - Fixes Pylance errors when passing homogeneous lists like `["port1", "port2"]`
+
+- **BUG #9: Added missing static methods to HTTPClient `.pyi` stub** (`http/client.pyi`)
+  - Added `validate_mkey`, `validate_required_params`, `validate_range`
+  - Added `validate_choice`, `build_params`, `make_exists_method`
+  - Fixes "Cannot access attribute" Pylance errors when using these static methods
+
+- **BUG #10: Fixed `Utils.performance_test()` referencing missing module** (`api/utils.py`)
+  - Import path was `.performance_test` (looking in `api/` directory)
+  - Changed to `..performance_test` to correctly import from `hfortix_fortios/performance_test.py`
+  - Fixes `ModuleNotFoundError: No module named 'hfortix_fortios.api.performance_test'`
+
 ## [0.5.51] - 2026-01-12
 
 ### Fixed

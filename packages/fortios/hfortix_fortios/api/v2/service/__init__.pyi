@@ -11,19 +11,19 @@ if TYPE_CHECKING:
     from . import system
 
 __all__ = [
-    "SERVICE",
-    "SERVICEDictMode",
-    "SERVICEObjectMode",
+    "Service",
+    "ServiceDictMode",
+    "ServiceObjectMode",
 ]
 
-class SERVICEDictMode:
+class ServiceDictMode:
     """SERVICE API category for dict response mode.
     
     This class is returned when the client is instantiated with response_mode="dict" (default).
     All endpoints return dict/TypedDict responses by default.
     """
     
-    security_rating: security_rating.SecurityRating  # No mode classes yet
+    security_rating: security_rating.SecurityRatingDictMode
     sniffer: sniffer.SnifferDictMode
     system: system.SystemDictMode
 
@@ -32,14 +32,14 @@ class SERVICEDictMode:
         ...
 
 
-class SERVICEObjectMode:
+class ServiceObjectMode:
     """SERVICE API category for object response mode.
     
     This class is returned when the client is instantiated with response_mode="object".
     All endpoints return FortiObject responses by default.
     """
     
-    security_rating: security_rating.SecurityRating  # No mode classes yet
+    security_rating: security_rating.SecurityRatingObjectMode
     sniffer: sniffer.SnifferObjectMode
     system: system.SystemObjectMode
 
@@ -49,7 +49,7 @@ class SERVICEObjectMode:
 
 
 # Base class for backwards compatibility
-class SERVICE:
+class Service:
     """SERVICE API category."""
     
     security_rating: security_rating.SecurityRating

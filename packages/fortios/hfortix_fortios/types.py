@@ -7,7 +7,9 @@ and type checking.
 Auto-generated - DO NOT EDIT
 """
 
-from typing import Any, Literal, NotRequired, TypedDict
+from typing import Any, Literal, TypedDict
+
+from typing_extensions import NotRequired
 
 
 class FortiOSSuccessResponse(TypedDict):
@@ -115,6 +117,53 @@ class FortiOSResponse(TypedDict):
     serial: NotRequired[str]
 
 
+class FortiOSListResponse(TypedDict):
+    """
+    FortiOS API response with list results (collection queries).
+    
+    Use this type when you know the response will contain a list of items,
+    such as when calling `.get()` without a `name` parameter.
+    
+    Example:
+        >>> response: FortiOSListResponse = fgt.api.cmdb.firewall.address.get()
+        >>> first_address = response["results"][0]  # No type error!
+    """
+
+    http_method: str
+    results: list[dict[str, Any]]
+    vdom: str
+    path: str
+    status: Literal["success"]
+    http_status: int
+    build: int
+    version: str
+    serial: str
+
+
+class FortiOSDictResponse(TypedDict):
+    """
+    FortiOS API response with dict results (single object queries).
+    
+    Use this type when you know the response will contain a single object,
+    such as when calling `.get(name="...")`.
+    
+    Example:
+        >>> response: FortiOSDictResponse = fgt.api.cmdb.firewall.address.get(name="web-server")
+        >>> address_name = response["results"]["name"]  # No type error!
+    """
+
+    http_method: str
+    results: dict[str, Any]
+    vdom: str
+    path: str
+    name: str
+    status: Literal["success"]
+    http_status: int
+    build: int
+    version: str
+    serial: str
+
+
 # Common Literal types used across multiple endpoints
 ActionType = Literal["accept", "deny", "ipsec"]
 """Common firewall policy action types"""
@@ -143,6 +192,8 @@ ProtocolType = Literal["tcp", "udp", "icmp", "icmpv6", "ip", "sctp"]
 
 __all__ = [
     "FortiOSSuccessResponse",
+    "FortiOSListResponse",
+    "FortiOSDictResponse",
     "FortiOSErrorResponse",
     "FortiOSResponse",
     "ActionType",

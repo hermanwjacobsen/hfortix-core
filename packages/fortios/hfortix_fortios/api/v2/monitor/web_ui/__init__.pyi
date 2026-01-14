@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .custom_language import CustomLanguage
+    from .custom_language import CustomLanguageDictMode, CustomLanguageObjectMode
     from .language import LanguageDictMode, LanguageObjectMode
 
 __all__ = [
@@ -21,7 +21,7 @@ class WebUiDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    custom_language: CustomLanguage
+    custom_language: CustomLanguageDictMode
     language: LanguageDictMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
@@ -36,7 +36,7 @@ class WebUiObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    custom_language: CustomLanguage
+    custom_language: CustomLanguageObjectMode
     language: LanguageObjectMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:

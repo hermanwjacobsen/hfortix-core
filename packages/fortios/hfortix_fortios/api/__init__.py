@@ -147,11 +147,14 @@ class API:
         self.service = Service(client)
 
         # Utils requires concrete HTTPClient for access to internal attributes
-        # Check if client is the concrete HTTPClient type
+        # Check if client is the concrete HTTPClient type, or if it wraps one
         from hfortix_core.http.client import HTTPClient
 
-        if isinstance(client, HTTPClient):
-            self.utils = Utils(client)
+        # Get the underlying client (might be wrapped in ResponseProcessingClient)
+        underlying_client = getattr(client, "_wrapped_client", client)
+
+        if isinstance(underlying_client, HTTPClient):
+            self.utils = Utils(underlying_client)
         else:
             # Custom protocol implementations won't have utils
             self.utils = None

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from .arp import Arp, ArpDictMode, ArpObjectMode
     from .reverse_ip_lookup import ReverseIpLookup, ReverseIpLookupDictMode, ReverseIpLookupObjectMode
     from .ddns import DdnsDictMode, DdnsObjectMode
-    from .debug_flow import DebugFlow
+    from .debug_flow import DebugFlowDictMode, DebugFlowObjectMode
     from .dns import DnsDictMode, DnsObjectMode
     from .fortiguard import FortiguardDictMode, FortiguardObjectMode
     from .lldp import LldpDictMode, LldpObjectMode
@@ -29,7 +29,7 @@ class NetworkDictMode:
     """
     
     ddns: DdnsDictMode
-    debug_flow: DebugFlow
+    debug_flow: DebugFlowDictMode
     dns: DnsDictMode
     fortiguard: FortiguardDictMode
     lldp: LldpDictMode
@@ -49,7 +49,7 @@ class NetworkObjectMode:
     """
     
     ddns: DdnsObjectMode
-    debug_flow: DebugFlow
+    debug_flow: DebugFlowObjectMode
     dns: DnsObjectMode
     fortiguard: FortiguardObjectMode
     lldp: LldpObjectMode

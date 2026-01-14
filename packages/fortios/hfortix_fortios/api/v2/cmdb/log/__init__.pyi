@@ -15,17 +15,17 @@ if TYPE_CHECKING:
     from .fortianalyzer import FortianalyzerDictMode, FortianalyzerObjectMode
     from .fortianalyzer2 import Fortianalyzer2DictMode, Fortianalyzer2ObjectMode
     from .fortianalyzer3 import Fortianalyzer3DictMode, Fortianalyzer3ObjectMode
-    from .fortianalyzer_cloud import FortianalyzerCloud
+    from .fortianalyzer_cloud import FortianalyzerCloudDictMode, FortianalyzerCloudObjectMode
     from .fortiguard import FortiguardDictMode, FortiguardObjectMode
     from .memory import MemoryDictMode, MemoryObjectMode
-    from .null_device import NullDevice
+    from .null_device import NullDeviceDictMode, NullDeviceObjectMode
     from .syslogd import SyslogdDictMode, SyslogdObjectMode
     from .syslogd2 import Syslogd2DictMode, Syslogd2ObjectMode
     from .syslogd3 import Syslogd3DictMode, Syslogd3ObjectMode
     from .syslogd4 import Syslogd4DictMode, Syslogd4ObjectMode
-    from .tacacs_plusaccounting import TacacsPlusaccounting
-    from .tacacs_plusaccounting2 import TacacsPlusaccounting2
-    from .tacacs_plusaccounting3 import TacacsPlusaccounting3
+    from .tacacs_plusaccounting import TacacsPlusaccountingDictMode, TacacsPlusaccountingObjectMode
+    from .tacacs_plusaccounting2 import TacacsPlusaccounting2DictMode, TacacsPlusaccounting2ObjectMode
+    from .tacacs_plusaccounting3 import TacacsPlusaccounting3DictMode, TacacsPlusaccounting3ObjectMode
     from .webtrends import WebtrendsDictMode, WebtrendsObjectMode
 
 __all__ = [
@@ -49,17 +49,17 @@ class LogDictMode:
     fortianalyzer: FortianalyzerDictMode
     fortianalyzer2: Fortianalyzer2DictMode
     fortianalyzer3: Fortianalyzer3DictMode
-    fortianalyzer_cloud: FortianalyzerCloud
+    fortianalyzer_cloud: FortianalyzerCloudDictMode
     fortiguard: FortiguardDictMode
     memory: MemoryDictMode
-    null_device: NullDevice
+    null_device: NullDeviceDictMode
     syslogd: SyslogdDictMode
     syslogd2: Syslogd2DictMode
     syslogd3: Syslogd3DictMode
     syslogd4: Syslogd4DictMode
-    tacacs_plusaccounting: TacacsPlusaccounting
-    tacacs_plusaccounting2: TacacsPlusaccounting2
-    tacacs_plusaccounting3: TacacsPlusaccounting3
+    tacacs_plusaccounting: TacacsPlusaccountingDictMode
+    tacacs_plusaccounting2: TacacsPlusaccounting2DictMode
+    tacacs_plusaccounting3: TacacsPlusaccounting3DictMode
     webtrends: WebtrendsDictMode
     custom_field: CustomFieldDictMode
     eventfilter: EventfilterDictMode
@@ -83,17 +83,17 @@ class LogObjectMode:
     fortianalyzer: FortianalyzerObjectMode
     fortianalyzer2: Fortianalyzer2ObjectMode
     fortianalyzer3: Fortianalyzer3ObjectMode
-    fortianalyzer_cloud: FortianalyzerCloud
+    fortianalyzer_cloud: FortianalyzerCloudObjectMode
     fortiguard: FortiguardObjectMode
     memory: MemoryObjectMode
-    null_device: NullDevice
+    null_device: NullDeviceObjectMode
     syslogd: SyslogdObjectMode
     syslogd2: Syslogd2ObjectMode
     syslogd3: Syslogd3ObjectMode
     syslogd4: Syslogd4ObjectMode
-    tacacs_plusaccounting: TacacsPlusaccounting
-    tacacs_plusaccounting2: TacacsPlusaccounting2
-    tacacs_plusaccounting3: TacacsPlusaccounting3
+    tacacs_plusaccounting: TacacsPlusaccountingObjectMode
+    tacacs_plusaccounting2: TacacsPlusaccounting2ObjectMode
+    tacacs_plusaccounting3: TacacsPlusaccounting3ObjectMode
     webtrends: WebtrendsObjectMode
     custom_field: CustomFieldObjectMode
     eventfilter: EventfilterObjectMode

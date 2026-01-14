@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .geoip_query import GeoipQuery
+    from .geoip_query import GeoipQueryDictMode, GeoipQueryObjectMode
 
 __all__ = [
     "GeoipDictMode",
@@ -20,7 +20,7 @@ class GeoipDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    geoip_query: GeoipQuery
+    geoip_query: GeoipQueryDictMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize geoip category with HTTP client."""
@@ -34,7 +34,7 @@ class GeoipObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    geoip_query: GeoipQuery
+    geoip_query: GeoipQueryObjectMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize geoip category with HTTP client."""

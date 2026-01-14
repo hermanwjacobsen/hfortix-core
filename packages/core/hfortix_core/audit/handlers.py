@@ -632,14 +632,23 @@ class CallbackHandler:
         directly to the audit_callback parameter.
     """
 
-    def __init__(self, callback: Callable[[dict[str, Any]], None]):
+    def __init__(
+        self,
+        callback: Callable[[dict[str, Any]], None],
+        propagate_errors: bool = False,
+    ):
         """
         Initialize Callback handler
 
         Args:
             callback: Function that takes an operation dict
+            propagate_errors: If True, re-raise exceptions from callback.
+                              If False (default), log and swallow exceptions.
+                              Set to True when used inside CompositeHandler
+                              to enable error aggregation.
         """
         self.callback = callback
+        self.propagate_errors = propagate_errors
 
     def log_operation(self, operation: dict[str, Any]) -> None:
         """Call the callback function"""
@@ -654,3 +663,5 @@ class CallbackHandler:
                 },
                 exc_info=True,
             )
+            if self.propagate_errors:
+                raise

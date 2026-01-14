@@ -1805,6 +1805,7 @@ class HTTPClient(BaseHTTPClient):
         This utility wraps a get() method and returns a function that:
         - Returns True if the object exists
         - Returns False if ResourceNotFoundError is raised
+        - Returns False if response has error status (e.g., {'status': 'error'})
         - Works transparently with both sync and async clients
 
         Args:
@@ -1828,6 +1829,17 @@ class HTTPClient(BaseHTTPClient):
         """
         import inspect
 
+        def _is_error_response(result: Any) -> bool:
+            """Check if the result indicates an error (non-existent resource)."""
+            if isinstance(result, dict):
+                # Check for error status in response
+                if result.get("status") == "error":
+                    return True
+                # Check for http_status indicating not found
+                if result.get("http_status") == 404:
+                    return True
+            return False
+
         def exists_wrapper(*args: Any, **kwargs: Any) -> Union[bool, Any]:
             """Check if an object exists."""
             from hfortix_core.exceptions import ResourceNotFoundError
@@ -1846,14 +1858,19 @@ class HTTPClient(BaseHTTPClient):
                         # Coroutine] from protocol
                         # and cannot narrow the type. This is safe and
                         # necessary for dual-mode design.
-                        await result
+                        awaited_result = await result
+                        # Check for error response
+                        if _is_error_response(awaited_result):
+                            return False
                         return True
                     except ResourceNotFoundError:
                         return False
 
                 return _exists_async()
             else:
-                # Sync mode - we already called get(), it succeeded
+                # Sync mode - check for error response
+                if _is_error_response(result):
+                    return False
                 # If it raised ResourceNotFoundError, we wouldn't be here
                 return True
 

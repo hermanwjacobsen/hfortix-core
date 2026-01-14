@@ -187,20 +187,55 @@ StreamHandler(
 
 ### CompositeHandler
 
-Sends audit logs to multiple handlers.
+Sends audit logs to multiple handlers with error tracking.
 
 ```python
 CompositeHandler([
     handler1,
     handler2,
     handler3,
-])
+], aggregate_errors=True)
 ```
 
 **Features**:
-- Parallel logging
+- Parallel logging to multiple destinations
 - Error isolation (one failure doesn't stop others)
+- Error tracking via `error_summary` property
 - Useful for compliance + debugging
+
+**Error Tracking** (v0.5.57+):
+```python
+# Check for handler errors after operations
+print(handler.error_summary)
+# {'total_errors': 0, 'errors_by_handler': {}}
+```
+
+### CallbackHandler
+
+Wraps a simple function as an audit handler.
+
+```python
+from hfortix_core.audit import CallbackHandler
+
+def my_callback(operation: dict) -> None:
+    # Send to custom destination
+    send_to_kafka(operation)
+
+handler = CallbackHandler(my_callback)
+```
+
+**Error Propagation** (v0.5.57+):
+When using `CallbackHandler` inside `CompositeHandler`, set `propagate_errors=True`
+to enable error tracking:
+
+```python
+handler = CompositeHandler([
+    CallbackHandler(failing_callback, propagate_errors=True),
+    FileHandler("/var/log/audit.log"),
+], aggregate_errors=True)
+
+# Now errors from failing_callback are tracked in error_summary
+```
 
 ### NullHandler
 

@@ -158,6 +158,7 @@ HFortix includes production-ready handlers:
 | `SyslogHandler`   | SIEM integration      | Syslog server (RFC 5424)         |
 | `StreamHandler`   | Container logs        | stdout/stderr                    |
 | `CompositeHandler`| Multiple destinations | Routes to other handlers         |
+| `CallbackHandler` | Custom function       | User-provided callback           |
 | `NullHandler`     | Disable auditing      | No-op                            |
 
 See [AUDIT_LOGGING.md](./AUDIT_LOGGING.md) for details.

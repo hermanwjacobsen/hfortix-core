@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .application_categories import ApplicationCategories, ApplicationCategoriesDictMode, ApplicationCategoriesObjectMode
     from .antivirus import AntivirusDictMode, AntivirusObjectMode
     from .blacklisted_certificates import BlacklistedCertificates
-    from .rating_lookup import RatingLookup
+    from .rating_lookup import RatingLookupDictMode, RatingLookupObjectMode
 
 __all__ = [
     "AppLookup",
@@ -28,7 +28,7 @@ class UtmDictMode:
     
     antivirus: AntivirusDictMode
     blacklisted_certificates: BlacklistedCertificates
-    rating_lookup: RatingLookup
+    rating_lookup: RatingLookupDictMode
     app_lookup: AppLookupDictMode
     application_categories: ApplicationCategoriesDictMode
 
@@ -46,7 +46,7 @@ class UtmObjectMode:
     
     antivirus: AntivirusObjectMode
     blacklisted_certificates: BlacklistedCertificates
-    rating_lookup: RatingLookup
+    rating_lookup: RatingLookupObjectMode
     app_lookup: AppLookupObjectMode
     application_categories: ApplicationCategoriesObjectMode
 

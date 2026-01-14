@@ -40,11 +40,11 @@ if TYPE_CHECKING:
     from .vlan_policy import VlanPolicy, VlanPolicyDictMode, VlanPolicyObjectMode
     from .x802_1x_settings import X8021xSettings, X8021xSettingsDictMode, X8021xSettingsObjectMode
     from .acl import AclDictMode, AclObjectMode
-    from .auto_config import AutoConfig
-    from .initial_config import InitialConfig
+    from .auto_config import AutoConfigDictMode, AutoConfigObjectMode
+    from .initial_config import InitialConfigDictMode, InitialConfigObjectMode
     from .ptp import PtpDictMode, PtpObjectMode
     from .qos import QosDictMode, QosObjectMode
-    from .security_policy import SecurityPolicy
+    from .security_policy import SecurityPolicyDictMode, SecurityPolicyObjectMode
 
 __all__ = [
     "CustomCommand",
@@ -92,11 +92,11 @@ class SwitchControllerDictMode:
     """
     
     acl: AclDictMode
-    auto_config: AutoConfig
-    initial_config: InitialConfig
+    auto_config: AutoConfigDictMode
+    initial_config: InitialConfigDictMode
     ptp: PtpDictMode
     qos: QosDictMode
-    security_policy: SecurityPolicy
+    security_policy: SecurityPolicyDictMode
     custom_command: CustomCommandDictMode
     dynamic_port_policy: DynamicPortPolicyDictMode
     flow_tracking: FlowTrackingDictMode
@@ -144,11 +144,11 @@ class SwitchControllerObjectMode:
     """
     
     acl: AclObjectMode
-    auto_config: AutoConfig
-    initial_config: InitialConfig
+    auto_config: AutoConfigObjectMode
+    initial_config: InitialConfigObjectMode
     ptp: PtpObjectMode
     qos: QosObjectMode
-    security_policy: SecurityPolicy
+    security_policy: SecurityPolicyObjectMode
     custom_command: CustomCommandObjectMode
     dynamic_port_policy: DynamicPortPolicyObjectMode
     flow_tracking: FlowTrackingObjectMode

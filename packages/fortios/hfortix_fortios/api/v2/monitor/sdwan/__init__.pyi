@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .link_monitor_metrics import LinkMonitorMetrics
+    from .link_monitor_metrics import LinkMonitorMetricsDictMode, LinkMonitorMetricsObjectMode
 
 __all__ = [
     "SdwanDictMode",
@@ -20,7 +20,7 @@ class SdwanDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    link_monitor_metrics: LinkMonitorMetrics
+    link_monitor_metrics: LinkMonitorMetricsDictMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize sdwan category with HTTP client."""
@@ -34,7 +34,7 @@ class SdwanObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    link_monitor_metrics: LinkMonitorMetrics
+    link_monitor_metrics: LinkMonitorMetricsObjectMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize sdwan category with HTTP client."""

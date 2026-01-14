@@ -398,7 +398,11 @@ def process_response(
     # Object mode - wrap in FortiObject
     if isinstance(result, list):
         # raw_json=False: Direct list of results
-        wrapped = [FortiObject(item) for item in result]
+        # Only wrap dict items in FortiObject; pass through non-dicts (strings, ints, etc.)
+        wrapped = [
+            FortiObject(item) if isinstance(item, dict) else item
+            for item in result
+        ]
 
         # If unwrap_single=True and we have exactly 1 item, return just that item
         # This happens when querying by mkey (e.g., get(name="specific_object"))
@@ -410,7 +414,11 @@ def process_response(
         # Check if this is a raw_json=True response with 'results' key
         if "results" in result and isinstance(result["results"], list):
             # raw_json=True: Preserve full response but wrap results in FortiObject
-            wrapped_results = [FortiObject(item) for item in result["results"]]
+            # Only wrap dict items; pass through non-dicts
+            wrapped_results = [
+                FortiObject(item) if isinstance(item, dict) else item
+                for item in result["results"]
+            ]
 
             # If unwrap_single=True and we have exactly 1 item, unwrap it
             if unwrap_single and len(wrapped_results) == 1:
