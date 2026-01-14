@@ -133,7 +133,7 @@ if TYPE_CHECKING:
     from .lldp import LldpDictMode, LldpObjectMode
     from .modem3g import Modem3gDictMode, Modem3gObjectMode
     from .replacemsg import ReplacemsgDictMode, ReplacemsgObjectMode
-    from .security_rating import SecurityRating
+    from .security_rating import SecurityRatingDictMode, SecurityRatingObjectMode
     from .snmp import SnmpDictMode, SnmpObjectMode
 
 __all__ = [
@@ -275,7 +275,7 @@ class SystemDictMode:
     lldp: LldpDictMode
     modem3g: Modem3gDictMode
     replacemsg: ReplacemsgDictMode
-    security_rating: SecurityRating
+    security_rating: SecurityRatingDictMode
     snmp: SnmpDictMode
     accprofile: AccprofileDictMode
     acme: AcmeDictMode
@@ -417,7 +417,7 @@ class SystemObjectMode:
     lldp: LldpObjectMode
     modem3g: Modem3gObjectMode
     replacemsg: ReplacemsgObjectMode
-    security_rating: SecurityRating
+    security_rating: SecurityRatingObjectMode
     snmp: SnmpObjectMode
     accprofile: AccprofileObjectMode
     acme: AcmeObjectMode

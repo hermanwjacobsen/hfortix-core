@@ -10,10 +10,10 @@ if TYPE_CHECKING:
     from .known_nac_device_criteria_list import KnownNacDeviceCriteriaList, KnownNacDeviceCriteriaListDictMode, KnownNacDeviceCriteriaListObjectMode
     from .matched_devices import MatchedDevices, MatchedDevicesDictMode, MatchedDevicesObjectMode
     from .fsw_firmware import FswFirmware
-    from .isl_lockdown import IslLockdown
-    from .managed_switch import ManagedSwitch
-    from .mclag_icl import MclagIcl
-    from .nac_device import NacDevice
+    from .isl_lockdown import IslLockdownDictMode, IslLockdownObjectMode
+    from .managed_switch import ManagedSwitchDictMode, ManagedSwitchObjectMode
+    from .mclag_icl import MclagIclDictMode, MclagIclObjectMode
+    from .nac_device import NacDeviceDictMode, NacDeviceObjectMode
     from .recommendation import RecommendationDictMode, RecommendationObjectMode
 
 __all__ = [
@@ -32,10 +32,10 @@ class SwitchControllerDictMode:
     """
     
     fsw_firmware: FswFirmware
-    isl_lockdown: IslLockdown
-    managed_switch: ManagedSwitch
-    mclag_icl: MclagIcl
-    nac_device: NacDevice
+    isl_lockdown: IslLockdownDictMode
+    managed_switch: ManagedSwitchDictMode
+    mclag_icl: MclagIclDictMode
+    nac_device: NacDeviceDictMode
     recommendation: RecommendationDictMode
     detected_device: DetectedDeviceDictMode
     known_nac_device_criteria_list: KnownNacDeviceCriteriaListDictMode
@@ -54,10 +54,10 @@ class SwitchControllerObjectMode:
     """
     
     fsw_firmware: FswFirmware
-    isl_lockdown: IslLockdown
-    managed_switch: ManagedSwitch
-    mclag_icl: MclagIcl
-    nac_device: NacDevice
+    isl_lockdown: IslLockdownObjectMode
+    managed_switch: ManagedSwitchObjectMode
+    mclag_icl: MclagIclObjectMode
+    nac_device: NacDeviceObjectMode
     recommendation: RecommendationObjectMode
     detected_device: DetectedDeviceObjectMode
     known_nac_device_criteria_list: KnownNacDeviceCriteriaListObjectMode

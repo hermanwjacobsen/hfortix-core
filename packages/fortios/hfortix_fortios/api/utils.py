@@ -9,10 +9,11 @@ from __future__ import annotations
 import logging
 import statistics
 import time
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:
     from hfortix_core.http.client import HTTPClient
+    from hfortix_core.http.interface import IHTTPClient
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class Utils:
         >>> results.print_summary()
     """
 
-    def __init__(self, client: "HTTPClient"):
+    def __init__(self, client: "Union[HTTPClient, IHTTPClient]"):
         """Initialize utilities with HTTP client reference"""
         self._client = client
 
@@ -94,7 +95,7 @@ class Utils:
             - Performance guide: docs/PERFORMANCE_TESTING.md
             - Example usage: examples/performance_test_examples.py
         """
-        from .performance_test import PerformanceTestResults
+        from ..performance_test import PerformanceTestResults
 
         results = PerformanceTestResults()
 

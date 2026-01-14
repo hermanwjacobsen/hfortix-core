@@ -1,6 +1,8 @@
-# HFortix - Quick Reference (v0.5.45-beta)
+# HFortix - Quick Reference (v0.5.57-beta)
 
 ⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
+
+✨ **New in v0.5.57**: Major bug fixes for error handling, type stubs, and audit logging!
 
 ✨ **New in v0.5.45**: Core `fmt` module with 13 formatting utilities, automatic key normalization (hyphens → underscores)!
 

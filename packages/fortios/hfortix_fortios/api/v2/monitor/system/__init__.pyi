@@ -36,55 +36,55 @@ if TYPE_CHECKING:
     from .vdom_resource import VdomResource, VdomResourceDictMode, VdomResourceObjectMode
     from .vm_information import VmInformation, VmInformationDictMode, VmInformationObjectMode
     from .admin import AdminDictMode, AdminObjectMode
-    from .api_user import ApiUser
-    from .automation_action import AutomationAction
-    from .automation_stitch import AutomationStitch
+    from .api_user import ApiUserDictMode, ApiUserObjectMode
+    from .automation_action import AutomationActionDictMode, AutomationActionObjectMode
+    from .automation_stitch import AutomationStitchDictMode, AutomationStitchObjectMode
     from .available_interfaces import AvailableInterfaces
     from .botnet import Botnet
     from .botnet_domains import BotnetDomains
-    from .central_management import CentralManagement
+    from .central_management import CentralManagementDictMode, CentralManagementObjectMode
     from .certificate import CertificateDictMode, CertificateObjectMode
-    from .change_password import ChangePassword
+    from .change_password import ChangePasswordDictMode, ChangePasswordObjectMode
     from .cluster import ClusterDictMode, ClusterObjectMode
-    from .com_log import ComLog
+    from .com_log import ComLogDictMode, ComLogObjectMode
     from .config import ConfigDictMode, ConfigObjectMode
-    from .config_error_log import ConfigErrorLog
+    from .config_error_log import ConfigErrorLogDictMode, ConfigErrorLogObjectMode
     from .config_revision import ConfigRevision
     from .config_script import ConfigScript
-    from .config_sync import ConfigSync
-    from .crash_log import CrashLog
+    from .config_sync import ConfigSyncDictMode, ConfigSyncObjectMode
+    from .crash_log import CrashLogDictMode, CrashLogObjectMode
     from .csf import Csf
     from .debug import DebugDictMode, DebugObjectMode
     from .dhcp import Dhcp
     from .dhcp6 import Dhcp6DictMode, Dhcp6ObjectMode
-    from .disconnect_admins import DisconnectAdmins
-    from .external_resource import ExternalResource
+    from .disconnect_admins import DisconnectAdminsDictMode, DisconnectAdminsObjectMode
+    from .external_resource import ExternalResourceDictMode, ExternalResourceObjectMode
     from .firmware import Firmware
     from .fortiguard import FortiguardDictMode, FortiguardObjectMode
     from .fortimanager import FortimanagerDictMode, FortimanagerObjectMode
     from .fsck import FsckDictMode, FsckObjectMode
     from .ha_peer import HaPeer
-    from .hscalefw_license import HscalefwLicense
+    from .hscalefw_license import HscalefwLicenseDictMode, HscalefwLicenseObjectMode
     from .interface import Interface
     from .ipam import IpamDictMode, IpamObjectMode
     from .logdisk import LogdiskDictMode, LogdiskObjectMode
-    from .lte_modem import LteModem
+    from .lte_modem import LteModemDictMode, LteModemObjectMode
     from .modem import Modem
     from .modem5g import Modem5gDictMode, Modem5gObjectMode
     from .ntp import NtpDictMode, NtpObjectMode
     from .object import ObjectDictMode, ObjectObjectMode
     from .os import OsDictMode, OsObjectMode
-    from .password_policy_conform import PasswordPolicyConform
+    from .password_policy_conform import PasswordPolicyConformDictMode, PasswordPolicyConformObjectMode
     from .performance import PerformanceDictMode, PerformanceObjectMode
-    from .private_data_encryption import PrivateDataEncryption
+    from .private_data_encryption import PrivateDataEncryptionDictMode, PrivateDataEncryptionObjectMode
     from .process import ProcessDictMode, ProcessObjectMode
     from .resource import ResourceDictMode, ResourceObjectMode
     from .sandbox import SandboxDictMode, SandboxObjectMode
-    from .sdn_connector import SdnConnector
+    from .sdn_connector import SdnConnectorDictMode, SdnConnectorObjectMode
     from .time import Time
-    from .traffic_history import TrafficHistory
-    from .upgrade_report import UpgradeReport
-    from .usb_device import UsbDevice
+    from .traffic_history import TrafficHistoryDictMode, TrafficHistoryObjectMode
+    from .upgrade_report import UpgradeReportDictMode, UpgradeReportObjectMode
+    from .usb_device import UsbDeviceDictMode, UsbDeviceObjectMode
     from .usb_log import UsbLog
     from .vmlicense import VmlicenseDictMode, VmlicenseObjectMode
 
@@ -130,55 +130,55 @@ class SystemDictMode:
     """
     
     admin: AdminDictMode
-    api_user: ApiUser
-    automation_action: AutomationAction
-    automation_stitch: AutomationStitch
+    api_user: ApiUserDictMode
+    automation_action: AutomationActionDictMode
+    automation_stitch: AutomationStitchDictMode
     available_interfaces: AvailableInterfaces
     botnet: Botnet
     botnet_domains: BotnetDomains
-    central_management: CentralManagement
+    central_management: CentralManagementDictMode
     certificate: CertificateDictMode
-    change_password: ChangePassword
+    change_password: ChangePasswordDictMode
     cluster: ClusterDictMode
-    com_log: ComLog
+    com_log: ComLogDictMode
     config: ConfigDictMode
-    config_error_log: ConfigErrorLog
+    config_error_log: ConfigErrorLogDictMode
     config_revision: ConfigRevision
     config_script: ConfigScript
-    config_sync: ConfigSync
-    crash_log: CrashLog
+    config_sync: ConfigSyncDictMode
+    crash_log: CrashLogDictMode
     csf: Csf
     debug: DebugDictMode
     dhcp: Dhcp
     dhcp6: Dhcp6DictMode
-    disconnect_admins: DisconnectAdmins
-    external_resource: ExternalResource
+    disconnect_admins: DisconnectAdminsDictMode
+    external_resource: ExternalResourceDictMode
     firmware: Firmware
     fortiguard: FortiguardDictMode
     fortimanager: FortimanagerDictMode
     fsck: FsckDictMode
     ha_peer: HaPeer
-    hscalefw_license: HscalefwLicense
+    hscalefw_license: HscalefwLicenseDictMode
     interface: Interface
     ipam: IpamDictMode
     logdisk: LogdiskDictMode
-    lte_modem: LteModem
+    lte_modem: LteModemDictMode
     modem: Modem
     modem5g: Modem5gDictMode
     ntp: NtpDictMode
     object: ObjectDictMode
     os: OsDictMode
-    password_policy_conform: PasswordPolicyConform
+    password_policy_conform: PasswordPolicyConformDictMode
     performance: PerformanceDictMode
-    private_data_encryption: PrivateDataEncryption
+    private_data_encryption: PrivateDataEncryptionDictMode
     process: ProcessDictMode
     resource: ResourceDictMode
     sandbox: SandboxDictMode
-    sdn_connector: SdnConnector
+    sdn_connector: SdnConnectorDictMode
     time: Time
-    traffic_history: TrafficHistory
-    upgrade_report: UpgradeReport
-    usb_device: UsbDevice
+    traffic_history: TrafficHistoryDictMode
+    upgrade_report: UpgradeReportDictMode
+    usb_device: UsbDeviceDictMode
     usb_log: UsbLog
     vmlicense: VmlicenseDictMode
     acme_certificate_status: AcmeCertificateStatusDictMode
@@ -224,55 +224,55 @@ class SystemObjectMode:
     """
     
     admin: AdminObjectMode
-    api_user: ApiUser
-    automation_action: AutomationAction
-    automation_stitch: AutomationStitch
+    api_user: ApiUserObjectMode
+    automation_action: AutomationActionObjectMode
+    automation_stitch: AutomationStitchObjectMode
     available_interfaces: AvailableInterfaces
     botnet: Botnet
     botnet_domains: BotnetDomains
-    central_management: CentralManagement
+    central_management: CentralManagementObjectMode
     certificate: CertificateObjectMode
-    change_password: ChangePassword
+    change_password: ChangePasswordObjectMode
     cluster: ClusterObjectMode
-    com_log: ComLog
+    com_log: ComLogObjectMode
     config: ConfigObjectMode
-    config_error_log: ConfigErrorLog
+    config_error_log: ConfigErrorLogObjectMode
     config_revision: ConfigRevision
     config_script: ConfigScript
-    config_sync: ConfigSync
-    crash_log: CrashLog
+    config_sync: ConfigSyncObjectMode
+    crash_log: CrashLogObjectMode
     csf: Csf
     debug: DebugObjectMode
     dhcp: Dhcp
     dhcp6: Dhcp6ObjectMode
-    disconnect_admins: DisconnectAdmins
-    external_resource: ExternalResource
+    disconnect_admins: DisconnectAdminsObjectMode
+    external_resource: ExternalResourceObjectMode
     firmware: Firmware
     fortiguard: FortiguardObjectMode
     fortimanager: FortimanagerObjectMode
     fsck: FsckObjectMode
     ha_peer: HaPeer
-    hscalefw_license: HscalefwLicense
+    hscalefw_license: HscalefwLicenseObjectMode
     interface: Interface
     ipam: IpamObjectMode
     logdisk: LogdiskObjectMode
-    lte_modem: LteModem
+    lte_modem: LteModemObjectMode
     modem: Modem
     modem5g: Modem5gObjectMode
     ntp: NtpObjectMode
     object: ObjectObjectMode
     os: OsObjectMode
-    password_policy_conform: PasswordPolicyConform
+    password_policy_conform: PasswordPolicyConformObjectMode
     performance: PerformanceObjectMode
-    private_data_encryption: PrivateDataEncryption
+    private_data_encryption: PrivateDataEncryptionObjectMode
     process: ProcessObjectMode
     resource: ResourceObjectMode
     sandbox: SandboxObjectMode
-    sdn_connector: SdnConnector
+    sdn_connector: SdnConnectorObjectMode
     time: Time
-    traffic_history: TrafficHistory
-    upgrade_report: UpgradeReport
-    usb_device: UsbDevice
+    traffic_history: TrafficHistoryObjectMode
+    upgrade_report: UpgradeReportObjectMode
+    usb_device: UsbDeviceObjectMode
     usb_log: UsbLog
     vmlicense: VmlicenseObjectMode
     acme_certificate_status: AcmeCertificateStatusObjectMode

@@ -14,12 +14,12 @@ if TYPE_CHECKING:
     from .historic_daily_remote_logs import HistoricDailyRemoteLogs, HistoricDailyRemoteLogsDictMode, HistoricDailyRemoteLogsObjectMode
     from .hourly_disk_usage import HourlyDiskUsage, HourlyDiskUsageDictMode, HourlyDiskUsageObjectMode
     from .local_report_list import LocalReportList, LocalReportListDictMode, LocalReportListObjectMode
-    from .av_archive import AvArchive
+    from .av_archive import AvArchiveDictMode, AvArchiveObjectMode
     from .device import DeviceDictMode, DeviceObjectMode
     from .forticloud import Forticloud
-    from .forticloud_report import ForticloudReport
-    from .local_report import LocalReport
-    from .policy_archive import PolicyArchive
+    from .forticloud_report import ForticloudReportDictMode, ForticloudReportObjectMode
+    from .local_report import LocalReportDictMode, LocalReportObjectMode
+    from .policy_archive import PolicyArchiveDictMode, PolicyArchiveObjectMode
     from .stats import Stats
 
 __all__ = [
@@ -42,12 +42,12 @@ class LogDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    av_archive: AvArchive
+    av_archive: AvArchiveDictMode
     device: DeviceDictMode
     forticloud: Forticloud
-    forticloud_report: ForticloudReport
-    local_report: LocalReport
-    policy_archive: PolicyArchive
+    forticloud_report: ForticloudReportDictMode
+    local_report: LocalReportDictMode
+    policy_archive: PolicyArchiveDictMode
     stats: Stats
     current_disk_usage: CurrentDiskUsageDictMode
     feature_set: FeatureSetDictMode
@@ -70,12 +70,12 @@ class LogObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    av_archive: AvArchive
+    av_archive: AvArchiveObjectMode
     device: DeviceObjectMode
     forticloud: Forticloud
-    forticloud_report: ForticloudReport
-    local_report: LocalReport
-    policy_archive: PolicyArchive
+    forticloud_report: ForticloudReportObjectMode
+    local_report: LocalReportObjectMode
+    policy_archive: PolicyArchiveObjectMode
     stats: Stats
     current_disk_usage: CurrentDiskUsageObjectMode
     feature_set: FeatureSetObjectMode
