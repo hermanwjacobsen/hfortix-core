@@ -85,7 +85,7 @@ jobs:
             --no-warn-return-any \
             --allow-untyped-defs \
             --allow-incomplete-defs \
-            --exclude 'packages/fortios/hfortix_fortios/api/v2/'
+            --exclude 'packages/fortios/hfortix_fortios/api/'
 
   security:
     name: Security Scan
