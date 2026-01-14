@@ -8,7 +8,7 @@ various compliance and logging standards.
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Protocol, runtime_checkable
 
 __all__ = [
@@ -154,7 +154,7 @@ class SyslogFormatter:
 
         # Get timestamp (use operation timestamp or current time)
         timestamp = operation.get(
-            "timestamp", datetime.utcnow().isoformat() + "Z"
+            "timestamp", datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         )
 
         # Message is the full operation as JSON
