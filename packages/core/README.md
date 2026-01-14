@@ -5,7 +5,7 @@ Core foundation for HFortix - Python SDK for Fortinet products.
 [![PyPI version](https://badge.fury.io/py/hfortix-core.svg)](https://pypi.org/project/hfortix-core/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.57 (January 14, 2026)**
 >
 > Production-ready but in beta. All packages remain in beta until v1.0 with comprehensive unit tests.
 

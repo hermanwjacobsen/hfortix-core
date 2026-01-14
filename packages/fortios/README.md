@@ -7,19 +7,34 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 
-> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.57 (January 14, 2026)**
 >
 > **Breaking Changes:** See v0.5.33 and v0.5.32 for important return type changes in dict/object mode.
 > **Status:** Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New:** Core `fmt` module, automatic key normalization, improved type annotations!
+> **What's New:** Major bug fixes, expanded test suite, improved type stubs!
 
-**Version:** 0.5.45
+**Version:** 0.5.57
 **Status:** Beta (100% auto-generated, production-ready, optimized for performance)
 
 
-## 🚀 What's New in v0.5.45 (January 2026)
+## 🚀 What's New in v0.5.57 (January 2026)
 
-### Latest Improvements (v0.5.43-v0.5.45)
+### Latest Bug Fixes (v0.5.57)
+
+- **Bug #21**: `CompositeHandler.error_summary` now correctly tracks handler errors
+- **Bug #22**: `process_response()` no longer crashes on lists of non-dict items
+- **Bug #23**: `exists()` method returns `False` for API error responses
+- **Bug #24**: `Utils.performance_test()` now works correctly
+- **Bug #26**: Fixed `log_operation` stub signature mismatch
+- **Generator fixes**: NotRequired import for Python <3.11, class name mappings, kebab-case test keys
+
+### Recent Improvements (v0.5.50-v0.5.56)
+
+- **Expanded test suite**: 8 new test files (~78 new tests)
+- **Type stub fixes**: FortiObject, print_debug_info exports, results type improved
+- **Python 3.10+ compatibility**: `NotRequired` imported from `typing_extensions`
+
+### Core Features (v0.5.43-v0.5.45)
 
 - **Core `fmt` module**: 13 formatting utilities now in `hfortix_core.fmt`
   - `to_list()`, `to_json()`, `to_csv()`, `to_dict()`, `to_table()`, `to_yaml()`, etc.

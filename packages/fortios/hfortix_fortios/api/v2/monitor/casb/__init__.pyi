@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .saas_application import SaasApplication
+    from .saas_application import SaasApplicationDictMode, SaasApplicationObjectMode
 
 __all__ = [
     "CasbDictMode",
@@ -20,7 +20,7 @@ class CasbDictMode:
     All endpoints return dict/TypedDict responses by default.
     """
     
-    saas_application: SaasApplication
+    saas_application: SaasApplicationDictMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize casb category with HTTP client."""
@@ -34,7 +34,7 @@ class CasbObjectMode:
     All endpoints return FortiObject responses by default.
     """
     
-    saas_application: SaasApplication
+    saas_application: SaasApplicationObjectMode
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize casb category with HTTP client."""

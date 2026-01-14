@@ -84,7 +84,7 @@ if TYPE_CHECKING:
     from .shaper import ShaperDictMode, ShaperObjectMode
     from .ssh import SshDictMode, SshObjectMode
     from .ssl import SslDictMode, SslObjectMode
-    from .wildcard_fqdn import WildcardFqdn
+    from .wildcard_fqdn import WildcardFqdnDictMode, WildcardFqdnObjectMode
 
 __all__ = [
     "DosPolicy",
@@ -176,7 +176,7 @@ class FirewallDictMode:
     shaper: ShaperDictMode
     ssh: SshDictMode
     ssl: SslDictMode
-    wildcard_fqdn: WildcardFqdn
+    wildcard_fqdn: WildcardFqdnDictMode
     DoS_policy: DosPolicyDictMode
     DoS_policy6: DosPolicy6DictMode
     access_proxy: AccessProxyDictMode
@@ -268,7 +268,7 @@ class FirewallObjectMode:
     shaper: ShaperObjectMode
     ssh: SshObjectMode
     ssl: SslObjectMode
-    wildcard_fqdn: WildcardFqdn
+    wildcard_fqdn: WildcardFqdnObjectMode
     DoS_policy: DosPolicyObjectMode
     DoS_policy6: DosPolicy6ObjectMode
     access_proxy: AccessProxyObjectMode
